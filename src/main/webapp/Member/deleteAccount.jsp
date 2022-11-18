@@ -9,15 +9,26 @@
    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
 
+</script>
 </head>
 <body>
 	<div class="container">
-		<div class="deleteAccount w-75 secession mx-auto">
-			<div class="mx-auto">
+		<div id="secession" class="secession w-75 mx-auto">
+			<div class="mx-auto overflow-hidden">
 				<label class="label p-3">
 					<span class="h5 font-weight-bold">탈퇴</span>
 				</label>
+				<!-- 누르기 전 -->
+				<span class="toggle_btn float-right p-3">
+					<i>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+						  <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+						</svg>
+					</i>
+				</span>
+				<p class="float-clear">
 			</div>
 			<div class="w-75 mx-auto p-3">
 				<h5 class="font-weight-bold">탈퇴 안내 사항</h5>
@@ -37,10 +48,10 @@
 			</div>
 			<div class="m-5">
 				<input class="input form-control" type="password" placeholder="현재 비밀번호">
-				<small class="invalid">입력시 처리될 부분</small>
+				<small class="invalid"></small>
 			</div>
 			<div class="mx-auto w-25 m-3">
-				<button class="button btn-block btn btn-success" disabled>탈퇴하기</button>
+				<button class="button btn-block btn btn btn-secondary" disabled>탈퇴하기</button>
 			</div>
 			<!--
 				공란 아닐시 disabled 속성 지워주기
@@ -49,7 +60,17 @@
 		</div>
 		
 		<!-- ajax 처리시 class secession active로 처리하기 -->
+		
 	</div>
-
+	
+					<!-- 누른 후
+				<span class="toggle_btn float-right">
+					<i>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+  							<path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+						</svg>
+					</i>
+				</span>
+ -->
 </body>
 </html>
