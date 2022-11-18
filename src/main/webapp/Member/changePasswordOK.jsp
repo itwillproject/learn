@@ -25,7 +25,7 @@
 				<p>비밀번호 변경이 완료되었습니다.</p>
 				<p>
 					<input type="button" class="btn-block btn btn-success my-2" value="확인"
-						onclick="location.href='findId.jsp'">
+						onclick="location.href='index.jsp'">
 						<!-- inflearn 확인 버튼 클릭시 아이디 찾기 화면으로 이동 -->
 				</p>
 			</div>
