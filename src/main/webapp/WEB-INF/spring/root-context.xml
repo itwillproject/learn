@@ -23,17 +23,18 @@
 	
 	<!-- 스프링 - 마이바티스 연동 설정 -->
 	<!-- DataSource bean 사용 -->
+	<!--
 	<bean id="sqlSessionFactory"
 	    class="org.mybatis.spring.SqlSessionFactoryBean">
 	    <property name="configLocation" value="classpath:mybatis-config.xml"></property>
 	    <property name="dataSource" ref="dataSource" />
 	    <property name="mapperLocations" value="classpath:mappings/**/*Mapper.xml"></property>
-	    <!-- 따로 Mapper 설정 추가 없이 mapping 폴더 밑의 Mapper.xml로 끝나는 파일들 모두 Mapper라 처리 -->
 	</bean>
-	
+
 	<bean class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
+	-->
 
  	 
 </beans>
