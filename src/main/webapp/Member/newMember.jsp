@@ -32,15 +32,24 @@
 					<div>
 						<p class="">나의 온라인 사수, 인프런</p>
 					</div>
-					<div class="mx-auto" style="width: 19%;">
+					<div class="mx-auto" style="width: 25%;">
 						<form>
 							<div>
 								<label for="user_email" style="float: left;">이메일</label>
 								<div>
-									<input id="user_email" type="email" name="email" class="w-100"
+									<input type="email" id="user_email" name="email" class="w-100"
 										placeholder="example@inflab.com" required>
 								</div>
 								<div class="" id="email_check"></div>
+								<div class="input-group-addon">
+									<button type="button" class="btn btn-primary" id="mail-Check-Btn">이메일인증</button>
+								</div>
+								<div class="mail-check-box">
+									<input class="form-control mail-check-input" placeholder="인증번호를 입력해주세요!" disabled="disabled" maxlength="6">
+								</div>
+								<div>
+									<span id="mail-check-warn"></span>
+								</div>
 							</div>
 							<div class="">
 								<label for="user_pw" style="float: left;">비밀번호</label>
@@ -70,7 +79,7 @@
 							</div>
 							<br>
 							<button type="button" class="btn btn-success w-100"
-								id="reg_submit" style="">가입하기</button>
+								id="reg_submit" style="">인증 메일 보내기</button>
 						</form>
 					</div>
 					<div class="signup__social">
@@ -124,6 +133,23 @@
 	<hr>
 	<hr>
 	<script>
+		$('#mail-Check-Btn').click(function() {
+			const eamil = $('#user_email').val(); // 이메일 주소값 얻어오기!
+			console.log('완성된 이메일 : ' + eamil); // 이메일 오는지 확인
+			const checkInput = $('.mail-check-input') // 인증번호 입력하는곳 
+			
+			$.ajax({
+				type : 'get',
+				url : '<c:url value ="/user/mailCheck?email="/>'+eamil, // GET방식이라 Url 뒤에 email을 뭍힐수있다.
+				success : function (data) {
+					console.log("data : " +  data);
+					checkInput.attr('disabled',false);
+					code =data;
+					alert('인증번호가 전송되었습니다.')
+				}			
+			}); // end ajax
+		}); // end send eamil
+	
 		//모든 공백 체크 정규식
 		var empJ = /\s/g;
 		//아이디 정규식
@@ -165,7 +191,7 @@
 		// 이메일
 		$('#user_email').keyup(function() {
 			if (mailJ.test($(this).val())) {
-				console.log(nameJ.test($(this).val()));
+				console.log(mailJ.test($(this).val()));
 				$("#email_check").text('');
 			} else {
 				$('#email_check').text('이메일을 확인해주세요 :)');
