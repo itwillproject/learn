@@ -6,11 +6,11 @@
 <meta charset="UTF-8">
 <title>index.jsp</title>
 </head>
-<%@include file ="/common/header.jsp" %>
+<%@include file ="/Common/header.jsp" %>
  
  
 <h2>메인페이지</h2>
  <br>
  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<%@include file ="/common/footer.jsp"%>
+<%@include file ="/Common/footer.jsp"%>
 </html>
