@@ -11,7 +11,7 @@
 	</settings>
   
 	<typeAliases>
-
+		<typeAlias alias="user" type="com.spring.learn.user.UserVO"/>
 	</typeAliases>
 
 </configuration>

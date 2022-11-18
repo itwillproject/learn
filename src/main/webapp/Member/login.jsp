@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
     <title>로그인</title>
@@ -12,17 +13,17 @@
 <div class="container mt-3">
     <h2>테스트</h2>
     <div>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">로그인</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#login">로그인</button>
         <button type="button" class="btn btn-primary" onclick="location.href='inquiry.jsp'">조회</button>
     </div>
-    <div class="modal fade" id="myModal">
+    <div class="modal fade" id="login">
         <div class="modal-dialog modal-dialog-centered" style="width: 400px">
             <div class="modal-content align-items-center pb-3">
                 <div class="w-100 pr-2 pb-4" style="float: right">
                     <button type="button" class="close" data-dismiss="modal">x</button>
                 </div>
                     <img style="width: 120px;" src="https://cdn.inflearn.com/public/files/pages/da35da48-52a5-4ec6-b8d3-0389a47610ec/logo1.png">
-                    <form class="w-100 pl-4 pr-4 pt-4">
+                    <form action="login.do" method="post" class="w-100 pl-4 pr-4 pt-4">
                         <input type="email" class="form-control w-100 mb-3" id="userId" placeholder="이메일" name="userId">
                         <input type="password" class="form-control w-100 mb-4" id="userPwd" placeholder="비밀번호" name="userPwd">
                         <button type="submit" class="btn w-100" style="background-color: #00C471; color: white">로그인</button>
@@ -47,7 +48,6 @@
             </div>
         </div>
     </div>
-
 </div>
 </body>
 </html>
