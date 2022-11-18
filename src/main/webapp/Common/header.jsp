@@ -4,6 +4,75 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<<<<<<< HEAD
+<meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+   
+ 
+   
+   
+   <style>
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+}
+   
+   </style>
+   
+   </head>
+      
+      <header>
+
+  
+  <div class="container">
+
+  <ul class="nav">
+    <li class="nav-item">
+<div class="dropdown">
+    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+      강의
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">개발 프로그래밍</a>
+      <a class="dropdown-item" href="#">보안 네트워크</a>
+      <a class="dropdown-item" href="#">데이터 사이언스</a>
+    </div>
+  </div>
+</li>
+   
+    <li class="nav-item">
+
+    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+      로드맵
+    </button>
+
+</li>
+    <li class="nav-item">
+ <div class="dropdown">
+<button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+      커뮤니티
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">질문 & 답변</a>
+      <a class="dropdown-item" href="#">자유주제</a>
+    </div>
+    </div>
+</li>
+    <li class="nav-item">
+    <div class="dropdown">
+    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+     인프런
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">수강평</a>
+      <a class="dropdown-item" href="#">인프런 피드</a>
+      <a class="dropdown-item" href="#">강의 기능요청</a>
+    </div>
+    </div>
+=======
 <link rel="stylesheet" href="https://cdn.inflearn.com/dist/css/MAIN.1898bc97a6e5d45664eb.css" />
     <link rel="stylesheet" href="https://cdn.inflearn.com/dist/css/main.bc2fe52fe2fe701b2ed2.css" />
     <link
@@ -98,16 +167,27 @@
   <li><a class="navbar-item" href="/courses/it-programming/web-dev?skill=web-app">웹앱</a></li>
   <li><a class="navbar-item" href="/courses/it-programming/web-dev?skill=spring-boot">Spring Boot</a></li>
       </ul>
+>>>>>>> db63fe5446b36cfb6b5ee45f62a5db7c56fa46f3
     </li>
-    </ul>
-    </li>
-    </ul>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </nav>
+    
+<button type="button" class="btn" >
+      <input type="text" id="search">
+    </button>
+    
+      <button type="button" class="btn btn-outline-light text-dark">로그인</button> &nbsp;
+    <button type="button" class="btn btn-outline-danger">회원가입</button>&nbsp;
+<button type="button" class="btn ">지식 공유참여</button>
+
+
+
+</ul>
+</div>
+
+  
+  
+  
+ 
+
     </header>
 
 </html>

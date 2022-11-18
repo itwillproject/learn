@@ -4,16 +4,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>index.jsp</title>
+<title>Insert title here</title>
 </head>
+<body>
 <%@include file ="/Common/header.jsp" %>
- 
- 
-<h2>메인페이지</h2>
- <br>
- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
- 
- <a href="../Community/sample.jsp" alt="무">버튼</a>
- 
+
+
+
+
+
+
+
 <%@include file ="/Common/footer.jsp"%>
+</body>
 </html>
