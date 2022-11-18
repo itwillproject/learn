@@ -1,0 +1,68 @@
+<style>
+	.gray-botton{
+		width: 800px;
+		border-bottom: 1px solid gray; 
+	}
+	
+	.black-line{
+		border-bottom: 2px solid black;
+	}
+	
+	.searchByText {
+		margin: 10px auto;
+	}
+	
+	.searchByText input {
+		width: 500px;
+		height: 40px; 
+		}
+	
+	.searchByText button {
+		width: 100px;
+		height: 40px;
+	}
+	
+	.page-item {
+		margin-left: 5px;
+		margin-right: 5px;
+		padding: 5px;
+	}
+	
+	.page-link {		
+		border-radius: 10px;
+		border: 1px solid gray;
+		color: black; 
+	}
+	
+	.page-link:hover {		
+		border-radius: 10px;
+		border: 1px solid black;
+		background-color: white;
+		color: black; 
+	}
+	
+	.pagination .active .page-link {
+		background-color: green;
+		border: 1px solid green;
+	}
+
+	.ball{
+		border: 1px solid gray;
+		border-radius: 35px;
+		height: 70px;
+		width: 70px;
+		text-align: center;
+	}
+
+	.text-center{
+		text-align: center;
+	}		    
+
+    .content{
+        border: 1px solid #555555;
+        border-radius: 5px;
+    }
+
+    
+
+</style>
