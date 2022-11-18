@@ -21,7 +21,7 @@
 
 		<div class="row">
 		<div class="col-2">
-			<%@ include file="../sideNav.jspf"%>
+			<%@ include file="sideNav.jspf"%>
 			</div>
 			<div class="col-10">
 
