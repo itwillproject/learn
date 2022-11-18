@@ -31,7 +31,7 @@ public class UserController {
 	//@RequestMapping(value = "/login.do", method = RequestMethod.POST)
 	@PostMapping("/login.do") // 4.3버전 부터 사용가능
 	public String login(UserVO vo) {
-		System.out.println(">>> 로그인 처리");
+		System.out.println(">>> 로그인 처리ㅁ");
 		System.out.println("vo : " + vo);
 		
 		//예외발생
