@@ -20,13 +20,4 @@
 		<property name="maxUploadSize" value="10000000"/> <!-- 최대 등록 사이즈 10메가 -->
 	</bean>
 	
-	<!-- 스프링 ViewResolver 등록 -->
-	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/views"/>
-		<!-- 기준이 되는 폴더 context root 밑의 board 폴더에서 관리-->
-		<property name="suffix" value=".jsp"/>
-		<!-- 확장자 -->
-	</bean>
-	
 </beans>

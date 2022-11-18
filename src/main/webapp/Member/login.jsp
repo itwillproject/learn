@@ -41,7 +41,9 @@
                         </div>
                         <div class="col-6">
                             <div style="width: 40px; height: 40px; background-color: #f8f8f8;">
-                                <img style="margin:10px; width: 20px; height: 20px; background-color: #f8f8f8;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/24px-Google_%22G%22_Logo.svg.png?20210618182606"/>
+                                <a href="${google_url}">
+                                    <img style="margin:10px; width: 20px; height: 20px; background-color: #f8f8f8;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/24px-Google_%22G%22_Logo.svg.png?20210618182606"/>
+                                </a>
                             </div>
                         </div>
                     </div>
