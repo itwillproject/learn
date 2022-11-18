@@ -21,13 +21,13 @@
 	</bean>
 	
 	<!-- 스프링 ViewResolver 등록 -->
-	<bean id="viewResolver"
+<!-- 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/views"/>
-		<!-- 기준이 되는 폴더 context root 밑의 board 폴더에서 관리-->
+		<property name="prefix" value="/WEB-INF/Member"/>
+		기준이 되는 폴더 context root 밑의 board 폴더에서 관리
 		<property name="suffix" value=".jsp"/>
-		<!-- 확장자 -->
-	</bean>
+		확장자
+	</bean> -->
 	
 	
 </beans>

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회원가입</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -17,6 +17,7 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+<%-- <%@ include file="../Common/header.jspf"%> --%>
 	<div class="container">
 
 		<div class="row">
@@ -33,7 +34,7 @@
 						<p class="">나의 온라인 사수, 인프런</p>
 					</div>
 					<div class="mx-auto" style="width: 25%;">
-						<form>
+						<form action="insertUser.do" method="post">
 							<div>
 								<label for="user_email" style="float: left;">이메일</label>
 								<div>
@@ -79,7 +80,7 @@
 							</div>
 							<br>
 							<button type="button" class="btn btn-success w-100"
-								id="reg_submit" style="">인증 메일 보내기</button>
+								id="reg_submit" style="">가입하기</button>
 						</form>
 					</div>
 					<div class="signup__social">
@@ -273,7 +274,7 @@
 					}
 					// 이메일 정규식
 					if (mailJ.test($('#user_email').val())) {
-						console.log(phoneJ.test($('#user_email').val()));
+						console.log(mailJ.test($('#user_email').val()));
 						inval_Arr[1] = true;
 					} else {
 						inval_Arr[1] = false;

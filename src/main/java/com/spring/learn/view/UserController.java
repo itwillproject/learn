@@ -9,17 +9,44 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.spring.biz.user.UserService;
-import com.spring.biz.user.UserVO;
+import com.spring.learn.user.UserService;
+import com.spring.learn.user.UserVO;
 
 // @RequestMapping 클래스 선언부 사용시
 // 모든 메소드 요청경로의 부모(root) 경로로 추가됨
-@RequestMapping("/user")
+@RequestMapping("/Member")
 @Controller
 public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@RequestMapping("/insertUser.do")
+	public String insertUser(UserVO vo) {
+		System.out.println(">>> 회원가입");
+		System.out.println("vo : " + vo);
+		
+		int a = userService.insertUser(vo);
+		
+		//3. 화면 네비게이션(화면전환, 화면이동)
+		// 로그인 성공 : 게시글 목록 보여주기
+		// 로그인 실패 : 로그인 화면으로 이동
+		if (a == 1) {
+			System.out.println(">> 회원가입 성공!!!");
+			return "index.jsp";
+		} else {
+			System.out.println(">> 로그인 실패~~~");
+			return "newMember.jsp";
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/*
 	 * @RequestMapping : 요청과 처리(Controller) 연결(HandlerMapping 역할 대체)
@@ -29,13 +56,15 @@ public class UserController {
 	 * 3. UserVO 타입 객체를 메소드의 파라미터 값으로 전달
 	 */
 	//@RequestMapping(value = "/login.do", method = RequestMethod.POST)
+	
+	
 	@PostMapping("/login.do") // 4.3버전 부터 사용가능
 	public String login(UserVO vo) {
 		System.out.println(">>> 로그인 처리ㅁ");
 		System.out.println("vo : " + vo);
 		
 		//예외발생
-		if (vo.getId() == null || vo.getId().equals("")) {
+		if (vo.getuser_id() == null || vo.getuser_id().equals("")) {
 			throw new IllegalArgumentException("아이디 반드시 입력되어야 합니다.");
 		}
 		
@@ -62,8 +91,9 @@ public class UserController {
 	@GetMapping("/login.do") // 4.3버전 부터 사용가능
 	public String loginView(@ModelAttribute("user") UserVO vo) {
 		System.out.println(">>> 로그인 화면 이동 - loginView()");
-		vo.setId("test");
-		vo.setPassword("test");
+		/*
+		 * vo.setId("test"); vo.setPassword("test");
+		 */
 		
 		return "user/login";
 	}
@@ -74,5 +104,7 @@ public class UserController {
 		session.invalidate();
 		return "user/login";
 	}
+	
+	
 	
 }
