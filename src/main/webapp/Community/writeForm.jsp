@@ -11,7 +11,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="${pageContext.request.contextPath}/summernote/summernote-bs4.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 	<script src="${pageContext.request.contextPath}/summernote/summernote-bs4.js"></script>
 
 	<script>
@@ -52,7 +52,7 @@
 
 </head>
 <body>
-<%-- 	<%Include() %> --%>
+	<%@include file="/Common/header.jsp" %>
 
 <div>
 	<div class="container-fluid">
@@ -109,7 +109,7 @@
 	</div>
 </div>
 
-
+	<%@include file="/Common/footer.jsp" %>
 
 
 </body>

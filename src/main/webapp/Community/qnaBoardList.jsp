@@ -13,9 +13,10 @@
 
 </head>
 <body>
+	
+	<%@include file="/Common/header.jsp" %>
 	<%@include file="/Community/tape.jsp" %>
 
-<div>
 	<div class="container-fluid">
 		<div class="row justify-content-center">
 		
@@ -116,7 +117,8 @@
 			</div>
 		</div>
 	</div>
-</div>
+	
+	<%@include file="/Common/footer.jsp" %>
 
 
 
