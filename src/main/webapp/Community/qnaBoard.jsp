@@ -3,14 +3,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Home</title>
+<title>글상세페이지</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/Community/css/jyStyle.css">
 	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-	<link href="${pageContext.request.contextPath}/summernote/summernote-bs4.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 	<script src="${pageContext.request.contextPath}/summernote/summernote-bs4.js"></script>
 
 	<script>
@@ -27,6 +27,8 @@
 				}
 				}
 			});
+			
+			$('.summernote').summernote();
 		});
 
 		function sendFile(file, editor) {
@@ -52,61 +54,62 @@
 
 </head>
 <body>
+	<%@include file="/Common/header.jsp" %>
 
-	<div class="container mt-5 d-flex justify-content-center">
-		<div class="row w-100">
-			<div class="col-2" style="border: 1px solid black;">
+	<div class="container-fluid mt-5 pb-3 d-flex justify-content-center">
+		<div class="row w-100 pb-4 justify-content-center">
+			<div class="col-2">
 				<p>-------왼쪽네비-------</p>
 				<p>여기에 화살표 버튼 들어감?</p>
 			</div>
 
-			<div class="col-8">
-				<div class="row">
-					<img src="qqqq.png">&nbsp;<h3><b>github 권한 요청 드립니다!</b></h3>
+			<div class="col-6 pl-3 gray-line">
+				<div class="row align-items-center p-3">
+					<img class="mr-2" style="height: 30px" src="${pageContext.request.contextPath}/Community/img/qqq.png">					
+					<h3><b>github 권한 요청 드립니다!</b></h3>
 				</div>
-				<div class="row mt-2">
-					<p><b>아이디</b></p>&nbsp;&nbsp;<p class="text-muted">2022.11.18 오전 9:20</p>
+				<div class="row pl-3 pb-3">
+					<p class="mr-2"><b>아이디</b></p><p class="text-muted">2022.11.18 오전 9:20</p>
 				</div>
-				<hr>
 
-				<div class="row">
+				<div class="d-flex flex-row p-3">
 					<p>내용 어쩌고</p>
 					<p>배너어쩌고</p>
 					<p>배너어쩌고</p>
 				</div>
 			</div>
 
-			<div class="col-2"  style="border: 1px solid black;">
+			<div class="col-2">
 				<p>------오른쪽네비--------</p>
 			</div>
-		</div>
-		
+		</div>		
 	</div>
 
-	<div class="container-fluid mt-5 pb-5"  style="background-color: #F8F9FA;">
-		<div class="row mb-5">
+	<div class="container-fluid pt-5"  style="background-color: #F8F9FA;">
 
-		</div>
-
-		<div class="row w-50 border mx-auto rounded bg-white p-3" >
-			<div class="w-100 text-editor-block d-flex align-items-center mb-3">
+		<div class="row w-50 border mx-auto rounded bg-white px-3 py-5" >
+			<div class="w-100 mb-3 ml-3 text-editor-block d-flex align-items-center">
 				<div class="ml-3">
-					<img src="인프런마크.png">	
+					<img class="mr-2" style="height: 60px" src="${pageContext.request.contextPath}/Community/img/aaa.png">
 				</div>
 				<div class="ml-4">
 					<div class="row">
-					<span><h5><b><a href="#">jaepang Im</a>님, 답변해주세요!</b></h5></span>
+					<span><h5><b><a href="#" style="font-size: 1em">jaepang Im</a>님, 답변해주세요!</b></h5></span>
 					</div>
 					<div class="row">
 					<span class="text-secondary">모두에게 도움이 되는 답변의 주인공이 되어주세요!</span>
 					</div>
 				</div>
-
 			</div>
 
-			<div class="row ml-5">
+			<div class="row w-100 ml-5">
 				<form method="post">
-					<textarea id="summernote" name="editordata"></textarea>
+					<div class="summernote">summernote 1</div>
+
+					
+					<div class="row mt-3">
+						<button class="btn btn-success ml-auto">답변등록</button>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -128,13 +131,13 @@
 		</div>
 
 		<!-- 댓글 -->
-		<div class="row w-50 border mx-auto rounded bg-white p-3 " >
+		<div class="row w-50 border mx-auto rounded bg-white p-3" >
 
 			<div class="w-100 text-editor-block d-flex align-items-center mt-3 mb-3">				
 				<div class="ml-3">
-					<img src="인프런마크.png">
+					<img class="mr-2" style="height: 60px" src="${pageContext.request.contextPath}/Community/img/aaa.png">
 				</div>
-				<div class="ml-4">
+				<div class="ml-3">
 					<div class="row">
 					<span><h5><b><a href="#">OMG</a></b></h5></span>
 					</div>
@@ -146,12 +149,12 @@
 			</div>
 
 			<div class="row ml-5">
-				<pre > Lorem ipsum dolor sit, 이거 어떻게 해야 하나요? pre로 했는데 넘칩니다.</pre>
+				<pre > Lorem ipsum dolor sit, 이거 어떻게 해야 하나요? 댓글</pre>
 			</div>
 
 
 			<!-- 대댓글 -->
-			<div class="row w-100 border mx-auto rounded p-3" style="background-color: #F8F9FA;" >
+			<div class="row w-100 border mx-auto rounded p-3 rounded" style="background-color: #F8F9FA;" >
 				<div class="d-flex flex-row ml-3 mt-3 w-100 align-items-center">
 					<span>
 						<h5><b>댓글</b></h5>
@@ -160,24 +163,26 @@
 						<button data-toggle="collapse" data-target=".comments">더보기/접기</button>
 					</span>
 				</div>
-				<div class="comments">
-				<div class="w-100 text-editor-block d-flex align-items-center mt-3 mb-3">
-					<div class="ml-3">					
-						<img src="인프런마크.png">	
-					</div>
-					<div class="ml-4">
-						<div class="row">
-						<span><h5><b><a href="#">OMG</a></b></h5></span>
-						</div>
-						<div class="row text-secondary">
-						<span>2022.11.18 오전 1:52</span>
-						</div>
-					</div>
-				</div>
 				
-				<div class="row ml-5">
-					<pre > Lorem ipsum dolor sit, 이거 어떻게 해야 하나요? pre로 했는데 넘칩니다.</pre>
-				</div>
+				
+				<div class="comments">
+					<div class="w-100 text-editor-block d-flex align-items-center my-3">
+						<div class="ml-3">					
+							<img class="mr-2" style="height: 60px" src="${pageContext.request.contextPath}/Community/img/aaa.png">	
+						</div>
+						<div class="ml-4">
+							<div class="row">
+							<span><h5><b><a href="#">OMG</a></b></h5></span>
+							</div>
+							<div class="row text-secondary">
+							<span>2022.11.18 오전 1:52</span>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row ml-5">
+						<pre > Lorem ipsum dolor sit, 이거 어떻게 해야 하나요? 대댓글</pre>
+					</div>
 				</div>
 			</div>
 
@@ -188,22 +193,20 @@
 					<button data-toggle="collapse" data-target=".writeComments">답글쓰기</button>
 				</span>
 			</div>
-
-			<div class="row ml-5 writeComments">
-				<form method="post">
-					<textarea id="summernote" name="editordata"></textarea>
+			
+			<div class="row w-100 p-3 mx-auto">
+				<form method="post" class="w-100">
+					<div class="summernote">summernote 2</div>
+					<div class="row mt-3">
+					<button class="btn btn-success ml-auto">답변등록</button>
+					</div>
 				</form>
 			</div>
-
-
+			
 		</div>
-
-
-
-
-
-
 	</div>
+	
+	<%@include file="/Common/footer.jsp" %>
 
 
 

@@ -4,6 +4,10 @@
 	}	
 	.green-line{
 		border-bottom: 2px solid green;
+	}
+		
+	.gray-line{
+		border-bottom: 2px solid #F8F9FA;
 	}	
 	
 	.page-link:hover {		
