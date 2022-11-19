@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,8 +26,8 @@
 <div class="container-fluid bg-dark">
 	<div class="container tape">
 		<section class="tapeContent">		
-			<h2>¹¯°í ´äÇØ¿ä</h2>
-			<p>99¸¸¸íÀÇ Ä¿¹Â´ÏÆ¼!! ÇÔ²² Åä·ÐÇØºÁ¿ä.</p>
+			<h2>ë¬»ê³  ë‹µí•´ìš”</h2>
+			<p>99ë§Œëª…ì˜ ì»¤ë®¤ë‹ˆí‹°!! í•¨ê»˜ í† ë¡ í•´ë´ìš”.</p>
 		</section>
 	</div>
 </div>

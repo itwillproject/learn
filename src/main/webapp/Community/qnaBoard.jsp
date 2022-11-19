@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,8 +20,8 @@
 				minHeight: null,             // set minimum height of editor
 				maxHeight: null,             // set maximum height of editor
 				focus: true,                  // set focus to editable area after initializing summernote
-				callbacks: { // Äİ¹éÀ» »ç¿ë
-				// ÀÌ¹ÌÁö¸¦ ¾÷·ÎµåÇÒ °æ¿ì ÀÌº¥Æ®¸¦ ¹ß»ı
+				callbacks: { // ì½œë°±ì„ ì‚¬ìš©
+				// ì´ë¯¸ì§€ë¥¼ ì—…ë¡œë“œí•  ê²½ìš° ì´ë²¤íŠ¸ë¥¼ ë°œìƒ
 				onImageUpload: function(files, editor, welEditable) {
 				sendFile(files[0], this);
 				}
@@ -31,20 +30,20 @@
 		});
 
 		function sendFile(file, editor) {
-		  // ÆÄÀÏ Àü¼ÛÀ» À§ÇÑ Æû»ı¼º
+		  // íŒŒì¼ ì „ì†¡ì„ ìœ„í•œ í¼ìƒì„±
 			data = new FormData();
 			data.append("uploadFile", file);
-		  	$.ajax({ // ajax¸¦ ÅëÇØ ÆÄÀÏ ¾÷·Îµå Ã³¸®
+		  	$.ajax({ // ajaxë¥¼ í†µí•´ íŒŒì¼ ì—…ë¡œë“œ ì²˜ë¦¬
 				data : data,
 				type : "POST",
 				url : "knowhowImageUpload.do", // controller
 				cache : false,
 				contentType : false,
 				processData : false,
-				success : function(data) { // Ã³¸®°¡ ¼º°øÇÒ °æ¿ì
-				// ¿¡µğÅÍ¿¡ ÀÌ¹ÌÁö Ãâ·Â
+				success : function(data) { // ì²˜ë¦¬ê°€ ì„±ê³µí•  ê²½ìš°
+				// ì—ë””í„°ì— ì´ë¯¸ì§€ ì¶œë ¥
 					$(editor).summernote('editor.insertImage', data.url);
-				//$("#thumbnail").val(data.url); // ½æ³×ÀÏ ¼³Á¤
+				//$("#thumbnail").val(data.url); // ì¸ë„¤ì¼ ì„¤ì •
 				}
 			});
 		}
@@ -57,28 +56,28 @@
 	<div class="container mt-5 d-flex justify-content-center">
 		<div class="row w-100">
 			<div class="col-2" style="border: 1px solid black;">
-				<p>-------¿ŞÂÊ³×ºñ-------</p>
-				<p>¿©±â¿¡ È­»ìÇ¥ ¹öÆ° µé¾î°¨?</p>
+				<p>-------ì™¼ìª½ë„¤ë¹„-------</p>
+				<p>ì—¬ê¸°ì— í™”ì‚´í‘œ ë²„íŠ¼ ë“¤ì–´ê°?</p>
 			</div>
 
 			<div class="col-8">
 				<div class="row">
-					<img src="qqqq.png">&nbsp;<h3><b>github ±ÇÇÑ ¿äÃ» µå¸³´Ï´Ù!</b></h3>
+					<img src="qqqq.png">&nbsp;<h3><b>github ê¶Œí•œ ìš”ì²­ ë“œë¦½ë‹ˆë‹¤!</b></h3>
 				</div>
 				<div class="row mt-2">
-					<p><b>¾ÆÀÌµğ</b></p>&nbsp;&nbsp;<p class="text-muted">2022.11.18 ¿ÀÀü 9:20</p>
+					<p><b>ì•„ì´ë””</b></p>&nbsp;&nbsp;<p class="text-muted">2022.11.18 ì˜¤ì „ 9:20</p>
 				</div>
 				<hr>
 
 				<div class="row">
-					<p>³»¿ë ¾îÂ¼°í</p>
-					<p>¹è³Ê¾îÂ¼°í</p>
-					<p>¹è³Ê¾îÂ¼°í</p>
+					<p>ë‚´ìš© ì–´ì©Œê³ </p>
+					<p>ë°°ë„ˆì–´ì©Œê³ </p>
+					<p>ë°°ë„ˆì–´ì©Œê³ </p>
 				</div>
 			</div>
 
 			<div class="col-2"  style="border: 1px solid black;">
-				<p>------¿À¸¥ÂÊ³×ºñ--------</p>
+				<p>------ì˜¤ë¥¸ìª½ë„¤ë¹„--------</p>
 			</div>
 		</div>
 		
@@ -92,14 +91,14 @@
 		<div class="row w-50 border mx-auto rounded bg-white p-3" >
 			<div class="w-100 text-editor-block d-flex align-items-center mb-3">
 				<div class="ml-3">
-					<img src="ÀÎÇÁ·±¸¶Å©.png">	
+					<img src="ì¸í”„ëŸ°ë§ˆí¬.png">	
 				</div>
 				<div class="ml-4">
 					<div class="row">
-					<span><h5><b><a href="#">jaepang Im</a>´Ô, ´äº¯ÇØÁÖ¼¼¿ä!</b></h5></span>
+					<span><h5><b><a href="#">jaepang Im</a>ë‹˜, ë‹µë³€í•´ì£¼ì„¸ìš”!</b></h5></span>
 					</div>
 					<div class="row">
-					<span class="text-secondary">¸ğµÎ¿¡°Ô µµ¿òÀÌ µÇ´Â ´äº¯ÀÇ ÁÖÀÎ°øÀÌ µÇ¾îÁÖ¼¼¿ä!</span>
+					<span class="text-secondary">ëª¨ë‘ì—ê²Œ ë„ì›€ì´ ë˜ëŠ” ë‹µë³€ì˜ ì£¼ì¸ê³µì´ ë˜ì–´ì£¼ì„¸ìš”!</span>
 					</div>
 				</div>
 
@@ -112,81 +111,81 @@
 			</div>
 		</div>
 
-		<!-- ´äº¯ ¸î°³ÀÎ, ±Û Á¤·Ä ¿É¼Ç-->
+		<!-- ë‹µë³€ ëª‡ê°œì¸, ê¸€ ì •ë ¬ ì˜µì…˜-->
 		<div class="w-75 d-flex flex-row justify-content-center mx-auto mt-4 p-3">
 			<div class="row w-75 d-flex flex-row justify-content-around align-items-center" >
 					<span class="w-75 ml-4">
-					<h3 class="text-success">A</h3><p>ÃÑ 1°³ÀÇ ´äº¯ÀÌ ´Ş·È½À´Ï´Ù</p>
+					<h3 class="text-success">A</h3><p>ì´ 1ê°œì˜ ë‹µë³€ì´ ë‹¬ë ¸ìŠµë‹ˆë‹¤</p>
 					</span>
 					
 					<span class="mr-4">
 					<select>
-						<option>ÃÖ½Å¼ø</option>
-						<option>ÁÁ¾Æ¿ä¼ø</option>
+						<option>ìµœì‹ ìˆœ</option>
+						<option>ì¢‹ì•„ìš”ìˆœ</option>
 					</select>
 					</span>
 			</div>				
 		</div>
 
-		<!-- ´ñ±Û -->
+		<!-- ëŒ“ê¸€ -->
 		<div class="row w-50 border mx-auto rounded bg-white p-3 " >
 
 			<div class="w-100 text-editor-block d-flex align-items-center mt-3 mb-3">				
 				<div class="ml-3">
-					<img src="ÀÎÇÁ·±¸¶Å©.png">
+					<img src="ì¸í”„ëŸ°ë§ˆí¬.png">
 				</div>
 				<div class="ml-4">
 					<div class="row">
 					<span><h5><b><a href="#">OMG</a></b></h5></span>
 					</div>
 					<div class="row text-secondary">
-					<span>2022.11.18 ¿ÀÀü 1:52</span>
+					<span>2022.11.18 ì˜¤ì „ 1:52</span>
 					</div>
 				</div>
 
 			</div>
 
 			<div class="row ml-5">
-				<pre > Lorem ipsum dolor sit, ÀÌ°Å ¾î¶»°Ô ÇØ¾ß ÇÏ³ª¿ä? pre·Î Çß´Âµ¥ ³ÑÄ¨´Ï´Ù.</pre>
+				<pre > Lorem ipsum dolor sit, ì´ê±° ì–´ë–»ê²Œ í•´ì•¼ í•˜ë‚˜ìš”? preë¡œ í–ˆëŠ”ë° ë„˜ì¹©ë‹ˆë‹¤.</pre>
 			</div>
 
 
-			<!-- ´ë´ñ±Û -->
+			<!-- ëŒ€ëŒ“ê¸€ -->
 			<div class="row w-100 border mx-auto rounded p-3" style="background-color: #F8F9FA;" >
 				<div class="d-flex flex-row ml-3 mt-3 w-100 align-items-center">
 					<span>
-						<h5><b>´ñ±Û</b></h5>
+						<h5><b>ëŒ“ê¸€</b></h5>
 					</span>
 					<span class="ml-auto">
-						<button data-toggle="collapse" data-target=".comments">´õº¸±â/Á¢±â</button>
+						<button data-toggle="collapse" data-target=".comments">ë”ë³´ê¸°/ì ‘ê¸°</button>
 					</span>
 				</div>
 				<div class="comments">
 				<div class="w-100 text-editor-block d-flex align-items-center mt-3 mb-3">
 					<div class="ml-3">					
-						<img src="ÀÎÇÁ·±¸¶Å©.png">	
+						<img src="ì¸í”„ëŸ°ë§ˆí¬.png">	
 					</div>
 					<div class="ml-4">
 						<div class="row">
 						<span><h5><b><a href="#">OMG</a></b></h5></span>
 						</div>
 						<div class="row text-secondary">
-						<span>2022.11.18 ¿ÀÀü 1:52</span>
+						<span>2022.11.18 ì˜¤ì „ 1:52</span>
 						</div>
 					</div>
 				</div>
 				
 				<div class="row ml-5">
-					<pre > Lorem ipsum dolor sit, ÀÌ°Å ¾î¶»°Ô ÇØ¾ß ÇÏ³ª¿ä? pre·Î Çß´Âµ¥ ³ÑÄ¨´Ï´Ù.</pre>
+					<pre > Lorem ipsum dolor sit, ì´ê±° ì–´ë–»ê²Œ í•´ì•¼ í•˜ë‚˜ìš”? preë¡œ í–ˆëŠ”ë° ë„˜ì¹©ë‹ˆë‹¤.</pre>
 				</div>
 				</div>
 			</div>
 
-			<!-- ´ë´ñ±Û ´Ş±â-->
+			<!-- ëŒ€ëŒ“ê¸€ ë‹¬ê¸°-->
 
 			<div class="d-flex flex-row ml-3 mt-3 w-100 align-items-center">
 				<span class="mx-auto">
-					<button data-toggle="collapse" data-target=".writeComments">´ä±Û¾²±â</button>
+					<button data-toggle="collapse" data-target=".writeComments">ë‹µê¸€ì“°ê¸°</button>
 				</span>
 			</div>
 

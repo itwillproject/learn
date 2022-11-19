@@ -1,11 +1,10 @@
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Áú¹®±ÛÀÛ¼ºÆû</title>
+<title>ì§ˆë¬¸ê¸€ì‘ì„±í¼</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/Community/css/jyStyle.css">
@@ -22,8 +21,8 @@
 				minHeight: null,             // set minimum height of editor
 				maxHeight: null,             // set maximum height of editor
 				focus: true,                  // set focus to editable area after initializing summernote
-				callbacks: { // Äİ¹éÀ» »ç¿ë
-				// ÀÌ¹ÌÁö¸¦ ¾÷·ÎµåÇÒ °æ¿ì ÀÌº¥Æ®¸¦ ¹ß»ı
+				callbacks: { // ì½œë°±ì„ ì‚¬ìš©
+				// ì´ë¯¸ì§€ë¥¼ ì—…ë¡œë“œí•  ê²½ìš° ì´ë²¤íŠ¸ë¥¼ ë°œìƒ
 				onImageUpload: function(files, editor, welEditable) {
 				sendFile(files[0], this);
 				}
@@ -32,20 +31,20 @@
 		});
 
 		function sendFile(file, editor) {
-		  // ÆÄÀÏ Àü¼ÛÀ» À§ÇÑ Æû»ı¼º
+		  // íŒŒì¼ ì „ì†¡ì„ ìœ„í•œ í¼ìƒì„±
 			data = new FormData();
 			data.append("uploadFile", file);
-		  	$.ajax({ // ajax¸¦ ÅëÇØ ÆÄÀÏ ¾÷·Îµå Ã³¸®
+		  	$.ajax({ // ajaxë¥¼ í†µí•´ íŒŒì¼ ì—…ë¡œë“œ ì²˜ë¦¬
 				data : data,
 				type : "POST",
 				url : "knowhowImageUpload.do", // controller
 				cache : false,
 				contentType : false,
 				processData : false,
-				success : function(data) { // Ã³¸®°¡ ¼º°øÇÒ °æ¿ì
-				// ¿¡µğÅÍ¿¡ ÀÌ¹ÌÁö Ãâ·Â
+				success : function(data) { // ì²˜ë¦¬ê°€ ì„±ê³µí•  ê²½ìš°
+				// ì—ë””í„°ì— ì´ë¯¸ì§€ ì¶œë ¥
 					$(editor).summernote('editor.insertImage', data.url);
-				//$("#thumbnail").val(data.url); // ½æ³×ÀÏ ¼³Á¤
+				//$("#thumbnail").val(data.url); // ì¸ë„¤ì¼ ì„¤ì •
 				}
 			});
 		}
@@ -56,42 +55,43 @@
 <%-- 	<%Include() %> --%>
 
 <div>
-	<div class="container">
-		<div class="row">
+	<div class="container-fluid">
+		<div class="row justify-content-center">
 			<div class="col-sm-2">
-				<p>-------¿ŞÂÊ³×ºñ-------</p>
+				<p>-------ì™¼ìª½ë„¤ë¹„-------</p>
 			</div>
 			
-			<div class="col-sm-8 align-content-center">
-
+			<div class="col-sm-6 align-content-center">
+				
+				<!-- ì„¹ì…˜ ì„ íƒ -->
                 <div class="flex-row w-100">
                     <nav class="navbar navbar-expand-sm navbar-light w-100">
-                        <ul class="navbar-nav gray-botton w-100" style="border-bottom: 1px solid gray;">
-                            <li class="nav-item active black-line">
-                            <a class="nav-link" href="#">Áú¹®</a>
+                        <ul class="navbar-nav gray-botton w-100" style="border-bottom: 1px solid green;">
+                            <li class="nav-item active green-line">
+                            <a class="nav-link" href="#">ì§ˆë¬¸</a>
                             </li>
                             <li class="nav-item">
-                            <a class="nav-link" href="#">ÀÚÀ¯ÁÖÁ¦</a>
+                            <a class="nav-link" href="#">ììœ ì£¼ì œ</a>
                             </li>
                         </ul>
                     </nav>                        
                 </div>
 
-                <div class="d-flex flex-row p-3 ml-5 writeComments">
+                <div class="d-flex flex-row p-3 writeComments">
                     <table class="table table-borderless">
                         <thead>
                             <tr>
-                                <th><h2><b><input class="w-100 mx-auto border border-0" type="text" name="title" placeholder="Á¦¸ñÀ» ÀÔ·ÂÇÏ¼¼¿ä"></b></h2></th>
+                                <th><h2><b><input class="w-100 mx-auto border border-0" type="text" name="title" placeholder="ì œëª©ì„ ì…ë ¥í•˜ì„¸ìš”"></b></h2></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><textarea class="w-100 mx-auto border border-0" id="summernote" name="editordata" placeholder="ÇĞ½À°ú °ü·ÃµÈ Áú¹®À» ³²°ÜÁÖ¼¼¿ä"></textarea></td>
+                                <td><textarea class="w-100 mx-auto border border-0" id="summernote" name="editordata" placeholder="í•™ìŠµê³¼ ê´€ë ¨ëœ ì§ˆë¬¸ì„ ë‚¨ê²¨ì£¼ì„¸ìš”"></textarea></td>
                             </tr>
                             <tr>
                                 <td class="d-flex flex-row justify-content-end">
-                                    <button class="btn btn-light mr-3">Ãë¼Ò</button>
-                                    <button class="btn btn-success">µî·Ï</button>
+                                    <button class="btn btn-light mr-3">ì·¨ì†Œ</button>
+                                    <button class="btn btn-success">ë“±ë¡</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -103,7 +103,7 @@
 			</div>	
 
 			<div class="col-sm-2">
-				<p>------¿À¸¥ÂÊ³×ºñ--------</p>
+				<p>------ì˜¤ë¥¸ìª½ë„¤ë¹„--------</p>
 			</div>
 		</div>
 	</div>
