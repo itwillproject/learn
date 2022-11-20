@@ -58,11 +58,13 @@
 
 	<div class="container-fluid mt-5 pb-3 d-flex justify-content-center">
 		<div class="row w-100 pb-4 justify-content-center">
-			<div class="col-2">
-				<p>-------왼쪽네비-------</p>
-				<p>여기에 화살표 버튼 들어감?</p>
+			
+			<!-- 왼쪽 네비 -->
+			<div class="col-2 d-flex justify-content-center">
+				<a href="#" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
 			</div>
 
+			<!-- 중앙 위 내용 - 글내용 -->
 			<div class="col-6 pl-3 gray-line">
 				<div class="row align-items-center p-3">
 					<img class="mr-2" style="height: 30px" src="${pageContext.request.contextPath}/Community/img/qqq.png">					
@@ -78,10 +80,41 @@
 					<p>배너어쩌고</p>
 				</div>
 			</div>
-
-			<div class="col-2">
-				<p>------오른쪽네비--------</p>
+			
+			<!-- 오른쪽 네비 -->
+			<div class="col-2">				
+				<!-- A vertical navbar -->
+				<nav class="navbar">
+				  <!-- Links -->
+				  <ul class="navbar-nav comNav">
+				    <li class="nav-item d-flex justify-content-center align-items-center">
+				      <a href="#">미해결</a>
+				    </li>
+				    <li class="nav-item d-flex justify-content-center align-items-center">
+				      <a href="#">
+				      	<img height="20px" src="${pageContext.request.contextPath}/Community/img/LikeOff.png">
+				      	<span class="ml-3">0</span>
+				      </a>
+				    </li>
+				    <li class="nav-item d-flex justify-content-center align-items-center">
+				      <a href="#">
+					     <img height="20px" src="${pageContext.request.contextPath}/Community/img/BookmarkOff.png">
+					     <span class="ml-3">0</span>
+				      </a>
+				    </li>
+				    <li class="nav-item d-flex justify-content-center align-items-center">
+				      <a href="#">
+				      	<img height="20px" src="${pageContext.request.contextPath}/Community/img/LinkTo.png">
+				      	<span class="ml-2">공유</span>
+				      </a>
+				    </li>
+				  </ul>
+				</nav>
 			</div>
+			
+			
+			
+			
 		</div>		
 	</div>
 
