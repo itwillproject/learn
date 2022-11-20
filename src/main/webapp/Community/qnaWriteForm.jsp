@@ -90,8 +90,8 @@
                             </tr>
                             <tr>
                                 <td class="d-flex flex-row justify-content-end">
+                                    <button class="btn btn-success">수정</button>
                                     <button class="btn btn-light mr-3">취소</button>
-                                    <button class="btn btn-success">등록</button>
                                 </td>
                             </tr>
                         </tbody>
