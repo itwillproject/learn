@@ -7,16 +7,28 @@
 <title>계정 아이디(이메일) 찾기</title>
 <meta name="description" content="계정에 등록된 휴대폰 번호를 인증하시면 사용중인 계정의 이메일 주소를 알려드립니다....">
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
 <style>
 	html, body {
 		height: 100%;
 	}
+	
 </style>   
+<script>
+	function findId(frm){
+		alert(frm.userName.value+","+frm.userBirth.value);
+		if (frm.userName.value=="" || frm.userBirth.value=="") {
+			
+		}
+
+	}
+</script>
 </head>
 <body>
+<%@include file ="/Common/header.jsp" %>
 <div class="container h-100 text-center">
 	<div class="d-flex align-items-center mx-auto text-center h-100">
 		<div class="mx-auto">
@@ -29,13 +41,14 @@
 				<form action="ajaxFineId" method="post" class="form-group">
 					<input type="text" name="userName" class="form-control" placeholder="이름:"> 
 					<input type="text" name="userBirth" class="form-control" placeholder="19990101">
-					<input type="button" class="m-3 btn btn-outline-secondary" value="인증요청" onclick="">
+					<input type="button" class="m-3 btn btn-outline-secondary" value="인증요청" onclick="findId(this.form)">
 				</form>
 			</div>
 		</div>
 	</div>	
 	
 	<!-- 에이젝스 처리로 변경해 줘야 하는데 일단 기능구현 안 되어서 밑에 단락으로 표시 -->
+
 
 
 	<!-- 정보가 정확할시 -->
@@ -51,7 +64,7 @@
 				</p>
 				<ul class="find-account nav">
 				  <li class="text-left nav-item float-left">
-				    <img src="${pageContext.request.contextPath }/resources/img/findAccountImg/inflean.png" alt="inflean" width="10%">
+				    <img src="/resources/img/findAccountImg/inflean.png" alt="inflean" width="10%">
 				    <img src="${pageContext.request.contextPath }/resources/img/findAccountImg/KakaoTalk_logo.png" alt="inflean" width="10%">
 				  </li>
 				</ul>
