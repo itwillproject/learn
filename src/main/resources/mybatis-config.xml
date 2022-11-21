@@ -11,7 +11,11 @@
 	</settings>
   
 	<typeAliases>
+<<<<<<< HEAD
 		<typeAlias alias="userVO" type="com.spring.learn.user.UserVO"/>
+=======
+		<typeAlias alias="user" type="com.spring.learn.user.UserVO"/>
+>>>>>>> branch 'main' of https://github.com/Creamfather/learn.git
 	</typeAliases>
 	
 	  <!-- applicationContext.xml 에서 dataSource 설정 사용으로 대체  -->

@@ -26,8 +26,15 @@
 		<property name="prefix" value="/WEB-INF/Member"/>
 		기준이 되는 폴더 context root 밑의 board 폴더에서 관리
 		<property name="suffix" value=".jsp"/>
+<<<<<<< HEAD
 		확장자
 	</bean> -->
 
 	
 </beans>
+=======
+		<!-- 확장자 -->
+	</bean>
+	
+</beans>
+>>>>>>> branch 'main' of https://github.com/Creamfather/learn.git
