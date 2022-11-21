@@ -48,7 +48,7 @@ public class UserController {
       return "redirect:/board/getBoardList.do";
     } else {
       System.out.println(">> 로그인 실패~~~");
-      return "login.jsp";
+      return "loginModal.jsp";
     }
   }
 
@@ -62,14 +62,14 @@ public class UserController {
   public String loginView() {
     System.out.println(">>> 로그인 화면 이동 - loginView()");
 
-    return "login.jsp";
+    return "loginModal.jsp";
   }
 
   @RequestMapping("/logout.do")
   public String logout(HttpSession session) {
     System.out.println(">> 로그아웃 처리");
     session.invalidate();
-    return "login.jsp";
+    return "loginModal.jsp";
   }
 
 }
