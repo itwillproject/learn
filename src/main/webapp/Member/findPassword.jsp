@@ -154,6 +154,10 @@
 			</div>
 		</div>
 	</div>
+	<div class="d-flex mx-auto text-center">
+		<div id="verifyForm" class="mx-auto">
+		</div>
+	</div>
 	
 
 
