@@ -3,9 +3,9 @@ package com.spring.learn.user;
 import oracle.sql.DATE;
 
 public class UserVO {
-  private String userId, grade, userName, userPwd;
+  private String userId, grade, userName, userPwd, userBirth;
   private int points;
-  private DATE userBirth, userRegdate;
+  private DATE userRegdate;
 
   public String getUserId() {
     return userId;
@@ -47,11 +47,11 @@ public class UserVO {
     this.points = points;
   }
 
-  public DATE getUserBirth() {
+  public String getUserBirth() {
     return userBirth;
   }
 
-  public void setUserBirth(DATE userBirth) {
+  public void setUserBirth(String userBirth) {
     this.userBirth = userBirth;
   }
 
