@@ -33,33 +33,40 @@
 					<label> <span>이메일</span> <small>(※ 이메일 변경 후 재인증 필요)</small>
 					</label>
 					<div class="">
-						<input id="email_change" type="email" class="w-75"
-							value="로그인정보eMail불러오기" placeholder="변경할 이메일을 입력해주세요"> 
-						<div class="">
-						<br>
-							<button class="btn btn-success w-25" type="button">저장하기</button>
-							<p>(누르면 인증메일 발송 페이지전환)</p>
+						<input id="email_change" type="email" class="w-75" name="userId"
+							value="ELteg@itwill.com"> 
+						<div class=""><br>
+							<button id="mail-Check-Btn" class="btn btn-success w-25" type="button">수정하기</button>
+							<div class="mail-check-box">
+									<input class="w-75" placeholder="인증번호를 입력해주세요!" disabled="disabled" maxlength="6">
+								</div>
+								<div>
+									<span id="mail-check-warn"></span>
+								</div>
 						</div>
 					</div>
 				</div>
+				<from>
 					<div class="">	
 						<label class=""><span>비밀번호</span></label>
-							<button class="btn" onclick="findPassword.jsp">
+							<button class="btn" onclick="location.href='findPassword.jsp'">
 							<small>비밀번호를 모르신다면?</small>
 						</button>
 					</div>
 
-					<input id="password" type="password" class="w-75" placeholder="현재 비밀번호">
-					<div>현재비밀번호와 ajax로 실시간체크하면안댐</div>
-					<input id="" type="password" class="w-75" placeholder="새 비밀번호">
-					<br><br> <input id="" type="password" class="w-75"
-						placeholder="새 비밀번호 확인"> <br><br>	
+					<input id="password" name="password" type="password" class="w-75" placeholder="현재 비밀번호">
+					<!-- 현재비밀번호와 ajax로 실시간체크하면안댐 -->
+					<div class="" id="checkPwd"></div>
+					<p><small> </small><p>
+					<input id="user_pw" name="userPwd" type="password" class="w-75" placeholder="새 비밀번호">
+					<div class="" id="pw_check"></div><p><small> </small><p>
+					<input id="user_pw2" type="password" class="w-75"
+						placeholder="새 비밀번호 확인">
+					<div class="" id="pw2_check"></div><br>	
 					<div class="">
-						<button class="btn btn-success w-25" type="button">저장하기</button>
+						<button id="reg_submit" class="btn btn-success w-25" type="button">저장하기</button>
 					</div>
-					<div>저장하기 버튼 누르면 현재로그인데이터 비밀번호 일치여부확인 새비밀번호 확인 두개 확인</div>
-				<div>강의자 마이페이지에서는 핸드폰번호 입력 만들것인지???</div>
-
+				</from>
 
 				<div class="label_wrap">
 					<button class="btn btn-Success dropdown-toggle" type="button" 
@@ -110,23 +117,17 @@
 		// 이메일 검사 정규식
 		var mailJ = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 		// 비밀번호 체크 확인
-		$('#user_pw')
-				.keyup(
-						function() {
+		$('#user_pw').keyup(function() {
 							if (pwJ.test($('#user_pw').val())) {
 								console.log('true');
 								$('#pw_check').text('비밀번호 통과');
 								$('#pw_check').css('color', 'blue');
 							} else {
 								console.log('false');
-								$('#pw_check')
-										.text(
-												'영문/숫자/특수문자 2가지 이상 포함+8자 이상 32자 이하 입력 (공백 제외)');
+								$('#pw_check').text('영문/숫자/특수문자 2가지 이상 포함+8자 이상 32자 이하 입력 (공백 제외)');
 								$('#pw_check').css('color', 'red');
 							}
-
 						});
-
 		$('#user_pw2').keyup(function() {
 			if ($('#user_pw').val() != $(this).val()) {
 				console.log('false');
@@ -137,7 +138,6 @@
 				$('#pw2_check').text('비밀번호 통과');
 				$('#pw2_check').css('color', 'blue');
 			}
-
 		});
 		// 이메일
 		$('#user_email').blur(function() {
@@ -155,6 +155,27 @@
 		let go = document.forms[0];
 		$('#reg_submit').click(
 				function() {
+					var userPwd2 = $('#password').val();
+					var userId2 = $('#email_change').val();
+					var typeVl = {userPwd: userPwd2, userId: userId2};
+					$.ajax({
+						url : "pwdCheck.do",
+						data : typeVl,
+						type : "post",
+						
+						success : function(data){
+							console.log("1 = 일치o / 0 = 불일치x : "+ data);
+							if (data == 1) {
+								inval_Arr[1] = true;
+							} else {
+								inval_Arr[1] = false;
+									$('#checkPwd').text('현재 비밀번호가 틀렸습니다');
+									$('#checkPwd').css('color', 'red');	
+							}
+						}, error : function () {
+									console.log("실패");
+						}
+					});
 					// 비밀번호가 같은 경우 && 비밀번호 정규식
 					if (($('#user_pw').val() == ($('#user_pw2').val()))
 							&& pwJ.test($('#user_pw').val())) {

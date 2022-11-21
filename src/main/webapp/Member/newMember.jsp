@@ -5,18 +5,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회원가입</title>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 <script
-	src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+	src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+<%-- <%@ include file="../Common/header.jspf"%> --%>
 	<div class="container">
 
 		<div class="row">
@@ -32,20 +34,29 @@
 					<div>
 						<p class="">나의 온라인 사수, 인프런</p>
 					</div>
-					<div class="mx-auto" style="width: 19%;">
-						<form>
+					<div class="mx-auto" style="width: 25%;">
+						<form action="insertUser.do" method="get">
 							<div>
 								<label for="user_email" style="float: left;">이메일</label>
 								<div>
-									<input id="user_email" type="email" name="email" class="w-100"
+									<input type="email" id="user_email" name="userId" class="w-100"
 										placeholder="example@inflab.com" required>
 								</div>
 								<div class="" id="email_check"></div>
+								<div class="input-group-addon">
+									<button type="button" class="btn btn-primary" id="mail-Check-Btn">이메일인증</button>
+								</div>
+								<div class="mail-check-box">
+									<input class="form-control mail-check-input" placeholder="인증번호를 입력해주세요!" disabled="disabled" maxlength="6">
+								</div>
+								<div>
+									<span id="mail-check-warn"></span>
+								</div>
 							</div>
 							<div class="">
 								<label for="user_pw" style="float: left;">비밀번호</label>
 								<div>
-									<input id="user_pw" name="pwd" class="w-100" type="password"
+									<input id="user_pw" name="userPwd" class="w-100" type="password"
 										placeholder="******" required>
 								</div>
 								<div class="" id="pw_check"></div>
@@ -63,7 +74,7 @@
 							<div class="">
 								<label for="user_birth" style="float: left;">생년월일</label>
 								<div>
-									<input id="user_birth" name="birth" class="w-100" type="text"
+									<input id="user_birth" name="userBirth" class="w-100" type="text"
 										placeholder="19990101" required>
 								</div>
 								<div id="birth_check"></div>
@@ -124,6 +135,43 @@
 	<hr>
 	<hr>
 	<script>
+		$('#mail-Check-Btn').click(function() {
+			const email = $('#user_email').val(); // 이메일 주소값 얻어오기!
+			console.log('완성된 이메일 : ' + email); // 이메일 오는지 확인
+			const checkInput = $('.mail-check-input') // 인증번호 입력하는곳 
+			console.log('여기까진 오죠?');
+			$.ajax({
+				type : 'get',
+				url : '<c:url value ="/Member/mailCheck.do?email="/>'+email, // GET방식이라 Url 뒤에 email을 뭍힐수있다.
+				success : function (data) {
+					console.log("data : " +  data);
+					checkInput.attr('disabled',false);
+					code =data;
+					alert('인증번호가 전송되었습니다.')
+				}		
+			}); // end ajax
+		}); // end send eamil
+		
+		// 인증번호 비교 
+		// blur -> focus가 벗어나는 경우 발생
+		$('.mail-check-input').blur(function () {
+			const inputCode = $(this).val();
+			const $resultMsg = $('#mail-check-warn');
+			
+			if(inputCode === code){
+				$resultMsg.html('인증번호가 일치합니다.');
+				$resultMsg.css('color','green');
+				$('#mail-Check-Btn').attr('disabled',true);
+				$('#userEamil1').attr('readonly',true);
+				$('#userEamil2').attr('readonly',true);
+				$('#userEmail2').attr('onFocus', 'this.initialSelect = this.selectedIndex');
+		         $('#userEmail2').attr('onChange', 'this.selectedIndex = this.initialSelect');
+			}else{
+				$resultMsg.html('인증번호가 불일치 합니다. 다시 확인해주세요!.');
+				$resultMsg.css('color','red');
+			}
+		});
+		
 		//모든 공백 체크 정규식
 		var empJ = /\s/g;
 		//아이디 정규식
@@ -165,7 +213,7 @@
 		// 이메일
 		$('#user_email').keyup(function() {
 			if (mailJ.test($(this).val())) {
-				console.log(nameJ.test($(this).val()));
+				console.log(mailJ.test($(this).val()));
 				$("#email_check").text('');
 			} else {
 				$('#email_check').text('이메일을 확인해주세요 :)');
@@ -247,7 +295,7 @@
 					}
 					// 이메일 정규식
 					if (mailJ.test($('#user_email').val())) {
-						console.log(phoneJ.test($('#user_email').val()));
+						console.log(mailJ.test($('#user_email').val()));
 						inval_Arr[1] = true;
 					} else {
 						inval_Arr[1] = false;
