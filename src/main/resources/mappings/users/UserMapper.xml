@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userDAO">
+
+	<select id="getUser" parameterType="userVO"
+		resultType="userVO">
+		SELECT * FROM USERS WHERE ID = #{userId} AND PASSWORD = #{userPwd}
+	</select>
+	
+	<select id="insertUser" parameterType="userVO">
+		INSERT INTO USERS VALUES(#{userId}, '관리자', '홍길동', #{userBirth}, #{userPwd}, SYSDATE,0)
+	</select>
+	
+	<select id="getUser" parameterType="userVO"
+		resultType="userVO">
+		SELECT * FROM USERS WHERE ID = #{userId} AND PASSWORD = #{userPwd}
+	</select>
+	
+</mapper>
+
+
+
+
+
+
