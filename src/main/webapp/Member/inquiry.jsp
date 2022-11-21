@@ -26,7 +26,7 @@
 <div class="container mt-3">
     <h2>조회</h2>
     <div class="pb-2">
-        <button type="button" class="btn btn-primary" onclick="location.href='loginModal.jsp'">로그인 이동</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='index.jsp'">로그인 이동</button>
     </div>
     <div class="pb-3">
         <ul class="border nav p-1">
