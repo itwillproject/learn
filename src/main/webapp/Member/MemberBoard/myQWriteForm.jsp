@@ -48,6 +48,12 @@
 				}
 			});
 		}
+		
+		function registBoard(){
+			alert();
+			submit();
+		}
+		
 	</script>
 
 </head>
@@ -63,22 +69,8 @@
 			
 			<div class="col-sm-6 align-content-center">
 				
-				<!-- 섹션 선택 -->
-                <div class="flex-row w-100">
-                    <nav class="navbar navbar-expand-sm navbar-light w-100">
-                        <ul class="navbar-nav gray-botton w-100" style="border-bottom: 1px solid green;">
-                            <li class="nav-item active green-line">
-                            <a class="nav-link" href="#">질문</a>
-                            </li>
-                            <li class="nav-item">
-                            <a class="nav-link" href="#">자유주제</a>
-                            </li>
-                        </ul>
-                    </nav>                        
-                </div>
-
                 <div class="d-flex flex-row p-3 writeComments">
-                	<form action="${pageContext.request.contextPath}/board/qnaWrite.do" method="post" class="w-100">
+                	<form action="${pageContext.request.contextPath}/memberBoard/qnaWriteForm.do" method="post" class="w-100">
                     <table class="table table-borderless">
                         <thead>
                             <tr>
@@ -87,19 +79,16 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><textarea class="w-100 mx-auto" id="summernote" name="editordata" placeholder="학습과 관련된 질문을 남겨주세요"></textarea></td>
+                                <td><textarea class="w-100 mx-auto" id="summernote" name="qnaContent" placeholder="학습과 관련된 질문을 남겨주세요"></textarea></td>
                             </tr>
                             <tr>
                                 <td class="d-flex flex-row justify-content-end">
-                                    <button class="btn btn-success mr-3">등록</button>
+                                    <button class="btn btn-success mr-3" onclick="registBoard()">등록</button>
                                     <button class="btn btn-light mr-3">취소</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    </form>
-
-                    <form method="post">
                     </form>
                 </div>
 			</div>	

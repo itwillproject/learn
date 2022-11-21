@@ -8,14 +8,14 @@
 		<if test="qboardNo != null">
 		INSERT INTO QUESTION_BOARD
 		 (QBOARD_NO,LECTURE_NO,USER_ID,GRADE,CATEGORY_NAME,BOARD_TITLE,BOARD_CONTENT,BOARD_FILE)
-		VALUES ((SELECT NVL(MAX(QBOARD_NO),0) + 1 FROM BOARD), #{lectureNo},
+		VALUES ((SELECT NVL(MAX(QBOARD_NO),0) + 1 FROM QUESTION_BOARD), #{lectureNo},
 		 #{userId}, #{grade}, #{categoryName}, #{boardTitle}, #{boardContent}, #{boardFile})
 		</if>
 		
 		<if test="qboardNo == null">
 		INSERT INTO FREE_BOARD
 		 (FBOARD_NO,USER_ID,GRADE,BOARD_TITLE,BOARD_CONTENT,BOARD_FILE)
-		VALUES ((SELECT NVL(MAX(FBOARD_NO),0) + 1 FROM BOARD), #{userId},
+		VALUES ((SELECT NVL(MAX(FBOARD_NO),0) + 1 FROM FREE_BOARD), #{userId},
 		 #{grade}, #{boardTitle}, #{boardContent}, #{boardFile})
 		</if>
 	</insert>
@@ -64,8 +64,8 @@
 		<if test="qboardNo == null">
 			SELECT * FROM FREE_BOARD
 		</if>
-		WHERE CONTENT BOARD_TITLE '%'|| #{SearchKeyword} ||'%'
-		OR CONTENT BOARD_CONTENT '%'|| #{SearchKeyword} ||'%'
+		WHERE BOARD_TITLE LIKE '%'|| #{searchKeyword} ||'%'
+		OR BOARD_CONTENT LIKE '%'|| #{searchKeyword} ||'%'
 		ORDER BY BOARD_REGDATE DESC
 	</select>
 
