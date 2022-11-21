@@ -71,15 +71,20 @@
     </div>
     </div>
     </li>
-    
+ <li>
 <button type="button" class="btn" >
       <input type="text" id="search">
     </button>
-    
+</li>    
+<li>
       <button type="button" class="btn">로그인</button> &nbsp;
+</li>
+<li>
     <button type="button" class="btn btn-outline-danger">회원가입</button>&nbsp;
+    </li>
+    <li>
 <button type="button" class="btn">지식 공유참여</button>
-
+</li>
 
 
 </ul>
