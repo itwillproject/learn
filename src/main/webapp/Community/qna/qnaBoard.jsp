@@ -135,7 +135,7 @@
 				</div>
 			</div>
 
-			<div class="row w-100 ml-5">
+			<div class="row w-100 mx-auto">
 				<form method="post">
 					<div class="summernote">summernote 1</div>
 
