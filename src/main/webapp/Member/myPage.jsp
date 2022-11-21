@@ -159,7 +159,7 @@
 					var userId2 = $('#email_change').val();
 					var typeVl = {userPwd: userPwd2, userId: userId2};
 					$.ajax({
-						url : "insertPwdCheck.do",
+						url : "pwdCheck.do",
 						data : typeVl,
 						type : "post",
 						
