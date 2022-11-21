@@ -54,7 +54,7 @@
       커뮤니티
     </button>
     <div class="dropdown-menu">
-      <a class="dropdown-item" href="${pageContext.request.contextPath}/Community/qnaBoardList.jsp">질문 & 답변</a>
+      <a class="dropdown-item" href="${pageContext.request.contextPath}/board/getQnaBoardList.do">질문 & 답변</a>
       <a class="dropdown-item" href="#">자유주제</a>
     </div>
     </div>
@@ -139,5 +139,3 @@
 
 
     </header>
-
-</html>
