@@ -25,8 +25,8 @@ $(function(){
 		
 		if (time < 0) {
 			clearInterval(x);
-			//$("input[name=verifyNo]").attr("disabled", true);
-			//$(".timer").text("인증 시간이 만료되었습니다. 다시 인증 요청을 진행해 주세요.");
+			$("input[name=verifyNo]").attr("disabled", true);
+			$(".timer").text("인증 시간이 만료되었습니다. 다시 인증 요청을 진행해 주세요.");
 			$("input[name=text]").attr("disabled", true);
 			$(".timer").text("인증 시간이 만료되었습니다. 다시 이메일 입력부터 진행해 주세요.");
 		}

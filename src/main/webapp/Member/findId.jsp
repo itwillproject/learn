@@ -26,7 +26,7 @@
 	  
 	    console.log(JSON.stringify(findId));
 		
-	    $.ajax("/user/findUserIdList.do", {
+	    $.ajax("${pageContext.request.contextPath }/member/findUserIdList.do", {
 	        type : "post",
 	        data : JSON.stringify(findId),
 	        contentType : "application/json",
@@ -38,34 +38,33 @@
 	            let dispHtml = "";
 	            
 	            if (data.length == 0) {
-	            	dispHtml = '<h3>아이디(이메일) 찾기</h3>';
-	            	dispHtml = '<p>인증한 휴대폰 번호로 가입된 계정입니다.</p>';
-	            	dispHtml = '<div class="w-100 p-3 mx-auto">';
-	            	dispHtml = '<p>해당 정보로 조회되는<br>사용자가 없습니다.</p>';
-	            	dispHtml = '<input type="button" class="btn-block btn btn-success my-2" value="확인"';
-	            	dispHtml = 'onclick="location.href='findId.jsp'">';
+	            	alert("${pageContext.request.contextPath }/Member/login.jsp");
+	            	dispHtml += '<h3>아이디(이메일) 찾기</h3>';
+	            	dispHtml += '<p>인증한 휴대폰 번호로 가입된 계정입니다.</p>';
+	            	dispHtml += '<div class="w-100 p-3 mx-auto">';
+	            	dispHtml += '<p>해당 정보로 조회되는<br>사용자가 없습니다.</p>';
+	            	dispHtml += '<input type="button" class="btn-block btn btn-success my-2" value="아이디 찾기"';
+	            	dispHtml += 'onclick="location.href=\'${pageContext.request.contextPath }/Member/findId.jsp\';">';
     							//inflearn 확인 버튼 클릭시 아이디 찾기 화면으로 이동
-	            	dispHtml = '</div>';
+	            	dispHtml += '</div>';
 	            } else {
-		           	dispHtml = '<h3>아이디(이메일) 찾기</h3>';
-		           	dispHtml = '<p>인증한 휴대폰 번호로 가입된 계정입니다.</p>';
-		           	dispHtml = '<div class="w-100 p-3 mx-auto">';
-		           	dispHtml = '<p class="text-left">아이디(이메일)</p>';
-		           	dispHtml = '<ul class="find-account nav">';
-		           	dispHtml = '<li class="text-left nav-item float-left">';
-		           	dispHtml = '<img src="${pageContext.request.contextPath }/resources/img/findAccount/inflean.png" alt="inflean" width="10%">';
-		           	dispHtml = '<img src="${pageContext.request.contextPath }/resources/img/findAccount/KakaoTalk_logo.png" alt="inflean" width="10%">';
-		           	dispHtml = '</li>';
-		           	dispHtml = '</ul>';
-	            	dispHtml = '<p class="float-clear"></p>';
-		            $.each(data, function(index, obj)){	
-		            	console.log(data);
-		            	dispHtml = '<p class="text-left">'+data+'</p>';
-		            }	            	
-	            	dispHtml = '<input type="button" class="btn-block btn btn-success px-5" value="로그인"';
-	            	dispHtml = 'onclick="location.href="'+${pageContext.request.contextPath }+'/Member/login.jsp"; return false;">';
+		           	dispHtml += '<h3>아이디(이메일) 찾기</h3>';
+		           	dispHtml += '<p>인증한 휴대폰 번호로 가입된 계정입니다.</p>';
+		           	dispHtml += '<div class="w-100 p-3 mx-auto">';
+		           	dispHtml += '<p class="text-left">아이디(이메일)</p>';
+	            	dispHtml += '<p class="float-clear"></p>';
+		            $.each(data, function(index, obj){	
+			           	dispHtml += '<p class="text-left">';
+			           	dispHtml += '<img src="${pageContext.request.contextPath }/picture/findAccount/inflean.png" alt="inflean" width="20px">';
+			           	dispHtml += '<img src="${pageContext.request.contextPath }/picture/findAccount/KakaoTalk_logo.png" alt="inflean" width="20px"></p>';
+			           	dispHtml += '</p>';
+		            	dispHtml += '<p class="text-left">'+obj+'</p>';
+		            })	            	
+	            	dispHtml += '<input type="button" class="btn-block btn btn-success px-5" value="로그인"';
+	            	dispHtml += 'onclick="location.href=\'${pageContext.request.contextPath }/Member/login.jsp\';">';
+	            	
 	            	//인프런에서는 모달창 아닌 로그인 페이지로 이동 일단.. 메인 페이지로 이동
-		           	dispHtml = '</div>';
+		           	dispHtml += '</div>';
 	            }
 	
 	            $("#findSearch").html(dispHtml);
@@ -74,7 +73,7 @@
 	        error: function(){
 	            alert("실패");
 	        }
-	   })
+	   });
 			
 
 	}
@@ -85,7 +84,6 @@
 	<div class="d-flex align-items-center mx-auto text-center h-100">
 		<div id="findSearch" class="mx-auto">
 			<h3>아이디(이메일) 찾기</h3>
-			<img src="${pageContext.request.contextPath }/resources/img/findAccount/KakaoTalk_logo.png" alt="inflean" width="10%">
 			<p>
 				계정에 등록된 이름과 생년월일을 입력해 주시면 <br>
 				사용중인 계정의 이메일 주소를 알려드립니다.
