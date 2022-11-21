@@ -15,5 +15,6 @@ public interface UserService {
 	List<String> findUserIdList(UserVO user);
 	String findUserId(UserVO user);
 
+	UserVO confirmUser(UserVO vo);
 	
 }

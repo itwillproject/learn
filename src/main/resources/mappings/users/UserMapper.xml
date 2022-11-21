@@ -33,6 +33,11 @@
 	SELECT * FROM USERS
 	WHERE USER_ID = #{userId}
 </select>
+
+	<select id="confirmUser" parameterType="userVO" resultType="userVO">
+		SELECT * FROM USERS WHERE SOCIAL_TOKEN = #{socialToken}
+	</select>
+
 </mapper>
 
 
