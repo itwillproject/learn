@@ -25,6 +25,15 @@ public class UserServiceImpl implements UserService {
 		userDAO.insertUser(vo);
 	}
 
+	@Override
+	public int getUserId(UserVO vo) {
+		return userDAO.getUserId(vo);
+	}
+
+	@Override
+	public int modifyUser(UserVO vo) {
+		return userDAO.modifyUser(vo);
+	}
 	
 	@Override
 	public List<String> findUserIdList(UserVO user) {
@@ -35,6 +44,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String findUserId(UserVO user) {
 		return userDAO.findUserId(user);
+
 	}
 
 }
