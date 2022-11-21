@@ -1,5 +1,7 @@
 package com.spring.learn.user.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,33 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void insertUser(UserVO vo) {
 		userDAO.insertUser(vo);
+	}
+
+	@Override
+	public int getUserId(UserVO vo) {
+		return userDAO.getUserId(vo);
+	}
+
+	@Override
+	public int modifyUser(UserVO vo) {
+		return userDAO.modifyUser(vo);
+	}
+	
+	@Override
+	public List<String> findUserIdList(UserVO user) {
+		return userDAO.findUserIdList(user);
+	}
+
+
+	@Override
+	public String findUserId(UserVO user) {
+		return userDAO.findUserId(user);
+
+	}
+
+	@Override
+	public UserVO confirmUser(UserVO vo) {
+		return userDAO.confirmUser(vo);
 	}
 
 }
