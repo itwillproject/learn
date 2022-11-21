@@ -11,8 +11,9 @@
 
 <div class="container">
 <br>
-<div style="background-color: #11264f" class="text-white">
 
+<div>
+<img src="../picture/desk.jpg" alt="desk" width="50%" height="50%">
 <h2>나의 지식에 가치를 부여하세요</h2>
 
 <p>
@@ -23,11 +24,11 @@
 
 	<button class="btn btn-success">지식공유자 참여하기</button>
  <nav>
-              <a href='#' target='_blank' class="text-white">지식공유자 안내서</a> |
-              <a href='#' target='_blank' class="text-white">강의제작 튜토리얼</a>
+              <a href='#' target='_blank' >지식공유자 안내서</a> |
+              <a href='#' target='_blank' >강의제작 튜토리얼</a>
              
           </nav>
-          </div>
+</div>
 <br>
 
 <img src="/learn/resources/img/lecture/lecturedata1.png" alt="수익 회원수 누적 수강생">
