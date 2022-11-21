@@ -47,7 +47,7 @@
 									<button type="button" class="btn btn-primary" id="mail-Check-Btn">이메일인증</button>
 								</div>
 								<div class="mail-check-box">
-									<input class="w-100" placeholder="인증번호를 입력해주세요!" disabled="disabled" maxlength="6">
+									<input class="form-control mail-check-input" placeholder="인증번호를 입력해주세요!" disabled="disabled" maxlength="6">
 								</div>
 								<div>
 									<span id="mail-check-warn"></span>

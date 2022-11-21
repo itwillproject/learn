@@ -6,16 +6,11 @@
 
 	<select id="getUser" parameterType="userVO"
 		resultType="userVO">
-		SELECT * FROM USERS WHERE ID = #{userId} AND PASSWORD = #{userPwd}
+		SELECT * FROM USERS WHERE USER_ID = #{userId} AND USER_PWD = #{userPwd}
 	</select>
 	
 	<select id="insertUser" parameterType="userVO">
 		INSERT INTO USERS VALUES(#{userId}, '관리자', '홍길동', #{userBirth}, #{userPwd}, SYSDATE,0)
-	</select>
-	
-	<select id="getUser" parameterType="userVO"
-		resultType="userVO">
-		SELECT * FROM USERS WHERE ID = #{userId} AND PASSWORD = #{userPwd}
 	</select>
 	
 </mapper>

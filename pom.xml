@@ -14,7 +14,7 @@
 			<org.slf4j-version>1.6.6</org.slf4j-version>
 		</properties>
 		<dependencies>
-<<<<<<< HEAD
+
 			<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
 			<dependency>
 			    <groupId>javax.mail</groupId>
@@ -28,8 +28,7 @@
 			    <artifactId>spring-context-support</artifactId>
 			    <version>${org.springframework-version}</version>
 			</dependency>
-=======
->>>>>>> branch 'main' of https://github.com/Creamfather/learn.git
+
 			<!-- 스프링-마이바티스 연동 라이브러리 설정(시작) -->
 			<dependency>
 				<groupId>org.mybatis</groupId>
@@ -223,8 +222,6 @@
 				</plugin>
 			</plugins>
 		</build>
-<<<<<<< HEAD
+
 	</project>
-=======
-	</project>
->>>>>>> branch 'main' of https://github.com/Creamfather/learn.git
+

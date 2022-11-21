@@ -1,7 +1,5 @@
 package com.spring.learn.view;
 
-<<<<<<< HEAD
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;

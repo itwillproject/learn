@@ -11,25 +11,8 @@
 	</settings>
   
 	<typeAliases>
-<<<<<<< HEAD
 		<typeAlias alias="userVO" type="com.spring.learn.user.UserVO"/>
-=======
-		<typeAlias alias="user" type="com.spring.learn.user.UserVO"/>
->>>>>>> branch 'main' of https://github.com/Creamfather/learn.git
 	</typeAliases>
-	
-	  <!-- applicationContext.xml 에서 dataSource 설정 사용으로 대체  -->
-	  <environments default="development">
-	    <environment id="development">
-	      <transactionManager type="JDBC"/>
-	      <dataSource type="POOLED">
-	        <property name="driver" value="oracle.jdbc.OracleDriver"/>
-	        <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
-	        <property name="username" value="learn"/>
-	        <property name="password" value="pw"/>
-	      </dataSource>
-	    </environment>
-	  </environments>
 	
 	
 </configuration>
