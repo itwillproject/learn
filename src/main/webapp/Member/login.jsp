@@ -14,9 +14,11 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 </head>
 <body>
 <div class="container mt-3">
+    <%@include file="/Common/header.jsp" %>
     <div style="width: 450px;margin:auto">
         <div class="text-center">
             <h5>로그인</h5>
@@ -37,12 +39,26 @@
             간편 로그인
         </div>
         <div class="text-center">
-            <img style="width: 40px; height: 40px; background-color: #fae500;" src="https://www.cellbiodx.com/Content/img/svg/kakaotalk.svg"/>
-            <a href="${google_url}" style="width: 40px; height: 40px; background-color: #f8f8f8;">
-                <img style="margin:10px; width: 20px; height: 20px; background-color: #f8f8f8;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/24px-Google_%22G%22_Logo.svg.png?20210618182606"/>
-            </a>
+            <span id="naverIdLogin">
+                <img style="width: 40px; height: 40px;" src="${pageContext.request.contextPath }/picture/btnG_icon_square.png"/>
+            </span>
+            <script type="text/javascript">
+              var naverLogin = new naver.LoginWithNaverId(
+                  {
+                    clientId: "vkx131bLLt6ehxKoqXiH",
+                    callbackUrl: "http://localhost:8080/Member/naverLogin.jsp",
+                    isPopup: false,
+                    loginButton: {color: "green", type: 1, height: 40}
+                  }
+              );
+              naverLogin.init();
+            </script>
+            <span style="display:inline-block;width: 40px; height: 40px; background-color: #f8f8f8; border-radius: 5px">
+                <img style="margin:10px; width: 20px; height: 20px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/24px-Google_%22G%22_Logo.svg.png?20210618182606"/>
+            </span>
         </div>
     </div>
+    <%@include file="/Common/footer.jsp" %>
 </div>
 </body>
 </html>
