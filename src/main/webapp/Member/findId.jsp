@@ -60,7 +60,7 @@
 					abc***@gmail.com
 				</p>
 				<input type="button" class="btn-block btn btn-success px-5" value="로그인"
-					onclick="location.href='${pageContext.request.contextPath }/Member/login.jsp';">
+					onclick="location.href='loginModal.jsp';">
 			</div>
 		</div>
 	</div>	

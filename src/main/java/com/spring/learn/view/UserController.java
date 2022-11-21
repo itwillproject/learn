@@ -5,7 +5,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -49,7 +48,7 @@ public class UserController {
       return "redirect:/board/getBoardList.do";
     } else {
       System.out.println(">> 로그인 실패~~~");
-      return "redirect:/Member/login.do";
+      return "loginModal.jsp";
     }
   }
 
@@ -60,19 +59,17 @@ public class UserController {
    */
   //@RequestMapping(value = "/login.do", method = RequestMethod.GET)
   @GetMapping("/login.do") // 4.3버전 부터 사용가능
-  public String loginView(@ModelAttribute("user") UserVO vo) {
+  public String loginView() {
     System.out.println(">>> 로그인 화면 이동 - loginView()");
-    vo.setUserId("test");
-    vo.setUserPwd("test");
 
-    return "Member/login";
+    return "loginModal.jsp";
   }
 
   @RequestMapping("/logout.do")
   public String logout(HttpSession session) {
     System.out.println(">> 로그아웃 처리");
     session.invalidate();
-    return "Member/login";
+    return "loginModal.jsp";
   }
 
 }
