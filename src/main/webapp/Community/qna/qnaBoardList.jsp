@@ -15,7 +15,7 @@
 <body>
 	
 	<%@include file="/Common/header.jsp" %>
-	<%@include file="/Community/tape.jsp" %>
+	<%@include file="/Community/qna/qnaTape.jsp" %>
 
 	<div class="container-fluid">
 		<div class="row justify-content-center">

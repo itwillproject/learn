@@ -12,7 +12,8 @@
   
 	<typeAliases>
 		<typeAlias alias="userVO" type="com.spring.learn.user.UserVO"/>
+		<typeAlias alias="board" type="com.spring.learn.board.BoardVO"/>
 	</typeAliases>
-	
+			
 	
 </configuration>
