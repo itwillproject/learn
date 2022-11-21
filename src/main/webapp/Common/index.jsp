@@ -12,5 +12,8 @@
 <h2>메인페이지</h2>
  <br>
  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+ 
+ <a href="../Community/sample.jsp" alt="무">버튼</a>
+ 
 <%@include file ="/Common/footer.jsp"%>
 </html>

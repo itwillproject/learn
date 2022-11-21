@@ -72,7 +72,7 @@ public class UserController {
 		
 		int cnt = userService.getUserId(vo);
 		System.out.println("cnt : " + cnt);
-
+		
 		return cnt;
 	}
 	
@@ -122,4 +122,8 @@ public class UserController {
 		return "login.jsp";
 	}
 
+
+  
+
+	
 }

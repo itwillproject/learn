@@ -1,5 +1,7 @@
 package com.spring.learn.user.impl;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -35,6 +37,15 @@ public class UserDAO {
 	public int modifyUser(UserVO vo) {
 		System.out.println("===> Mybatis 사용 modifyUser() 실행");
 		return mybatis.update("userDAO.modifyUser", vo);
+	}
+	
+	
+	public List<String> findUserIdList(UserVO user) {
+		return mybatis.selectList("userDAO.findUserIdList", user);
+	}
+	
+	public String findUserId(UserVO user) {
+		return mybatis.selectOne("userDAO.findUserId", user);
 	}
 	
 

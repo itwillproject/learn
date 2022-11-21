@@ -20,8 +20,3 @@
 		<property name="maxUploadSize" value="10000000"/> <!-- 최대 등록 사이즈 10메가 -->
 	</bean>
 </beans>
-	
-
-	
-
-

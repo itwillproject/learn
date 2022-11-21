@@ -21,6 +21,18 @@
 		UPDATE USERS SET USER_PWD = #{userPwd}, USER_NAME = #{userName} WHERE USER_ID = #{userId}
 	</select>
 	
+	<select id="findUserIdList" parameterType="com.spring.learn.user.UserVO"
+		resultType="string">
+		SELECT * FROM USERS
+		WHERE USER_NAME = #{userName} AND USER_BIRTH = #{userBirth}
+	</select>
+
+
+<select id="findUserId" parameterType="com.spring.learn.user.UserVO"
+	resultType="string">
+	SELECT * FROM USERS
+	WHERE USER_ID = #{userId}
+</select>
 </mapper>
 
 

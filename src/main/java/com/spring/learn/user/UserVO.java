@@ -66,8 +66,5 @@ public class UserVO {
 				+ ", userBirth=" + userBirth + ", socialType=" + socialType + ", socialToken=" + socialToken
 				+ ", points=" + points + ", userRegdate=" + userRegdate + "]";
 	}
-	
-	
-	
-	
 }
+	
