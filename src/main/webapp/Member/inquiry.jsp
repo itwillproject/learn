@@ -4,7 +4,7 @@
     <title>로그인</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
     <style>
@@ -26,7 +26,7 @@
 <div class="container mt-3">
     <h2>조회</h2>
     <div class="pb-2">
-        <button type="button" class="btn btn-primary" onclick="location.href='login.jsp'">로그인 이동</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='loginModal.jsp'">로그인 이동</button>
     </div>
     <div class="pb-3">
         <ul class="border nav p-1">
