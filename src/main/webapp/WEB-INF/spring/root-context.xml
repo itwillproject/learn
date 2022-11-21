@@ -11,9 +11,8 @@
  	<!-- base-package 설정위치 포함 하위 패키지 모두 검색 처리
  		구분자 사용 나열 (빈칸, 콤마, 세미콜론 등으로)-->
 	<context:component-scan base-package="com.spring.learn" />
-	
-	
 	<context:component-scan base-package="com.spring.learn.user"/>
+	<context:component-scan base-package="com.spring.learn.board"/>
 
 	<!-- Spring JDBC 관련 설정 -->
 	<!-- DataSource 설정 -->
@@ -33,10 +32,14 @@
 	    <property name="dataSource" ref="dataSource" />
 	    <property name="mapperLocations" value="classpath:mappings/**/*Mapper.xml"></property>
 	</bean>
+	
 
 	<bean class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
+	
+	<!-- Mapper 인터페이스 사용 방식 -->
+	<mybatis-spring:scan base-package="com.spring.learn.**.impl"/>
 
 	<!-- <context:property-placeholder location="classpath:/db-config/email.properties" /> -->
 		<!-- 이메일 인증 관련 빈 등록 -->

@@ -7,12 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.spring.learn.board.BoardService;
 import com.spring.learn.board.BoardVO;
-import com.spring.learn.user.UserService;
-import com.spring.learn.user.UserVO;
 
 // UserService
 @Service("boardService")
 public class BoardServiceImpl implements BoardService {
+	
 	@Autowired
 	private BoardDAO boardDAO;
 
