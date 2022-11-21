@@ -22,7 +22,9 @@
 		var findId = {};
 		findId.userId = frm.userId.value;
 		
-		$.ajax("/user/findPassword.do", {
+		console.log(JSON.stringify(findId));
+		
+		$.ajax("${pageContext.request.contextPath }/member/findPassword.do", {
 	        type : "post",
 	        data : JSON.stringify(findId),
 	        contentType : "application/json",
@@ -47,12 +49,12 @@
 	            	dispHtml += '이메일 인증을 통해 비밀번호 변경 화면으로 이동 가능합니다. <br>';
 	            	dispHtml += '(몇 분 내로 확인되지 않으면 스팸 폴더를 확인해 주세요)';
 	            	dispHtml += '</p>';
-	            	dispHtml += '<div class="w-75 p-3 border border-primary mx-auto">';
+	            	dispHtml += '<div class="w-75 p-3 mx-auto">';
 	            	dispHtml += '<form>';
 	            	dispHtml += '<input type="text" name="verifyNo" class="form-control w-50 d-inline" placeholder="인증번호: ">';
 	            	dispHtml += '<input type="button" class="m-3 btn btn-outline-secondary" value="인증요청" onclick="check_verify(this.form)">';
 	            	dispHtml += '<br>';
-	            	dispHtml += '<small class="timer text-danger"></small>';
+	            	dispHtml += '<p class="text-left ml-1"><small class="timer text-danger"></small></p>';
 	            	dispHtml += '<br>';
 	            	dispHtml += '<small class="invalid"></small>';
 	            	dispHtml += '</form>';
@@ -60,7 +62,32 @@
 	            	
 	            }
 	            	
-	            $("#findForm").html(dispHtml);
+	            $("#verifyForm").html(dispHtml);
+	            
+	            
+	        	$(function(){
+	        		var time = 30; // 기준 시간 테스트용 30 초
+	        		var min = ""; //분
+	        		var sec = "";
+	        		
+	        		var x = setInterval(function(){
+	        			min = parseInt(time/60);
+	        			sec = time%60;
+	        			
+	        			$(".timer").text(min + "분" + sec + "초");
+	        			time--;
+	        			
+	        			if (time < 0) {
+	        				clearInterval(x);
+	        				$("input[name=verifyNo]").attr("disabled", true);
+	        				$(".timer").text("인증 시간이 만료되었습니다. 다시 이메일 입력부터 진행해 주세요.");
+	        			}
+	        			
+	        		}, 1000);
+
+	        	});
+
+	            
 
 	        },
 	        error: function(){
@@ -71,10 +98,15 @@
 	
 	function check_verify(frm) {
 		//메일 전송 후 해당 인증 번호도 전달받아 체크
-		var verifyNo = frm.verifyNo.value;
-		$.ajax("findUserId.do", {
+	
+		var checkNO = {};
+		findId.userId = frm.verifyNo.value;
+		
+		console.log(JSON.stringify(checkNO));
+		
+		$.ajax("${pageContext.request.contextPath }/member/checkVerifyNO.do", {
 	        type : "post",
-	        data : JSON.stringify(findId),
+	        data : JSON.stringify(checkNO),
 	        contentType : "application/json",
 	        dataType: "json",
 	        success : function(data){
@@ -104,7 +136,7 @@
 <body>
 <div class="container h-100 text-center">
 
-	<div class="d-flex align-items-center mx-auto text-center h-100">
+	<div class="d-flex align-items-center mx-auto text-center h-50">
 		<div id="findForm" class="mx-auto">
 			<h3 class="h3-bold">비밀번호 재설정</h3>
 			<p>
@@ -114,13 +146,14 @@
 			<div class="w-75 p-3 mx-auto">
 				<form action="ajaxSendPassword" method="post" class="form-group">
 					<input type="text" name="userId" class="form-control my-2" placeholder="example@gmail.com"> 
-					<input type="button" class="btn-block btn btn-success my-2" value="인증번호 전송" onclick="go_verify(this.form)">
 					<small id="caption" class="invalid"></small>
+					<input type="button" class="btn-block btn btn-success my-2" value="인증번호 전송" onclick="go_verify(this.form)">
 				</form>
+				<div id="verifyForm" class="mx-auto">
+				</div>
 			</div>
 		</div>
 	</div>
-	
 	
 
 
