@@ -6,6 +6,8 @@ public interface BoardService {
 	void insertBoard(BoardVO vo);
 	void updateBoard(BoardVO vo);
 	void deleteBoard(BoardVO vo);
-	BoardVO getBoard(BoardVO vo); // 1°³ÀÇ µ¥ÀÌÅÍ Á¶È¸
-	List<BoardVO> getBoardList(BoardVO vo); // ÀüÃ¼±Û Á¶È¸
+	BoardVO getBoard(BoardVO vo); // 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸
+	List<BoardVO> getBoardList(BoardVO vo); // ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½È¸
+	
+	
 }

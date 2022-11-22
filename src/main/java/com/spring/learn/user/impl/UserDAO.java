@@ -2,6 +2,7 @@ package com.spring.learn.user.impl;
 
 import java.util.List;
 
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -29,15 +30,21 @@ public class UserDAO {
 	}
 	
 	
-	public List<String> findUserIdList(UserVO user) {
+	public List<UserVO> findUserIdList(UserVO user) {
 		return mybatis.selectList("userDAO.findUserIdList", user);
 	}
 	
 	public String findUserId(UserVO user) {
 		return mybatis.selectOne("userDAO.findUserId", user);
 	}
-	
 
+	public void changePwd(UserVO user) {
+		mybatis.update("userDAO.changePwd", user);
+	}
+	
+	public void deleteUser(UserVO user) {
+		mybatis.update("userDAO.deleteUser", user);		
+	}
 }
 
 

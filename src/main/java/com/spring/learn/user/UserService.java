@@ -8,7 +8,12 @@ public interface UserService {
 	void insertUser(UserVO vo);
 	
 	//findUserId
-	List<String> findUserIdList(UserVO user);
+	List<UserVO> findUserIdList(UserVO user);
 	String findUserId(UserVO user);
 	
+	//changePassWord
+	void changePwd(UserVO user);
+	
+	//deleteUser
+	void deleteUser(UserVO user);
 }
