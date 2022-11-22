@@ -8,13 +8,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.spring.learn.board.BoardService;
-import com.spring.learn.board.BoardVO;
 import com.spring.learn.memberboard.MemberBoardService;
 import com.spring.learn.memberboard.MemberBoardVO;
-import com.spring.learn.user.UserVO;
 
 @Controller					// 단 현재 위치(클래스)에서만 유효
 @SessionAttributes("memberBoard") // board라는 이름의 Model객체가 있으면 세션에 저장
@@ -67,5 +65,179 @@ public class MemberBoardController {
 	
 
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//여기서는 이정문꺼
+	@RequestMapping("/cBoardList.do")
+	@ResponseBody
+	public List<MemberBoardVO> cBoardList(MemberBoardVO vo) {
+		System.out.println(">>> 보드리스트 가져오기");		
+		System.out.println("vo : " + vo);
+				
+		List<MemberBoardVO> cBoardList = memberBoardService.getBoardList(vo); // 조회하고
+		System.out.println(cBoardList);
+
+		return cBoardList; // 이동
+	}
+	
+	@RequestMapping("/resolvedCBoardList.do")
+	@ResponseBody
+	public List<MemberBoardVO> resolvedCBoardList(MemberBoardVO vo) {
+		System.out.println(">>> 해결 보드리스트 가져오기");		
+				
+		List<MemberBoardVO> resolvedCBoardList = memberBoardService.resolvedCBoardList(vo); // 조회하고
+		
+
+		return resolvedCBoardList; // 이동
+	}
+	
+	@RequestMapping("/unResolvedCBoardList.do")
+	@ResponseBody
+	public List<MemberBoardVO> unResolvedCBoardList(MemberBoardVO vo) {
+		System.out.println(">>> 미해결 보드리스트 가져오기");		
+				
+		List<MemberBoardVO> unResolvedCBoardList = memberBoardService.unResolvedCBoardList(vo); // 조회하고
+		
+
+		return unResolvedCBoardList; // 이동
+	}
+	
+	@RequestMapping("/callCenterBoardList.do")
+	public String callCenterBoardList(MemberBoardVO vo, Model model) {
+		System.out.println(">>> 콜센터보드 첫 페이징 하기");		
+				
+		List<MemberBoardVO> BoardList = memberBoardService.getBoardList(vo); // 조회하고
+		model.addAttribute("BoardList", BoardList); // 값 저장하고
+		System.out.println(BoardList);
+		return "/Member/inquiry.jsp"; // 이동
+	}
 	
 }

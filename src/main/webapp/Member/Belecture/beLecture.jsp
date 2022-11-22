@@ -34,7 +34,7 @@
 <br>
 
 <div class="image">
-<img src="../picture/desk.jpg" alt="desk" width="100%" height="100%" class="rounded">
+<img src="../../picture/desk.jpg" alt="desk" width="100%" height="100%" class="rounded">
 
 <div class="text">
 <h1>나의 지식에 가치를 부여하세요</h1><br>
@@ -44,16 +44,16 @@
 인프런은 지식으로 의미있는 수익과 공유가 가능한 한국 유일한 플랫폼 입니다.<br>
 </p>
 <br>
-	<button class="btn btn-success" onclick="window.open('belectureform1.jsp', 'form1', 'resizable=no, width=800, height=800, location=no, top=100, left=660, location=no'); return false">지식공유자 참여하기</button>
+	<button class="btn btn-success" onclick="window.open('beLectureform1.jsp', 'form', 'resizable=no, width=800, height=800, location=no, top=100, left=660'); return false">지식공유자 참여하기</button>
 <!--  <a href="#" onclick="window.open('링크할 파일이름.htm','name','resizable=no width=600 height=500');return false">
 <선물보기></a>-->
           </div>
 </div>
 <br>
 
-<img src="../picture/lecturedata1.png" alt="수익 회원수 누적 수강생" width=90%>
+<img src="../../picture/lecturedata1.png" alt="수익 회원수 누적 수강생" width=90%>
 
-<img src="../picture/lecturedata2.png" alt="수익 회원수 누적 수강생" width=40% style="float: right">
+<img src="../../picture/lecturedata2.png" alt="수익 회원수 누적 수강생" width=40% style="float: right">
 <div>
 	<h3>지식공유자를 위한<br>
 높은 정산 비율</h3>
@@ -77,13 +77,13 @@
 
 <div class="row">
       <div class="col-sm-4" >
-		<img src="../picture/img1.png" width="30%">
+		<img src="../../picture/img1.png" width="30%">
       </div>
       <div class="col-sm-4" >
-		<img src="../picture/img2.png" width="30%">
+		<img src="../../picture/img2.png" width="30%">
 	</div>
       <div class="col-sm-4" >
-		<img src="../picture/img3.png" width="30%">
+		<img src="../../picture/img3.png" width="30%">
 	</div>
 </div>
 
@@ -131,13 +131,13 @@
 
 <div class="row">
       <div class="col-sm-4" >
-		<img src="../picture/img4.png" width="30%">
+		<img src="../../picture/img4.png" width="30%">
       </div>
       <div class="col-sm-4" >
-		<img src="../picture/img5.png" width="30%">
+		<img src="../../picture/img5.png" width="30%">
 	</div>
       <div class="col-sm-4" >
-		<img src="../picture/img6.png" width="30%">
+		<img src="../../picture/img6.png" width="30%">
 	</div>
 </div>
 

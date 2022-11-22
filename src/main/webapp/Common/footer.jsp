@@ -14,7 +14,7 @@ html, body {
 }
 
 #wrap {
-  min-height: 20vh;
+/*   min-height: 20vh; */
   position: relative;
   width: 100%; 
   

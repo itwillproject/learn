@@ -8,4 +8,10 @@ public interface MemberBoardService {
 	void deleteBoard(MemberBoardVO vo);
 	MemberBoardVO getBoard(MemberBoardVO vo); // 1개의 데이터 조회
 	List<MemberBoardVO> getBoardList(MemberBoardVO vo); // 전체글 조회
+	List<MemberBoardVO> resolvedCBoardList(MemberBoardVO vo);
+	List<MemberBoardVO> unResolvedCBoardList(MemberBoardVO vo);
+	
+	
+	
+	
 }

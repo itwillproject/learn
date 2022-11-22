@@ -12,9 +12,16 @@ public interface UserService {
 
 	
 	//findUserId
-	List<String> findUserIdList(UserVO user);
+	List<UserVO> findUserIdList(UserVO user);
 	String findUserId(UserVO user);
 
 	UserVO confirmUser(UserVO vo);
 	
+	//changePassWord
+	void changePwd(UserVO user);
+	
+	//deleteUser
+	void deleteUser(UserVO user);
+
+  void addNaverUser(UserVO user);
 }
