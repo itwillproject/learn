@@ -56,14 +56,13 @@ public class UserVO {
 	public void setSocialType(String socialType) {
 		this.socialType = socialType;
 	}
-
 	@Override
 	public String toString() {
 		return "UserVO [userId=" + userId + ", grade=" + grade + ", userName=" + userName + ", userPwd=" + userPwd
 				+ ", userBirth=" + userBirth + ", socialType=" + socialType + ", points=" + points + ", userRegdate="
-				+ userRegdate + "]" + ", userBirth=" + userBirth + ", socialType=" + socialType + ", points=" + points + ", userRegdate=" + userRegdate + "]";
+				+ userRegdate + "]";
 	}
-	
+
 	
 
 }
