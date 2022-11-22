@@ -1,5 +1,5 @@
 <%@ page    pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,8 +8,12 @@
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<<<<<<< HEAD
+	<script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+=======
    <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 
+>>>>>>> e29acca59ff7e87b89c92c423004f45395527cf0
 
 
 
@@ -126,7 +130,7 @@
     <button type="button" class="btn btn-outline-danger" onclick="location.href='newMember.jsp'">회원가입</button>&nbsp;
     </li>
     <li>
-<button type="button" class="btn">지식 공유참여</button>
+<button type="button" class="btn" onclick = "location.href='howtobelecture.jsp'">지식 공유 참여</button>
 </li>
 
 
