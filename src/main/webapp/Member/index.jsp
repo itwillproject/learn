@@ -19,9 +19,14 @@
 		<a href="changePassword.jsp">비밀변호 변경</a>
 		<a href="findId.jsp">아이디 찾기</a>
 		<a href="findPassword.jsp">비밀번호 찾기</a>
+<<<<<<< HEAD
+		<a href="/learn/getNoticeList.do">공지사항</a>
+		<a href="/learn/getFaqList.do">자주묻는질문</a>
+=======
 		<a href="findPassword.jsp">지식 공유 참여</a>
 		
 
+>>>>>>> c53f5f0cb4f46615321e95d7339f606512a1bc17
 	</p>
 	<hr><hr>
 

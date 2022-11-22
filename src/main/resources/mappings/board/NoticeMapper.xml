@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="noticeDAO">
+
+	<select id="getNoticeList" parameterType="noticeVO" resultType="noticeVO">
+		SELECT * FROM NOTICE_BOARD ORDER BY BOARD_NO DESC
+	</select>
+	
+	<select id="getNotice" parameterType="noticeVO" resultType="noticeVO">
+		SELECT * FROM NOTICE_BOARD 
+		WHERE BOARD_NO = #{boardNo} 
+	</select>
+	
+	<update id="updateNoticeHit" parameterType="noticeVO">
+		UPDATE NOTICE_BOARD
+		SET BOARD_HIT = (SELECT NVL(MAX(BOARD_HIT), 1) + 1 FROM NOTICE_BOARD)
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	<select id="listPage" resultType="noticeVO" parameterType="criteria">
+		SELECT *
+		FROM (SELECT ROWNUM R_NUM, B.*
+	        FROM (SELECT *
+	                FROM NOTICE_BOARD
+	                ORDER BY BOARD_NO DESC
+	             ) B 
+	         )
+		WHERE R_NUM BETWEEN #{rowStart} AND #{rowEnd}
+	</select>
+	
+	<select id="listCount" resultType="int">
+	<![CDATA[
+		SELECT COUNT(BOARD_NO)
+		  FROM NOTICE_BOARD
+		 WHERE BOARD_NO > 0
+	]]>
+	</select>
+	
+	<select id="getBoardList_S" parameterType="string" resultType="board">
+		SELECT * 
+		FROM NOTICE_BOARD 
+		WHERE BOARD_CONTENT LIKE '%'|| #{searchKeyword} ||'%' 
+		OR BOARD_TITLE LIKE '%'|| #{searchKeyword} ||'%' 
+		ORDER BY BOARD_NO DESC
+	</select>
+
+</mapper>
+
+
+
+
+
+
