@@ -6,11 +6,10 @@ public interface MemberBoardService {
 	void insertBoard(MemberBoardVO vo);
 	void updateBoard(MemberBoardVO vo);
 	void deleteBoard(MemberBoardVO vo);
-	MemberBoardVO getBoard(MemberBoardVO vo); // 1ê°œì˜ ë°ì´í„° ì¡°íšŒ
-	List<MemberBoardVO> getBoardList(MemberBoardVO vo); // ì „ì²´ê¸€ ì¡°íšŒ
+	MemberBoardVO getBoard(MemberBoardVO vo); // 1°³ÀÇ µ¥ÀÌÅÍ Á¶È¸
+	List<MemberBoardVO> getBoardList(MemberBoardVO vo); // ÀüÃ¼±Û Á¶È¸
 	List<MemberBoardVO> resolvedCBoardList(MemberBoardVO vo);
 	List<MemberBoardVO> unResolvedCBoardList(MemberBoardVO vo);
-	
 	
 	
 	

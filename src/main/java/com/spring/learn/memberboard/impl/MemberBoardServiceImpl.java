@@ -17,7 +17,7 @@ public class MemberBoardServiceImpl implements MemberBoardService {
 	private MemberBoardDAO memberBoardDAO;
 
 	public MemberBoardServiceImpl() {
-		System.out.println(">> BoardServiceImple ìƒì„±");
+		System.out.println(">> BoardServiceImple »ý¼º");
 	}
 
 	@Override
