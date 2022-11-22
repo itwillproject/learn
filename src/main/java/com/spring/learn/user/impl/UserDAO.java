@@ -28,6 +28,17 @@ public class UserDAO {
 		System.out.println("===> Mybatis 사용 insertUser() 실행");
 		return mybatis.insert("userDAO.insertUser", vo);
 	}
+
+	public int getUserId(UserVO vo) {
+		System.out.println("===> Mybatis 사용 getUserId() 실행");
+		int cnt = mybatis.selectOne("userDAO.getUserId", vo);
+		return cnt;
+	}
+
+	public int modifyUser(UserVO vo) {
+		System.out.println("===> Mybatis 사용 modifyUser() 실행");
+		return mybatis.update("userDAO.modifyUser", vo);
+	}
 	
 	
 	public List<UserVO> findUserIdList(UserVO user) {
@@ -36,6 +47,10 @@ public class UserDAO {
 	
 	public String findUserId(UserVO user) {
 		return mybatis.selectOne("userDAO.findUserId", user);
+	}
+
+	public UserVO confirmUser(UserVO vo) {
+		return mybatis.selectOne("userDAO.confirmUser", vo);
 	}
 
 	public void changePwd(UserVO user) {
