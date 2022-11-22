@@ -8,10 +8,7 @@
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-
-
-
-
+    <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
    <style>
 .dropdown:hover .dropdown-menu {
     display: block;
@@ -91,9 +88,9 @@
                     <button type="submit" class="btn w-100" style="background-color: #00C471; color: white">로그인</button>
                 </form>
                 <div>
-                    <a>아이디(이메일) 찾기</a> |
-                    <a>비밀번호 찾기</a> |
-                    <a>회원가입</a>
+                    <a href="findId.jsp">아이디(이메일) 찾기</a> |
+                    <a href="findPassword.jsp">비밀번호 찾기</a> |
+                    <a href="newMember.jsp">회원가입</a>
                 </div>
                 <hr class="w-100">
                 <div class="pb-1 text-center">
@@ -101,7 +98,6 @@
                 </div>
                 <div class="text-center">
             <span id="naverIdLogin">
-                <img style="width: 40px; height: 40px;" src="${pageContext.request.contextPath }/picture/btnG_icon_square.png"/>
             </span>
                     <script type="text/javascript">
                       var naverLogin = new naver.LoginWithNaverId(

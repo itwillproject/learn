@@ -60,6 +60,10 @@ public class UserDAO {
 	public void deleteUser(UserVO user) {
 		mybatis.update("userDAO.deleteUser", user);		
 	}
+
+	public void addNaverUser(UserVO user) {
+		mybatis.update("userDAO.addNaverUser", user);
+	}
 }
 
 

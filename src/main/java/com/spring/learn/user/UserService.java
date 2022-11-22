@@ -22,4 +22,6 @@ public interface UserService {
 	
 	//deleteUser
 	void deleteUser(UserVO user);
+
+  void addNaverUser(UserVO user);
 }

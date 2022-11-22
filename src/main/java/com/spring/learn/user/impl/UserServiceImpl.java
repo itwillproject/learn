@@ -63,4 +63,9 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
+	@Override
+	public void addNaverUser(UserVO user) {
+		userDAO.addNaverUser(user);
+	}
+
 }

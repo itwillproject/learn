@@ -12,7 +12,7 @@
   var naverLogin = new naver.LoginWithNaverId(
           {
             clientId: "vkx131bLLt6ehxKoqXiH",
-            callbackUrl: "http://localhost:8080/Member/naverLogin.jsp",
+            callbackUrl: "http://localhost:8080/learn/Member/naverLogin.jsp",
             isPopup: false,
           }
   );
