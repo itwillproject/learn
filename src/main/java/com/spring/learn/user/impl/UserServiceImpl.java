@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public String findUserId(UserVO user) {
+	public UserVO findUserId(UserVO user) {
 		return userDAO.findUserId(user);
 
 	}

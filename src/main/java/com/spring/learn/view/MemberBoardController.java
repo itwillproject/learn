@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.spring.learn.memberboard.AdminQNAReplyService;
+import com.spring.learn.memberboard.AdminQNAReplyVO;
 import com.spring.learn.memberboard.MemberBoardService;
 import com.spring.learn.memberboard.MemberBoardVO;
 
@@ -21,6 +24,10 @@ public class MemberBoardController {
 
 	@Autowired
 	private MemberBoardService memberBoardService;
+	
+	@Autowired
+	private AdminQNAReplyService adminQNAReplyService;
+	
 	
 	public MemberBoardController() {
 		System.out.println(">> MemberBoardController() 생성");
@@ -58,142 +65,23 @@ public class MemberBoardController {
 	}
 	
 	
-	
-	
-	
-	
-	
+	@RequestMapping("/inquiryDetail.do")
+	public String getInquiryDetail(@ModelAttribute MemberBoardVO vo, Model model) {
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		System.out.println(">>> MemberBoardController.getInquiryDetail 실행");		
+		System.out.println("vo : " + vo);
+				
+		MemberBoardVO memberBoard = memberBoardService.getBoard(vo); // 조회하고
+		AdminQNAReplyVO adminQNAReply = adminQNAReplyService.getReply(vo.getQnaNo());
+		System.out.println(memberBoard);
+		System.out.println(adminQNAReply);
+		model.addAttribute("memberBoard", memberBoard);
+		model.addAttribute("adminQNAReply", adminQNAReply);
+		
+		return "/Member/inquiryDetail.jsp"; // 이동
+		
+	}
+
 	
 	//여기서는 이정문꺼
 	@RequestMapping("/cBoardList.do")

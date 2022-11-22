@@ -23,9 +23,9 @@
 			$(".invalid").addClass("text-danger");
 			$(".invalid").text("이름과 생년월일을 입력해 주세요.");
 			
-			$("input[name=userName]").focus();
+			$("input[name=userName").focus();
 			
-			$("input[name=userName]").keyup(function(){
+			$("input[name=userName").keyup(function(){
 				$(".invalid").removeClass("text-danger");
 				$(".invalid").text("");
 			});
@@ -36,11 +36,11 @@
 			$(".invalid").addClass("text-danger");
 			$(".invalid").text("이름을 입력해 주세요.");
 			
-			$("input[name=userName]").focus();
+			$("input[name=userName").focus();
 			
-			$("input[name=userName]").keyup(function(){
+			$("input[name=userName").keyup(function(){
 		
-				if($("input[name=userBirth]").val().length != 0) {
+				if($("input[name=userBirth").val().length != 0) {
 					$(".invalid").removeClass("text-danger");
 					$(".invalid").text("");
 				}
@@ -51,11 +51,11 @@
 			$(".invalid").addClass("text-danger");
 			$(".invalid").text("생년월일을 입력해 주세요.");
 			
-			$("input[name=userBirth]").focus();
+			$("input[name=userBirth").focus();
 			
-			$("input[name=userBirth]").keyup(function(){
+			$("input[name=userBirth").keyup(function(){
 		
-				if($("input[name=userName]").val().length != 0) {
+				if($("input[name=userName").val().length != 0) {
 					$(".invalid").removeClass("text-danger");
 					$(".invalid").text("");
 				}
@@ -96,7 +96,7 @@
 			           	dispHtml += '<div class="w-100 p-3 mx-auto">';
 			           	dispHtml += '<p class="text-left">아이디(이메일)</p>';
 		            	dispHtml += '<p class="float-clear"></p>';
-			            $.each(data, function(index, obj){
+			            $.each(data, function(index, obj){	
 				           	dispHtml += '<p class="text-left">';
 				           	dispHtml += '<img src="${pageContext.request.contextPath }/picture/findAccount/inflean.png" alt="inflean" width="20px"> ';
 				           	if(obj.socialType == "naver") {
@@ -148,5 +148,6 @@
 	</div>	
 
 </div>
+<%@include file="/Common/footer.jsp" %>
 </body>
 </html>

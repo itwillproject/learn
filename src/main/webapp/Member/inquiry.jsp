@@ -76,7 +76,7 @@
 						<c:forEach var="BoardList" items="${BoardList }">
 							<div class="pt-1 pl-4 pr-4">
 								<h5>
-									<b> ${BoardList.qnaTitle }</b>
+									<a href="${pageContext.request.contextPath }/memberBoard/inquiryDetail.do?qnaNo="+${BoardList.qnaNo }><b> ${BoardList.qnaTitle }</b></a>
 								</h5>
 								<c:choose>
 							        <c:when test="${fn:length(BoardList.qnaContent) gt 16}">
@@ -123,7 +123,9 @@
 							summary += '...';
 						}				
 						dispHtml += '<div class="pt-1 pl-4 pr-4">';
-						dispHtml += "<h5><b>" + this.qnaTitle + "</b></h5>"
+						
+						dispHtml += "<h5><a href='${pageContext.request.contextPath }/memberBoard/inquiryDetail.do?qnaNo="+this.qnaNo+"'>";
+						dispHtml += "<b>" + this.qnaTitle + "</b></a></h5>";
 						dispHtml += "<span>" + summary + "</span><br>";
 						dispHtml += '<div class="pt-1"><span>' + this.qnaRegdate + "</span></div><hr></div>";	
 					});
@@ -154,7 +156,8 @@
 							summary += '...';
 						}
 						dispHtml += '<div class="pt-1 pl-4 pr-4">';
-						dispHtml += "<h5><b>" + this.qnaTitle + "</b></h5>"
+						dispHtml += "<h5><a href='${pageContext.request.contextPath }/memberBoard/inquiryDetail.do?qnaNo="+this.qnaNo+"'>";
+						dispHtml += "<b>" + this.qnaTitle + "</b></a></h5>";
 						dispHtml += "<span>" + summary + "</span><br>";
 						dispHtml += '<div class="pt-1"><span>' + this.qnaRegdate + "</span></div><hr></div>";	
 					});
@@ -186,7 +189,8 @@
 							summary += '...';
 						}
 						dispHtml += '<div class="pt-1 pl-4 pr-4">';
-						dispHtml += "<h5><b>" + this.qnaTitle + "</b></h5>"
+						dispHtml += "<h5><a href='${pageContext.request.contextPath }/memberBoard/inquiryDetail.do?qnaNo="+this.qnaNo+"'>";
+						dispHtml += "<b>" + this.qnaTitle + "</b></a></h5>";
 						dispHtml += "<span>" + summary + "</span><br>";
 						dispHtml += '<div class="pt-1"><span>' + this.qnaRegdate + "</span></div><hr></div>";	
 					});

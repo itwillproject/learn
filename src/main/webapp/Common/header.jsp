@@ -1,5 +1,5 @@
 <%@ page    pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,8 +8,12 @@
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<<<<<<< HEAD
+	<script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+=======
    <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 
+>>>>>>> e29acca59ff7e87b89c92c423004f45395527cf0
 
 
 
@@ -86,7 +90,7 @@
                     <button type="button" class="close" data-dismiss="modal">x</button>
                 </div>
                 <img style="width: 120px;" src="https://cdn.inflearn.com/public/files/pages/da35da48-52a5-4ec6-b8d3-0389a47610ec/logo1.png">
-                <form action="login.do" method="post" class="w-100 pl-4 pr-4 pt-4">
+                <form action="${pageContext.request.contextPath}/Member/login.do" method="post" class="w-100 pl-4 pr-4 pt-4">
                     <input type="email" class="form-control w-100 mb-3" id="userId" placeholder="이메일" name="userId">
                     <input type="password" class="form-control w-100 mb-4" id="userPwd" placeholder="비밀번호" name="userPwd">
                     <button type="submit" class="btn w-100" style="background-color: #00C471; color: white">로그인</button>
@@ -107,7 +111,7 @@
                       var naverLogin = new naver.LoginWithNaverId(
                           {
                             clientId: "vkx131bLLt6ehxKoqXiH",
-                            callbackUrl: "http://localhost:8080/Member/naverLogin.jsp",
+                            callbackUrl: "http://localhost:8080/${pageContext.request.contextPath}/Member/naverLogin.jsp",
                             isPopup: false,
                             loginButton: {color: "green", type: 1, height: 40}
                           }
@@ -126,7 +130,7 @@
     <button type="button" class="btn btn-outline-danger" onclick="location.href='newMember.jsp'">회원가입</button>&nbsp;
     </li>
     <li>
-<button type="button" class="btn">지식 공유참여</button>
+<button type="button" class="btn" onclick = "location.href='howtobelecture.jsp'">지식 공유 참여</button>
 </li>
 
 

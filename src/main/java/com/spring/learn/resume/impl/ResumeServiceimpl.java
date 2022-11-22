@@ -21,20 +21,20 @@ public class ResumeServiceimpl implements ResumeService {
 
 	@Override
 	public void deleteResume(ResumeVO vo) {
-		// TODO Auto-generated method stub
+		resumeDAO.deleteResume(vo);
 		
 	}
 
 	@Override
 	public void updateResume(ResumeVO vo) {
-		// TODO Auto-generated method stub
+		resumeDAO.updateResume(vo);
 		
 	}
 
 	@Override
 	public ResumeVO getResume(ResumeVO vo) {
-		// TODO Auto-generated method stub
-		return null;
+		vo = resumeDAO.getResume(vo);
+		return vo;
 	}
 
 	@Override

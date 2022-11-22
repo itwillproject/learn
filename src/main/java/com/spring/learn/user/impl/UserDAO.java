@@ -45,7 +45,7 @@ public class UserDAO {
 		return mybatis.selectList("userDAO.findUserIdList", user);
 	}
 	
-	public String findUserId(UserVO user) {
+	public UserVO findUserId(UserVO user) {
 		return mybatis.selectOne("userDAO.findUserId", user);
 	}
 

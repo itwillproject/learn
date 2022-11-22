@@ -44,7 +44,7 @@
 인프런은 지식으로 의미있는 수익과 공유가 가능한 한국 유일한 플랫폼 입니다.<br>
 </p>
 <br>
-	<button class="btn btn-success" onclick="window.open('belectureform1.jsp', 'form1', 'resizable=no, width=800, height=800, location=no, top=100, left=660, location=no'); return false">지식공유자 참여하기</button>
+	<button class="btn btn-success" onclick="window.open('beLectureform1.jsp', 'form', 'resizable=no, width=800, height=800, location=no, top=100, left=660'); return false">지식공유자 참여하기</button>
 <!--  <a href="#" onclick="window.open('링크할 파일이름.htm','name','resizable=no width=600 height=500');return false">
 <선물보기></a>-->
           </div>
