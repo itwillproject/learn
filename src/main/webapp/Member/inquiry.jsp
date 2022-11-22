@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <html>
 <head>
 <title>로그인</title>
@@ -13,6 +14,7 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <style>
+
 .active {
 	font-weight: bold;
 	text-decoration: underline;
@@ -76,7 +78,14 @@
 								<h5>
 									<b> ${BoardList.qnaTitle }</b>
 								</h5>
-								<span>${BoardList.qnaContent }</span><br>
+								<c:choose>
+							        <c:when test="${fn:length(BoardList.qnaContent) gt 16}">
+							        <c:out value="${fn:substring(BoardList.qnaContent, 0, 15)}...">
+							        </c:out></c:when>
+							        <c:otherwise>
+							        <c:out value="${BoardList.qnaContent}">
+							        </c:out></c:otherwise>
+								</c:choose>
 								<div class="pt-1">
 									<span>${BoardList.qnaRegdate }</span>
 								</div>
@@ -94,9 +103,9 @@
 				</div>
 			</div>
 		</div>
-	</div>
-
+	</div> 
  	<script>
+
 		function cBoardList() {
 			alert("cBoardList() 실행");
 
@@ -107,10 +116,16 @@
 					alert("성공~!");
 					console.log("data : " + data);
 					let dispHtml = "";
+					var summary = "";
 					$.each(data, function(index, obj){
+						summary = this.qnaContent;
+						if(summary.length > 15) {
+							summary = summary.substring(0, 15);
+							summary += '...';
+						}				
 						dispHtml += '<div class="pt-1 pl-4 pr-4">';
 						dispHtml += "<h5><b>" + this.qnaTitle + "</b></h5>"
-						dispHtml += "<span>" + this.qnaContent + "</span><br>";
+						dispHtml += "<span>" + summary + "</span><br>";
 						dispHtml += '<div class="pt-1"><span>' + this.qnaRegdate + "</span></div><hr></div>";	
 					});
 
@@ -132,10 +147,16 @@
 					alert("성공~!");
 					console.log("data : " + data);
 					let dispHtml = "";
+					var summary = "";
 					$.each(data, function(index, obj){
+						summary = this.qnaContent;
+						if(summary.length > 15) {
+							summary = summary.substring(0, 15);
+							summary += '...';
+						}
 						dispHtml += '<div class="pt-1 pl-4 pr-4">';
 						dispHtml += "<h5><b>" + this.qnaTitle + "</b></h5>"
-						dispHtml += "<span>" + this.qnaContent + "</span><br>";
+						dispHtml += "<span>" + summary + "</span><br>";
 						dispHtml += '<div class="pt-1"><span>' + this.qnaRegdate + "</span></div><hr></div>";	
 					});
 
@@ -158,10 +179,16 @@
 					alert("성공~!");
 					console.log("data : " + data);
 					let dispHtml = "";
+					var summary = "";
 					$.each(data, function(index, obj){
+						summary = this.qnaContent;
+						if(summary.length > 15) {
+							summary = summary.substring(0, 15);
+							summary += '...';
+						}
 						dispHtml += '<div class="pt-1 pl-4 pr-4">';
 						dispHtml += "<h5><b>" + this.qnaTitle + "</b></h5>"
-						dispHtml += "<span>" + this.qnaContent + "</span><br>";
+						dispHtml += "<span>" + summary + "</span><br>";
 						dispHtml += '<div class="pt-1"><span>' + this.qnaRegdate + "</span></div><hr></div>";	
 					});
 

@@ -27,12 +27,12 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+
  <%@ include file="../Common/header.jsp"%>
  <div class="container-fluid bg-dark">
 	<div class="container tape">
 		<section class="tapeContent">		
-			<h2>묻고 답해요</h2>
-			<p>99만명의 커뮤니티!! 함께 토론해봐요.</p>
+			<h2>회원가입</h2>
 		</section>
 	</div>
 	</div>
@@ -199,7 +199,7 @@
 		// 비밀번호 정규식
 		var pwJ = /^(?!((?:[A-Za-z]+)|(?:[~!@#$%^&*()_+=]+)|(?:[0-9]+))$)[A-Za-z\d~!@#$%^&*()_+=]{8,32}$/;
 		// 이메일 검사 정규식
-		var mailJ = /^[0-9a-zA-Z]{4,22}([-_.]?[0-9a-zA-Z]{4,20})*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+		var mailJ = /^[0-9a-zA-Z]{4,22}([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 		// 비밀번호 체크 확인
 		$('#user_pw').keyup(function() {
 							if (pwJ.test($('#user_pw').val())) {

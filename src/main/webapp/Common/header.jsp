@@ -92,9 +92,9 @@
                     <button type="submit" class="btn w-100" style="background-color: #00C471; color: white">로그인</button>
                 </form>
                 <div>
-                    <a>아이디(이메일) 찾기</a> |
-                    <a>비밀번호 찾기</a> |
-                    <a>회원가입</a>
+                    <a href="findId.jsp">아이디(이메일) 찾기</a> |
+                    <a href="findPassword.jsp">비밀번호 찾기</a> |
+                    <a href="newMember.jsp">회원가입</a>
                 </div>
                 <hr class="w-100">
                 <div class="pb-1 text-center">
@@ -123,7 +123,7 @@
     </div>
 </li>
 <li>
-    <button type="button" class="btn btn-outline-danger">회원가입</button>&nbsp;
+    <button type="button" class="btn btn-outline-danger" onclick="location.href='newMember.jsp'">회원가입</button>&nbsp;
     </li>
     <li>
 <button type="button" class="btn">지식 공유참여</button>

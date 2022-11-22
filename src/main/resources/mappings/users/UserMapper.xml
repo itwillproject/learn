@@ -14,7 +14,7 @@
 	</select>
 	
 	<select id="insertUser" parameterType="userVO">
-		INSERT INTO USERS VALUES(#{userId}, '일반회원', #{userName}, #{userBirth}, #{userPwd}, SYSDATE,0,#{socialType})
+		INSERT INTO USERS VALUES(#{userId}, '일반회원', #{userName}, #{userBirth}, #{userPwd}, SYSDATE,0, #{socialType})
 	</select>
 	
 	<select id="modifyUser" parameterType="userVO" resultType="int">
@@ -22,21 +22,47 @@
 	</select>
 	
 	<select id="findUserIdList" parameterType="com.spring.learn.user.UserVO"
-		resultType="string">
+		resultType="com.spring.learn.user.UserVO">
 		SELECT * FROM USERS
 		WHERE USER_NAME = #{userName} AND USER_BIRTH = #{userBirth}
+		AND GRADE != '관리자'
 	</select>
 
 
-<select id="findUserId" parameterType="com.spring.learn.user.UserVO"
-	resultType="string">
-	SELECT * FROM USERS
-	WHERE USER_ID = #{userId}
-</select>
+	<select id="findUserId" parameterType="com.spring.learn.user.UserVO"
+		resultType="string">
+		SELECT * FROM USERS
+		WHERE USER_ID = #{userId}
+		AND GRADE != '관리자'
+	</select>
+
+	<update id="changePwd" parameterType="com.spring.learn.user.UserVO">
+		UPDATE USERS
+		SET USER_PWD = #{userPwd}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<update id="deleteUser" parameterType="com.spring.learn.user.UserVO">
+		UPDATE USERS
+		SET USER_ID = 'unknown'|| USER_UNKOWN_SEQ.NEXTVAL, 
+		GRADE = '탈퇴',
+		USER_NAME = NULL, 
+		USER_PWD = NULL, 
+		USER_BIRTH = NULL,
+		USER_REGDATE = NULL, 
+		POINTS = NULL,
+		SOCIAL_TYPE = NULL
+		WHERE USER_ID = #{userId}
+	</update>
+
 
 	<select id="confirmUser" parameterType="userVO" resultType="userVO">
-		SELECT * FROM USERS WHERE USER_ID = #{userId} AND SOCIAL_TYPE = #{socialType}
+		SELECT * FROM USERS WHERE USER_ID = #{userId}
 	</select>
+
+	<update id="addNaverUser" parameterType="userVO">
+		UPDATE USERS SET SOCIAL_TYPE = 'naver' WHERE USER_ID = #{userId}
+	</update>
 
 </mapper>
 

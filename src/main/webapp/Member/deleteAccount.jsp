@@ -11,6 +11,7 @@
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
    
 <script>
+
 	$(function(){
 	
 		$(".toggleBtn").click(function(){
@@ -53,7 +54,8 @@
 
 	function check_password(frm) {
 		
-		var password = "1111";
+		//var password = ${user.userPwd};
+		var password = "1q2w3e4r";
 		//원래는 session의 userPassword와 비교해야 함
 		if (frm.insertPassword.value == password) {
 			$("#deleteUser").modal();
@@ -118,7 +120,7 @@
 						<div class="modal-dialog modal-dialog-centered">
 						  <div class="modal-content">
 						    <div class="modal-body text-center">
-						      <p>초록색 체크 이미지 로고.. 나도 알고 싶지 않았음</p>
+						      <p><img src="${pageContext.request.contextPath }/picture/inflearn.png" width="100"></p>
 						      <h4>회원탈퇴 안내</h4>
 						      <p>지금까지 이용해 주셔서 감사했습니다.<br>
 						    	  더 좋은 서비스로 성장해 다시 만나뵐 수 있으면<br>

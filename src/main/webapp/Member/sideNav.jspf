@@ -27,7 +27,7 @@
 	margin-right: 5px;
 	color: gray;
 	text-align: left;
-	background-color: #white;
+	background-color: white;
 	/* border: 1px solid #d3d3d3; */
 	height: 15px;
 	display: flex;
@@ -68,13 +68,14 @@
 				</li>
 				<li class="sidebar-brand"><a href="mypage.jsp">내학습 (유무료)</a></li>
 				<li class="sidebar-brand"><a href="${pageContext.request.contextPath}/memberBoard/callCenterBoardList.do?userId=${user.userId}">작성한 게시글</a></li>
+
 				<li class="sidebar-brand"><a href="#">북마크</a></li>
 			</ul>
 			<ul class="sidebar-nav">
 				<li class="sidebar-top">
 					<h4 style="margin-left: 3px; text-align: center;"><small>수강 신청</small></h4>
 				</li>
-				<li class="sidebar-brand"><a href="mypage.jsp">수강 바구니</a></li>
+				<li class="sidebar-brand"><a href="myPage.jsp">수강 바구니</a></li>
 				<li class="sidebar-brand"><a href="#">좋아요(찜)</a></li>
 				<li class="sidebar-brand"><a href="#">포인트</a></li>
 				<li class="sidebar-brand"><a href="#">구매내역(유료)</a></li>
@@ -83,7 +84,7 @@
 				<li class="sidebar-top">
 					<h4 style="margin-left: 3px; text-align: center;"><small>설정</small></h4>
 				</li>
-				<li class="sidebar-brand"><a href="mypage.jsp">계정정보(마이페이지)</a>
+				<li class="sidebar-brand"><a href="myPage.jsp">계정정보(마이페이지)</a>
 				</li>
 			</ul>
 		</div>
