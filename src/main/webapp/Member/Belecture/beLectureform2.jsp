@@ -27,7 +27,7 @@
 	<h2>지식공유자가 되기 위해서</h2>
 	<h2>아래 정보가 필요해요.</h2>
 	<br>
-	<form method="get">
+	<form method="post">
     <div class="form-group">
       <label for="email">인프런 계정</label>
       <input type="text" class="form-control" id="userId"  name="userId" value="test1234@gmail.com" >
@@ -61,7 +61,8 @@
   <script>
   	function submitAndclose(frm){
   		frm.action="insertResume.do";
-  		
+		return false;
+
   		}
 
   	$(".form-control").on("keyup", function(){

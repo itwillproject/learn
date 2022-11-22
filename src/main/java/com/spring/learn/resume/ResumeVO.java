@@ -6,8 +6,10 @@ public class ResumeVO {
 	userName,
 	userTel,
 	userIntroduce,
-	userLink;
-
+	userLink
+	;
+	private String resumeStatus = "false";
+	
 	public ResumeVO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -21,6 +23,19 @@ public class ResumeVO {
 		this.userTel = userTel;
 		this.userIntroduce = userIntroduce;
 		this.userLink = userLink;
+	}
+
+	
+	public ResumeVO(String userId, String categoryName, String userName, String userTel, String userIntroduce,
+			String userLink, String resumeStatus) {
+		super();
+		this.userId = userId;
+		this.categoryName = categoryName;
+		this.userName = userName;
+		this.userTel = userTel;
+		this.userIntroduce = userIntroduce;
+		this.userLink = userLink;
+		this.resumeStatus = resumeStatus;
 	}
 
 	public String getUserId() {
@@ -71,11 +86,24 @@ public class ResumeVO {
 		this.userLink = userLink;
 	}
 
+	
+	
+	public String getResumeStatus() {
+		return resumeStatus;
+	}
+
+	public void setResumeStatus(String resumeStatus) {
+		this.resumeStatus = resumeStatus;
+	}
+
 	@Override
 	public String toString() {
 		return "ResumeVO [userId=" + userId + ", categoryName=" + categoryName + ", userName=" + userName + ", userTel="
-				+ userTel + ", userIntroduce=" + userIntroduce + ", userLink=" + userLink + "]";
+				+ userTel + ", userIntroduce=" + userIntroduce + ", userLink=" + userLink + ", resumeStatus="
+				+ resumeStatus + "]";
 	}
+
+
 	
 	
 	
