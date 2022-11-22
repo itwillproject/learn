@@ -6,6 +6,7 @@ public class UserVO {
 	private String userId, grade, userName, userPwd, userBirth, socialType;
 	private int points;
 	private Date userRegdate;
+	
 	public String getUserId() {
 		return userId;
 	}
@@ -51,6 +52,7 @@ public class UserVO {
 	public String getSocialType() {
 		return socialType;
 	}
+
 	public void setSocialType(String socialType) {
 		this.socialType = socialType;
 	}
@@ -58,7 +60,11 @@ public class UserVO {
 	@Override
 	public String toString() {
 		return "UserVO [userId=" + userId + ", grade=" + grade + ", userName=" + userName + ", userPwd=" + userPwd
-				+ ", userBirth=" + userBirth + ", socialType=" + socialType + ", points=" + points + ", userRegdate=" + userRegdate + "]";
+				+ ", userBirth=" + userBirth + ", socialType=" + socialType + ", points=" + points + ", userRegdate="
+				+ userRegdate + "]" + ", userBirth=" + userBirth + ", socialType=" + socialType + ", points=" + points + ", userRegdate=" + userRegdate + "]";
 	}
+	
+	
+
 }
 	

@@ -12,6 +12,7 @@
  		구분자 사용 나열 (빈칸, 콤마, 세미콜론 등으로)-->
 	<context:component-scan base-package="com.spring.learn" />
 	<context:component-scan base-package="com.spring.learn.user"/>
+	<context:component-scan base-package="com.spring.learn.memberboard"/>
 	<context:component-scan base-package="com.spring.learn.board"/>
 	
 	
