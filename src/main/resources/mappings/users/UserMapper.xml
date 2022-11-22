@@ -57,9 +57,12 @@
 
 
 	<select id="confirmUser" parameterType="userVO" resultType="userVO">
-		SELECT * FROM USERS WHERE USER_ID = #{userId} AND SOCIAL_TYPE = #{socialType}
+		SELECT * FROM USERS WHERE USER_ID = #{userId}
 	</select>
 
+	<update id="addNaverUser" parameterType="userVO">
+		UPDATE USERS SET SOCIAL_TYPE = 'naver' WHERE USER_ID = #{userId}
+	</update>
 
 </mapper>
 
