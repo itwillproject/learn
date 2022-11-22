@@ -14,7 +14,7 @@
 	</select>
 	
 	<select id="insertUser" parameterType="userVO">
-		INSERT INTO USERS VALUES(#{userId}, '일반회원', #{userName}, #{userBirth}, #{userPwd}, SYSDATE,0,'','')
+		INSERT INTO USERS VALUES(#{userId}, '일반회원', #{userName}, #{userBirth}, #{userPwd}, SYSDATE,0, #{socialType})
 	</select>
 	
 	<select id="modifyUser" parameterType="userVO" resultType="int">
@@ -35,7 +35,7 @@
 </select>
 
 	<select id="confirmUser" parameterType="userVO" resultType="userVO">
-		SELECT * FROM USERS WHERE SOCIAL_TOKEN = #{socialToken}
+		SELECT * FROM USERS WHERE USER_ID = #{userId} AND SOCIAL_TYPE = #{socialType}
 	</select>
 
 </mapper>

@@ -21,7 +21,6 @@
     naverLogin.getLoginStatus(function (status) {
       if (status) {
         let vo = {};
-        vo.socialToken = window.location.toString();
         vo.socialType = 'naver';
         vo.userId = naverLogin.user.getEmail();
         vo.userName = naverLogin.user.getName();
@@ -35,6 +34,7 @@
           contentType: "application/json", //서버로 전송하는 컨텐츠 유형(JSON형식)
           dataType: "json", //서버로부터 응답받는 데이터 형식
           success: function(data){
+            console.log(data);
             location.href='myPage.jsp';
           },
           error: function(){

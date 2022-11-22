@@ -123,7 +123,7 @@
     </div>
 </li>
 <li>
-    <button type="button" class="btn btn-outline-danger">회원가입</button>&nbsp;
+    <button type="button" class="btn btn-outline-danger" onclick="location.href='newMember.jsp'">회원가입</button>&nbsp;
     </li>
     <li>
 <button type="button" class="btn">지식 공유참여</button>
