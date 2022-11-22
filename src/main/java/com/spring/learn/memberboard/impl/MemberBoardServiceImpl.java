@@ -44,5 +44,19 @@ public class MemberBoardServiceImpl implements MemberBoardService {
 	public List<MemberBoardVO> getBoardList(MemberBoardVO vo) {
 		return memberBoardDAO.getBoardList(vo);
 	}
+
+	@Override
+	public List<MemberBoardVO> resolvedCBoardList(MemberBoardVO vo) {
+		// TODO Auto-generated method stub
+		return memberBoardDAO.resolvedCBoardList(vo);
+	}
+
+	@Override
+	public List<MemberBoardVO> unResolvedCBoardList(MemberBoardVO vo) {
+		// TODO Auto-generated method stub
+		return memberBoardDAO.unResolvedCBoardList(vo);
+	}
+
+
   
 }

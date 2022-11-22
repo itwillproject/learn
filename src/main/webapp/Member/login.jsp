@@ -1,9 +1,9 @@
 <%--
-  Created by IntelliJ IDEA.
-  User: itwill
-  Date: 2022-11-21
-  Time: 오전 9:15
-  To change this template use File | Settings | File Templates.
+ Created by IntelliJ IDEA.
+ User: itwill
+ Date: 2022-11-21
+ Time: 오전 9:15
+ To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -15,6 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 <div class="container mt-3">
@@ -29,9 +30,9 @@
             <button type="submit" class="btn w-100" style="background-color: #00C471; color: white">로그인</button>
         </form>
         <div class="text-center">
-            <a>아이디(이메일) 찾기</a> |
-            <a>비밀번호 찾기</a> |
-            <a>회원가입</a>
+            <a href="findId.jsp">아이디(이메일) 찾기</a> |
+            <a href="findPassword.jsp">비밀번호 찾기</a> |
+            <a href="newMember.jsp">회원가입</a>
         </div>
         <hr class="w-100">
         <div class="pb-1 text-center">
@@ -39,27 +40,35 @@
         </div>
         <div class="text-center">
             <span id="naverIdLogin">
-                <img style="width: 40px; height: 40px;" src="${pageContext.request.contextPath }/picture/btnG_icon_square.png"/>
             </span>
             <script type="text/javascript">
               var naverLogin = new naver.LoginWithNaverId(
                   {
                     clientId: "vkx131bLLt6ehxKoqXiH",
-                    callbackUrl: "http://localhost:8080/Member/naverLogin.jsp",
+                    callbackUrl: "http://localhost:8080/learn/Member/naverLogin.jsp",
                     isPopup: false,
                     loginButton: {color: "green", type: 1, height: 40}
                   }
               );
               naverLogin.init();
             </script>
-            <span id="google_id_login" style="display:inline-block;width: 40px; height: 40px; background-color: #f8f8f8; border-radius: 5px">
-                <a>
-                    <img style="margin:10px; width: 20px; height: 20px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/24px-Google_%22G%22_Logo.svg.png?20210618182606"/>
-                </a>
-            </span>
+            <div id="g_id_onload"
+                 data-client_id="932637000454-djioa17of7es3sepu6i5h271k51kmgr1"
+                 data-login_uri="http://localhost:8080/learn/Member/googleLogin.jsp"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin"
+                 data-type="icon"
+                 data-size="large"
+                 data-theme="outline"
+                 data-text="sign_in_with"
+                 data-shape="rectangular"
+                 data-logo_alignment="left">
+            </div>
         </div>
     </div>
     <%@include file="/Common/footer.jsp" %>
 </div>
 </body>
 </html>
+

@@ -24,12 +24,14 @@ public class NaverController {
     vo.setUserBirth(userBirth.substring(0, 6) + userBirth.substring(7));
 
     System.out.println("vo : " + vo);
+    // 아이디 있는지 확인 -> 있으면 naver 업데이트 없으면 아래
     UserVO user = userService.confirmUser(vo);
     if(user == null) {
       userService.insertUser(vo);
       user = userService.confirmUser(vo);
     }
     System.out.println("user: " + user);
+    userService.addNaverUser(user);
     session.setAttribute("user", user);
 
     return user;
