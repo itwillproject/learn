@@ -34,7 +34,7 @@
 <br>
 
 <div class="image">
-<img src="../picture/desk.jpg" alt="desk" width="100%" height="100%" class="rounded">
+<img src="../../picture/desk.jpg" alt="desk" width="100%" height="100%" class="rounded">
 
 <div class="text">
 <h1>나의 지식에 가치를 부여하세요</h1><br>
@@ -51,9 +51,9 @@
 </div>
 <br>
 
-<img src="../picture/lecturedata1.png" alt="수익 회원수 누적 수강생" width=90%>
+<img src="../../picture/lecturedata1.png" alt="수익 회원수 누적 수강생" width=90%>
 
-<img src="../picture/lecturedata2.png" alt="수익 회원수 누적 수강생" width=40% style="float: right">
+<img src="../../picture/lecturedata2.png" alt="수익 회원수 누적 수강생" width=40% style="float: right">
 <div>
 	<h3>지식공유자를 위한<br>
 높은 정산 비율</h3>
@@ -77,13 +77,13 @@
 
 <div class="row">
       <div class="col-sm-4" >
-		<img src="../picture/img1.png" width="30%">
+		<img src="../../picture/img1.png" width="30%">
       </div>
       <div class="col-sm-4" >
-		<img src="../picture/img2.png" width="30%">
+		<img src="../../picture/img2.png" width="30%">
 	</div>
       <div class="col-sm-4" >
-		<img src="../picture/img3.png" width="30%">
+		<img src="../../picture/img3.png" width="30%">
 	</div>
 </div>
 
@@ -131,13 +131,13 @@
 
 <div class="row">
       <div class="col-sm-4" >
-		<img src="../picture/img4.png" width="30%">
+		<img src="../../picture/img4.png" width="30%">
       </div>
       <div class="col-sm-4" >
-		<img src="../picture/img5.png" width="30%">
+		<img src="../../picture/img5.png" width="30%">
 	</div>
       <div class="col-sm-4" >
-		<img src="../picture/img6.png" width="30%">
+		<img src="../../picture/img6.png" width="30%">
 	</div>
 </div>
 
