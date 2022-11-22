@@ -6,6 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
+<style>
+	.tape {
+		height: 100px;
+		margin: 50px auto;
+		padding-top: 15px;
+		color: white;
+	}
+
+</style>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
@@ -18,7 +27,15 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<%-- <%@ include file="../Common/header.jspf"%> --%>
+ <%@ include file="../Common/header.jsp"%>
+ <div class="container-fluid bg-dark">
+	<div class="container tape">
+		<section class="tapeContent">		
+			<h2>묻고 답해요</h2>
+			<p>99만명의 커뮤니티!! 함께 토론해봐요.</p>
+		</section>
+	</div>
+	</div>
 	<div class="container">
 
 		<div class="row">
@@ -138,12 +155,6 @@
 		</div>
 	</div>
 
-
-	<h2>본문 바디 끝</h2>
-	<hr>
-	<hr>
-	<hr>
-	<hr>
 	<script>
 	
 		$('#mail-Check-Btn').click(function() {
@@ -188,7 +199,7 @@
 		// 비밀번호 정규식
 		var pwJ = /^(?!((?:[A-Za-z]+)|(?:[~!@#$%^&*()_+=]+)|(?:[0-9]+))$)[A-Za-z\d~!@#$%^&*()_+=]{8,32}$/;
 		// 이메일 검사 정규식
-		var mailJ = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+		var mailJ = /^[0-9a-zA-Z]{4,22}([-_.]?[0-9a-zA-Z]{4,20})*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 		// 비밀번호 체크 확인
 		$('#user_pw').keyup(function() {
 							if (pwJ.test($('#user_pw').val())) {
@@ -372,7 +383,7 @@
 				});
 	</script>
 	<footer>
-		<h2>푸터 네비</h2>
+		<%@ include file="../Common/footer.jsp"%>
 	</footer>
 </body>
 </html>
