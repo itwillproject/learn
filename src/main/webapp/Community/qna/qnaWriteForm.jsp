@@ -82,7 +82,7 @@
                     <table class="table table-borderless">
                         <thead>
                             <tr>
-                                <th><h2><b><input class="w-100 mx-auto border border-0" type="text" name="boardTitle" placeholder="제목을 입력하세요"></b></h2></th>
+                                <th><h2><b><input class="w-100 mx-auto border border-0" type="text" name="qnaTitle" placeholder="제목을 입력하세요"></b></h2></th>
                             </tr>
                         </thead>
                         <tbody>

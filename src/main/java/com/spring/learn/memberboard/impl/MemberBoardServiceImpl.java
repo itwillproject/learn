@@ -1,6 +1,7 @@
 package com.spring.learn.memberboard.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,9 +41,16 @@ public class MemberBoardServiceImpl implements MemberBoardService {
 		return memberBoardDAO.getBoard(vo);
 	}
 
+
 	@Override
-	public List<MemberBoardVO> getBoardList(MemberBoardVO vo) {
-		return memberBoardDAO.getBoardList(vo);
+	public List<MemberBoardVO> getBoardList(Map<String, String> map) {
+		return memberBoardDAO.getBoardList(map);
 	}
+	
+	@Override
+	public int countBoard(MemberBoardVO vo) {
+		return memberBoardDAO.countBoard(vo);
+	}
+
   
 }

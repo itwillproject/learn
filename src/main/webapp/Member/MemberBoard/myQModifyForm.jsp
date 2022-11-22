@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>질문글작성폼</title>
+<title>질문글 수정폼~~</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/Community/css/jyStyle.css">
@@ -28,6 +28,7 @@
 				}
 				}
 			});
+			
 		});
 
 		function sendFile(file, editor) {
@@ -48,6 +49,21 @@
 				}
 			});
 		}
+		
+		function modifyGo(frm){
+			frm.submit();			
+		}
+		
+		function cancel(frm){
+			if(confirm("정말 작성을 취소하시겠습니까??\n작성한 내용이 날아갑니다")){
+				location.href = "${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do";				
+			}
+		}
+		
+
+		
+		
+		
 	</script>
 
 </head>
@@ -70,35 +86,36 @@
                             <li class="nav-item active green-line">
                             <a class="nav-link" href="#">질문</a>
                             </li>
-                            <li class="nav-item">
-                            <a class="nav-link" href="#">자유주제</a>
-                            </li>
                         </ul>
                     </nav>                        
                 </div>
 
                 <div class="d-flex flex-row p-3 writeComments">
+                	<form method="post" class="w-100" action="${pageContext.request.contextPath}/memberBoard/qnaModifyForm.do?qnaNo=${callBvo.qnaNo}">
                     <table class="table table-borderless">
                         <thead>
                             <tr>
-                                <th><h2><b><input class="w-100 mx-auto border border-0" type="text" name="title" placeholder="제목을 입력하세요"></b></h2></th>
+                                <th><h2><b>
+                                <input id="title" class="w-100 mx-auto border border-0" type="text" name="qnaTitle" value="${callBvo.qnaTitle }">
+                                </b></h2></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><textarea class="w-100 mx-auto border border-0" id="summernote" name="editordata" placeholder="학습과 관련된 질문을 남겨주세요"></textarea></td>
+                                <td><textarea class="w-100 mx-auto border border-0" id="summernote" name="qnaContent">${callBvo.qnaContent }</textarea></td>
                             </tr>
                             <tr>
                                 <td class="d-flex flex-row justify-content-end">
-                                    <button class="btn btn-success">등록</button>
-                                    <button class="btn btn-light mr-3">취소</button>
+                                    <input type="button" class="btn btn-success" onclick="modifyGo(this.form)" value="수정"/>
+                                    <input type="button" class="btn btn-success" value="취소" onclick="cancel(this.form)"/>
+<!--                                     <button class="btn btn-success">수정</button> -->
+<!--                                     <button class="btn btn-light mr-3">취소</button> -->
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-
-                    <form method="post">
                     </form>
+
                 </div>
 			</div>	
 

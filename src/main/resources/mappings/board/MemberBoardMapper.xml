@@ -11,50 +11,49 @@
 		 #{grade}, #{qnaTitle}, #{qnaContent}, #{qnaFile})
 	</insert>
 		
-<!-- 	<update id="updateBoard" parameterType="board"> -->
-<!-- 		<if test="qboardNo != null"> -->
-<!-- 		UPDATE QUESTION_BOARD -->
-<!-- 		 SET BOARD_TITLE = #{boardTitle}, BOARD_CONTENT = #{boardContent}, BOARD_FILE = #{boardFile}, -->
-<!-- 		  BOARD_ADOPT = #{boardAdopt}, BOARD_HIT = #{boardHit}, BOARD_LIKE = #{boardLike} -->
-<!-- 		 WHERE QBOARD_NO = #{qboardNo} -->
-<!-- 		</if> -->
-		
-<!-- 		<if test="qboardNo == null"> -->
-<!-- 		UPDATE FREE_BOARD -->
-<!-- 		 SET BOARD_TITLE = #{boardTitle}, BOARD_CONTENT = #{boardContent}, BOARD_FILE = #{boardFile}, -->
-<!-- 		  BOARD_HIT = #{boardHit}, BOARD_LIKE = #{boardLike} -->
-<!-- 		 WHERE FBOARD_NO = #{fboardNo} -->
-<!-- 		</if>	 -->
-<!-- 	</update> -->
+	<update id="updateBoard" parameterType="memberBoard">
+		UPDATE CALL_CENTER
+		 SET QNA_TITLE = #{qnaTitle}, QNA_CONTENT = #{qnaContent}
+		 , QNA_FILE = #{qnaFile},
+		  QNA_ADOPT = #{qnaAdopt}
+		 WHERE QNA_NO = #{qnaNo}
+	</update>
 	
-<!-- 	<delete id="deleteBoard" parameterType="board"> -->
-<!-- 		<if test="qboardNo != null"> -->
-<!-- 			DELETE FROM QUESTION_BOARD WHERE QBOARD_NO = #{qboardNo}	 -->
-<!-- 		</if> -->
-		
-<!-- 		<if test="qboardNo == null"> -->
-<!-- 			DELETE FROM FREE_BOARD WHERE FBOARD_NO = #{fboardNo}			 -->
-<!-- 		</if> -->
-<!-- 	</delete> -->
+	<delete id="deleteBoard" parameterType="board">
+		DELETE FROM CALL_CENTER
+		WHERE QNA_NO = #{qnaNo}	
+	</delete>
 	
-<!-- 	<select id="getBoard" parameterType="board" resultType="board"> -->
-<!-- 		<if test="qboardNo != null"> -->
-<!-- 			SELECT * FROM QUESTION_BOARD WHERE QBOARD_NO = #{qboardNo} -->
-<!-- 		</if> -->
-		
-<!-- 		<if test="qboardNo == null"> -->
-<!-- 			SELECT * FROM FREE_BOARD WHERE FBOARD_NO = #{fboardNo} -->
-<!-- 		</if>	 -->
-<!-- 	</select> -->
+	<select id="getBoard" parameterType="memberBoard" resultType="memberBoard">
+			SELECT * FROM CALL_CENTER WHERE QNA_NO = #{qnaNo}		
+	</select>
 	
-	<select id="getBoardList" parameterType="memberBoard" resultType="memberBoard">
-		SELECT * FROM CALL_CENTER
+	<select id="getBoardList" parameterType="map" resultType="memberBoard">
+		SELECT * FROM 
+			(SELECT ROWNUM R_NUM, B.* from 
+				(SELECT * FROM CALL_CENTER
+					WHERE 1 = 1
+					AND USER_ID = #{userId}
+					<if test="searchKeyword != null">
+					AND ( QNA_TITLE LIKE '%'|| #{searchKeyword} ||'%'
+					OR QNA_CONTENT LIKE '%'|| #{searchKeyword} ||'%')		
+					</if>		
+					ORDER BY QNA_REGDATE DESC) B)
+		WHERE R_NUM BETWEEN #{begin} AND #{end}
+	</select>
+	
+	
+	
+	
+	<select id="countBoard" parameterType="memberBoard" resultType="int">
+		SELECT COUNT(QNA_NO) FROM CALL_CENTER
 		<if test="searchKeyword != null">
 		WHERE QNA_TITLE LIKE '%'|| #{searchKeyword} ||'%'
 		OR QNA_CONTENT LIKE '%'|| #{searchKeyword} ||'%'		
 		</if>		
-		ORDER BY QNA_REGDATE DESC
 	</select>
+	
+	
 
 </mapper>
 

@@ -1,6 +1,7 @@
 package com.spring.learn.memberboard.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import com.spring.learn.board.BoardVO;
 import com.spring.learn.memberboard.MemberBoardVO;
@@ -11,7 +12,8 @@ public interface MemberBoardDAO {
 	void updateBoard(MemberBoardVO vo);
 	void deleteBoard(MemberBoardVO vo);
 	MemberBoardVO getBoard(MemberBoardVO vo);
-	List<MemberBoardVO> getBoardList(MemberBoardVO vo);
+	List<MemberBoardVO> getBoardList(Map<String, String> map);
+	int countBoard(MemberBoardVO vo);
 }
 
 

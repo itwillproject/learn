@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -53,6 +54,13 @@
 		     }
 		   });
 		 }
+		 
+		 function deleteBoard(obj){
+			 if (confirm("삭제하시겠습니까??")){
+				 location.href = "${pageContext.request.contextPath}/memberBoard/deleteBoard.do?qnaNo=${callBvo.qnaNo }" 
+			 }
+			 			 
+		 }
 
 		
 	</script>
@@ -67,23 +75,30 @@
 			
 			<!-- 왼쪽 네비 -->
 			<div class="col-2 d-flex justify-content-center">
-				<a href="#" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
+				<a href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
 			</div>
 
 			<!-- 중앙 위 내용 - 글내용 -->
 			<div class="col-6 pl-3 gray-line">
 				<div class="row align-items-center p-3">
 					<img class="mr-2" style="height: 30px" src="${pageContext.request.contextPath}/Community/img/qqq.png">					
-					<h3><b>github 권한 요청 드립니다!</b></h3>
+					<h3><b>${callBvo.qnaTitle }</b></h3>
 				</div>
 				<div class="row pl-3 pb-3">
-					<p class="mr-2"><b>아이디</b></p><p class="text-muted">2022.11.18 오전 9:20</p>
+					<p class="mr-2"><b>${callBvo.userId }</b></p><p class="text-muted">${callBvo.qnaRegdate }</p>
+					
+					<c:if test="${user.userId == callBvo.userId }">
+					<p class="ml-auto">
+						<a class="mr-3" href="${pageContext.request.contextPath}/memberBoard/qnaModifyForm.do?qnaNo=${callBvo.qnaNo }">수정</a>
+						<a href="javascript:deleteBoard($(this))">작성자삭제</a>
+					</p>
+					</c:if>
+					
+					
 				</div>
 
 				<div class="d-flex flex-row p-3">
-					<p>내용 어쩌고</p>
-					<p>배너어쩌고</p>
-					<p>배너어쩌고</p>
+					<p>${callBvo.qnaContent }</p>
 				</div>
 			</div>
 			
@@ -141,13 +156,11 @@
 				</div>
 			</div>
 
-			<div class="row w-100 mx-auto">
-				<form method="post">
+			<div class="row w-100 w-100 p-3 mx-auto">
+				<form method="post" class="w-100">
 					<div class="summernote">summernote 1</div>
-
-					
 					<div class="row mt-3">
-						<button class="btn btn-success ml-auto">답변등록</button>
+					<button class="btn btn-success ml-auto">답변등록</button>
 					</div>
 				</form>
 			</div>
@@ -168,6 +181,7 @@
 					</span>
 			</div>				
 		</div>
+
 
 		<!-- 댓글 -->
 		<div class="row w-50 border mx-auto rounded bg-white p-3" >
