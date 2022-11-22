@@ -14,6 +14,13 @@
 		<typeAlias alias="userVO" type="com.spring.learn.user.UserVO"/>
 		<typeAlias alias="board" type="com.spring.learn.board.BoardVO"/>
 		<typeAlias alias="memberBoard" type="com.spring.learn.memberboard.MemberBoardVO"/>
+	
+		<!-- 현지 추가 -->
+		<typeAlias alias="noticeVO" type="com.spring.learn.board.NoticeVO"/>
+		<typeAlias alias="faqVO" type="com.spring.learn.board.FaqVO"/>
+		<typeAlias alias="criteria" type="com.spring.learn.common.Criteria"/>
+		<!-- ========================== -->
+	
 	</typeAliases>
 			
 	
