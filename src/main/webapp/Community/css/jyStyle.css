@@ -53,6 +53,12 @@
     	font-size: 0.8em;
     }            
     
+    .textarea {
+	    min-height: 5rem;
+	    overflow-y: hidden;
+	    resize: none;
+	}
+    
     
     <!-- pagination -->
 	/* GRID */

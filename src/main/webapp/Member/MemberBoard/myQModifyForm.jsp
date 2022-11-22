@@ -78,26 +78,24 @@
                 </div>
 
                 <div class="d-flex flex-row p-3 writeComments">
-                	<form action="${pageContext.request.contextPath}/board/qnaWrite.do" method="post" class="w-100">
                     <table class="table table-borderless">
                         <thead>
                             <tr>
-                                <th><h2><b><input class="w-100 mx-auto border border-0" type="text" name="boardTitle" placeholder="제목을 입력하세요"></b></h2></th>
+                                <th><h2><b><input class="w-100 mx-auto border border-0" type="text" name="title" placeholder="제목을 입력하세요"></b></h2></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><textarea class="w-100 mx-auto" id="summernote" name="editordata" placeholder="학습과 관련된 질문을 남겨주세요"></textarea></td>
+                                <td><textarea class="w-100 mx-auto border border-0" id="summernote" name="editordata" placeholder="학습과 관련된 질문을 남겨주세요"></textarea></td>
                             </tr>
                             <tr>
                                 <td class="d-flex flex-row justify-content-end">
-                                    <button class="btn btn-success mr-3">등록</button>
+                                    <button class="btn btn-success">등록</button>
                                     <button class="btn btn-light mr-3">취소</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    </form>
 
                     <form method="post">
                     </form>

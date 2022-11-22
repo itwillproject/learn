@@ -47,4 +47,9 @@ public class UserServiceImpl implements UserService {
 
 	}
 
+	@Override
+	public UserVO confirmUser(UserVO vo) {
+		return userDAO.confirmUser(vo);
+	}
+
 }

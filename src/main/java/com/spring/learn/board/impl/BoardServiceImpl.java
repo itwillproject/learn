@@ -16,7 +16,7 @@ public class BoardServiceImpl implements BoardService {
 	private BoardDAO boardDAO;
 
 	public BoardServiceImpl() {
-		System.out.println(">> º¸µå¼­ºñ½ºÀÓÇÃ »ı¼º");
+		System.out.println(">> BoardServiceImple ìƒì„±");
 	}
 
 	@Override

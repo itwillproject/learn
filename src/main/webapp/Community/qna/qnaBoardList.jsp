@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/Community/css/jyStyle.css">
-	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -64,7 +64,8 @@
                             </li>
                         </ul>
 					</nav>					
-					<button class="btn btn-dark ml-auto my-auto h-50">글쓰기</button>
+					<button class="btn btn-dark ml-auto my-auto h-50"
+					 onclick="location.href='${pageContext.request.contextPath}/board/qnaWriteForm.do'">글쓰기</button>
 				</div>
 				
 				
