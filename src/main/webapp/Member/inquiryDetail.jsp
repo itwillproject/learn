@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,7 +56,6 @@
 </head>
 <body>
 	<%@include file="/Common/header.jsp" %>
-
 	<div class="container-fluid mt-5 pb-3 d-flex justify-content-center">
 		<div class="row w-100 pb-4 justify-content-center">
 			
@@ -68,16 +68,13 @@
 			<div class="col-6 pl-3 gray-line">
 				<div class="row align-items-center p-3">
 					<img class="mr-2" style="height: 30px" src="${pageContext.request.contextPath}/Community/img/qqq.png">					
-					<h3><b>github 권한 요청 드립니다!</b></h3>
+					<h3><b>${memberBoard.qnaTitle }</b></h3>
 				</div>
 				<div class="row pl-3 pb-3">
-					<p class="mr-2"><b>아이디</b></p><p class="text-muted">2022.11.18 오전 9:20</p>
+					<p class="mr-2"><b>${user.userId }일단null</b></p><p class="text-muted">${memberBoard.qnaRegdate }</p>
 				</div>
-
 				<div class="d-flex flex-row p-3">
-					<p>내용 어쩌고</p>
-					<p>배너어쩌고</p>
-					<p>배너어쩌고</p>
+					<p>${memberBoard.qnaContent }</p>
 				</div>
 			</div>
 			
@@ -87,9 +84,18 @@
 				<nav class="navbar">
 				  <!-- Links -->
 				  <ul class="navbar-nav comNav">
-				    <li class="nav-item d-flex justify-content-center align-items-center">
-				      <a href="#">미해결</a>
-				    </li>
+					<c:choose>
+						<c:when test="${ memberBoard.qnaAdopt eq 'false'}">
+							<li class="nav-item d-flex justify-content-center align-items-center">
+								<a href="#">미해결</a>
+							</li>
+						</c:when>
+						<c:otherwise> 
+							<li class="nav-item d-flex justify-content-center align-items-center">
+								<a href="#">해결</a>
+							</li>
+						</c:otherwise> 
+					</c:choose>  
 				  </ul>
 				</nav>
 			</div>	
@@ -98,14 +104,11 @@
 
 	<div class="container-fluid pt-5"  style="background-color: #F8F9FA;">
 
-
-		<!-- 답변 몇개인, 글 정렬 옵션-->
 		<div class="w-75 d-flex flex-row justify-content-center mx-auto mt-4 p-3">
 			<div class="row w-75 d-flex flex-row justify-content-around align-items-center" >
 					<span class="w-75 ml-4">
 					<h3 class="text-success">A</h3><p>관리자의 답변이 달렸습니다</p>
 					</span>
-					
 					<span class="mr-4">
 					</span>
 			</div>				
@@ -120,10 +123,10 @@
 				</div>
 				<div class="ml-3">
 					<div class="row">
-					<span><h5><b><a href="#">OMG</a></b></h5></span>
+					<span><h5><b><a href="#">${adminQNAReply.grade }</a></b></h5></span>
 					</div>
 					<div class="row text-secondary">
-					<span>2022.11.18 오전 1:52</span>
+					<span>${adminQNAReply.commentRegdate }</span>
 					</div>
 				</div>
 
@@ -133,7 +136,7 @@
 			<div class="row w-100 border mx-auto rounded p-3 rounded" style="background-color: #F8F9FA;" >
 				<div class="d-flex flex-row ml-3 mt-3 w-100 align-items-center">
 					<span>
-						<h5><b>답변</b></h5>
+						<h5><b>관리자 답변</b></h5>
 					</span>
 					<span class="ml-auto">
 					</span>
@@ -141,7 +144,7 @@
 				
 			
 			<div class="row w-100 p-3 mx-auto">
-				ㅇㅁㄹㅇㅇㄻㄴㅇㄹ
+				${adminQNAReply.commentContent }
 			</div>
 			
 		</div>

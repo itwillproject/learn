@@ -86,7 +86,7 @@
                     <button type="button" class="close" data-dismiss="modal">x</button>
                 </div>
                 <img style="width: 120px;" src="https://cdn.inflearn.com/public/files/pages/da35da48-52a5-4ec6-b8d3-0389a47610ec/logo1.png">
-                <form action="login.do" method="post" class="w-100 pl-4 pr-4 pt-4">
+                <form action="${pageContext.request.contextPath}/Member/login.do" method="post" class="w-100 pl-4 pr-4 pt-4">
                     <input type="email" class="form-control w-100 mb-3" id="userId" placeholder="이메일" name="userId">
                     <input type="password" class="form-control w-100 mb-4" id="userPwd" placeholder="비밀번호" name="userPwd">
                     <button type="submit" class="btn w-100" style="background-color: #00C471; color: white">로그인</button>
@@ -107,7 +107,7 @@
                       var naverLogin = new naver.LoginWithNaverId(
                           {
                             clientId: "vkx131bLLt6ehxKoqXiH",
-                            callbackUrl: "http://localhost:8080/Member/naverLogin.jsp",
+                            callbackUrl: "http://localhost:8080/${pageContext.request.contextPath}/Member/naverLogin.jsp",
                             isPopup: false,
                             loginButton: {color: "green", type: 1, height: 40}
                           }

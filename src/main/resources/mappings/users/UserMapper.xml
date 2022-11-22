@@ -30,7 +30,7 @@
 
 
 	<select id="findUserId" parameterType="com.spring.learn.user.UserVO"
-		resultType="string">
+		resultType="com.spring.learn.user.UserVO">
 		SELECT * FROM USERS
 		WHERE USER_ID = #{userId}
 		AND GRADE != '관리자'

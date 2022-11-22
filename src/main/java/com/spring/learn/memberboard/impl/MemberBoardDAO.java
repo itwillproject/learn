@@ -6,7 +6,7 @@ import com.spring.learn.memberboard.MemberBoardVO;
 
 public interface MemberBoardDAO {
 	
-	// ë©”ì†Œë“œëª…ì´ Mapper íŒŒì¼ì˜ idëª…ìœ¼ë¡œ ì‚¬ìš©
+	// ¸Ş¼Òµå¸íÀÌ Mapper ÆÄÀÏÀÇ id¸íÀ¸·Î »ç¿ë
 	void insertBoard(MemberBoardVO vo);
 	void updateBoard(MemberBoardVO vo);
 	void deleteBoard(MemberBoardVO vo);
