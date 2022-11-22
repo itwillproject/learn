@@ -25,17 +25,26 @@ public class ResumeDAO {
 	}
 	
 	void deleteResume(ResumeVO vo){
-		
+		System.out.println("deleteResume()");
+		mybatis.delete("resumeDAO.deleteResume", vo);
+		System.out.println("vo: " + vo);
 	}
+	
 	void updateResume(ResumeVO vo) {
-		
+		System.out.println("updateResume()");
+		mybatis.update("resumeDAO.updateResume", vo);
+		System.out.println("vo: " + vo);
 	}
+	
 	ResumeVO getResume(ResumeVO vo) {
-		
+		System.out.println("getResume()");
+		vo =  mybatis.selectOne("resumeDAO.getResume", vo);
+		System.out.println("vo: " + vo);
 		
 		return vo;
 		
 	}
+	
 	List<ResumeVO> getResumeList(ResumeVO vo){
 		
 		

@@ -1,5 +1,5 @@
 <%@ page    pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +8,7 @@
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-
+	<script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 
 
 
@@ -101,7 +101,6 @@
                 </div>
                 <div class="text-center">
             <span id="naverIdLogin">
-                <img style="width: 40px; height: 40px;" src="${pageContext.request.contextPath }/picture/btnG_icon_square.png"/>
             </span>
                     <script type="text/javascript">
                       var naverLogin = new naver.LoginWithNaverId(
@@ -126,7 +125,7 @@
     <button type="button" class="btn btn-outline-danger" onclick="location.href='newMember.jsp'">회원가입</button>&nbsp;
     </li>
     <li>
-<button type="button" class="btn">지식 공유참여</button>
+<button type="button" class="btn" onclick = "location.href='howtobelecture.jsp'">지식 공유 참여</button>
 </li>
 
 

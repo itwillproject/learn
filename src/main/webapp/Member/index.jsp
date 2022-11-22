@@ -19,6 +19,9 @@
 		<a href="changePassword.jsp">비밀변호 변경</a>
 		<a href="findId.jsp">아이디 찾기</a>
 		<a href="findPassword.jsp">비밀번호 찾기</a>
+		<a href="findPassword.jsp">지식 공유 참여</a>
+		
+
 	</p>
 	<hr><hr>
 

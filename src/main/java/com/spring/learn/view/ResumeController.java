@@ -2,11 +2,15 @@ package com.spring.learn.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.spring.learn.resume.ResumeService;
 import com.spring.learn.resume.ResumeVO;
 
+@SessionAttributes("resume")
+@RequestMapping("/Member")
 @Controller
 public class ResumeController {
 	
@@ -21,7 +25,7 @@ public class ResumeController {
 	 * 3. UserVO 타입 객체를 메소드의 파라미터 값으로 전달
 	 */
 	//@RequestMapping(value = "/login.do", method = RequestMethod.POST)
-	@RequestMapping("/Member/Belecture/insertResume.do") 
+	@RequestMapping("/Belecture/insertResume.do") 
 	public String insertResume(ResumeVO vo) {
 		System.out.println("받은 데이터 vo : " + vo);
 		
@@ -29,6 +33,39 @@ public class ResumeController {
 	
 		return "close.jsp";
 	}
+	
+	@RequestMapping("/updateResume.do") 
+	public String updateResume(ResumeVO vo) {
+		System.out.println("받은 데이터 vo : " + vo);
+		
+		resumeService.updateResume(vo);
+	
+		return "getResume.do";
+	}
+	
+	@RequestMapping("/deleteResume.do") 
+	public String deleteResume(ResumeVO vo) {
+		System.out.println("받은 데이터 vo : " + vo);
+		
+		resumeService.deleteResume(vo);
+	
+		return "myPage.jsp";
+	}
+	
+	@RequestMapping("/getResume.do")
+	public String getResume(ResumeVO vo, Model model ) {
+		System.out.println("받은 데이터 vo :" + vo);
+		
+		vo = resumeService.getResume(vo);
+		
+		if (vo != null) {
+		model.addAttribute("resume", vo);
+		}
+		
+		return "Belecture/viewLectureApply.jsp";
+		
+	}
+	
 	
 	
 }

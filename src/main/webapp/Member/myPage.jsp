@@ -19,7 +19,7 @@
 </head>
 <body>
 	<h1>사이드 네비</h1>
-	<hr>
+	<hr><a href="getResume.do?userId=hh">지식 공유 현황보기</a>
 	<hr>
 	<hr>
 	<hr>
