@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.spring.learn.board.BoardVO;
 
 public interface BoardDAO {
-	// ¸Ş¼Òµå¸íÀÌ Mapper ÆÄÀÏÀÇ id¸íÀ¸·Î »ç¿ë
+	// ë©”ì†Œë“œëª…ì´ Mapper íŒŒì¼ì˜ idëª…ìœ¼ë¡œ ì‚¬ìš©
 	void insertBoard(BoardVO vo);
 	void updateBoard(BoardVO vo);
 	void deleteBoard(BoardVO vo);

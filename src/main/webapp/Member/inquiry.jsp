@@ -70,18 +70,25 @@
 						</ul>
 					</div>
 					<div id="listDisp">
-						<div class="pt-1 pl-4 pr-4">
-							<h5>
-								<b>${callCenterBoard.qnaTitle } c++초간단한 예제 오류 질문드립니다.</b>
-							</h5>
-							<span>${callCenterBoard.qnaContent }숫자 두개를 입력받고, 두 숫자를 더하여
-								출력하는 코드를 짰습니다. 문제는 계속 값이 numberplus의 값이 1만 나옵니다."두 숫자의 합은 1 입니다."
-								어떤 수를 입력하든 계속 1이 나오네요..</span><br>
-							<div class="pt-1">
-								<span>1일 전${callCenterBoard.qnaRegdate }</span>
+					<c:if test="${not empty BoardList}">
+						<c:forEach var="BoardList" items="${BoardList }">
+							<div class="pt-1 pl-4 pr-4">
+								<h5>
+									<b> ${BoardList.qnaTitle }</b>
+								</h5>
+								<span>${BoardList.qnaContent }</span><br>
+								<div class="pt-1">
+									<span>${BoardList.qnaRegdate }</span>
+								</div>
+								<hr>
 							</div>
-							<hr>
+						</c:forEach>
+					</c:if>
+					<c:if test="${empty BoardList}">
+						<div class="pt-1 pl-4 pr-4">
+							<h5>작성한 질문이 없습니다.</h5>
 						</div>
+					</c:if>
 					</div>
 					
 				</div>
@@ -89,22 +96,22 @@
 		</div>
 	</div>
 
-	<script>
+ 	<script>
 		function cBoardList() {
 			alert("cBoardList() 실행");
 
-			$.ajax("${pageContext.request.contextPath}/memberBoard/cBoardList.do", {
+			$.ajax("${pageContext.request.contextPath}/memberBoard/cBoardList.do?userId=${user.userId}", {
 				type : "get",
 				dataType : "json", //서버로부터 응답받는 데이터 형식
 				success : function(data) {
 					alert("성공~!");
-					console.log(data);
+					console.log("data : " + data);
 					let dispHtml = "";
 					$.each(data, function(index, obj){
 						dispHtml += '<div class="pt-1 pl-4 pr-4">';
-						dispHtml += "<h5><b>" + ${this.qnaTitle } + "</b></h5>"
-						dispHtml += "<span>" + ${this.qnaContent } + "</span><br>";
-						dispHtml += "<div class='pt-1'><span>"+${this.qnaRegdate }+"</span></div><hr></div></div>";	
+						dispHtml += "<h5><b>" + this.qnaTitle + "</b></h5>"
+						dispHtml += "<span>" + this.qnaContent + "</span><br>";
+						dispHtml += '<div class="pt-1"><span>' + this.qnaRegdate + "</span></div><hr></div>";	
 					});
 
 					$("#listDisp").html(dispHtml);
@@ -114,21 +121,22 @@
 				}
 			});
 		}
-		
+		</script>
+		<script>
 		function resolvedCBoardList() {
 			alert("resolvedCBoardList() 실행");
-			$.ajax("${pageContext.request.contextPath}/memberBoard/resolvedCBoardList.do", {
+			$.ajax("${pageContext.request.contextPath}/memberBoard/resolvedCBoardList.do?userId=${user.userId}", {
 				type : "get",
 				dataType : "json", //서버로부터 응답받는 데이터 형식
 				success : function(data) {
 					alert("성공~!");
-					console.log(data);
+					console.log("data : " + data);
 					let dispHtml = "";
 					$.each(data, function(index, obj){
 						dispHtml += '<div class="pt-1 pl-4 pr-4">';
-						dispHtml += "<h5><b>" + ${this.qnaTitle } + "</b></h5>"
-						dispHtml += "<span>" + ${this.qnaContent } + "</span><br>";
-						dispHtml += "<div class='pt-1'><span>"+${this.qnaRegdate }+"</span></div><hr></div></div>";	
+						dispHtml += "<h5><b>" + this.qnaTitle + "</b></h5>"
+						dispHtml += "<span>" + this.qnaContent + "</span><br>";
+						dispHtml += '<div class="pt-1"><span>' + this.qnaRegdate + "</span></div><hr></div>";	
 					});
 
 					$("#listDisp").html(dispHtml);
@@ -138,22 +146,23 @@
 				}
 			});
 		}
-		
+		</script>
+		<script>
 		function unResolvedCBoardList() {
 			alert("unResolvedCBoardList() 실행");
 
-			$.ajax("${pageContext.request.contextPath}/memberBoard/resolvedCBoardList.do", {
+			$.ajax("${pageContext.request.contextPath}/memberBoard/unResolvedCBoardList.do?userId=${user.userId}", {
 				type : "get",
 				dataType : "json", //서버로부터 응답받는 데이터 형식
 				success : function(data) {
 					alert("성공~!");
-					console.log(data);
+					console.log("data : " + data);
 					let dispHtml = "";
 					$.each(data, function(index, obj){
 						dispHtml += '<div class="pt-1 pl-4 pr-4">';
-						dispHtml += "<h5><b>" + ${this.qnaTitle } + "</b></h5>"
-						dispHtml += "<span>" + ${this.qnaContent } + "</span><br>";
-						dispHtml += "<div class='pt-1'><span>"+${this.qnaRegdate }+"</span></div><hr></div></div>";	
+						dispHtml += "<h5><b>" + this.qnaTitle + "</b></h5>"
+						dispHtml += "<span>" + this.qnaContent + "</span><br>";
+						dispHtml += '<div class="pt-1"><span>' + this.qnaRegdate + "</span></div><hr></div>";	
 					});
 
 					$("#listDisp").html(dispHtml);

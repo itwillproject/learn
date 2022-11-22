@@ -1,14 +1,20 @@
 package com.spring.learn.view;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.spring.learn.board.BoardService;
+import com.spring.learn.board.BoardVO;
+import com.spring.learn.user.UserVO;
 
-@Controller					// ´Ü ÇöÀç À§Ä¡(Å¬·¡½º)¿¡¼­¸¸ À¯È¿
-@SessionAttributes("board") // board¶ó´Â ÀÌ¸§ÀÇ Model°´Ã¼°¡ ÀÖÀ¸¸é ¼¼¼Ç¿¡ ÀúÀå
+@Controller					// ë‹¨ í˜„ì¬ ìœ„ì¹˜(í´ë˜ìŠ¤)ì—ì„œë§Œ ìœ íš¨
+@SessionAttributes("board") // boardë¼ëŠ” ì´ë¦„ì˜ Modelê°ì²´ê°€ ìˆìœ¼ë©´ ì„¸ì…˜ì— ì €ì¥
 @RequestMapping("/board")
 public class BoardController {
 
@@ -16,8 +22,31 @@ public class BoardController {
 	private BoardService boardService;
 	
 	public BoardController() {
-		System.out.println(">> BoardController() »ı¼ºÇÔ");
+		System.out.println(">> BoardController() ìƒì„±");
 	}
+	
+	@RequestMapping("/getQnaBoardList.do")
+	public String getQnaBoardList(BoardVO vo, Model model) {
+		System.out.println(">>> ë³´ë“œë¦¬ìŠ¤íŠ¸ ê°€ì ¸ì˜¤ê¸°");		
+		System.out.println("vo : " + vo);
+		
+		if(vo.getQboardNo() == null) vo.setQboardNo("a");
+		
+		List<BoardVO> boardList = boardService.getBoardList(vo); // ì¡°íšŒí•˜ê³ 
+		
+		model.addAttribute("boardList", boardList); // ê°’ ì €ì¥í•˜ê³ 
+
+		return "/Community/qna/qnaBoardList.jsp"; // ì´ë™
+	}
+	
+	@GetMapping("/qnaWriteForm.do")
+	public String toQnaWriteForm(BoardVO vo) {
+		System.out.println(">>> qnaì‘ì„±í¼ ì´ë™");						
+				
+		return "redirect:/Community/qna/qnaWriteForm.jsp"; // ì´ë™
+	}
+	
+	
 	
 	
 

@@ -59,7 +59,7 @@
 				<li class="sidebar-top">
 					<h4 style="margin-left: 3px; text-align: center;"><small>HOME</small></h4>
 				</li>
-				<li class="sidebar-brand"><a href="mypage.jsp">프로필</a></li>
+				<li class="sidebar-brand"><a href="myPage.jsp">프로필</a></li>
 				<li class="sidebar-brand"><a href="#">알림</a></li>
 			</ul>
 			<ul class="sidebar-nav">
@@ -67,7 +67,7 @@
 					<h4 style="margin-left: 3px; text-align: center;"><small>학습 관리</small></h4>
 				</li>
 				<li class="sidebar-brand"><a href="mypage.jsp">내학습 (유무료)</a></li>
-				<li class="sidebar-brand"><a href="#">작성한 게시글</a></li>
+				<li class="sidebar-brand"><a href="${pageContext.request.contextPath}/memberBoard/callCenterBoardList.do?userId=${user.userId}">작성한 게시글</a></li>
 				<li class="sidebar-brand"><a href="#">북마크</a></li>
 			</ul>
 			<ul class="sidebar-nav">

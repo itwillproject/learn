@@ -13,6 +13,7 @@
 	<typeAliases>
 		<typeAlias alias="userVO" type="com.spring.learn.user.UserVO"/>
 		<typeAlias alias="board" type="com.spring.learn.board.BoardVO"/>
+		<typeAlias alias="memberBoard" type="com.spring.learn.memberboard.MemberBoardVO"/>
 	</typeAliases>
 			
 	

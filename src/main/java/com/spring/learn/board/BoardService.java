@@ -2,10 +2,12 @@ package com.spring.learn.board;
 
 import java.util.List;
 
+import com.spring.learn.memberboard.MemberBoardVO;
+
 public interface BoardService {
 	void insertBoard(BoardVO vo);
 	void updateBoard(BoardVO vo);
 	void deleteBoard(BoardVO vo);
-	BoardVO getBoard(BoardVO vo); // 1°³ÀÇ µ¥ÀÌÅÍ Á¶È¸
-	List<BoardVO> getBoardList(BoardVO vo); // ÀüÃ¼±Û Á¶È¸
+	BoardVO getBoard(BoardVO vo); // 1ê°œì˜ ë°ì´í„° ì¡°íšŒ
+	List<BoardVO> getBoardList(BoardVO vo); // ì „ì²´ê¸€ ì¡°íšŒ
 }
