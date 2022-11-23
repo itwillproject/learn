@@ -135,7 +135,7 @@ public class UserController {
 	@RequestMapping("/changePasswordPage.do")
 	public String moveToChangePage (HttpSession session) {
 		System.out.println("==== skController moveToChangePage() 실행 ====");
-		String userId = ((UserVO)session.getAttribute("user")).getUserId();
+		String userId = ((UserVO)session.getAttribute("vo")).getUserId();
 		System.out.println("userId: " + userId);		
 		return "/Member/changePassword.jsp";
 	}
@@ -145,14 +145,17 @@ public class UserController {
 	public String changePassword (@ModelAttribute UserVO user, HttpSession session) {
 		System.out.println("==== skController changePassword() 실행 ====");
 		//System.out.println("userId: " + ((UserVO)session.getAttribute("user")).getUserId());		
-		String userId = ((UserVO)session.getAttribute("user")).getUserId();
+		String userId = ((UserVO)session.getAttribute("vo")).getUserId();
 		//user.setUserId(userId);
 		user.setUserId(userId);
+		System.out.println("세션 데이터 삭제 전 " + session.getAttribute("vo"));
 		
 		userService.changePwd(user);
 		
 		System.out.println("userPassword: " + user.getUserPwd());		
 		
+		session.removeAttribute("vo");
+		System.out.println(session.getAttribute("vo"));
 		return "/Member/changePasswordOK.jsp";
 	}
 	
