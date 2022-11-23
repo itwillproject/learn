@@ -71,7 +71,7 @@
 					<h3><b>${memberBoard.qnaTitle }</b></h3>
 				</div>
 				<div class="row pl-3 pb-3">
-					<p class="mr-2"><b>${user.userId }일단null</b></p><p class="text-muted">${memberBoard.qnaRegdate }</p>
+					<p class="mr-2"><b>${user.userId }</b></p><p class="text-muted">${memberBoard.qnaRegdate }</p>
 				</div>
 				<div class="d-flex flex-row p-3">
 					<p>${memberBoard.qnaContent }</p>

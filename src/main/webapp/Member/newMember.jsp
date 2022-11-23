@@ -35,14 +35,15 @@
 			<h2>회원가입</h2>
 		</section>
 	</div>
-	</div>
-	<div class="container">
+</div>
+	<div class="container-fluid mt-5 pb-3 d-flex justify-content-center">
 
-		<div class="row">
-		<div class="col-2">
-			<%@ include file="sideNav.jspf"%>
+		<div class="row w-100 pb-4 justify-content-center">
+			<!-- 왼쪽 네비 -->
+			<div class="col-2 d-flex justify-content-center">
+				<a href="#" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
 			</div>
-			<div class="col-10">
+			<div class="col-6 pl-3 gray-line">
 
 			<div class="text-center">
 				<div>
@@ -52,7 +53,7 @@
 						<p class="">나의 온라인 사수, 인프런</p>
 					</div>
 					<div class="mx-auto" style="width: 25%;">
-						<form action="insertUser.do" method="get">
+						<form action="${pageContext.request.contextPath}/Member/insertUser.do" method="get">
 							<div>
 								<label for="user_email" style="float: left;">이메일</label>
 								<div>
@@ -107,7 +108,7 @@
 								<div id="birth_check"></div>
 							</div>
 							<br>
-							<button type="button" class="btn btn-success w-100"
+							<button type="submit" class="btn btn-success w-100"
 								id="reg_submit" disabled="disabled">가입하기</button>
 						</form>
 					</div>

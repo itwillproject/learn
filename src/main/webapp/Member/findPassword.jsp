@@ -14,6 +14,12 @@
 	html, body {
 		height: 100%;
 	}
+		.tape {
+		height: 100px;
+		margin: 50px auto;
+		padding-top: 15px;
+		color: white;
+	}
 </style>
 
 <script>
@@ -29,6 +35,7 @@
 		var mailJ = /^[0-9a-zA-Z]{4,22}([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
 		// 이메일 형식 체크
+		
 		if (mailJ.test(frm.userId.value)) {
 			
 			$.ajax("${pageContext.request.contextPath }/member/findPassword.do", {
@@ -38,18 +45,21 @@
 		        dataType: "json",
 		        success : function(data){
 		            alert("성공");
-		            console.log(data);
-		            
+
 		            if (data.length == 0) {
 		            	
 		    			$("input[name=userId]").addClass("is-invalid");
 		    			$("#caption").addClass("onError text-danger");
 		    			$("#caption").text("메일 주소를 다시 확인해 주세요.");
 		    			
+		    			$("#user_email").keyup(function(){
+		    				$("#caption").removeClass("onError text-danger");
+		    				$("#caption").text("");
+		    				$("input[name=userId]").removeClass("is-invalid");
+		    			});
+		    			
 		            } else {
-						
-			            console.log(data);
-			            
+
 			         	let dispHtml = "";
 			         	
 		            	$.each(data, function(index, obj){
@@ -125,6 +135,7 @@
 			$("#caption").addClass("onError text-danger");
 			$("#caption").text("메일 형식을 다시 확인해 주세요.");
 		}
+		
 
 		
 		
@@ -173,6 +184,14 @@
 
 </head>
 <body>
+<%@include file="/Common/header.jsp" %>
+<div class="container-fluid bg-dark">
+		<div class="container tape">
+			<section class="tapeContent">
+				<h2>비밀번호 재설정</h2>
+			</section>
+		</div>
+	</div>
 <div class="container h-100 text-center">
 
 	<div class="d-flex align-items-center mx-auto text-center h-100">
@@ -184,7 +203,7 @@
 			</p>
 			<div class="w-100 p-3 mx-auto">
 				<form action="ajaxSendPassword" method="post" class="form-group">
-					<input type="text" name="userId" class="form-control my-2" placeholder="example@gmail.com"> 
+					<input id="user_email" type="text" name="userId" class="form-control my-2" placeholder="example@gmail.com"> 
 					<small id="caption" class="invalid"></small>
 					<input type="button" class="btn-block btn btn-success my-2" value="인증번호 전송" onclick="go_verify(this.form)">
 				</form>

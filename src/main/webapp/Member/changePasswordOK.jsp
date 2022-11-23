@@ -25,7 +25,7 @@
 				<p>비밀번호 변경이 완료되었습니다.</p>
 				<p>
 					<input type="button" class="btn-block btn btn-success my-2" value="확인"
-						onclick="location.href='${pageContext.request.contextPath }/Member/login.jsp'">
+						onclick="location.href='${pageContext.request.contextPath }/Common/index.jsp'">
 				</p>
 			</div>
 		</div>
