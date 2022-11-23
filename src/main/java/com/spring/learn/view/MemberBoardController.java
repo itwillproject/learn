@@ -329,4 +329,22 @@ public class MemberBoardController {
 		return "/Member/inquiry.jsp"; // 이동
 	}
 	
+	
+	// 내학습 부분
+	// 내 학습 리스트 보기
+	@GetMapping("/goMyLectureList.do")
+	public String goMyLectureList(UserVO uvo, HttpSession session, Model model) {
+		System.out.println(">>> 내 학습 리스트 보기로 이동");	
+		uvo = (UserVO) session.getAttribute("user");
+				
+		
+		// 유저vo로 내 학습 중인 vo list를 받아서 모델에 등록하고, 세션에 등록시키기------------------------------------------------------------------------
+//		mlvo = memberBoardService.getBoard(bvo);
+//		model.addAttribute("callBvo", bvo);
+		
+//		System.out.println(">> 검색후 callBvo : "+ bvo);		
+		
+		return "/Member/MyLectureList.jsp"; // 이동
+	}
+	
 }

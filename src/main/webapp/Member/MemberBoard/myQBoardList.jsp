@@ -19,9 +19,9 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
   
   
-  <style>
+<style>
   	.inner {
-		width: 640px;
+		width: 840px;
 		display: inline-block;
 		text-align: left;
 	}
@@ -69,25 +69,29 @@
 	.answer {
 	    display: none;
 	    padding-bottom: 30px;
+	    font-size: 15px;
 	}
 	.faq-content {
 	    border-bottom: 1px solid #e0e0e0;
 	}
 	.question {
-	    padding: 30px 0;
+	    padding: 25px 0;
+	    background: none;
 	    cursor: pointer;
 	    border: none;
 	    outline: none;
-	    background: none;
 	    width: 100%;
 	    text-align: left;
+	    font-size: 18px;
+	    
 	}
 	.question:hover {
-	    color: green;
+	    color: black;
 	}
 	[id$="-toggle"] {
 	    margin-right: 10px;
 	}
+  
  	.answer, .question { 
  		font-family: 'Gamja Flower', cursive; 
  	    font-size: 20px; 
@@ -98,18 +102,6 @@
 </head>
 <body>
 	<%@ include file="/Common/header.jsp" %>
-	<br><br>
-	<div class="outer">
-		<div class="inner">
-			<ul class="menuborder">
-			  <li class="menu"><a href="/learn/getFaqList.do">자주 묻는 질문</a></li>
-			  <li class="menu"><a class="active"  href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터 문의하기</a></li>
-			  <li class="menu"><a href="/learn/Member/MemberBoard/serviceIntegrationPolicy.jsp">통합서비스 이용약관</a></li>
-			  <li class="menu"><a href="/learn/Member/MemberBoard/generalPolicy.jsp">아웃풋런 이용약관</a></li>
-			  <li class="menu"><a href="/learn/Member/MemberBoard/privacyPolicy.jsp">개인정보 취급방침</a></li>
-			</ul>
-		</div>
-	</div>
 
 	<div class="container-fluid">
 		<div class="row justify-content-center">
@@ -123,6 +115,20 @@
 			<!-- 가운데 내용 -->
 			
 			<div class="col-sm-6 align-content-center">
+			
+				<br><br>
+				<!-- 하위 네비 -->
+				<div class="outer">
+					<div class="inner">
+						<ul class="menuborder">
+						  <li class="menu"><a href="/learn/getFaqList.do">자주 묻는 질문</a></li>
+						  <li class="menu"><a class="active"  href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터 문의하기</a></li>
+						  <li class="menu"><a href="/learn/Member/MemberBoard/serviceIntegrationPolicy.jsp">통합서비스 이용약관</a></li>
+						  <li class="menu"><a href="/learn/Member/MemberBoard/generalPolicy.jsp">아웃풋런 이용약관</a></li>
+						  <li class="menu"><a href="/learn/Member/MemberBoard/privacyPolicy.jsp">개인정보 취급방침</a></li>
+						</ul>
+					</div>
+				</div>
 			
 			<!-- 섹션 구분 -->
 				<div class="d-flex flex-row pr-5">
