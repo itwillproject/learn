@@ -58,9 +58,10 @@ public class ResumeController {
 		
 		vo = resumeService.getResume(vo);
 		
-		if (vo != null) {
-		model.addAttribute("resume", vo);
+		if (vo == null) {
+			vo = new ResumeVO();
 		}
+		model.addAttribute("resume", vo);
 		
 		return "/Member/Belecture/viewLectureApply.jsp";
 		
