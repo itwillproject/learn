@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.spring.learn.common.Paging;
+import com.spring.learn.memberboard.CallcenterCommentVO;
 import com.spring.learn.memberboard.MemberBoardService;
 import com.spring.learn.memberboard.MemberBoardVO;
 import com.spring.learn.user.UserVO;
 
 @Controller					// 단 현재 위치(클래스)에서만 유효
-@SessionAttributes("memberBoard") // memberBoard라는 이름의 Model객체가 있으면 세션에 저장
+@SessionAttributes({"memberBoard", "callBvo", "cvoList"}) // memberBoard라는 이름의 Model객체가 있으면 세션에 저장
 @RequestMapping("/memberBoard")
 public class MemberBoardController {
 
@@ -39,6 +40,10 @@ public class MemberBoardController {
 		System.out.println("vo : " + bvo);
 		model.addAttribute("memberBoard", bvo);
 		UserVO uvo = (UserVO) session.getAttribute("user");
+		
+		if(uvo == null) {
+			return "/Member/login.do";
+		}
 		
 		// 전체 페이지 수 구하기
 		p.setTotalRecord(memberBoardService.countBoard(bvo));
@@ -103,6 +108,11 @@ public class MemberBoardController {
 	public String QnaWrite(MemberBoardVO mvo, HttpSession session) {
 		
 		UserVO uvo = (UserVO) session.getAttribute("user");
+		
+		if(uvo == null) {
+			return "/Member/login.do";
+		}
+		
 		mvo.setUserId(uvo.getUserId());
 		mvo.setGrade(uvo.getGrade());
 		
@@ -133,6 +143,11 @@ public class MemberBoardController {
 	public String QnaModify(MemberBoardVO mvo, HttpSession session) {
 		
 		UserVO uvo = (UserVO) session.getAttribute("user");
+		
+		if(uvo == null) {
+			return "/Member/login.do";
+		}
+		
 		mvo.setUserId(uvo.getUserId());
 		mvo.setGrade(uvo.getGrade());
 		
@@ -154,9 +169,19 @@ public class MemberBoardController {
 		model.addAttribute("callBvo", bvo);
 		
 		System.out.println(">> 검색후 callBvo : "+ bvo);
+		
+		// 커멘트 가져오기
+		List<CallcenterCommentVO> cvoList = memberBoardService.getCallcenterComment(bvo);
+		
+		model.addAttribute("cvoList", cvoList);
+		
+		model.addAttribute("cvoCnt", cvoList.size());
+		
+		System.out.println(">>>>> cvoList : " + cvoList);
 				
 		return "/Member/MemberBoard/myQBoard.jsp"; // 이동
 	}
+	
 	
 	// 삭제하기
 	@RequestMapping("/deleteBoard.do")
@@ -167,6 +192,66 @@ public class MemberBoardController {
 		
 		return "/memberBoard/getMyQBoardList.do"; // 이동
 	}
+	
+	
+	
+	//  CallcenterComment 부분 -> 댓글 부분
+	
+	// 여기 리스폰스바디로 해서 에이젝스 처리 할 예정
+	// 코멘트 입력하기
+	@PostMapping("/addCallcenterComment.do")
+	public String addCallcenterComment(CallcenterCommentVO cvo, HttpSession session, Model model, MemberBoardVO bvo) {
+		
+		UserVO uvo = (UserVO) session.getAttribute("user");
+		
+		if(uvo == null) {
+			return "/Member/login.do";
+		}
+		
+		cvo.setUserId(uvo.getUserId());
+		cvo.setGrade(uvo.getGrade());
+		
+		System.out.println(">> QnaWrite 입력 도착, uvo : " + uvo);
+		System.out.println(">> QnaWrite 입력 도착, cvo : " + cvo);
+		
+		
+		memberBoardService.addCallcenterComment(cvo);
+		
+		// 커멘트 가져오기
+		bvo = (MemberBoardVO) session.getAttribute("callBvo");
+		List<CallcenterCommentVO> cvoList = memberBoardService.getCallcenterComment(bvo);
+		
+		model.addAttribute("cvoList", cvoList);
+		
+		model.addAttribute("cvoCnt", cvoList.size());
+		
+		return "/Member/MemberBoard/myQBoard.jsp"; // 이동
+	}
+	
+	
+	// 코멘트 삭제하기
+	@RequestMapping("/delCallcenterComment.do")
+	public String delCallcenterComment(CallcenterCommentVO cvo, Model model, MemberBoardVO bvo, HttpSession session) {
+		System.out.println(">>> 삭제하기 : " + cvo);
+		
+		memberBoardService.delCallcenterComment(cvo);
+		
+		// 커멘트 가져오기
+		bvo = (MemberBoardVO) session.getAttribute("callBvo");
+		List<CallcenterCommentVO> cvoList = memberBoardService.getCallcenterComment(bvo);
+		
+		model.addAttribute("cvoList", cvoList);
+		
+		model.addAttribute("cvoCnt", cvoList.size());
+		
+		
+		System.out.println(">>>>> cvoList : " + cvoList);
+		
+		return "/Member/MemberBoard/myQBoard.jsp"; // 이동
+	}
+	
+	
+	
 	
 	
 	

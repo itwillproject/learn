@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.learn.board.BoardService;
+import com.spring.learn.memberboard.CallcenterCommentVO;
 import com.spring.learn.memberboard.MemberBoardService;
 import com.spring.learn.memberboard.MemberBoardVO;
 
@@ -50,6 +51,21 @@ public class MemberBoardServiceImpl implements MemberBoardService {
 	@Override
 	public int countBoard(MemberBoardVO vo) {
 		return memberBoardDAO.countBoard(vo);
+	}
+
+	@Override
+	public void addCallcenterComment(CallcenterCommentVO cvo) {
+		memberBoardDAO.addCallcenterComment(cvo);		
+	}
+
+	@Override
+	public List<CallcenterCommentVO> getCallcenterComment(MemberBoardVO bvo) {
+		return memberBoardDAO.getCallcenterComment(bvo);
+	}
+
+	@Override
+	public void delCallcenterComment(CallcenterCommentVO cvo) {
+		memberBoardDAO.delCallcenterComment(cvo);
 	}
 
   

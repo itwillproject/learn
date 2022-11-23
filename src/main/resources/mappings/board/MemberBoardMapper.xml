@@ -54,6 +54,26 @@
 	</select>
 	
 	
+	
+	<!-- 코멘트 관련 매퍼 -->
+	
+	<insert id="addCallcenterComment" parameterType="CallcenterComment">
+		INSERT INTO CALLCENTER_COMMENT
+		 (COMMENT_NO, QNA_NO, USER_ID, GRADE, COMMENT_CONTENT, COMMENT_FILE)
+		VALUES ((SELECT NVL(MAX(COMMENT_NO),0) + 1 FROM CALLCENTER_COMMENT), #{qnaNo},
+		 #{userId}, #{grade}, #{commentContent}, #{commentFile})
+	</insert>
+	
+	<select id="getCallcenterComment" parameterType="memberBoard" resultType="CallcenterComment">
+		SELECT * FROM CALLCENTER_COMMENT
+		WHERE QNA_NO = #{qnaNo}
+	</select>
+	
+	<delete id="delCallcenterComment" parameterType="CallcenterComment">
+		DELETE FROM CALLCENTER_COMMENT
+		WHERE COMMENT_NO = #{commentNo}
+	</delete>
+		
 
 </mapper>
 

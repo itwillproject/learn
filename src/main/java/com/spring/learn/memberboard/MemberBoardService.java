@@ -10,4 +10,7 @@ public interface MemberBoardService {
 	int countBoard(MemberBoardVO vo);
 	MemberBoardVO getBoard(MemberBoardVO vo); // 1개의 데이터 조회
 	List<MemberBoardVO> getBoardList(Map<String, String> map); // 전체글 조회
+	void addCallcenterComment(CallcenterCommentVO cvo);
+	List<CallcenterCommentVO> getCallcenterComment(MemberBoardVO bvo);
+	void delCallcenterComment(CallcenterCommentVO cvo);
 }
