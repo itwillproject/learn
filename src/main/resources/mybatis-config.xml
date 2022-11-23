@@ -23,11 +23,7 @@
 		<typeAlias alias="faqVO" type="com.spring.learn.board.FaqVO"/>
 		<typeAlias alias="criteria" type="com.spring.learn.common.Criteria"/>
 		<!-- ========================== -->
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> 7e1ff78e1dd14bb33a22cd5273e3d31270dee0ed
 	</typeAliases>
 			
 	
