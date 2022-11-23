@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="noticeDAO">
+
+	<!-- 	<update id="updateNoticeHit" parameterType="noticeVO">
+		UPDATE NOTICE_BOARD
+		SET BOARD_HIT = (SELECT NVL(MAX(BOARD_HIT), 1) + 1 FROM NOTICE_BOARD)
+		WHERE BOARD_NO = #{boardNo}
+	</update> -->
+
+	<!-- 전체 리스트 -->
+	<select id="getNoticeList" parameterType="noticeVO" resultType="noticeVO">
+		SELECT * FROM NOTICE_BOARD ORDER BY BOARD_NO DESC
+	</select>
+	
+	<!-- 게시글 번호에 해당하는 상세데이터 -->
+	<select id="getNotice" parameterType="noticeVO" resultType="noticeVO">
+		SELECT * FROM NOTICE_BOARD 
+		WHERE BOARD_NO = #{boardNo} 
+	</select>
+	
+	<!-- 페이징추가  -->
+	<select id="getBoardList" parameterType="map" resultType="noticeVO">
+		SELECT *
+		FROM (SELECT ROWNUM R_NUM, B.*
+	        FROM (	SELECT *
+	                FROM NOTICE_BOARD
+		                WHERE 1 = 1
+		               <if test="searchKeyword != null">
+						AND ( BOARD_TITLE LIKE '%'|| #{searchKeyword} ||'%'
+						OR BOARD_CONTENT LIKE '%'|| #{searchKeyword} ||'%')		
+						</if>		
+	                 	ORDER BY BOARD_NO DESC
+	             ) B 
+	         )
+		WHERE R_NUM BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<select id="countBoard" parameterType="noticeVO" resultType="int">
+		SELECT COUNT(BOARD_NO) FROM NOTICE_BOARD
+		<if test="searchKeyword != null">
+		WHERE BOARD_TITLE LIKE '%'|| #{searchKeyword} ||'%'
+		OR BOARD_CONTENT LIKE '%'|| #{searchKeyword} ||'%'		
+		</if>		
+	</select>
+	
+	
+	<!-- 페이지에 해당하는 게시글 리스트 -->
+<!-- 
+	<select id="listPage" resultType="noticeVO" parameterType="criteria">
+		SELECT *
+		FROM (SELECT ROWNUM R_NUM, B.*
+	        FROM (SELECT *
+	                FROM NOTICE_BOARD
+	                ORDER BY BOARD_NO DESC
+	             ) B 
+	         )
+		WHERE R_NUM BETWEEN #{rowStart} AND #{rowEnd}
+	</select>
+ -->
+ 	
+	<!-- 전체 게시글 수 -->
+<!-- 
+	<select id="listCount" resultType="int">
+	<![CDATA[
+		SELECT COUNT(BOARD_NO)
+		  FROM NOTICE_BOARD
+		 WHERE BOARD_NO > 0
+	]]>
+	</select>
+ -->
+ 	
+	<!-- 키워드로 검색(제목) -->
+<!-- 
+	<select id="getBoardList_T" parameterType="string" resultType="noticeVO">
+		SELECT * 
+		FROM NOTICE_BOARD 
+		WHERE BOARD_TITLE LIKE '%'|| #{searchKeyword} ||'%' 
+		ORDER BY BOARD_NO DESC
+	</select>
+ -->
+ 	
+	<!-- 키워드로 검색(내용) -->
+<!-- 
+	<select id="getBoardList_C" parameterType="string" resultType="noticeVO">
+		SELECT * 
+		FROM NOTICE_BOARD 
+		WHERE BOARD_CONTENT LIKE '%'|| #{searchKeyword} ||'%' 
+		ORDER BY BOARD_NO DESC
+	</select>
+ -->
+ 	
+	<!-- 키워드에 해당하는 게시글수 조회(제목)-->
+<!-- 	
+	<select id="getBoardCnt_T"  resultType="int">
+	SELECT COUNT(*)
+	FROM (SELECT ROWNUM R_NUM, B.*
+        FROM (	SELECT *
+                FROM NOTICE_BOARD
+	                WHERE BOARD_TITLE LIKE '%' || #{searchKeyword} || '%'
+                ORDER BY BOARD_NO DESC
+             ) B 
+         )
+    </select>
+ -->	
+ 
+	<!-- 키워드에 해당하는 게시글수 조회(내용)-->
+<!-- 
+	<select id="getBoardCnt_C"  resultType="int">
+	SELECT COUNT(*)
+	FROM (SELECT ROWNUM R_NUM, B.*
+        FROM (	SELECT *
+                FROM NOTICE_BOARD
+	                WHERE BOARD_CONTENT LIKE '%' || #{searchKeyword} || '%'
+                ORDER BY BOARD_NO DESC
+             ) B 
+         )
+	</select>
+ -->	
+ 
+<!-- 
+	<select id="getBoardListPage_T" resultType="noticeVO" parameterType="map">
+	SELECT *
+	FROM (SELECT ROWNUM R_NUM, B.*
+        FROM (	SELECT *
+                FROM NOTICE_BOARD
+	                WHERE BOARD_TITLE LIKE '%' || #{searchKeyword} || '%'
+                 	ORDER BY BOARD_NO DESC
+             ) B 
+         )
+	WHERE R_NUM BETWEEN #{rowStart} AND #{rowEnd}
+	</select>
+ 	
+	<select id="getBoardListPage_C" resultType="noticeVO" parameterType="map">
+	SELECT *
+	FROM (SELECT ROWNUM R_NUM, B.*
+        FROM (	SELECT *
+                FROM NOTICE_BOARD
+	                WHERE BOARD_CONTENT LIKE '%' || #{searchKeyword} || '%'
+                 	ORDER BY BOARD_NO DESC
+             ) B 
+         )
+	WHERE R_NUM BETWEEN #{rowStart} AND #{rowEnd}
+	</select>
+-->
+ 
+</mapper>
+
+
+
+
+
+

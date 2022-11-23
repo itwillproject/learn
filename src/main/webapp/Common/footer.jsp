@@ -14,7 +14,7 @@ html, body {
 }
 
 #wrap {
-  min-height: 20vh;
+/*   min-height: 20vh; */
   position: relative;
   width: 100%; 
   
@@ -28,10 +28,9 @@ footer {
   width: 100%;
   height: 90px;
   bottom: 0px;
-  position: absolute;
+  <%-- position: absolute; --%>
   border-top: 1px solid #c4c4c4;
   padding-top: 15px;
-  color: white
   font-size: 14px;
 }
 

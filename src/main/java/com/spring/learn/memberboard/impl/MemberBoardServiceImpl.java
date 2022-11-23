@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.learn.board.BoardService;
 import com.spring.learn.memberboard.CallcenterCommentVO;
 import com.spring.learn.memberboard.MemberBoardService;
 import com.spring.learn.memberboard.MemberBoardVO;
@@ -19,7 +18,7 @@ public class MemberBoardServiceImpl implements MemberBoardService {
 	private MemberBoardDAO memberBoardDAO;
 
 	public MemberBoardServiceImpl() {
-		System.out.println(">> BoardServiceImple 생성");
+		System.out.println(">> BoardServiceImple ����");
 	}
 
 	@Override
@@ -43,9 +42,16 @@ public class MemberBoardServiceImpl implements MemberBoardService {
 	}
 
 
+	//전체데이터 조회 map
 	@Override
 	public List<MemberBoardVO> getBoardList(Map<String, String> map) {
-		return memberBoardDAO.getBoardList(map);
+		return memberBoardDAO.getBoardListMap(map);
+	}
+	
+	//전체데이터 조회 vo
+	@Override
+	public List<MemberBoardVO> getBoardList(MemberBoardVO bvo) {
+		return memberBoardDAO.getBoardList(bvo);
 	}
 	
 	@Override
@@ -67,6 +73,20 @@ public class MemberBoardServiceImpl implements MemberBoardService {
 	public void delCallcenterComment(CallcenterCommentVO cvo) {
 		memberBoardDAO.delCallcenterComment(cvo);
 	}
+
+
+	@Override
+	public List<MemberBoardVO> resolvedCBoardList(MemberBoardVO vo) {
+		// TODO Auto-generated method stub
+		return memberBoardDAO.resolvedCBoardList(vo);
+	}
+
+	@Override
+	public List<MemberBoardVO> unResolvedCBoardList(MemberBoardVO vo) {
+		// TODO Auto-generated method stub
+		return memberBoardDAO.unResolvedCBoardList(vo);
+	}
+
 
   
 }

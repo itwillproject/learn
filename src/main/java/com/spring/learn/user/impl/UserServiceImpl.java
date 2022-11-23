@@ -36,13 +36,13 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public List<String> findUserIdList(UserVO user) {
+	public List<UserVO> findUserIdList(UserVO user) {
 		return userDAO.findUserIdList(user);
 	}
 
 
 	@Override
-	public String findUserId(UserVO user) {
+	public UserVO findUserId(UserVO user) {
 		return userDAO.findUserId(user);
 
 	}
@@ -50,6 +50,22 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserVO confirmUser(UserVO vo) {
 		return userDAO.confirmUser(vo);
+	}
+
+	@Override
+	public void changePwd(UserVO user) {
+		userDAO.changePwd(user);		
+	}
+
+	@Override
+	public void deleteUser(UserVO user) {
+		userDAO.deleteUser(user);
+		
+	}
+
+	@Override
+	public void addNaverUser(UserVO user) {
+		userDAO.addNaverUser(user);
 	}
 
 }

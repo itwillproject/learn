@@ -1,16 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>공지사항</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-  <style>
+<title>공지사항</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<style>
+	.getNotice a {color: black;}
+	 	.getNotice a:hover {
+	  	text-decoration: none;
+	  	color: green;
+	 }
+	 .center { text-align: center; }
 	.tape {
 		height: 100px;
 		margin: 50px auto;
@@ -19,8 +27,7 @@
 	}
 	.table #N { color: lime;}  
 	.table #fontSize { font-size: 0.7em }
-  	.inner {
-		width: 630px;
+	.inner {
 		display: inline-block;
 		text-align: left;
 	}
@@ -32,7 +39,7 @@
 	    margin: 0;
 	    padding: 0;
 	    overflow: hidden;
- 	    border-bottom: 1px solid #e7e7e7; 
+		    border-bottom: 1px solid #e7e7e7; 
 	}
 	.menu {
 	    float: left;
@@ -86,61 +93,254 @@
 		color:white;
 		border:1px solid green;
 	}
-  </style>
+/* 	.textfield {
+		position: relative;
+		text-align: center;
+		width: 500px;
+		height: 32px;
+		font-size: 15px;
+		border: 0;
+	 	border-radius: 15px;
+		outline: none;
+		padding-left: 10px;
+		background-color: rgb(233, 233, 233);
+	} */
+	
+</style>
+<script>
+	/*
+	$(function(){
+	    $.ajax(
+	        type:post,
+	        url:url1,
+	        success:function(){
+	        },
+	        error:function(){
+	        }
+	    );
+	    $.ajax(
+	        type:post,
+	        url:url2,
+	        success:function(){
+	        },
+	        error:function(){
+	        }
+	    );
+	})
+	 */
+
+	function getJsonNoticeListData(frm) {
+		//alert("getJsonNoticeListData(frm) 실행");
+		console.log($(frm).serialize());
+		
+		$.ajax("getJsonNoticeList.do", {
+			type: "get",
+			data: $(frm).serialize(), //서버쪽으로 JSON 문자열 전달
+			dataType: "json", //서버로부터 응답받는 데이터 형식
+			success: function(data){ 
+				//alert("게시글 list ajax 성공"); 
+				console.log(data);
+				
+				let dispHtml = "";
+				
+				for (let board of data) {					
+					dispHtml += "<tr>";
+					dispHtml += "<td class='getNotice'>";
+					dispHtml += "<a href='getNotice.do?boardNo=" + board.boardNo + "'>";
+					dispHtml += "<span id='N'>N. </span>" + board.boardTitle;
+					dispHtml += "<br>";
+					dispHtml += "<span id='fontSize'>" + board.boardRegdate.substring(0,10) + " 관리자</span>"
+					dispHtml += "</a>";
+					dispHtml += "</td>";
+					dispHtml += "</tr>";
+				} 
+				$("#dispBody").html(dispHtml);
+			},
+			error: function(){
+				alert("[ERROR]오류");
+			}
+		}); 
+		$.ajax("getJsonNoticePage.do", {
+			type: "get",
+			data: $(frm).serialize(), //서버쪽으로 JSON 문자열 전달
+			dataType: "json", //서버로부터 응답받는 데이터 형식
+			success: function(data){ 
+				//alert("페이징 ajax 성공"); 
+				console.log(data);
+				
+				let dispHtml = "";
+				
+				for (let page of data) {		
+
+				} 
+				$("#page_nation").html(dispHtml);
+ 			},
+			error: function(){
+				alert("[ERROR]오류");
+			}
+		}); 
+	}
+</script>
 </head>
 <body>
+	<!-- 헤더 -->
     <%@ include file="/Common/header.jsp" %>
     <div class="container-fluid bg-dark">
 		<div class="container tape">
 			<section class="tapeContent">		
 				<h2>새로운 소식들!</h2>
-				<p>신규 컨텐츠, 이벤트, 기능 추가 등의 새로운 인프런의 이야기를 들어주세요.</p>
+				<p>신규 컨텐츠, 이벤트, 기능 추가 등의 새로운 아웃풋런의 이야기를 들어주세요.</p>
 			</section>
 		</div>
 	</div>
-    <br>
+	<!-- 검색기능 -->
+	<div class="outer">
+		<div class="inner">
+			<div class="container">
+				<div class="row">
+					<%--<form method="get" name="search"> --%>
+					<form action="getNoticeList.do" >
+						<table class="pull-right">
+							<tr>
+								<td>
+								<%--
+									<select class="form-control" name="searchCondition">
+									<c:forEach var="option" items="${conditionMap }">
+										<option value="${option.value }">${option.key }</option>
+									</c:forEach>
+									</select>
+								 --%>
+								</td>
+								<td>
+									<input type="text" class="form-control" placeholder="검색어를 입력하세요." name="searchKeyword">
+								</td>
+								<td>
+ 									<!-- <button type="button" class="btn btn-success" onclick="getJsonNoticeListData(this.form)">검색</button> -->
+									<button type="submit" class="btn btn-success">검색</button>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<%--   	<div class="outer">
+		<div class="inner">
+			<form action="getJsonNoticeList.do?keyword=${keyword }" method="get" name="search">
+		        <input  class="textfield" name="keyword" type="text" size="30" onkeypress="JavaScript:press(this.form)" placeholder="검색어를 입력하세요."> 
+			</form>
+		</div>
+	</div> --%>
+
+ 	<br><br>
+    
+    <!-- 리스트 출력 -->
 	<div class="container">      
 	  <table class="table">
-	    <tbody>
-	      <tr>
-	        <td><span id="N">N.</span> [업데이트소식]11월 1주차 - 학습 알림 기능 업데이트
-				<br>
-				<span id="fontSize">2022-11-17 관리자</span></td>
-	      </tr>
-	      <tr>
-	        <td><span id="N">N.</span> [업데이트소식]10월 4주차 - 주간 학습 현황 카드 업데이트
-				<br>
-				<span id="fontSize">2022-10-28 관리자</span></td>
-	      </tr>
-	      <tr>
-	        <td><span id="N">N.</span> [업데이트소식]10월 3주차 - 강의실 커뮤니티 질문 업데이트
-				<br>
-				<span id="fontSize">2022-10-21 관리자</span></td>
-	      </tr>
-	      <tr>
-	        <td><span id="N">N.</span> [업데이트소식]10월 2주차 - 강의실 커뮤니티 질문 업데이트
-				<br>
-				<span id="fontSize">2022-10-21 관리자</span></td>
-	      </tr>
-	      <tr>
-	        <td><span id="N">N.</span> [업데이트소식]10월 1주차 - 강의실 커뮤니티 질문 업데이트
-				<br>
-				<span id="fontSize">2022-10-21 관리자</span></td>
-	      </tr>
-	      <tr>
-	        <td><span id="N">N.</span> [업데이트소식]9월 4주차 - 강의실 커뮤니티 질문 업데이트
-				<br>
-				<span id="fontSize">2022-10-21 관리자</span></td>
-	      </tr>
-	      <tr>
-	        <td><span id="N">N.</span> [업데이트소식]9월 3주차 - 강의실 커뮤니티 질문 업데이트
-				<br>
-				<span id="fontSize">2022-10-21 관리자</span></td>
-	      </tr>
+	    <tbody id="dispBody">
+	    <c:if test="${not empty list }">
+	      <c:forEach var="notice" items="${list }">
+		      <tr>
+		        <td class="getNotice">
+			        <a href="getNotice.do?boardNo=${notice.boardNo }">
+			        	<span id="N">N.</span> ${notice.boardTitle }
+						<br>
+						<span id="fontSize">${notice.boardRegdate.substring(0,10) } 관리자</span>
+					</a>	
+				</td>
+		      </tr>
+	      </c:forEach>
+	    </c:if>
+	    <c:if test="${empty list }">
+			<tr>
+				<td class="center">데이터가 없습니다.</td>
+			</tr>
+		</c:if>		
 	    </tbody>
 	  </table>
 	</div>
+	
+	<!-- 페이징처리-->
 	<div class="page_wrap">
+	   <div class="page_nation">
+		<c:if test="${pvo.beginPage != 1}">	
+			<a class="arrow prev" href="getNoticeList.do?cPage=${pvo.beginPage - 1 }">&lt</a>
+		</c:if>
+		
+		<c:forEach var="pageNo" begin="${pvo.beginPage }" end="${pvo.endPage }">
+			<c:if test="${pageNo == pvo.nowPage }">
+				<a class="active">${pageNo}</a>
+			</c:if>
+			<c:if test="${pageNo != pvo.nowPage }">
+				<a href="getNoticeList.do?cPage=${pageNo }">${pageNo}</a>
+			</c:if>
+		</c:forEach>	
+		
+		<c:if test="${pvo.endPage < pvo.totalPage}">
+			<a class="arrow next" href="getNoticeList.do?cPage=${pvo.endPage + 1 }">&gt</a>
+		</c:if>
+	   </div>
+	</div> 		
+
+<%--	
+	<div class="page_wrap">
+	   <div class="page_nation">
+		<c:if test="${pageMaker.prev}">
+			<a class="arrow prev" href="getNoticeList.do${pageMaker.makeQuery(pageMaker.startPage - 1)}">&lt</a>
+		</c:if>
+		
+		<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+            <a href="getNoticeList.do${pageMaker.makeQuery(idx)}">${idx}</a>
+	    </c:forEach>
+	    
+	    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+	    	<a class="arrow next" href="getNoticeList.do${pageMaker.makeQuery(pageMaker.endPage + 1)}">&gt</a>
+	    </c:if> 
+	   </div>
+	</div>
+--%>	
+	
+<%--	<div>
+	  <ul>
+	    <c:if test="${pageMaker.prev}">
+	    	<li><a href="getNoticeList.do${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a></li>
+	    </c:if> 
+	
+	    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+	    	<li><a href="getNoticeList.do${pageMaker.makeQuery(idx)}">${idx}</a></li>
+	    </c:forEach>
+	
+	    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+	    	<li><a href="getNoticeList.do${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a></li>
+	    </c:if> 
+	  </ul>
+	</div> --%>
+	
+	
+<%--	<div class="page_wrap">
+	   <div class="page_nation">
+		<c:if test="${pvo.beginPage != 1}">	
+			<a class="arrow prev" href="noticePage.do?cPage=${pvo.beginPage - 1 }">&lt</a>
+		</c:if>
+		
+		<c:forEach var="pageNo" begin="${pvo.beginPage }" end="${pvo.endPage }">
+			<c:if test="${pageNo == pvo.nowPage }">
+				<a class="active">${pageNo}</a>
+			</c:if>
+			<c:if test="${pageNo != pvo.nowPage }">
+				<a href="noticePage.do?cPage=${pageNo }">${pageNo}</a>
+			</c:if>
+		</c:forEach>	
+		
+		<c:if test="${pvo.endPage < pvo.totalPage}">
+			<a class="arrow next" href="noticePage.do?cPage=${pvo.endPage + 1 }">&gt</a>
+		</c:if>
+	   </div>
+	</div> --%>
+	
+<%-- <div class="page_wrap">
 	   <div class="page_nation">
 	      <a class="arrow prev" href="#">&lt</a>
 	      <a href="#" class="active">1</a>
@@ -155,7 +355,8 @@
 	      <a href="#">10</a>
 	      <a class="arrow next" href="#">&gt</a>
 	   </div>
-	</div>
+	</div> --%>
+	
 	<br><br><br>
 	 <%@ include file="/Common/footer.jsp" %>
 </body>

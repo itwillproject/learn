@@ -6,8 +6,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+   
 <title>Insert title here</title>
 <style>
 	.container { margin: 0 auto; }
@@ -20,7 +21,7 @@
 <body>
 
 <div class="container">
-	<h2>홍길동 님! 안녕하세요.</h2>
+	<h2>${user.userId} 님! 안녕하세요.</h2>
 	<h2>지식공유에 동참해 주셔서 감사합니다!</h2>
 	<h2>인프런의 이야기를 들어주세요!</h2>
 	<br>
@@ -44,7 +45,7 @@
 	 학습자들과 소식을 공유하고 자유롭게 운영해 주세요.<br></p>
 	<br>
 	</div>	
-	<button id= "set" class="btn btn-success" onclick="location.href='belectureform2.jsp'">지식공유자 참여하기</button>
+	<button id= "set" class="btn btn-success" onclick="location.href='beLectureform2.jsp'">지식공유자 참여하기</button>
 	
 
 </body>

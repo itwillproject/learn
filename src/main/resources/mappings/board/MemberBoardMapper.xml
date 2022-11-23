@@ -28,7 +28,7 @@
 			SELECT * FROM CALL_CENTER WHERE QNA_NO = #{qnaNo}		
 	</select>
 	
-	<select id="getBoardList" parameterType="map" resultType="memberBoard">
+	<select id="getBoardListMap" parameterType="map" resultType="memberBoard">
 		SELECT * FROM 
 			(SELECT ROWNUM R_NUM, B.* from 
 				(SELECT * FROM CALL_CENTER
@@ -43,14 +43,19 @@
 	</select>
 	
 	
-	
-	
 	<select id="countBoard" parameterType="memberBoard" resultType="int">
 		SELECT COUNT(QNA_NO) FROM CALL_CENTER
+	</select>
+	
+	<select id="getBoardList" parameterType="memberBoard" resultType="memberBoard">
+		SELECT * FROM CALL_CENTER
+		WHERE 1 = 1
+		AND USER_ID = #{userId}
 		<if test="searchKeyword != null">
-		WHERE QNA_TITLE LIKE '%'|| #{searchKeyword} ||'%'
+		OR QNA_TITLE LIKE '%'|| #{searchKeyword} ||'%'
 		OR QNA_CONTENT LIKE '%'|| #{searchKeyword} ||'%'		
-		</if>		
+		</if>	
+		ORDER BY QNA_REGDATE DESC	
 	</select>
 	
 	
@@ -74,7 +79,20 @@
 		WHERE COMMENT_NO = #{commentNo}
 	</delete>
 		
-
+	
+	<select id="resolvedCBoardList" parameterType="memberBoard" resultType="memberBoard">
+		SELECT * FROM CALL_CENTER
+		WHERE USER_ID = #{userId} AND QNA_ADOPT = 'TRUE'
+		ORDER BY QNA_REGDATE DESC
+	</select>
+	
+	<select id="unResolvedCBoardList" parameterType="memberBoard" resultType="memberBoard">
+		SELECT * FROM CALL_CENTER
+		WHERE USER_ID = #{userId} AND QNA_ADOPT = 'FALSE'
+		ORDER BY QNA_REGDATE DESC
+	</select>
+	
+	
 </mapper>
 
 

@@ -6,6 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
+<style>
+	.tape {
+		height: 100px;
+		margin: 50px auto;
+		padding-top: 15px;
+		color: white;
+	}
+
+</style>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
@@ -18,14 +27,23 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<%-- <%@ include file="../Common/header.jspf"%> --%>
-	<div class="container">
 
-		<div class="row">
-		<div class="col-2">
-			<%@ include file="sideNav.jspf"%>
+ <%@ include file="../Common/header.jsp"%>
+ <div class="container-fluid bg-dark">
+	<div class="container tape">
+		<section class="tapeContent">		
+			<h2>회원가입</h2>
+		</section>
+	</div>
+</div>
+	<div class="container-fluid mt-5 pb-3 d-flex justify-content-center">
+
+		<div class="row w-100 pb-4 justify-content-center">
+			<!-- 왼쪽 네비 -->
+			<div class="col-2 d-flex justify-content-center">
+				<a href="#" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
 			</div>
-			<div class="col-10">
+			<div class="col-6 pl-3 gray-line">
 
 			<div class="text-center">
 				<div>
@@ -35,7 +53,7 @@
 						<p class="">나의 온라인 사수, 인프런</p>
 					</div>
 					<div class="mx-auto" style="width: 25%;">
-						<form action="insertUser.do" method="get">
+						<form action="${pageContext.request.contextPath}/Member/insertUser.do" method="get">
 							<div>
 								<label for="user_email" style="float: left;">이메일</label>
 								<div>
@@ -90,7 +108,7 @@
 								<div id="birth_check"></div>
 							</div>
 							<br>
-							<button type="button" class="btn btn-success w-100"
+							<button type="submit" class="btn btn-success w-100"
 								id="reg_submit" disabled="disabled">가입하기</button>
 						</form>
 					</div>
@@ -138,12 +156,6 @@
 		</div>
 	</div>
 
-
-	<h2>본문 바디 끝</h2>
-	<hr>
-	<hr>
-	<hr>
-	<hr>
 	<script>
 	
 		$('#mail-Check-Btn').click(function() {
@@ -188,7 +200,7 @@
 		// 비밀번호 정규식
 		var pwJ = /^(?!((?:[A-Za-z]+)|(?:[~!@#$%^&*()_+=]+)|(?:[0-9]+))$)[A-Za-z\d~!@#$%^&*()_+=]{8,32}$/;
 		// 이메일 검사 정규식
-		var mailJ = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+		var mailJ = /^[0-9a-zA-Z]{4,22}([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 		// 비밀번호 체크 확인
 		$('#user_pw').keyup(function() {
 							if (pwJ.test($('#user_pw').val())) {
@@ -372,7 +384,7 @@
 				});
 	</script>
 	<footer>
-		<h2>푸터 네비</h2>
+		<%@ include file="../Common/footer.jsp"%>
 	</footer>
 </body>
 </html>

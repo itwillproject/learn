@@ -3,21 +3,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>인프런 이용약관</title>
+  <title>아웃풋런 이용약관</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css">
+  
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <style>
   	.inner {
-		width: 640px;
+		width: 840px;
 		display: inline-block;
 		text-align: left;
 	}
@@ -66,10 +64,11 @@
 	<div class="outer">
 		<div class="inner">
 			<ul class="menuborder">
-			  <li class="menu"><a href="#">자주 묻는 질문</a></li>
-			  <li class="menu"><a href="#">통합서비스 이용약관</a></li>
-			  <li class="menu"><a class="active" href="#">인프런 이용약관</a></li>
-			  <li class="menu"><a href="#">개인정보 취급방침</a></li>
+			  <li class="menu"><a href="/learn/getFaqList.do">자주 묻는 질문</a></li>
+			  <li class="menu"><a href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터 문의하기</a></li>
+			  <li class="menu"><a href="/learn/Member/MemberBoard/serviceIntegrationPolicy.jsp">통합서비스 이용약관</a></li>
+			  <li class="menu"><a class="active" href="/learn/Member/MemberBoard/generalPolicy.jsp">아웃풋런 이용약관</a></li>
+			  <li class="menu"><a href="/learn/Member/MemberBoard/privacyPolicy.jsp">개인정보 취급방침</a></li>
 			</ul>
 		</div>
 	</div>
@@ -77,7 +76,7 @@
 	<div class="outer">
 		<div class="inner2">
 			<b>제 1 조. 목적</b><br>
-			이 이용약관(이하 ‘약관’)은 인프랩(이하 ‘회사’)가 제공하는 인프런(inflearn.com) 및 인프런 관련 제반 서비스(이하 ‘서비스’)를 이용고객(이하 ‘회원’)이 이용함에 있어 회사와 회원과의 권리, 의무 및 책임사항, 기타 필요한 사항을 구체적으로 규정함을 목적으로 합니다.<br>
+			이 이용약관(이하 ‘약관’)은 아웃풋랩(이하 ‘회사’)가 제공하는 아웃풋런(outputlearn.com) 및 아웃풋런 관련 제반 서비스(이하 ‘서비스’)를 이용고객(이하 ‘회원’)이 이용함에 있어 회사와 회원과의 권리, 의무 및 책임사항, 기타 필요한 사항을 구체적으로 규정함을 목적으로 합니다.<br>
 			<bt><br>
 			<b>제 2 조. 용어의 정의</b><br>
 			이 약관에서 사용하는 용어의 정의는 다음과 같습니다.<br>
