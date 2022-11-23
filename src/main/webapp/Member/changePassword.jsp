@@ -14,6 +14,12 @@
 	html, body {
 		height: 100%;
 	}
+		.tape {
+		height: 100px;
+		margin: 50px auto;
+		padding-top: 15px;
+		color: white;
+	}
 </style>
 <script>
 
@@ -47,6 +53,14 @@
 
 </head>
 <body>
+<%@include file="/Common/header.jsp" %>
+<div class="container-fluid bg-dark">
+		<div class="container tape">
+			<section class="tapeContent">
+				<h2>비밀번호 재설정</h2>
+			</section>
+		</div>
+	</div>
 	<div class="container h-100 text-center">
 		<div class="d-flex align-items-center mx-auto text-center h-100">
 			<div class="mx-auto">

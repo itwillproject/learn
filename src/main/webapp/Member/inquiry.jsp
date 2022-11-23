@@ -39,18 +39,14 @@
 			</section>
 		</div>
 	</div>
-	<div class="container">
-
-		<div class="row">
-			<div class="col-2">
+<div class="container-fluid mt-5 pb-3 d-flex justify-content-center">
+		<div class="row w-100 pb-4 justify-content-center">
+			<!-- 왼쪽 네비 -->
+			<div class="col-2 d-flex justify-content-center">
 				<%@ include file="sideNav.jspf"%>
 			</div>
-			<div class="col-10">
+			<div class="col-8 pl-3 gray-line">
 				<h2>조회</h2>
-				<div class="pb-2">
-					<button type="button" class="btn btn-primary"
-						onclick="location.href='index.jsp'">로그인 이동</button>
-				</div>
 				<div class="pb-3">
 					<ul class="border nav p-1">
 						<li class="nav-item"><a class="nav-link" href="#home">질문</a>
@@ -63,12 +59,12 @@
 				<div class="border">
 					<div class="pb-3">
 						<ul class="nav pl-3 pt-3 pb-1">
-							<li class="nav-item"><a
-								class="nav-link btn btn-sm btn-light mr-1" href="javascript:cBoardList()">전체</a></li>
-							<li class="nav-item"><a
-								class="nav-link btn btn-sm btn-light mr-1" href="javascript:resolvedCBoardList()">해결</a></li>
-							<li class="nav-item"><a
-								class="nav-link btn btn-sm btn-light mr-1 active-btn" href="javascript:unResolvedCBoardList()">미해결</a></li>
+							<li class="nav-item"><a id="allBtn"
+								class="nav-link btn-sm mr-1 active-btn" href="javascript:cBoardList()">전체</a></li>
+							<li class="nav-item"><a id="solvedBtn"
+								class="nav-link btn-sm active-btn btn-light mr-1" href="javascript:resolvedCBoardList()">해결</a></li>
+							<li class="nav-item"><a id="unsolvedBtn"
+								class="nav-link btn-sm mr-1 active-btn btn-light" href="javascript:unResolvedCBoardList()">미해결</a></li>
 						</ul>
 					</div>
 					<div id="listDisp">
@@ -76,15 +72,15 @@
 						<c:forEach var="BoardList" items="${BoardList }">
 							<div class="pt-1 pl-4 pr-4">
 								<h5>
-									<a href="${pageContext.request.contextPath }/memberBoard/inquiryDetail.do?qnaNo="+${BoardList.qnaNo }><b> ${BoardList.qnaTitle }</b></a>
+									<a href="${pageContext.request.contextPath }/memberBoard/inquiryDetail.do?qnaNo=${BoardList.qnaNo }"><b> ${BoardList.qnaTitle }</b></a>
 								</h5>
 								<c:choose>
 							        <c:when test="${fn:length(BoardList.qnaContent) gt 16}">
-							        <c:out value="${fn:substring(BoardList.qnaContent, 0, 15)}...">
-							        </c:out></c:when>
+							        	${fn:substring(BoardList.qnaContent, 0, 15)}...
+							        </c:when>
 							        <c:otherwise>
-							        <c:out value="${BoardList.qnaContent}">
-							        </c:out></c:otherwise>
+							       		${BoardList.qnaContent}
+							        </c:otherwise>
 								</c:choose>
 								<div class="pt-1">
 									<span>${BoardList.qnaRegdate }</span>
@@ -99,7 +95,6 @@
 						</div>
 					</c:if>
 					</div>
-					
 				</div>
 			</div>
 		</div>
@@ -108,11 +103,18 @@
 
 		function cBoardList() {
 			alert("cBoardList() 실행");
-
+			
 			$.ajax("${pageContext.request.contextPath}/memberBoard/cBoardList.do?userId=${user.userId}", {
 				type : "get",
 				dataType : "json", //서버로부터 응답받는 데이터 형식
 				success : function(data) {
+					console.log(data);
+					
+					$("#allBtn").removeClass("btn-light");
+					$("#solvedBtn").addClass("btn-light");
+					$("#unsolvedBtn").addClass("btn-light");
+				
+					
 					alert("성공~!");
 					console.log("data : " + data);
 					let dispHtml = "";
@@ -148,6 +150,12 @@
 				success : function(data) {
 					alert("성공~!");
 					console.log("data : " + data);
+					
+					$("#allBtn").addClass("btn-light");
+					$("#solvedBtn").removeClass("btn-light");
+					$("#unsolvedBtn").addClass("btn-light");
+				
+					
 					let dispHtml = "";
 					var summary = "";
 					$.each(data, function(index, obj){
@@ -181,6 +189,11 @@
 				success : function(data) {
 					alert("성공~!");
 					console.log("data : " + data);
+					
+					$("#allBtn").addClass("btn-light");
+					$("#solvedBtn").addClass("btn-light");
+					$("#unsolvedBtn").removeClass("btn-light");
+					
 					let dispHtml = "";
 					var summary = "";
 					$.each(data, function(index, obj){
