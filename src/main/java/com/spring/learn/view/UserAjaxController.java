@@ -130,7 +130,7 @@ public class UserAjaxController {
 					
 					data.add(map);
 
-					session.setAttribute("user", vo);
+					session.setAttribute("vo", vo);
 					session.setAttribute("verifyNO", verifyNO);
 					//System.out.println("session verifyNO 값: " + session.getAttribute("verifyNO"));
 					
@@ -153,7 +153,7 @@ public class UserAjaxController {
 		List<String> data = new ArrayList<String>();
 
 		if (checkNO.get("insertNo").equals(session.getAttribute("verifyNO"))) {
-			String userId = ((UserVO)session.getAttribute("user")).getUserId();
+			String userId = ((UserVO)session.getAttribute("vo")).getUserId();
 			System.out.println(userId);
 			data.add(userId);
 		} 

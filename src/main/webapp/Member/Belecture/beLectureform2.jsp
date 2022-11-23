@@ -23,14 +23,14 @@
 
 <div class="container">
 
-	<h2>감사합니다, 홍길동 님</h2>
+	<h2>감사합니다, ${user.userId} 님</h2>
 	<h2>지식공유자가 되기 위해서</h2>
 	<h2>아래 정보가 필요해요.</h2>
 	<br>
 	<form method="post">
     <div class="form-group">
       <label for="email">인프런 계정</label>
-      <input type="text" class="form-control" id="userId"  name="userId" value="test1234@gmail.com" >
+      <input type="text" class="form-control" id="userId"  name="userId" value="${user.userId}" readonly >
     </div>
     <div class="form-group">
       <label for="pwd">이름(실명)</label>

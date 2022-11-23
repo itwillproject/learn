@@ -22,6 +22,10 @@
 		<typeAlias alias="noticeVO" type="com.spring.learn.board.NoticeVO"/>
 		<typeAlias alias="faqVO" type="com.spring.learn.board.FaqVO"/>
 		<!-- ========================== -->
+<<<<<<< HEAD
+=======
+
+>>>>>>> 37da7e18adbb082721c1274a4e53a050b686007d
 	</typeAliases>
 			
 	

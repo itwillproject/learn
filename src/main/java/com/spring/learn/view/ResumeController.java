@@ -10,7 +10,7 @@ import com.spring.learn.resume.ResumeService;
 import com.spring.learn.resume.ResumeVO;
 
 @SessionAttributes("resume")
-@RequestMapping("/Member")
+@RequestMapping({"/Member", "/memberBoard"})
 @Controller
 public class ResumeController {
 	
@@ -58,11 +58,12 @@ public class ResumeController {
 		
 		vo = resumeService.getResume(vo);
 		
-		if (vo != null) {
-		model.addAttribute("resume", vo);
+		if (vo == null) {
+			vo = new ResumeVO();
 		}
+		model.addAttribute("resume", vo);
 		
-		return "Belecture/viewLectureApply.jsp";
+		return "/Member/Belecture/viewLectureApply.jsp";
 		
 	}
 	
