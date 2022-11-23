@@ -1,42 +1,20 @@
 package com.spring.learn.board;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.spring.learn.common.PageMaker;
 
 public class NoticeVO {
 	private String userId, grade, boardTitle, boardContent, boardFile;
 	private int boardNo;
 	//private Date boardRegdate;
 	private String boardRegdate;
-	private PageMaker page;
 	
-	//검색용---------------------------------
-	@JsonIgnore
-	private String searchCondition = "TITLE";
-	
-	public PageMaker getPage() {
-		return page;
-	}
-	
-	//페이징용-------------------------
-
-	public void setPage(PageMaker page) {
-		this.page = page;
-	}
-
-
 	@JsonIgnore
 	private String searchKeyword = "";
+
+	public NoticeVO() {
+		System.out.println(">> NoticeVO() 객체 생성");
+	}
 	
-
-	public String getSearchCondition() {
-		return searchCondition;
-	}
-
-	public void setSearchCondition(String searchCondition) {
-		this.searchCondition = searchCondition;
-	}
-
 	public String getSearchKeyword() {
 		return searchKeyword;
 	}
@@ -44,11 +22,7 @@ public class NoticeVO {
 	public void setSearchKeyword(String searchKeyword) {
 		this.searchKeyword = searchKeyword;
 	}
-	//-------------------------------------
-	public NoticeVO() {
-		System.out.println(">> NoticeVO() 객체 생성");
-	}
-	
+
 	public String getUserId() {
 		return userId;
 	}
@@ -117,8 +91,7 @@ public class NoticeVO {
 	public String toString() {
 		return "NoticeVO [userId=" + userId + ", grade=" + grade + ", boardTitle=" + boardTitle + ", boardContent="
 				+ boardContent + ", boardFile=" + boardFile + ", boardNo=" + boardNo + ", boardRegdate=" + boardRegdate
-				+ ", page=" + page + ", searchCondition=" + searchCondition + ", searchKeyword=" + searchKeyword
-				+ ", getPage()=" + getPage() + "]";
+				+ ", searchKeyword=" + searchKeyword + "]";
 	}
 
 
