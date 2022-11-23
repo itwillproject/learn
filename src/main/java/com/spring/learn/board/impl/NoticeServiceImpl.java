@@ -1,6 +1,7 @@
 package com.spring.learn.board.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,10 @@ public class NoticeServiceImpl implements NoticeService {
 		return noticeDao.getNotice(vo);
 	}
 
-	@Override
-	public List<NoticeVO> getNoticeList(NoticeVO vo) {
-		return noticeDao.getNoticeList(vo);
-	}
+	//@Override
+	//public List<NoticeVO> getNoticeList(NoticeVO vo) {
+	//	return noticeDao.getNoticeList(vo);
+	//}
 
 	@Override
 	public void updateNoticeHit(NoticeVO vo) {
@@ -45,5 +46,14 @@ public class NoticeServiceImpl implements NoticeService {
 		return noticeDao.listCount();
 	}
 
+	@Override
+	public List<NoticeVO> getNoticeList(NoticeVO vo) {
+		return noticeDao.getnoticeList(vo);
+	}
+
+	@Override
+	public int searchListCount(NoticeVO vo) {
+		return noticeDao.searchListCount(vo);
+	}
 
 }

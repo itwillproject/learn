@@ -1,13 +1,15 @@
 package com.spring.learn.view;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.spring.learn.board.NoticeService;
@@ -22,6 +24,16 @@ import com.spring.learn.common.PageMaker;
 public class NoticeController { 
 	@Autowired
 	private NoticeService noticeService;
+	
+	@ModelAttribute("conditionMap")
+	public Map<String, String> searchConditionMap() {
+		System.out.println("=====> Map searchConditionMap() 실행");
+		Map<String, String> conditionMap = new HashMap<String, String>();
+		conditionMap.put("제목", "TITLE");
+		conditionMap.put("내용", "CONTENT");
+		
+		return conditionMap;
+	}
 	
 	@RequestMapping("/getNotice.do")
 	public String getNotice(NoticeVO vo, Model model) {
@@ -45,28 +57,84 @@ public class NoticeController {
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(noticeService.listCount());
 		
-//		if (pageMaker.getCri().getPage() != 0) {
-//			pageMaker.setNowPage(pageMaker.getCri().getPage());
-//		}
-		
 		model.addAttribute("pageMaker", pageMaker);
 		
-		System.out.println(">> pageMaker : " + pageMaker);
+		System.out.println(">> getNoticeList pageMaker : " + pageMaker);
 		
 		return "Member/MemberBoard/notice.jsp";
 		
 	}
-	
-	@RequestMapping("/getJsonBoardList.do")
-	//@ResponseBody //response 응답객체의 몸체(body)에 데이터 전달
-	public List<NoticeVO> getJsonBoardList(NoticeVO vo) {
-		System.out.println("========= BoardAjaxController getJsonBoardList() 실행");
-		List<NoticeVO> boardList = noticeService.getNoticeList(vo);
-		System.out.println("boardList(notice) : " + boardList);
+
+	@RequestMapping("/getJsonNoticeList.do")
+	@ResponseBody //response 응답객체의 몸체(body)에 데이터 전달
+	public List<NoticeVO> getJsonBoardList(NoticeVO vo, Model model, Criteria cri) {
+		System.out.println("========= NoticeController getJsonNoticeList() 실행");
+		List<NoticeVO> list = noticeService.getNoticeList(vo);
 		
-		return boardList;
+		//개발자참고용
+		for (int i = 0; i < list.size(); i++ ) {
+			System.out.println("controller noticeList 제목( " + i + ") : " + list.get(i).getBoardTitle());	
+		}	
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(noticeService.listCount());
+		pageMaker.setEndPage(1); //나중에 수정하기
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
+		System.out.println(">>>> getJsonNoticeList pageMaker : " + pageMaker);
+		
+		return list;
+	}
+
+
+	@RequestMapping("/getJsonNoticePage.do")
+	@ResponseBody //response 응답객체의 몸체(body)에 데이터 전달
+	public PageMaker getJsonBoardPage(NoticeVO vo, Model model, Criteria cri) {
+		System.out.println("========= NoticeController getJsonBoardPage() 실행");
+		//logger.info("list");
+
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(noticeService.searchListCount(vo));
+		pageMaker.setEndPage(1); //나중에 수정하기
+		
+		System.out.println("> getJsonNoticePage pageMaker : " + pageMaker);
+		
+		return pageMaker;
 	}
 	
+/*	
+	@RequestMapping("/getJsonNoticeList.do")
+	@ResponseBody //response 응답객체의 몸체(body)에 데이터 전달
+	public List<NoticeVO> getJsonBoardList(NoticeVO vo, Model model, Criteria cri) {
+		System.out.println("========= NoticeController getJsonNoticeList() 실행");
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(noticeService.searchListCount(vo));
+		
+		List<NoticeVO> list = noticeService.getNoticeList(vo);
+		System.out.println("Search Notice List : " + list);
+		
+		return list;
+	}
+*/	
+	
+/*
+	@RequestMapping("/getJsonNoticeList.do")
+	@ResponseBody //response 응답객체의 몸체(body)에 데이터 전달
+	public List<NoticeVO> getJsonBoardList(NoticeVO vo) {
+		System.out.println("========= NoticeController getJsonNoticeList() 실행");
+		List<NoticeVO> list = noticeService.getNoticeList(vo);
+		System.out.println("noticeList : " + list);
+		
+		return list;
+	}
+*/
+
+/*
 	//JSON 데이터를 받아 게시글 찾아서 JSON 데이터로 리턴(응답)
 	@PostMapping("/getJsonBoard.do")
 	public NoticeVO getJsonBoard(@RequestBody NoticeVO vo) { //@RequestBody post방식 전달데이터 처리
@@ -78,7 +146,7 @@ public class NoticeController {
 		
 		return board;
 	}
-	
+*/
 	
 /*
 	@RequestMapping("/getNoticeList.do")
@@ -91,7 +159,6 @@ public class NoticeController {
 		return "Member/MemberBoard/notice.jsp";
 	}
 */
-
 	
 	// 메소드의 정의부에 선언된 @ModelAttribute 는 리턴된 데이터를 View에 전달
 	// @ModelAttribute 선언된 메소드는 @RequestMapping 메소드보다 먼저 실행
@@ -107,6 +174,5 @@ public class NoticeController {
 		return conditionMap;
 	}
 */
-
 
 }
