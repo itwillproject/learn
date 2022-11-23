@@ -27,7 +27,7 @@
 	}
 	.table #N { color: lime;}  
 	.table #fontSize { font-size: 0.7em }
-	 	.inner {
+	.inner {
 		display: inline-block;
 		text-align: left;
 	}
@@ -198,21 +198,25 @@
 		<div class="inner">
 			<div class="container">
 				<div class="row">
-					<form method="get" name="search">
+					<%--<form method="get" name="search"> --%>
+					<form action="getNoticeList.do" >
 						<table class="pull-right">
 							<tr>
 								<td>
+								<%--
 									<select class="form-control" name="searchCondition">
 									<c:forEach var="option" items="${conditionMap }">
 										<option value="${option.value }">${option.key }</option>
 									</c:forEach>
 									</select>
+								 --%>
 								</td>
 								<td>
 									<input type="text" class="form-control" placeholder="검색어를 입력하세요." name="searchKeyword">
 								</td>
 								<td>
-									<button type="button" class="btn btn-success" onclick="getJsonNoticeListData(this.form)">검색</button>
+ 									<!-- <button type="button" class="btn btn-success" onclick="getJsonNoticeListData(this.form)">검색</button> -->
+									<button type="submit" class="btn btn-success">검색</button>
 								</td>
 							</tr>
 						</table>
@@ -258,7 +262,29 @@
 	  </table>
 	</div>
 	
-	<!-- 페이징 처리 -->
+	<!-- 페이징처리-->
+	<div class="page_wrap">
+	   <div class="page_nation">
+		<c:if test="${pvo.beginPage != 1}">	
+			<a class="arrow prev" href="getNoticeList.do?cPage=${pvo.beginPage - 1 }">&lt</a>
+		</c:if>
+		
+		<c:forEach var="pageNo" begin="${pvo.beginPage }" end="${pvo.endPage }">
+			<c:if test="${pageNo == pvo.nowPage }">
+				<a class="active">${pageNo}</a>
+			</c:if>
+			<c:if test="${pageNo != pvo.nowPage }">
+				<a href="getNoticeList.do?cPage=${pageNo }">${pageNo}</a>
+			</c:if>
+		</c:forEach>	
+		
+		<c:if test="${pvo.endPage < pvo.totalPage}">
+			<a class="arrow next" href="getNoticeList.do?cPage=${pvo.endPage + 1 }">&gt</a>
+		</c:if>
+	   </div>
+	</div> 		
+
+<%--	
 	<div class="page_wrap">
 	   <div class="page_nation">
 		<c:if test="${pageMaker.prev}">
@@ -274,7 +300,7 @@
 	    </c:if> 
 	   </div>
 	</div>
-	
+--%>	
 	
 <%--	<div>
 	  <ul>

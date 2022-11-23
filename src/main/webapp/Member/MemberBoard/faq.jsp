@@ -13,7 +13,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
   <style>
   	.inner {
-		width: 700px;
+		width: 840px;
 		display: inline-block;
 		text-align: left;
 	}
@@ -92,6 +92,7 @@
 		<div class="inner">
 			<ul class="menuborder">
 			  <li class="menu"><a class="active" href="getFaqList.do">자주 묻는 질문</a></li>
+			  <li class="menu"><a href="#">고객센터 문의하기</a></li>
 			  <li class="menu"><a href="/learn/Member/MemberBoard/serviceIntegrationPolicy.jsp">통합서비스 이용약관</a></li>
 			  <li class="menu"><a href="/learn/Member/MemberBoard/generalPolicy.jsp">아웃풋런 이용약관</a></li>
 			  <li class="menu"><a href="/learn/Member/MemberBoard/privacyPolicy.jsp">개인정보 취급방침</a></li>
@@ -115,9 +116,11 @@
 		<c:if test="${empty list }">
 			<p style="text-align: center;">데이터가 없습니다.</p>
 		</c:if>
+		<br><br><br>
+			<p style="text-align:center; size:1.3em;">원하는 답변을 찾지 못하셨나요?<br>그럼 상단의 <span style="color: green;">'고객센터 문의하기' </span>에서 문의 해주세요.<br>최대한 빠르게 답변드리도록 하겠습니다!</p>
 		</div>
 	</div>
-	<br><br><br>
+	
 	<%@ include file="/Common/footer.jsp" %>
 </body>
 <script>
