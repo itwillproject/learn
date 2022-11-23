@@ -17,11 +17,11 @@
 <h2 class="text-center">지식공유 참여 현황</h2>
 <br>
 
-<c:if test="${empty resume}" >
+<c:if test="${empty resume.userName}" >
 <h4 class="text-center">신청한 기록이 없습니다</h4>
 </c:if>
 
-<c:if test="${not empty resume}">
+<c:if test="${not empty resume.userName}">
 <form method="post">
 
  <div class="form-group">
