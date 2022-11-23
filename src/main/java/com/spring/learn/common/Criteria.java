@@ -48,6 +48,16 @@ public class Criteria {
 		rowEnd = rowStart + perPageNum - 1;
 		return rowEnd;
 	}
+	
+
+	//----------------------------------
+	public void setRowStart(int rowStart) {
+		this.rowStart = rowStart;
+	}
+
+	public void setRowEnd(int rowEnd) {
+		this.rowEnd = rowEnd;
+	}
 
 	@Override
 	public String toString() {

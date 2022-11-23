@@ -1,6 +1,8 @@
 package com.spring.learn.board.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +28,10 @@ import com.spring.learn.common.Criteria;
 	}
 	  
 	//글 리스트 조회
-	public List<NoticeVO> getNoticeList(NoticeVO vo) {
-		System.out.println("===> Mybatis 사용 getNoticeList() 실행");
-	return mybatis.selectList("noticeDAO.getNoticeList");
-	}
+//	public List<NoticeVO> getNoticeList(NoticeVO vo) {
+//		System.out.println("===> Mybatis 사용 getNoticeList() 실행");
+//	return mybatis.selectList("noticeDAO.getNoticeList");
+//	}
 	  
 	//조회수 추가
 	public int updateNoticeHit(NoticeVO vo) {
@@ -47,12 +49,36 @@ import com.spring.learn.common.Criteria;
 		return mybatis.selectOne("noticeDAO.listCount");
 	}
   
-	public List<NoticeVO> getBoardList(NoticeVO vo) {
-		System.out.println("===> MyBatis 사용  getBoardList(vo) 실행");
-		List<NoticeVO> list = mybatis.selectList("boardDAO.getBoardList_S", vo.getSearchKeyword());
+	//검색조건 적용해서 검색
+	public List<NoticeVO> getnoticeList(NoticeVO vo) {
+		System.out.println("===> Mybatis 사용 getNoticeList(vo) 실행");
+		List<NoticeVO> list = null;
+		if ("TITLE".equals(vo.getSearchCondition())) {
+			list = mybatis.selectList("noticeDAO.getBoardList_T", vo.getSearchKeyword());
+		} else {
+			list = mybatis.selectList("noticeDAO.getBoardList_C", vo.getSearchKeyword());
+		}
+		
+		for (int i = 0; i < list.size(); i++ ) {
+			System.out.println("DAO list 제목( " + i + ") : " + list.get(i).getBoardTitle());	
+		}		
 		return list;
 	}
-		
+	
+	
+	//검색어에 해당하는 게시글 총 갯수
+	public int searchListCount(NoticeVO vo) {
+		System.out.println("===> Mybatis 사용 searchListCount(vo) 실행");
+		int cnt;
+		if ("TITLE".equals(vo.getSearchCondition())) {
+			cnt = mybatis.selectOne("noticeDAO.getBoardCnt_T", vo.getSearchKeyword());
+		} else {
+			cnt = mybatis.selectOne("noticeDAO.getBoardCnt_C", vo.getSearchKeyword());
+		}
+		System.out.println("cnt : " + cnt);
+		return cnt;
+	}
+
 }
 
 

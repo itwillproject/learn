@@ -87,6 +87,17 @@ public class PageMaker {
 				+ nowPage + "]";
 	}
 
+	public void setStartPage(int startPage) {
+		this.startPage = startPage;
+	}
+
+	public void setEndPage(int endPage) {
+		this.endPage = endPage;
+	}
+	
+	//-----------------
+	
+
 
 	
 	

@@ -90,13 +90,11 @@
 
 </head>
 <body>
-<<<<<<< HEAD
 	<h1>사이드 네비</h1>
 	<hr><a href="getResume.do?userId=hh">지식 공유 현황보기</a>
 	<hr>
 	<hr>
 	<hr>
-=======
 	<%@ include file="../Common/header.jsp"%>
 	<div class="container-fluid bg-dark">
 	<div class="container tape">
@@ -106,8 +104,6 @@
 	</div>
 	</div>
 	<div class="container">
->>>>>>> e29acca59ff7e87b89c92c423004f45395527cf0
-
 		<div class="row">
 			<div class="col-2">
 				<%@ include file="sideNav.jspf"%>

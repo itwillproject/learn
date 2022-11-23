@@ -1,20 +1,42 @@
 package com.spring.learn.board;
 
-import java.sql.Date;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.spring.learn.common.PageMaker;
 
 public class NoticeVO {
 	private String userId, grade, boardTitle, boardContent, boardFile;
-	private int boardNo, boardHit;
-	private Date boardRegdate;
+	private int boardNo;
+	//private Date boardRegdate;
+	private String boardRegdate;
+	private PageMaker page;
 	
 	//검색용---------------------------------
 	@JsonIgnore
+	private String searchCondition = "TITLE";
+	
+	public PageMaker getPage() {
+		return page;
+	}
+	
+	//페이징용-------------------------
+
+	public void setPage(PageMaker page) {
+		this.page = page;
+	}
+
+
+	@JsonIgnore
 	private String searchKeyword = "";
 	
-	
+
+	public String getSearchCondition() {
+		return searchCondition;
+	}
+
+	public void setSearchCondition(String searchCondition) {
+		this.searchCondition = searchCondition;
+	}
+
 	public String getSearchKeyword() {
 		return searchKeyword;
 	}
@@ -22,9 +44,7 @@ public class NoticeVO {
 	public void setSearchKeyword(String searchKeyword) {
 		this.searchKeyword = searchKeyword;
 	}
-
 	//-------------------------------------
-	
 	public NoticeVO() {
 		System.out.println(">> NoticeVO() 객체 생성");
 	}
@@ -77,31 +97,37 @@ public class NoticeVO {
 		this.boardNo = boardNo;
 	}
 
-	public int getBoardHit() {
-		return boardHit;
-	}
+	//public Date getBoardRegdate() {
+	//	return boardRegdate;
+	//}
 
-	public void setBoardHit(int boardHit) {
-		this.boardHit = boardHit;
-	}
-
-	public Date getBoardRegdate() {
+	//public void setBoardRegdate(Date boardRegdate) {
+	//	this.boardRegdate = boardRegdate;
+	//}
+	
+	public String getBoardRegdate() {
 		return boardRegdate;
 	}
 
-	public void setBoardRegdate(Date boardRegdate) {
+	public void setBoardRegdate(String boardRegdate) {
 		this.boardRegdate = boardRegdate;
 	}
-
-	// JSON 데이터(기본) : 1668395120000 =====> 2022-11-14 12:05:20
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss",
-			timezone = "Asia/Seoul")
 
 	@Override
 	public String toString() {
 		return "NoticeVO [userId=" + userId + ", grade=" + grade + ", boardTitle=" + boardTitle + ", boardContent="
-				+ boardContent + ", boardRegdate=" + boardRegdate + ", boardFile=" + boardFile + ", boardNo=" + boardNo
-				+ ", boardHit=" + boardHit + "]";
+				+ boardContent + ", boardFile=" + boardFile + ", boardNo=" + boardNo + ", boardRegdate=" + boardRegdate
+				+ ", page=" + page + ", searchCondition=" + searchCondition + ", searchKeyword=" + searchKeyword
+				+ ", getPage()=" + getPage() + "]";
 	}
+
+
+	// JSON 데이터(기본) : 1668395120000 =====> 2022-11-14 12:05:20
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss",
+	//		timezone = "Asia/Seoul")
+
+	
+
+
   
 }

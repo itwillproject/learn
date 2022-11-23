@@ -14,6 +14,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
   <style>
+	 .tape {
+		height: 100px;
+		margin: 50px auto;
+		padding-top: 15px;
+		color: white;
+	}
 	.inner {
 		width: 900px;
 		display: inline-block;
@@ -38,7 +44,15 @@
 </head>
 <body>
 <%@ include file="/Common/header.jsp" %>
-<br><br><br>
+ <div class="container-fluid bg-dark">
+	<div class="container tape">
+		<section class="tapeContent">		
+			<h2>NEW</h2>
+			<p>아웃풋런의 새소식</p>
+		</section>
+	</div>
+</div>
+<br>
 
 <div class="outer">
 	<div class="inner">
@@ -48,7 +62,7 @@
 <hr>
 <div class="outer">
 	<div class="inner">
-		<p class="date">${vo.boardRegdate }</p><br>
+		<p class="date">${vo.boardRegdate.substring(0,10) }</p><br>
 		<span class="content">
 			${vo.boardContent }
 		</span>
@@ -60,6 +74,6 @@
 </div>
 <br><br>
 <br><br><br>
- <%@ include file="/Common/footer.jsp" %>
+<%@ include file="/Common/footer.jsp" %>
 </body>
 </html>
