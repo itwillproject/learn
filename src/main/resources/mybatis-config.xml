@@ -23,7 +23,13 @@
 		<typeAlias alias="noticeVO" type="com.spring.learn.board.NoticeVO"/>
 		<typeAlias alias="faqVO" type="com.spring.learn.board.FaqVO"/>
 		<!-- ========================== -->
-
+	
+		<typeAlias alias="roadmap" type="com.spring.learn.roadmap.RoadmapVO"/>
+		<typeAlias alias="lecture" type="com.spring.learn.lecture.LectureVO"/>
+		<typeAlias alias="class" type="com.spring.learn.lecture.ClassVO"/>
+		<typeAlias alias="offtimetable" type="com.spring.learn.lecture.OfftimetableVO"/>
+		
+	
 	</typeAliases>
 			
 	
