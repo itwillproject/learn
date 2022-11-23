@@ -121,12 +121,15 @@ public class UserController {
 	  
 	//현재 Id 체크
 	@RequestMapping("modifyUser.do")
-	public String modifyUser(UserVO vo) {
+	public String modifyUser(HttpServletRequest request, UserVO vo) {
 		System.out.println("아이디 수정 요청이 들어옴!");
 		System.out.println("vo : " + vo);
 		
 		int c = userService.modifyUser(vo);
 		System.out.println(c);
+		 HttpSession session = request.getSession();
+		 UserVO vo2 = userService.getUser(vo);
+		 session.setAttribute("user", vo2);
 		
 		return "myPage.jsp";
 	}

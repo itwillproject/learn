@@ -49,9 +49,14 @@
 			});
 		}
 		
-		function registBoard(){
-			alert();
-			submit();
+		function registBoard(frm){
+			frm.submit();
+		}
+		
+		function cancelBoard(frm){
+			if(confirm("정말 작성을 취소하시겠습니까??\n작성한 내용이 날아갑니다")){
+				location.href = "${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do";				
+			}
 		}
 		
 	</script>
@@ -74,7 +79,7 @@
                     <table class="table table-borderless">
                         <thead>
                             <tr>
-                                <th><h2><b><input class="w-100 mx-auto border border-0" type="text" name="boardTitle" placeholder="제목을 입력하세요"></b></h2></th>
+                                <th><h2><b><input class="w-100 mx-auto border border-0" type="text" name="qnaTitle" placeholder="제목을 입력하세요"></b></h2></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -83,8 +88,11 @@
                             </tr>
                             <tr>
                                 <td class="d-flex flex-row justify-content-end">
-                                    <button class="btn btn-success mr-3" onclick="registBoard()">등록</button>
-                                    <button class="btn btn-light mr-3">취소</button>
+                                	<input type="button" value="등록" onclick="registBoard(this.form)">
+                                	<input type="button" value="취소" onclick="cancelBoard(this.form)">
+                                
+<!--                                     <button class="btn btn-success mr-3" onclick="registBoard()">등록</button> -->
+<!--                                     <button class="btn btn-light mr-3">취소</button> -->
                                 </td>
                             </tr>
                         </tbody>

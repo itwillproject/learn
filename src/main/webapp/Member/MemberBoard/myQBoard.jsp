@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,7 +33,9 @@
 		       }
 		     }
 		   });
+		   
 		$('.summernote').summernote();
+		
 		 });
 
 		 function sendFile(file, editor) {
@@ -53,6 +56,19 @@
 		     }
 		   });
 		 }
+		 
+		 function deleteBoard(obj){
+			 if (confirm("삭제하시겠습니까??")){
+				 location.href = "${pageContext.request.contextPath}/memberBoard/deleteBoard.do?qnaNo=${callBvo.qnaNo }" 
+			 }
+			 			 
+		 }
+		 
+		 function deleteOk(commentNo){
+			 if (confirm("삭제하시겠습니까??")){
+				 location.href = "${pageContext.request.contextPath}/memberBoard/delCallcenterComment.do?commentNo="+commentNo; 
+			 }
+		 }
 
 		
 	</script>
@@ -67,23 +83,30 @@
 			
 			<!-- 왼쪽 네비 -->
 			<div class="col-2 d-flex justify-content-center">
-				<a href="#" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
+				<a href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
 			</div>
 
 			<!-- 중앙 위 내용 - 글내용 -->
 			<div class="col-6 pl-3 gray-line">
 				<div class="row align-items-center p-3">
 					<img class="mr-2" style="height: 30px" src="${pageContext.request.contextPath}/Community/img/qqq.png">					
-					<h3><b>github 권한 요청 드립니다!</b></h3>
+					<h3><b>${callBvo.qnaTitle }</b></h3>
 				</div>
 				<div class="row pl-3 pb-3">
-					<p class="mr-2"><b>아이디</b></p><p class="text-muted">2022.11.18 오전 9:20</p>
+					<p class="mr-2"><b>${callBvo.userId }</b></p><p class="text-muted">${callBvo.qnaRegdate }</p>
+					
+					<c:if test="${user.userId == callBvo.userId }">
+					<p class="ml-auto">
+						<a class="mr-3" href="${pageContext.request.contextPath}/memberBoard/qnaModifyForm.do?qnaNo=${callBvo.qnaNo }">수정</a>
+						<a href="javascript:deleteBoard($(this))">작성자삭제</a>
+					</p>
+					</c:if>
+					
+					
 				</div>
 
 				<div class="d-flex flex-row p-3">
-					<p>내용 어쩌고</p>
-					<p>배너어쩌고</p>
-					<p>배너어쩌고</p>
+					<p>${callBvo.qnaContent }</p>
 				</div>
 			</div>
 			
@@ -124,8 +147,11 @@
 		</div>		
 	</div>
 
-	<div class="container-fluid pt-5"  style="background-color: #F8F9FA;">
+	<!-- 글 아래 파트 회색부분 -->
+	<div class="container-fluid py-5"  style="background-color: #F8F9FA;">
 
+		<!-- 여기서부터 입력부분은 질문게시판(관리) 쪽은 관리자만 답변 할 수 있도록 해야 한다 -->
+		
 		<div class="row w-50 border mx-auto rounded bg-white px-3 py-5" >
 			<div class="w-100 mb-3 ml-3 text-editor-block d-flex align-items-center">
 				<div class="ml-3">
@@ -133,31 +159,32 @@
 				</div>
 				<div class="ml-4">
 					<div class="row">
-					<span><h5><b><a href="#" style="font-size: 1em">jaepang Im</a>님, 답변해주세요!</b></h5></span>
+					<span><h5><b><a href="#" style="font-size: 1em">${user.userId}</a>님, 답변해주세요!</b></h5></span>
 					</div>
 					<div class="row">
 					<span class="text-secondary">모두에게 도움이 되는 답변의 주인공이 되어주세요!</span>
 					</div>
 				</div>
 			</div>
-
-			<div class="row w-100 mx-auto">
-				<form method="post">
-					<div class="summernote">summernote 1</div>
-
-					
+			
+		<!-- 댓글 입력 부분 -->
+			<div class="row w-100 w-100 p-3 mx-auto">
+				<form method="post" class="w-100" action="${pageContext.request.contextPath}/memberBoard/addCallcenterComment.do?qnaNo=${callBvo.qnaNo}">
+<!-- 					<div class="summernote"></div> -->
+					<textarea class="summernote" name="commentContent"></textarea>
 					<div class="row mt-3">
 						<button class="btn btn-success ml-auto">답변등록</button>
 					</div>
 				</form>
 			</div>
 		</div>
+		
 
 		<!-- 답변 몇개인, 글 정렬 옵션-->
 		<div class="w-75 d-flex flex-row justify-content-center mx-auto mt-4 p-3">
 			<div class="row w-75 d-flex flex-row justify-content-around align-items-center" >
 					<span class="w-75 ml-4">
-					<h3 class="text-success">A</h3><p>총 1개의 답변이 달렸습니다</p>
+					<h3 class="text-success">A</h3><p>총 ${cvoCnt }개의 답변이 달렸습니다</p>
 					</span>
 					
 					<span class="mr-4">
@@ -169,80 +196,95 @@
 			</div>				
 		</div>
 
-		<!-- 댓글 -->
-		<div class="row w-50 border mx-auto rounded bg-white p-3" >
 
-			<div class="w-100 text-editor-block d-flex align-items-center mt-3 mb-3">				
-				<div class="ml-3">
-					<img class="mr-2" style="height: 60px" src="${pageContext.request.contextPath}/Community/img/aaa.png">
+		<!-- 댓글 출력 부분 여기 포이치 문으로 해줘야 한다 -->
+		
+		<c:forEach var="cvo" items="${cvoList }">
+		
+		<div class="row w-50 border mx-auto rounded bg-white p-3 mb-5" >
+			<div class="row w-100  mt-3 mb-3">
+				<div class="w-100 flex-row d-flex">
+					<P class="ml-auto">
+					<a>수정</a> 
+					<a href="javascript:deleteOk(${cvo.commentNo })">삭제</a>
+					</P>
 				</div>
-				<div class="ml-3">
-					<div class="row">
-					<span><h5><b><a href="#">OMG</a></b></h5></span>
+			
+				<div class="text-editor-block flex-row d-flex w-100 mt-3 mb-3">				
+					<div class="ml-3">
+						<img class="mr-2 ml-5" style="height: 60px" src="${pageContext.request.contextPath}/Community/img/aaa.png">
 					</div>
-					<div class="row text-secondary">
-					<span>2022.11.18 오전 1:52</span>
-					</div>
-				</div>
-
-			</div>
-
-			<div class="row ml-5">
-				<pre > Lorem ipsum dolor sit, 이거 어떻게 해야 하나요? 댓글</pre>
-			</div>
-
-
-			<!-- 대댓글 -->
-			<div class="row w-100 border mx-auto rounded p-3 rounded" style="background-color: #F8F9FA;" >
-				<div class="d-flex flex-row ml-3 mt-3 w-100 align-items-center">
-					<span>
-						<h5><b>댓글</b></h5>
-					</span>
-					<span class="ml-auto">
-						<button data-toggle="collapse" data-target=".comments">더보기/접기</button>
-					</span>
-				</div>
-				
-				
-				<div class="comments">
-					<div class="w-100 text-editor-block d-flex align-items-center my-3">
-						<div class="ml-3">					
-							<img class="mr-2" style="height: 60px" src="${pageContext.request.contextPath}/Community/img/aaa.png">	
+					<div class="ml-3">
+						<div class="row">
+						<span><h5><b><a href="#">${cvo.userId }</a></b></h5></span>
 						</div>
-						<div class="ml-4">
-							<div class="row">
-							<span><h5><b><a href="#">OMG</a></b></h5></span>
-							</div>
-							<div class="row text-secondary">
-							<span>2022.11.18 오전 1:52</span>
-							</div>
+						<div class="row text-secondary">
+						<span>${cvo.commentRegdate }</span>
 						</div>
 					</div>
-					
-					<div class="row ml-5">
-						<pre > Lorem ipsum dolor sit, 이거 어떻게 해야 하나요? 대댓글</pre>
-					</div>
+				</div>
+
+				<div class="row w-100 ml-5">
+					<p> ${ cvo.commentContent}</p>
 				</div>
 			</div>
-
-			<!-- 대댓글 달기-->
-
-			<div class="d-flex flex-row ml-3 mt-3 w-100 align-items-center">
-				<span class="mx-auto">
-					<button data-toggle="collapse" data-target=".writeComments">답글쓰기</button>
-				</span>
-			</div>
-			
-			<div class="row w-100 p-3 mx-auto">
-				<form method="post" class="w-100">
-					<div class="summernote">summernote 2</div>
-					<div class="row mt-3">
-					<button class="btn btn-success ml-auto">답변등록</button>
-					</div>
-				</form>
-			</div>
-			
 		</div>
+		
+		</c:forEach>
+		
+
+
+			<!-- 대댓글 - 질문 게시판(관리)에서는 안하기로 함 -->
+<!-- 			<div class="row w-100 border mx-auto rounded p-3 rounded" style="background-color: #F8F9FA;" > -->
+<!-- 				<div class="d-flex flex-row ml-3 mt-3 w-100 align-items-center"> -->
+<!-- 					<span> -->
+<!-- 						<h5><b>댓글</b></h5> -->
+<!-- 					</span> -->
+<!-- 					<span class="ml-auto"> -->
+<!-- 						<button data-toggle="collapse" data-target=".comments">더보기/접기</button> -->
+<!-- 					</span> -->
+<!-- 				</div> -->
+				
+				
+<!-- 				<div class="comments"> -->
+<!-- 					<div class="w-100 text-editor-block d-flex align-items-center my-3"> -->
+<!-- 						<div class="ml-3">					 -->
+<%-- 							<img class="mr-2" style="height: 60px" src="${pageContext.request.contextPath}/Community/img/aaa.png">	 --%>
+<!-- 						</div> -->
+<!-- 						<div class="ml-4"> -->
+<!-- 							<div class="row"> -->
+<!-- 							<span><h5><b><a href="#">OMG</a></b></h5></span> -->
+<!-- 							</div> -->
+<!-- 							<div class="row text-secondary"> -->
+<!-- 							<span>2022.11.18 오전 1:52</span> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+					
+<!-- 					<div class="row ml-5"> -->
+<!-- 						<pre > Lorem ipsum dolor sit, 이거 어떻게 해야 하나요? 대댓글</pre> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+
+			<!-- 대댓글 달기 - 질문게시판에서는 안하기로 했음 -->
+
+<!-- 			<div class="d-flex flex-row ml-3 mt-3 w-100 align-items-center"> -->
+<!-- 				<span class="mx-auto"> -->
+<!-- 					<button data-toggle="collapse" data-target=".writeComments">답글쓰기</button> -->
+<!-- 				</span> -->
+<!-- 			</div> -->
+			
+<!-- 			<div class="row w-100 p-3 mx-auto"> -->
+<!-- 				<form method="post" class="w-100"> -->
+<!-- 					<div class="summernote">summernote 2</div> -->
+<!-- 					<div class="row mt-3"> -->
+<!-- 					<button class="btn btn-success ml-auto">답변등록</button> -->
+<!-- 					</div> -->
+<!-- 				</form> -->
+<!-- 			</div> -->
+			
+<!-- 		</div> -->
 	</div>
 	
 	<%@include file="/Common/footer.jsp" %>

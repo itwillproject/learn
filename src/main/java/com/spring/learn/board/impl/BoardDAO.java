@@ -2,7 +2,6 @@ package com.spring.learn.board.impl;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
 
 import com.spring.learn.board.BoardVO;
 

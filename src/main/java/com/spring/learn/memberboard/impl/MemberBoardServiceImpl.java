@@ -1,11 +1,12 @@
 package com.spring.learn.memberboard.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.learn.board.BoardService;
+import com.spring.learn.memberboard.CallcenterCommentVO;
 import com.spring.learn.memberboard.MemberBoardService;
 import com.spring.learn.memberboard.MemberBoardVO;
 
@@ -17,7 +18,7 @@ public class MemberBoardServiceImpl implements MemberBoardService {
 	private MemberBoardDAO memberBoardDAO;
 
 	public MemberBoardServiceImpl() {
-		System.out.println(">> BoardServiceImple ����");
+		System.out.println(">> BoardServiceImple ����");
 	}
 
 	@Override
@@ -40,10 +41,39 @@ public class MemberBoardServiceImpl implements MemberBoardService {
 		return memberBoardDAO.getBoard(vo);
 	}
 
+
+	//전체데이터 조회 map
 	@Override
-	public List<MemberBoardVO> getBoardList(MemberBoardVO vo) {
-		return memberBoardDAO.getBoardList(vo);
+	public List<MemberBoardVO> getBoardList(Map<String, String> map) {
+		return memberBoardDAO.getBoardListMap(map);
 	}
+	
+	//전체데이터 조회 vo
+	@Override
+	public List<MemberBoardVO> getBoardList(MemberBoardVO bvo) {
+		return memberBoardDAO.getBoardList(bvo);
+	}
+	
+	@Override
+	public int countBoard(MemberBoardVO vo) {
+		return memberBoardDAO.countBoard(vo);
+	}
+
+	@Override
+	public void addCallcenterComment(CallcenterCommentVO cvo) {
+		memberBoardDAO.addCallcenterComment(cvo);		
+	}
+
+	@Override
+	public List<CallcenterCommentVO> getCallcenterComment(MemberBoardVO bvo) {
+		return memberBoardDAO.getCallcenterComment(bvo);
+	}
+
+	@Override
+	public void delCallcenterComment(CallcenterCommentVO cvo) {
+		memberBoardDAO.delCallcenterComment(cvo);
+	}
+
 
 	@Override
 	public List<MemberBoardVO> resolvedCBoardList(MemberBoardVO vo) {

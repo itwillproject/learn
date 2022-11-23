@@ -1,19 +1,29 @@
 package com.spring.learn.memberboard.impl;
 
 import java.util.List;
+import java.util.Map;
 
+import com.spring.learn.memberboard.CallcenterCommentVO;
 import com.spring.learn.memberboard.MemberBoardVO;
 
 public interface MemberBoardDAO {
 	
-	// ∏ﬁº“µÂ∏Ì¿Ã Mapper ∆ƒ¿œ¿« id∏Ì¿∏∑Œ ªÁøÎ
 	void insertBoard(MemberBoardVO vo);
 	void updateBoard(MemberBoardVO vo);
 	void deleteBoard(MemberBoardVO vo);
 	MemberBoardVO getBoard(MemberBoardVO vo);
-	List<MemberBoardVO> getBoardList(MemberBoardVO vo);
+
+	List<MemberBoardVO> getBoardListMap(Map<String, String> map); // Ï†ÑÏ≤¥Îç∞Ïù¥ÌÑ∞ Ï°∞Ìöå map
+	List<MemberBoardVO> getBoardList(MemberBoardVO vo); // Ï†ÑÏ≤¥Îç∞Ïù¥ÌÑ∞ Ï°∞Ìöå vo
+	
+	int countBoard(MemberBoardVO vo);
+	void addCallcenterComment(CallcenterCommentVO cvo);
+	List<CallcenterCommentVO> getCallcenterComment(MemberBoardVO bvo);
+	void delCallcenterComment(CallcenterCommentVO cvo);	
+
 	List<MemberBoardVO> resolvedCBoardList(MemberBoardVO vo);
 	List<MemberBoardVO> unResolvedCBoardList(MemberBoardVO vo);
+
 }
 
 

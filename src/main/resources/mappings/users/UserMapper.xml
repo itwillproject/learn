@@ -44,7 +44,7 @@
 	
 	<update id="deleteUser" parameterType="userVO">
 		UPDATE USERS
-		SET USER_ID = 'unknown'|| USER_UNKOWN_SEQ.NEXTVAL, 
+		SET
 		GRADE = '탈퇴', 
 		USER_PWD = NULL, 
 		USER_BIRTH = NULL,

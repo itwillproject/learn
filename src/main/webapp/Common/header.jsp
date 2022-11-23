@@ -9,12 +9,6 @@
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-<<<<<<< HEAD
-	<script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
-   <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
-
-=======
->>>>>>> 37da7e18adbb082721c1274a4e53a050b686007d
    <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
    <link rel="stylesheet"
           href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
@@ -39,7 +33,17 @@
     <li class="nav-item">
 <div class="dropdown">
     <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-      강의
+      온라인
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">개발 프로그래밍</a>
+      <a class="dropdown-item" href="#">보안 네트워크</a>
+      <a class="dropdown-item" href="#">데이터 사이언스</a>
+    </div>
+  </div>
+  <div class="dropdown">
+    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+      오프라인
     </button>
     <div class="dropdown-menu">
       <a class="dropdown-item" href="#">개발 프로그래밍</a>
@@ -64,6 +68,7 @@
     <div class="dropdown-menu">
       <a class="dropdown-item" href="${pageContext.request.contextPath}/board/getQnaBoardList.do">질문 & 답변</a>
       <a class="dropdown-item" href="#">자유주제</a>
+      <a class="dropdown-item" href="${pageContext.request.contextPath}/getNoticeList.do">공지사항</a>
     </div>
     </div>
 </li>
@@ -150,8 +155,11 @@
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/inquiry.jsp">작성한 게시글</a>
             <a class="dropdown-item" href="#">좋아요</a>
             <a class="dropdown-item" href="#">구매내역</a>
+            <c:if test="${user.grade == '강의자' }">
+            <a class="dropdown-item" href="#">강의자 페이지로 이동</a>
+            </c:if>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/logout.do">로그아웃</a>
-            <a class="dropdown-item" href="#">고객센터</a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터</a>
         </div>
     </div>
     </li>
