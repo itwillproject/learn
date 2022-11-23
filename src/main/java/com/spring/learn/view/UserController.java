@@ -2,6 +2,7 @@ package com.spring.learn.view;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import com.spring.learn.user.UserVO;
 
 // @RequestMapping 클래스 선언부 사용시
 // 모든 메소드 요청경로의 부모(root) 경로로 추가됨
-@RequestMapping("/Member")
+@RequestMapping({"/Member", "/member"})
 @Controller
 public class UserController {
 	@Autowired
@@ -31,7 +32,7 @@ public class UserController {
 	private UserService userService;
 
 	@RequestMapping("/insertUser.do")
-	public String insertUser(UserVO vo) {
+	public String insertUser(@ModelAttribute UserVO vo) {
 		System.out.println(">>> 회원가입");
 		System.out.println("vo : " + vo);
 
@@ -39,7 +40,7 @@ public class UserController {
 
 		System.out.println(">> 회원가입 성공!!!");
 		
-		return "index.jsp";
+		return "/Common/index.jsp";
 	}
 	
 	//이메일인증
@@ -58,12 +59,14 @@ public class UserController {
 		System.out.println("비밀번호 체크 요청이 들어옴!");
 		int cnt = 0;
 		UserVO vo2 = userService.getUser(vo);
+		System.out.println("vo2: "+vo2);
 		if(vo2 != null) {
 			cnt = 1;
+			return cnt;
 		}else {
 			cnt = 0;
+			return cnt;
 		}
-		return cnt;
 	}
 	
 	//현재 Id 체크
@@ -84,7 +87,6 @@ public class UserController {
 	 public String login(HttpServletRequest request, UserVO vo){
 		 System.out.println(">>> 로그인 처리임"); System.out.println("vo : " + vo);
 	
-		 
 		 UserVO user = userService.getUser(vo);
 		 
 		 //3. 화면 네비게이션(화면전환, 화면이동) // 로그인 성공 : 게시글 목록 보여주기 // 로그인 실패 : 로그인 화면으로 이동
@@ -93,24 +95,28 @@ public class UserController {
 			 HttpSession session = request.getSession();
 			 UserVO vo2 = userService.getUser(vo);
 			 session.setAttribute("user", vo2);
-			 return "/Member/myPage.jsp"; } 
+			 } 
 		 else {
+			 
 			 System.out.println(">> 로그인 실패~~~");
 			 
-			 return "/Member/login.jsp";
+			 
 			 }
+		 return "/Common/index.jsp";
 	 }
 
-	 @RequestMapping(value = "/login.do", method = RequestMethod.GET) // 4.3버전 부터 사용가능 
+	 /*
+	  * @RequestMapping(value = "/login.do", method = RequestMethod.GET) // 4.3버전 부터 사용가능 
 	 public String loginView(@ModelAttribute("user") UserVO vo, Model model) {
 		 System.out.println(">>> 로그인 화면 이동 - loginView()");
 
 		 return "/Member/login.jsp";
 	 }
+	  * */
 	  
 	  @RequestMapping("/logout.do") public String logout(HttpSession session) {
 		  System.out.println(">> 로그아웃 처리"); session.invalidate();
-		  return "user/login";
+		  return "/Common/index.jsp";
 	  }
 	  
 	//현재 Id 체크
@@ -122,7 +128,41 @@ public class UserController {
 		int c = userService.modifyUser(vo);
 		System.out.println(c);
 		
-		return "login.jsp";
+		return "myPage.jsp";
+	}
+	
+	
+	@RequestMapping("/changePasswordPage.do")
+	public String moveToChangePage (HttpSession session) {
+		System.out.println("==== skController moveToChangePage() 실행 ====");
+		String userId = ((UserVO)session.getAttribute("user")).getUserId();
+		System.out.println("userId: " + userId);		
+		return "/Member/changePassword.jsp";
+	}
+	
+	
+	@RequestMapping("/changePassword.do")
+	public String changePassword (@ModelAttribute UserVO user, HttpSession session) {
+		System.out.println("==== skController changePassword() 실행 ====");
+		//System.out.println("userId: " + ((UserVO)session.getAttribute("user")).getUserId());		
+		String userId = ((UserVO)session.getAttribute("user")).getUserId();
+		//user.setUserId(userId);
+		user.setUserId(userId);
+		
+		userService.changePwd(user);
+		
+		System.out.println("userPassword: " + user.getUserPwd());		
+		
+		return "/Member/changePasswordOK.jsp";
+	}
+	
+	
+	@RequestMapping("/deleteUser.do")
+	public String deleteUser (HttpSession session) {
+		UserVO user = (UserVO) session.getAttribute("user");
+		System.out.println("삭제 전 user: " + user);
+		userService.deleteUser(user);
+		return "/Common/index.jsp";
 	}
 
 }

@@ -71,6 +71,11 @@
 		ORDER BY QNA_REGDATE DESC
 	</select>
 	
+	<select id="getBoard" parameterType="memberBoard" resultType="memberBoard">
+		SELECT * FROM CALL_CENTER
+		WHERE QNA_NO = #{qnaNo}
+	</select>
+	
 </mapper>
 
 

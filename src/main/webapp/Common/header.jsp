@@ -5,12 +5,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<<<<<<< HEAD
 	<script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
    <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 
+=======
+   <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+   <link rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
+          crossorigin="anonymous">
+>>>>>>> 7e1ff78e1dd14bb33a22cd5273e3d31270dee0ed
    <style>
 .dropdown:hover .dropdown-menu {
     display: block;
@@ -75,6 +84,7 @@
       <input type="text" id="search">
     </button>
 </li>    
+<c:if test="${empty user.userId }">
 <li>
       <button type="button" class="btn" data-toggle="modal" data-target="#login">로그인</button> &nbsp;
     <div class="modal fade" id="login">
@@ -84,15 +94,15 @@
                     <button type="button" class="close" data-dismiss="modal">x</button>
                 </div>
                 <img style="width: 120px;" src="https://cdn.inflearn.com/public/files/pages/da35da48-52a5-4ec6-b8d3-0389a47610ec/logo1.png">
-                <form action="login.do" method="post" class="w-100 pl-4 pr-4 pt-4">
+                <form action="${pageContext.request.contextPath}/Member/login.do" method="post" class="w-100 pl-4 pr-4 pt-4">
                     <input type="email" class="form-control w-100 mb-3" id="userId" placeholder="이메일" name="userId">
                     <input type="password" class="form-control w-100 mb-4" id="userPwd" placeholder="비밀번호" name="userPwd">
                     <button type="submit" class="btn w-100" style="background-color: #00C471; color: white">로그인</button>
                 </form>
                 <div>
-                    <a href="findId.jsp">아이디(이메일) 찾기</a> |
-                    <a href="findPassword.jsp">비밀번호 찾기</a> |
-                    <a href="newMember.jsp">회원가입</a>
+                    <a style="color: black" href="${pageContext.request.contextPath}/Member/findId.jsp">아이디(이메일) 찾기</a> |
+                    <a style="color: black" href="${pageContext.request.contextPath}/Member/findPassword.jsp">비밀번호 찾기</a> |
+                    <a style="color: black" href="${pageContext.request.contextPath}/Member/newMember.jsp">회원가입</a>
                 </div>
                 <hr class="w-100">
                 <div class="pb-1 text-center">
@@ -105,7 +115,7 @@
                       var naverLogin = new naver.LoginWithNaverId(
                           {
                             clientId: "vkx131bLLt6ehxKoqXiH",
-                            callbackUrl: "http://localhost:8080/Member/naverLogin.jsp",
+                            callbackUrl: "http://localhost:8080/${pageContext.request.contextPath}/Member/naverLogin.jsp",
                             isPopup: false,
                             loginButton: {color: "green", type: 1, height: 40}
                           }
@@ -121,10 +131,30 @@
     </div>
 </li>
 <li>
-    <button type="button" class="btn btn-outline-danger" onclick="location.href='newMember.jsp'">회원가입</button>&nbsp;
+    <button type="button" class="btn btn-outline-danger" onclick="location.href='${pageContext.request.contextPath}/Member/newMember.jsp'">회원가입</button>&nbsp;
     </li>
+</c:if>
+<c:if test="${not empty user.userId }">
+<li>
+      <button type="button" class="btn"><i class="fas fa-cart-plus fa-lg"></i></button> &nbsp;
+</li>
+<li>
+    <div class="dropdown">
+        <button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/Member/myPage.jsp'"><i class="far fa-user fa-lg"></i></button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">내 학습</a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/inquiry.jsp">작성한 게시글</a>
+            <a class="dropdown-item" href="#">좋아요</a>
+            <a class="dropdown-item" href="#">구매내역</a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/logout.do">로그아웃</a>
+            <a class="dropdown-item" href="#">고객센터</a>
+        </div>
+    </div>
+    </li>
+
+</c:if>
     <li>
-<button type="button" class="btn" onclick = "location.href='howtobelecture.jsp'">지식 공유 참여</button>
+<button type="button" class="btn" onclick = "location.href='${pageContext.request.contextPath}/Member/Belecture/beLecture.jsp'">지식 공유 참여</button>
 </li>
 
 

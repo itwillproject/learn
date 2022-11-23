@@ -84,7 +84,9 @@
 				<li class="sidebar-top">
 					<h4 style="margin-left: 3px; text-align: center;"><small>설정</small></h4>
 				</li>
-				<li class="sidebar-brand"><a href="myPage.jsp">계정정보(마이페이지)</a>
+				<li class="sidebar-brand"><a href="${pageContext.request.contextPath}/Member/myPage.jsp">계정정보(마이페이지)</a>
+				</li>
+				<li class="sidebar-brand"><a href="getResume.do?userId=${user.userId }">지식 공유 현황보기</a>
 				</li>
 			</ul>
 		</div>

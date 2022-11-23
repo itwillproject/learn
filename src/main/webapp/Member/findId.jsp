@@ -14,6 +14,12 @@
 	html, body {
 		height: 100%;
 	}
+	.tape {
+		height: 100px;
+		margin: 50px auto;
+		padding-top: 15px;
+		color: white;
+	}
 </style>
 <script>
 	function findId(frm) {
@@ -23,9 +29,9 @@
 			$(".invalid").addClass("text-danger");
 			$(".invalid").text("이름과 생년월일을 입력해 주세요.");
 			
-			$("input[name=userName]").focus();
+			$("input[name=userName").focus();
 			
-			$("input[name=userName]").keyup(function(){
+			$("input[name=userName").keyup(function(){
 				$(".invalid").removeClass("text-danger");
 				$(".invalid").text("");
 			});
@@ -36,11 +42,11 @@
 			$(".invalid").addClass("text-danger");
 			$(".invalid").text("이름을 입력해 주세요.");
 			
-			$("input[name=userName]").focus();
+			$("input[name=userName").focus();
 			
-			$("input[name=userName]").keyup(function(){
+			$("input[name=userName").keyup(function(){
 		
-				if($("input[name=userBirth]").val().length != 0) {
+				if($("input[name=userBirth").val().length != 0) {
 					$(".invalid").removeClass("text-danger");
 					$(".invalid").text("");
 				}
@@ -51,11 +57,11 @@
 			$(".invalid").addClass("text-danger");
 			$(".invalid").text("생년월일을 입력해 주세요.");
 			
-			$("input[name=userBirth]").focus();
+			$("input[name=userBirth").focus();
 			
-			$("input[name=userBirth]").keyup(function(){
+			$("input[name=userBirth").keyup(function(){
 		
-				if($("input[name=userName]").val().length != 0) {
+				if($("input[name=userName").val().length != 0) {
 					$(".invalid").removeClass("text-danger");
 					$(".invalid").text("");
 				}
@@ -96,9 +102,9 @@
 			           	dispHtml += '<div class="w-100 p-3 mx-auto">';
 			           	dispHtml += '<p class="text-left">아이디(이메일)</p>';
 		            	dispHtml += '<p class="float-clear"></p>';
-			            $.each(data, function(index, obj){
+			            $.each(data, function(index, obj){	
 				           	dispHtml += '<p class="text-left">';
-				           	dispHtml += '<img src="${pageContext.request.contextPath }/picture/findAccount/inflean.png" alt="inflean" width="20px"> ';
+				           	dispHtml += '<img src="${pageContext.request.contextPath }/picture/findAccount/inflearn_logo.png" alt="inflearn" width="20px"> ';
 				           	if(obj.socialType == "naver") {
 					           	dispHtml += '<img src="${pageContext.request.contextPath }/picture/findAccount/naver_logo.png" alt="naver" width="20px">';	
 				           	} else if (obj.socialType == "google") {
@@ -107,8 +113,8 @@
 				           	dispHtml += '</p>';
 			            	dispHtml += '<p class="text-left">'+obj.userId+'</p>';
 			            })	            	
-		            	dispHtml += '<input type="button" class="btn-block btn btn-success px-5" value="로그인"';
-		            	dispHtml += 'onclick="location.href=\'${pageContext.request.contextPath }/Member/login.jsp\';">';
+		            	dispHtml += '<input type="button" class="btn-block btn btn-success px-5" value="메인"';
+		            	dispHtml += 'onclick="location.href=\'${pageContext.request.contextPath }/Common/index.jsp\';">';
 		            	//inflearn 클릭시 모달 아닌 login 페이지로 이동
 			           	dispHtml += '</div>';
 		            }
@@ -128,6 +134,14 @@
 </script>   
 </head>
 <body>
+<%@include file="/Common/header.jsp" %>
+<div class="container-fluid bg-dark">
+		<div class="container tape">
+			<section class="tapeContent">
+				<h2>아이디 찾기</h2>
+			</section>
+		</div>
+	</div>
 <div class="container h-100 text-center">
 	<div class="d-flex align-items-center mx-auto text-center h-100">
 		<div id="findSearch" class="mx-auto">
@@ -148,5 +162,6 @@
 	</div>	
 
 </div>
+<%@include file="/Common/footer.jsp" %>
 </body>
 </html>
