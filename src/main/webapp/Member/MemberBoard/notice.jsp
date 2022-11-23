@@ -11,13 +11,14 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <style>
 	.getNotice a {color: black;}
 	 	.getNotice a:hover {
 	  	text-decoration: none;
 	  	color: green;
-	 	}
-	 	.center { text-align: center; }
+	 }
+	 .center { text-align: center; }
 	.tape {
 		height: 100px;
 		margin: 50px auto;
@@ -92,7 +93,7 @@
 		color:white;
 		border:1px solid green;
 	}
-	.textfield {
+/* 	.textfield {
 		position: relative;
 		text-align: center;
 		width: 500px;
@@ -103,14 +104,81 @@
 		outline: none;
 		padding-left: 10px;
 		background-color: rgb(233, 233, 233);
-	}
+	} */
 	
 </style>
 <script>
-  	function press(f) {
-	    if(f.keyCode == 13) { //javascript에서는 13이 enter키를 의미함
-			search.submit(); //formname에 사용자가 지정한 form의 name입력
-	    }
+	/*
+	$(function(){
+	    $.ajax(
+	        type:post,
+	        url:url1,
+	        success:function(){
+	        },
+	        error:function(){
+	        }
+	    );
+	    $.ajax(
+	        type:post,
+	        url:url2,
+	        success:function(){
+	        },
+	        error:function(){
+	        }
+	    );
+	})
+	 */
+
+	function getJsonNoticeListData(frm) {
+		//alert("getJsonNoticeListData(frm) 실행");
+		console.log($(frm).serialize());
+		
+		$.ajax("getJsonNoticeList.do", {
+			type: "get",
+			data: $(frm).serialize(), //서버쪽으로 JSON 문자열 전달
+			dataType: "json", //서버로부터 응답받는 데이터 형식
+			success: function(data){ 
+				//alert("게시글 list ajax 성공"); 
+				console.log(data);
+				
+				let dispHtml = "";
+				
+				for (let board of data) {					
+					dispHtml += "<tr>";
+					dispHtml += "<td class='getNotice'>";
+					dispHtml += "<a href='getNotice.do?boardNo=" + board.boardNo + "'>";
+					dispHtml += "<span id='N'>N. </span>" + board.boardTitle;
+					dispHtml += "<br>";
+					dispHtml += "<span id='fontSize'>" + board.boardRegdate.substring(0,10) + " 관리자</span>"
+					dispHtml += "</a>";
+					dispHtml += "</td>";
+					dispHtml += "</tr>";
+				} 
+				$("#dispBody").html(dispHtml);
+			},
+			error: function(){
+				alert("[ERROR]오류");
+			}
+		}); 
+		$.ajax("getJsonNoticePage.do", {
+			type: "get",
+			data: $(frm).serialize(), //서버쪽으로 JSON 문자열 전달
+			dataType: "json", //서버로부터 응답받는 데이터 형식
+			success: function(data){ 
+				//alert("페이징 ajax 성공"); 
+				console.log(data);
+				
+				let dispHtml = "";
+				
+				for (let page of data) {		
+
+				} 
+				$("#page_nation").html(dispHtml);
+ 			},
+			error: function(){
+				alert("[ERROR]오류");
+			}
+		}); 
 	}
 </script>
 </head>
@@ -125,21 +193,49 @@
 			</section>
 		</div>
 	</div>
-	
-  	<div class="outer">
+	<!-- 검색기능 -->
+	<div class="outer">
 		<div class="inner">
-			<form action="getBoardList.do" method="post" name="search">
+			<div class="container">
+				<div class="row">
+					<form method="get" name="search">
+						<table class="pull-right">
+							<tr>
+								<td>
+									<select class="form-control" name="searchCondition">
+									<c:forEach var="option" items="${conditionMap }">
+										<option value="${option.value }">${option.key }</option>
+									</c:forEach>
+									</select>
+								</td>
+								<td>
+									<input type="text" class="form-control" placeholder="검색어를 입력하세요." name="searchKeyword">
+								</td>
+								<td>
+									<button type="button" class="btn btn-success" onclick="getJsonNoticeListData(this.form)">검색</button>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<%--   	<div class="outer">
+		<div class="inner">
+			<form action="getJsonNoticeList.do?keyword=${keyword }" method="get" name="search">
 		        <input  class="textfield" name="keyword" type="text" size="30" onkeypress="JavaScript:press(this.form)" placeholder="검색어를 입력하세요."> 
 			</form>
 		</div>
-	</div>
+	</div> --%>
 
  	<br><br>
     
     <!-- 리스트 출력 -->
 	<div class="container">      
 	  <table class="table">
-	    <tbody>
+	    <tbody id="dispBody">
 	    <c:if test="${not empty list }">
 	      <c:forEach var="notice" items="${list }">
 		      <tr>
@@ -147,7 +243,7 @@
 			        <a href="getNotice.do?boardNo=${notice.boardNo }">
 			        	<span id="N">N.</span> ${notice.boardTitle }
 						<br>
-						<span id="fontSize">${notice.boardRegdate } 관리자</span>
+						<span id="fontSize">${notice.boardRegdate.substring(0,10) } 관리자</span>
 					</a>	
 				</td>
 		      </tr>

@@ -21,15 +21,16 @@
 		<a href="findPassword.jsp">비밀번호 찾기</a>
 		<a href="/learn/getNoticeList.do">공지사항</a>
 		<a href="/learn/getFaqList.do">자주묻는질문</a>
+<<<<<<< HEAD
+		<a href="findPassword.jsp">지식 공유 참여</a>
+=======
 		<a href="getResume.do?userId=${user.userId }">지식 공유 참여</a>
 		
 
+>>>>>>> 7e1ff78e1dd14bb33a22cd5273e3d31270dee0ed
 	</p>
 	<hr><hr>
-
-
 </div>
-	
 </body>
 </html>
 

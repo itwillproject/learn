@@ -84,6 +84,14 @@
 </script>
 </head>
 <body>
+<<<<<<< HEAD
+	<h1>사이드 네비</h1>
+	<hr><a href="getResume.do?userId=hh">지식 공유 현황보기</a>
+	<hr>
+	<hr>
+	<hr>
+=======
+>>>>>>> 7e1ff78e1dd14bb33a22cd5273e3d31270dee0ed
 	<%@ include file="../Common/header.jsp"%>
 	<div class="container-fluid bg-dark">
 		<div class="container tape">
@@ -92,10 +100,17 @@
 			</section>
 		</div>
 	</div>
+<<<<<<< HEAD
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-2">
+=======
 	<div class="container-fluid mt-5 pb-3 d-flex justify-content-center">
 
 		<div class="row w-100 pb-4 justify-content-center">
 			<div class="col-2 d-flex justify-content-center">
+>>>>>>> 7e1ff78e1dd14bb33a22cd5273e3d31270dee0ed
 				<%@ include file="sideNav.jspf"%>
 			</div>
 			<div class="col-6 pl-3 gray-line">
