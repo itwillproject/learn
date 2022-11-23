@@ -41,17 +41,20 @@
       <a class="dropdown-item" href="#">데이터 사이언스</a>
     </div>
   </div>
-  <div class="dropdown">
-    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-      오프라인
-    </button>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="#">개발 프로그래밍</a>
-      <a class="dropdown-item" href="#">보안 네트워크</a>
-      <a class="dropdown-item" href="#">데이터 사이언스</a>
-    </div>
-  </div>
 </li>
+
+      <li class="nav-item">
+          <div class="dropdown">
+              <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                  오프라인
+              </button>
+              <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">개발 프로그래밍</a>
+                  <a class="dropdown-item" href="#">보안 네트워크</a>
+                  <a class="dropdown-item" href="#">데이터 사이언스</a>
+              </div>
+          </div>
+      </li>
    
     <li class="nav-item">
 
@@ -151,13 +154,14 @@
             <a class="dropdown-item"><small>${user.grade }</small></a>
             <a class="dropdown-item"><small>포인트: ${user.points }점</small></a>
             <a class="dropdown-item"><hr></a>
+            <c:if test="${user.grade == '강의자' }">
+                <a class="dropdown-item" href="#">강의자 페이지로 이동</a>
+                <a class="dropdown-item"><hr></a>
+            </c:if>
             <a class="dropdown-item" href="#">내 학습</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/inquiry.jsp">작성한 게시글</a>
             <a class="dropdown-item" href="#">좋아요</a>
             <a class="dropdown-item" href="#">구매내역</a>
-            <c:if test="${user.grade == '강의자' }">
-            <a class="dropdown-item" href="#">강의자 페이지로 이동</a>
-            </c:if>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/logout.do">로그아웃</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터</a>
         </div>
