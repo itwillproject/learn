@@ -48,16 +48,19 @@ public class MemberBoardController {
 	@RequestMapping("/getMyQBoardList.do")
 	public String getQnaBoardList(MemberBoardVO bvo, Model model, Paging p, HttpSession session) {
 		System.out.println(">>> 보드리스트 가져오기");		
+		UserVO uvo = (UserVO) session.getAttribute("user");
+		bvo.setUserId(uvo.getUserId());
+		
 		System.out.println("vo : " + bvo);
 		model.addAttribute("memberBoard", bvo);
-		UserVO uvo = (UserVO) session.getAttribute("user");
 		
-		if(uvo == null) {
-			return "/Member/login.do";
+		if(uvo.getUserId() == null) {
+			return "redirect:/Member/login.do";
 		}
 		
-		// 전체 페이지 수 구하기
+		// 전체 페이지 수 구하기 - 이게 유저 아이디로 찾아야함 - > 일반 게시판에서는 조건으로 바꿔야함 , 검색 키워드와 유저아이디로
 		p.setTotalRecord(memberBoardService.countBoard(bvo));
+		
 		p.setTotalPage();
 		
 		// 현재 페이지 구하기
@@ -88,6 +91,7 @@ public class MemberBoardController {
 		map.put("userId", uvo.getUserId());
 		map.put("begin", Integer.toString(p.getBegin()));
 		map.put("end", Integer.toString(p.getEnd()));
+		map.put("qnaAdopt", bvo.getQnaAdopt());
 		
 		System.out.println(">>>>> map : " + map);
 
@@ -105,6 +109,9 @@ public class MemberBoardController {
 
 		return "/Member/MemberBoard/myQBoardList.jsp"; // 이동
 	}
+	
+	
+	
 	
 	// 입력폼으로 이동
 	@GetMapping("/qnaWriteForm.do")

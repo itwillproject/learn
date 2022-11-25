@@ -34,6 +34,9 @@
 				(SELECT * FROM CALL_CENTER
 					WHERE 1 = 1
 					AND USER_ID = #{userId}
+					<if test="qnaAdopt != null">
+					AND QNA_ADOPT = #{qnaAdopt}
+					</if>		
 					<if test="searchKeyword != null">
 					AND ( QNA_TITLE LIKE '%'|| #{searchKeyword} ||'%'
 					OR QNA_CONTENT LIKE '%'|| #{searchKeyword} ||'%')		
@@ -45,6 +48,15 @@
 	
 	<select id="countBoard" parameterType="memberBoard" resultType="int">
 		SELECT COUNT(QNA_NO) FROM CALL_CENTER
+		WHERE 1 = 1
+		AND USER_ID = #{userId}
+		<if test="searchKeyword != null">
+		AND ( QNA_TITLE LIKE '%'|| #{searchKeyword} ||'%'
+		OR QNA_CONTENT LIKE '%'|| #{searchKeyword} ||'%')		
+		</if>			
+		<if test="qnaAdopt != null">
+		AND QNA_ADOPT = #{qnaAdopt}
+		</if>	
 	</select>
 	
 	<select id="getBoardList" parameterType="memberBoard" resultType="memberBoard">

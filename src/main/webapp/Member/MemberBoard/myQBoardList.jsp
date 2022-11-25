@@ -135,13 +135,13 @@
 				<nav class="navbar navbar-expand-sm navbar-light p-3">
                     <ul class="navbar-nav gray-botton w-100" style="border-bottom: 1px solid gray">
                         <li class="nav-item active black-line">
-                        <a class="nav-link" href="#">전체</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">전체</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="#">미해결</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do?qnaAdopt=FALSE">미해결</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="#">해결됨</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do?qnaAdopt=TRUE">해결됨</a>
                         </li>
                     </ul>
 				</nav>
@@ -157,6 +157,10 @@
 					</form>
 				</div>
 								
+						<c:if test="${pvo.totalRecord == 0 }">
+							<p>검색한 내용이 없습니다.</p>
+						</c:if>
+						
 				<table class="table table-hover mt-5">
 					<tbody>
 						<c:forEach var="memberBoard" items="${memberBoardList }">							
@@ -172,11 +176,13 @@
 								</td>
 							</tr>
 						</c:forEach>
+					</tbody>
 				</table>
 				
 				
-				
 				<!-- 페이지네이션 페이징 paging -->
+				
+				<c:if test="${pvo.totalRecord != 0 }">
 				
 				<div class="pagination p12 justify-content-center">
 			      <ul>
@@ -209,6 +215,7 @@
 					
 			      </ul>
 			    </div>
+			    </c:if>
 				
 			</div>			
 			
