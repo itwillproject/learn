@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.spring.learn.memberboard.CallcenterCommentVO;
 import com.spring.learn.memberboard.MemberBoardVO;
+import com.spring.learn.memberboard.OrdersDetailVO;
 
 public interface MemberBoardDAO {
 	
@@ -23,6 +24,7 @@ public interface MemberBoardDAO {
 
 	List<MemberBoardVO> resolvedCBoardList(MemberBoardVO vo);
 	List<MemberBoardVO> unResolvedCBoardList(MemberBoardVO vo);
+	List<OrdersDetailVO> goMyLectureList(OrdersDetailVO oov);
 
 }
 

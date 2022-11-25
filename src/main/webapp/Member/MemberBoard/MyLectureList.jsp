@@ -16,21 +16,13 @@
 	border-bottom: solid 1px #dddddd;
 }
 
-
-
 </style>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-<script
-	src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-
-</script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/Community/css/jyStyle.css">
 </head>
 <body>
 
@@ -40,7 +32,7 @@
 	</div>
 
 	<!-- 헤더 올리기 -->
-	<%@ include file="../Common/header.jsp"%>
+	<%@ include file="/Common/header.jsp"%>
 	
 	<!-- 띠지 테이프 -->
 	<div class="container-fluid bg-dark mt-5">
@@ -62,7 +54,7 @@
 		
 			<!-- 왼쪽 사이드 네비 -->
 			<div class="col-2 d-flex justify-content-center">
-				<%@ include file="sideNav.jspf"%>
+				<%@ include file="/Member/sideNav.jspf"%>
 			</div>
 			
 			<!-- 가운데 내용 -->
@@ -72,7 +64,7 @@
 				<!-- 가운데 내비 / 보유한강의 / 내강의폴더 / 로드맵 / 수강확인증 / 수료증 -->
 				<div class="row w-100">
 				
-					<div class="gray-line row w-100 pb-3">
+					<div class="gray-line row w-100 mb-3">
 						<ul class="nav">
 						  <li class="nav-item">
 						    <a class="nav-link" href="#">보유한강의</a>
@@ -122,38 +114,52 @@
 				
 				
 				
-				<div class="row w-100 mt-3">
 					<!-- 여기서 포이치문으로 줄 만들고 -->
-					<!-- 줄 만든 후에 제이쿼리 온로드로 하나씩 넣기 어떰? 첫번째 놈에 첫번째 넣고, 이런식으로 -->
-					<div class="row w-100">
-						<div class="col border">
-							<div class="row"><img width="100%" src="https://cdn.inflearn.com/public/courses/325630/cover/56f635a3-3a44-4096-a16b-453ea1696b1a/325630-eng.png"></div>
-							<div class="row d-flex">
-								<span class="pl-2">제목</span>
-								<span class="ml-auto" style="width: 100px">플레이버튼</span>
-							</div>
-						</div>
-						<div class="col border">
-							<div class="row"><img width="100%" src="https://cdn.inflearn.com/public/courses/325630/cover/56f635a3-3a44-4096-a16b-453ea1696b1a/325630-eng.png"></div>
-							<div class="row d-flex">
-								<span class="pl-2">제목</span>
-								<span class="ml-auto" style="width: 100px">플레이버튼</span>
-							</div>
-						</div>
-						<div class="col border">
-							<div class="row"><img width="100%" src="https://cdn.inflearn.com/public/courses/325630/cover/56f635a3-3a44-4096-a16b-453ea1696b1a/325630-eng.png"></div>
-							<div class="row d-flex">
-								<span class="pl-2">제목</span>
-								<span class="ml-auto" style="width: 100px">플레이버튼</span>
-							</div>
-						</div>
-					</div>
+					<!-- 줄 만들 후에 콜에다가 같은 클래스 주고, 몇번 째 그 클래스 안에 집어넣기 이런식으로 해야 할 듯 하다-->
 					
+					
+				<div class="container mt-3" id="myLectures">
+						<c:forEach varStatus="vs" var="myOrderDetail" items="${myOrderDetailList }" >
+						
+							<c:if test="${vs.count % 3 == 1 }">
+								<div class="row w-100">
+							</c:if>
+							
+							<div class="col-4 border">
+							
+							<p>${myOrderDetail.lectureNo }</p> <!-- 보낼 강의 번호 -->
+							<a href="#"><img class="mx-auto" width="220px" alt="lectureImg" src="${myOrderDetail.lectureCoverimg }"></a>  <!-- 이미지 파일에서 불러오는 것은 차후에 구현 -->
+							<p><a href="#">${myOrderDetail.lectureTitle }</a></p>
+							
+							</div>
+							
+							<c:if test="${vs.last }">
+								<c:if test="${vs.count % 3 == 2 }">
+									<div class="col-4 border"></div>
+								</c:if>
+								<c:if test="${vs.count % 3 == 1 }">
+									<div class="col-4 border"></div>
+									<div class="col-4 border"></div>
+								</c:if>
+								</div>
+							</c:if>
+							
+							<c:if test="${vs.count % 3 == 0 }">
+								</div>
+							</c:if>
+							
+						</c:forEach>
 				</div>
-				
 
+
+					
+					
+					
+
+				
+				
 		<footer>
-			<%@ include file="../Common/footer.jsp"%>
+			<%@ include file="/Common/footer.jsp"%>
 		</footer>
 </body>
 </html>

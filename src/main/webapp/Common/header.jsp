@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<!--    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script> -->
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
@@ -158,7 +158,7 @@
                 <a class="dropdown-item" href="#">강의자 페이지로 이동</a>
                 <a class="dropdown-item"><hr></a>
             </c:if>
-            <a class="dropdown-item" href="#">내 학습</a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/memberBoard/goMyLectureList.do">내 학습</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/inquiry.jsp">작성한 게시글</a>
             <a class="dropdown-item" href="#">좋아요</a>
             <a class="dropdown-item" href="#">구매내역</a>

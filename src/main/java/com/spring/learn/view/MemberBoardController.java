@@ -26,6 +26,7 @@ import com.spring.learn.memberboard.AdminQNAReplyVO;
 
 import com.spring.learn.memberboard.MemberBoardService;
 import com.spring.learn.memberboard.MemberBoardVO;
+import com.spring.learn.memberboard.OrdersDetailVO;
 import com.spring.learn.user.UserVO;
 
 @Controller					// 단 현재 위치(클래스)에서만 유효
@@ -340,18 +341,25 @@ public class MemberBoardController {
 	// 내학습 부분
 	// 내 학습 리스트 보기
 	@GetMapping("/goMyLectureList.do")
-	public String goMyLectureList(UserVO uvo, HttpSession session, Model model) {
+	public String goMyLectureList(UserVO uvo, HttpSession session, Model model, OrdersDetailVO oov) {
 		System.out.println(">>> 내 학습 리스트 보기로 이동");	
 		uvo = (UserVO) session.getAttribute("user");
+		
+		if (uvo.getUserId() == null) {
+			return "/member/login.do";
+		}
+		
+		oov.setUserId(uvo.getUserId());
+		
+		List<OrdersDetailVO> list = memberBoardService.goMyLectureList(oov);
+		
+		model.addAttribute("myOrderDetailList", list);
+		
+		System.out.println("oov : " + oov);
+		System.out.println("myOrderDetailList : " + list);
+		
 				
-		
-		// 유저vo로 내 학습 중인 vo list를 받아서 모델에 등록하고, 세션에 등록시키기------------------------------------------------------------------------
-//		mlvo = memberBoardService.getBoard(bvo);
-//		model.addAttribute("callBvo", bvo);
-		
-//		System.out.println(">> 검색후 callBvo : "+ bvo);		
-		
-		return "/Member/MyLectureList.jsp"; // 이동
+		return "/Member/MemberBoard/MyLectureList.jsp"; // 이동
 	}
 	
 }

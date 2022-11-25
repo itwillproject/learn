@@ -17,7 +17,14 @@
 		<typeAlias alias="resume" type="com.spring.learn.resume.ResumeVO"/>
 
 		<typeAlias alias="memberBoard" type="com.spring.learn.memberboard.MemberBoardVO"/>
-		<typeAlias alias="CallcenterComment" type="com.spring.learn.memberboard.CallcenterCommentVO"/>		
+		<typeAlias alias="CallcenterComment" type="com.spring.learn.memberboard.CallcenterCommentVO"/>	
+		
+		
+		
+			
+		<typeAlias alias="OrdersDetail" type="com.spring.learn.memberboard.OrdersDetailVO"/>	
+		
+			
 	
 		<!-- 현지 추가 -->
 		<typeAlias alias="noticeVO" type="com.spring.learn.board.NoticeVO"/>
