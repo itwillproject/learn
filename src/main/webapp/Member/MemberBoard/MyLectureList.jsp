@@ -23,6 +23,93 @@
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/Community/css/jyStyle.css">
+	
+	<script type="text/javascript">
+	
+	$(document).on("change", "#sorting", function(){
+		ajaxserachh();
+	});
+	
+	$(document).on("change", "#lectureRate", function(){
+		ajaxserachh();
+	});
+	
+	$(document).on("keyup", "#searchKeyword", function(){
+		ajaxserachh();
+	});
+	
+	
+	
+	
+	function ajaxserachh(){
+		var searchKeyword = $("#searchKeyword").val();
+		var sorting = $("#sorting").val();
+		var lectureRate = $("#lectureRate").val();
+		
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/memberBoard/goMyLectureListAj.do?sorting="+sorting+"&searchKeyword="+searchKeyword+"&lectureRate="+lectureRate,
+			type : "get",
+			async : true,
+			
+			success : function(data){
+				console.log("에이젝스 성공!!");
+				
+				var inHtml = "";
+								
+				if (data.length == 0){
+					inHtml = '<div class="row w-100">검색 결과가 없습니다.</div>';
+				}
+				
+				else {
+					
+					$.each(data, function(index, obj){
+						
+						if (index % 3 == 0){
+							inHtml += '<div class="row w-100">'; 
+						}
+						
+						inHtml += '<div class="col-4 border">';
+						inHtml += '<p>'+ this.lectureNo +'</p>';
+						inHtml += '<a href="#"><img class="mx-auto" width="220px" alt="lectureImg" src="'+this.lectureCoverimg+'"></a>';
+						inHtml += '<p><a href="#">'+ this.lectureTitle +'</a></p></div>';
+						
+						
+						if(index == data.length-1){
+							if ((data.length) % 3 ==2){
+								inHtml += '<div class="col-4 border"></div>';
+							}
+							if ((data.length) % 3 ==1){
+								inHtml += '<div class="col-4 border"></div><div class="col-4 border"></div>';
+							}
+						}
+						
+						if(index % 3 == 2){
+							inHtml += '</div>';
+						}
+						
+						});
+					
+				}
+				
+				$("#myLectures").html(inHtml);
+				
+			},
+			
+			error : function(){
+				console.log("에이젝스 실패!!");
+			}
+				
+		});
+	}
+	
+	
+
+	
+	</script>
+	
+	
+	
 </head>
 <body>
 
@@ -79,35 +166,30 @@
 						    <a class="nav-link" href="#">수료증</a>
 						  </li>						  
 						</ul>
-					</div>
+					</div>															
 					
+					<!-- ajax로 검색 -->
 					<div class="row w-100 my-3 pb-3">
-					
-						<div class="col d-flex">
-							<div class="mr-4">
-							<select onchange="">
-								<option selected="selected">최근공부</option>
-								<option>최근 수강신청</option>
-								<option>제목순</option>
+							<form id="ajaxForm" class="w-100 d-flex">
+							<div class="ml-4">
+							<select id="sorting" name="sorting">
+								<option value="regdate" selected="selected">최근 수강신청</option>
+								<option value="title">제목순</option>
 							</select>
 							</div>
 							
-							<div>
-							<select onchange="">
+							<div class="ml-4">
+							<select id="lectureRate" name="lectureRate">
 								<option selected="selected">모두보기</option>
-								<option>학습중</option>
-								<option>완강</option>
+								<option value="ing">학습중</option>
+								<option value="perfect">완강</option>
 							</select>
 							</div>
 													
-						</div>
-						
-						<div class="col">
-							<form class="w-100 d-flex">
-								<input type="text" class="w-75" name="searchKeyword" placeholder="강의명 또는 지식공유자 이름으로 검색">
-								<input type="button" class="ml-auto" value="검색">
+								<input type="text" class="w-50 ml-auto" id="searchKeyword" name="searchKeyword" placeholder="강의명 또는 지식공유자 이름으로 검색">
+<!-- 								<input type="text" class="w-50 ml-auto" id="searchKeyword" name="searchKeyword" placeholder="강의명 또는 지식공유자 이름으로 검색"> -->
+<!-- 								<input type="button" id="ajaxSearch" class="ml-auto" value="검색"> -->
 							</form>
-						</div>
 					</div>
 					
 				</div>
@@ -152,11 +234,6 @@
 				</div>
 
 
-					
-					
-					
-
-				
 				
 		<footer>
 			<%@ include file="/Common/footer.jsp"%>

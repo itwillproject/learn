@@ -106,36 +106,48 @@
 	
 	<select id="goMyLectureList" parameterType="OrdersDetail" resultType="OrdersDetail">
 		SELECT J.LECTURE_NO LECTURE_NO, J.USER_ID USER_ID, ORDER_NO, ORDER_REGDATE,
-		LECTURE_COVERIMG, LECTURE_TITLE, LECTURE_SUMMARY, LECTURE_DUE, LECTURE_RATE
+		LECTURE_COVERIMG, LECTURE_TITLE, LECTURE_SUMMARY, LECTURE_DUE, LECTURE_RATE,
+		LECTURE_WRITER
 		FROM (
 		 SELECT LECTURE_NO, D.USER_ID USER_ID, D.ORDER_NO ORDER_NO, ORDER_REGDATE, LECTURE_RATE
 		 FROM ORDER_DETAIL D
 		 LEFT JOIN ORDERS O
-<!-- 		 WHERE D.USER_ID = 'gee1suu@gmail.com' -->
 		 ON (D.ORDER_NO = O.ORDER_NO)
 		 WHERE D.USER_ID = #{userId}
-<!-- 		<if test="lectureRate == 'ALL'"> -->
-<!-- 			AND D.LECTURE_RATE = 100 -->
-<!-- 		</if> -->
-		
-<!-- 		<if test="lectureRate == 'HALF'"> -->
-<!-- 			AND D.LECTURE_RATE < 100 -->
-<!-- 		</if> -->
 		) J LEFT JOIN LECTURE L
 		ON (J.LECTURE_NO = L.LECTURE_NO)
-		
-		<!-- 최근공부 내림차순 정렬 -->
-<!-- 		<if test=""> -->
-<!-- 		ORDER BY -->
-<!-- 		</if> -->
-		<!-- 최근 수강 신청 내림차순 정렬 -->
-<!-- 		<if test=""> -->
-<!-- 		ORDER BY -->
-<!-- 		</if> -->
-		<!-- 제목순 오름차순 정렬 -->
-<!-- 		<if test=""> -->
-<!-- 		ORDER BY -->
-<!-- 		</if> -->
+		WHERE 1 = 1
+		<if test="searchKeyword != null">
+        AND (LECTURE_TITLE LIKE '%'|| #{searchKeyword} ||'%'
+        OR LECTURE_CONTENT LIKE '%'|| #{searchKeyword} ||'%'
+        OR LECTURE_WRITER LIKE '%'|| #{searchKeyword} ||'%')
+        </if>
+        <if test="lectureRate != null">
+       		<if test="lectureRate == 'perfect'">
+       			AND LECTURE_RATE = 100
+       		</if>
+       		<if test="lectureRate == 'ing'">
+       			AND LECTURE_RATE != 100
+       		</if>
+        </if>
+        
+        <choose>
+        	<when test="sorting == null">
+        		ORDER BY ORDER_REGDATE DESC
+        	</when>
+        	
+        	<otherwise>
+	        	<if test="sorting == 'regdate'">
+	        	ORDER BY ORDER_REGDATE DESC
+	        	</if>
+	        	
+	        	<if test="sorting == 'title'">
+	        	ORDER BY LECTURE_TITLE ASC
+	        	</if>
+        	</otherwise>
+        </choose>
+
+
 		
 		
 	</select>

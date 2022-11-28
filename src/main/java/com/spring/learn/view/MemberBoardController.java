@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,7 +31,7 @@ import com.spring.learn.memberboard.OrdersDetailVO;
 import com.spring.learn.user.UserVO;
 
 @Controller					// 단 현재 위치(클래스)에서만 유효
-@SessionAttributes({"memberBoard", "callBvo", "cvoList"}) // memberBoard라는 이름의 Model객체가 있으면 세션에 저장
+@SessionAttributes({"memberBoard", "callBvo", "cvoList", "myOrderDetailList"}) // memberBoard라는 이름의 Model객체가 있으면 세션에 저장
 @RequestMapping("/memberBoard")
 public class MemberBoardController {
 
@@ -339,7 +340,7 @@ public class MemberBoardController {
 	
 	
 	// 내학습 부분
-	// 내 학습 리스트 보기
+	// 내 학습 리스트 보기 - 일반검색
 	@GetMapping("/goMyLectureList.do")
 	public String goMyLectureList(UserVO uvo, HttpSession session, Model model, OrdersDetailVO oov) {
 		System.out.println(">>> 내 학습 리스트 보기로 이동");	
@@ -351,15 +352,47 @@ public class MemberBoardController {
 		
 		oov.setUserId(uvo.getUserId());
 		
-		List<OrdersDetailVO> list = memberBoardService.goMyLectureList(oov);
+		List<OrdersDetailVO> myOrderDetailList = memberBoardService.goMyLectureList(oov);
 		
-		model.addAttribute("myOrderDetailList", list);
+		model.addAttribute("myOrderDetailList", myOrderDetailList);
 		
 		System.out.println("oov : " + oov);
-		System.out.println("myOrderDetailList : " + list);
+		System.out.println("myOrderDetailList : " + myOrderDetailList);
 		
 				
 		return "/Member/MemberBoard/MyLectureList.jsp"; // 이동
 	}
+	
+	
+	// 내학습 부분 - ajax 검색
+	// 내 학습 리스트 보기
+	@GetMapping("/goMyLectureListAj.do")
+	@ResponseBody
+	public List<OrdersDetailVO> goMyLectureListAj(UserVO uvo, HttpSession session, Model model, OrdersDetailVO oov) {
+		System.out.println(">>> 내 학습 리스트 보기로 이동");	
+		uvo = (UserVO) session.getAttribute("user");
+				
+		oov.setUserId(uvo.getUserId());
+		
+		List<OrdersDetailVO> myOrderDetailList = memberBoardService.goMyLectureList(oov);
+		
+		model.addAttribute("myOrderDetailList", myOrderDetailList);
+		
+		System.out.println("oov : " + oov);
+		System.out.println("myOrderDetailList : " + myOrderDetailList);
+		
+				
+		return myOrderDetailList;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

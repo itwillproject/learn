@@ -97,6 +97,17 @@
  	    font-size: 20px; 
  	    font-weight: 400; 
  	} 
+ 	
+ 	table a {
+		color: black;
+		text-decoration: none;
+	}
+	
+	table a:hover {
+		color: black;
+		font-weight: bold;
+		text-decoration: none;
+ 	}
 	
   </style>
 </head>
