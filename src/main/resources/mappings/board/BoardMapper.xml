@@ -4,22 +4,60 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.learn.board.impl.BoardDAO">
 
-	<insert id="insertBoard" parameterType="board">
-		<if test="qboardNo != null">
+
+	<insert id="insertQnaBoard" parameterType="board">
 		INSERT INTO QUESTION_BOARD
 		 (QBOARD_NO,LECTURE_NO,USER_ID,GRADE,CATEGORY_NAME,BOARD_TITLE,BOARD_CONTENT,BOARD_FILE)
 		VALUES ((SELECT NVL(MAX(QBOARD_NO),0) + 1 FROM QUESTION_BOARD), #{lectureNo},
 		 #{userId}, #{grade}, #{categoryName}, #{boardTitle}, #{boardContent}, #{boardFile})
-		</if>
-		
-		<if test="qboardNo == null">
+	</insert>
+	
+	
+	
+	
+	<insert id="insertFreeBoard" parameterType="board">
 		INSERT INTO FREE_BOARD
 		 (FBOARD_NO,USER_ID,GRADE,BOARD_TITLE,BOARD_CONTENT,BOARD_FILE)
-		VALUES ((SELECT NVL(MAX(FBOARD_NO),0) + 1 FROM FREE_BOARD), #{userId},
-		 #{grade}, #{boardTitle}, #{boardContent}, #{boardFile})
-		</if>
+		VALUES ((SELECT NVL(MAX(FBOARD_NO),0) + 1 FROM FREE_BOARD),
+		 #{userId}, #{grade}, #{boardTitle}, #{boardContent}, #{boardFile})
 	</insert>
-		
+	
+	
+	
+	
+	<select id="countQnaBoard" parameterType="board" resultType="int">
+		SELECT COUNT(QBOARD_NO) FROM QUESTION_BOARD
+		WHERE 1 = 1
+		<if test="searchKeyword != null">		
+		AND (USER_ID LIKE '%'|| #{searchKeyword} ||'%'
+		OR BOARD_TITLE LIKE '%'|| #{searchKeyword} ||'%'
+		OR BOARD_CONTENT LIKE '%'|| #{searchKeyword} ||'%')		
+		</if>			
+		<if test="boardAdopt != 'all'">
+		AND BOARD_ADOPT = #{boardAdopt}
+		</if>	
+	</select>
+	
+	
+	<select id="getQnaBoardList" parameterType="map" resultType="board">
+		SELECT * FROM
+			(SELECT ROWNUM R_NUM, B.* from 
+				(SELECT * FROM QUESTION_BOARD 
+					WHERE 1 = 1	
+					<if test="searchKeyword != null">
+					AND (
+					USER_ID LIKE '%'|| #{searchKeyword} ||'%'
+					OR BOARD_TITLE LIKE '%'|| #{searchKeyword} ||'%'
+					OR BOARD_CONTENT LIKE '%'|| #{searchKeyword} ||'%')
+					</if>		
+					<if test="boardAdopt != 'all'">
+					AND BOARD_ADOPT = #{boardAdopt}
+					</if>		
+					ORDER BY ${ordering} DESC) B)					
+		WHERE R_NUM BETWEEN #{begin} AND #{end}
+	</select>
+	
+	
 	<update id="updateBoard" parameterType="board">
 		<if test="qboardNo != null">
 		UPDATE QUESTION_BOARD
@@ -27,34 +65,43 @@
 		  BOARD_ADOPT = #{boardAdopt}, BOARD_HIT = #{boardHit}, BOARD_LIKE = #{boardLike}
 		 WHERE QBOARD_NO = #{qboardNo}
 		</if>
-		
-		<if test="qboardNo == null">
-		UPDATE FREE_BOARD
-		 SET BOARD_TITLE = #{boardTitle}, BOARD_CONTENT = #{boardContent}, BOARD_FILE = #{boardFile},
-		  BOARD_HIT = #{boardHit}, BOARD_LIKE = #{boardLike}
-		 WHERE FBOARD_NO = #{fboardNo}
-		</if>	
 	</update>
+	
+	
+	
+	
 	
 	<delete id="deleteBoard" parameterType="board">
 		<if test="qboardNo != null">
 			DELETE FROM QUESTION_BOARD WHERE QBOARD_NO = #{qboardNo}	
 		</if>
 		
-		<if test="qboardNo == null">
+		<if test="fboardNo != null">
 			DELETE FROM FREE_BOARD WHERE FBOARD_NO = #{fboardNo}			
 		</if>
 	</delete>
 	
-	<select id="getBoard" parameterType="board" resultType="board">
+	
+	<select id="getComment" parameterType="board" resultType="boardComment">
 		<if test="qboardNo != null">
-			SELECT * FROM QUESTION_BOARD WHERE QBOARD_NO = #{qboardNo}
+			SELECT * FROM QUESTION_ANSWER WHERE BOARD_NO = #{qboardNo} ORDER BY COMMENT_REGDATE
 		</if>
 		
-		<if test="qboardNo == null">
-			SELECT * FROM FREE_BOARD WHERE FBOARD_NO = #{fboardNo}
+		<if test="fboardNo != null">
+			SELECT * FROM BOARD_COMMENT WHERE BOARD_NO = #{fboardNo} ORDER BY COMMENT_REGDATE
 		</if>	
 	</select>
+	
+	<select id="getBoard" parameterType="board" resultType="board">
+		<if test="qboardNo != null">
+			SELECT * FROM QUESTION_BOARD WHERE QBOARD_NO = #{qboardNo} ORDER BY BOARD_REGDATE
+		</if>
+		
+		<if test="fboardNo != null">
+			SELECT * FROM FREE_BOARD WHERE FBOARD_NO = #{fboardNo} ORDER BY BOARD_REGDATE
+		</if>	
+	</select>
+	
 	
 	<select id="getBoardList" parameterType="board" resultType="board">
 		<if test="qboardNo != null">

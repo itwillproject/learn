@@ -112,9 +112,6 @@ public class MemberBoardController {
 		return "/Member/MemberBoard/myQBoardList.jsp"; // 이동
 	}
 	
-	
-	
-	
 	// 입력폼으로 이동
 	@GetMapping("/qnaWriteForm.do")
 	public String toQnaWriteForm(MemberBoardVO bvo) {
@@ -205,7 +202,7 @@ public class MemberBoardController {
 	
 	// 삭제하기
 	@RequestMapping("/deleteBoard.do")
-	public String viewPage(MemberBoardVO bvo) {
+	public String deleteBoard(MemberBoardVO bvo) {
 		System.out.println(">>> 삭제하기 : " + bvo);
 		
 		memberBoardService.deleteBoard(bvo);

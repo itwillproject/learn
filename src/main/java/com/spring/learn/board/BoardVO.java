@@ -2,7 +2,10 @@ package com.spring.learn.board;
 
 public class BoardVO {
 	private String qboardNo,fboardNo,lectureNo,userId,grade,categoryName,boardTitle,boardContent,boardRegdate,boardAdopt,
-  				boardHit,boardLike,boardFile,SearchCondition,SearchKeyword;
+  				boardHit,boardLike,boardFile
+  				,searchCondition,searchKeyword,
+  				commentCnt, ordering, userName
+  				;
 
 	public String getQboardNo() {
 		return qboardNo;
@@ -109,19 +112,43 @@ public class BoardVO {
 	}
 
 	public String getSearchCondition() {
-		return SearchCondition;
+		return searchCondition;
 	}
 
 	public void setSearchCondition(String searchCondition) {
-		SearchCondition = searchCondition;
+		this.searchCondition = searchCondition;
 	}
 
 	public String getSearchKeyword() {
-		return SearchKeyword;
+		return searchKeyword;
 	}
 
 	public void setSearchKeyword(String searchKeyword) {
-		SearchKeyword = searchKeyword;
+		this.searchKeyword = searchKeyword;
+	}
+
+	public String getCommentCnt() {
+		return commentCnt;
+	}
+
+	public void setCommentCnt(String commentCnt) {
+		this.commentCnt = commentCnt;
+	}
+	
+	public String getOrdering() {
+		return ordering;
+	}
+
+	public void setOrdering(String ordering) {
+		this.ordering = ordering;
+	}
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	@Override
@@ -130,7 +157,10 @@ public class BoardVO {
 				+ userId + ", grade=" + grade + ", categoryName=" + categoryName + ", boardTitle=" + boardTitle
 				+ ", boardContent=" + boardContent + ", boardRegdate=" + boardRegdate + ", boardAdopt=" + boardAdopt
 				+ ", boardHit=" + boardHit + ", boardLike=" + boardLike + ", boardFile=" + boardFile
-				+ ", SearchCondition=" + SearchCondition + ", SearchKeyword=" + SearchKeyword + "]";
+				+ ", searchCondition=" + searchCondition + ", searchKeyword=" + searchKeyword + ", commentCnt="
+				+ commentCnt + ", ordering=" + ordering + ", userName=" + userName + "]";
 	}
+
 	
+
 }

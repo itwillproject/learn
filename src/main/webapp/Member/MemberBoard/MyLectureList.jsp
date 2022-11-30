@@ -59,9 +59,7 @@
 								
 				if (data.length == 0){
 					inHtml = '<div class="row w-100">검색 결과가 없습니다.</div>';
-				}
-				
-				else {
+				} else {
 					
 					$.each(data, function(index, obj){
 						
@@ -187,17 +185,12 @@
 							</div>
 													
 								<input type="text" class="w-50 ml-auto" id="searchKeyword" name="searchKeyword" placeholder="강의명 또는 지식공유자 이름으로 검색">
-<!-- 								<input type="text" class="w-50 ml-auto" id="searchKeyword" name="searchKeyword" placeholder="강의명 또는 지식공유자 이름으로 검색"> -->
-<!-- 								<input type="button" id="ajaxSearch" class="ml-auto" value="검색"> -->
 							</form>
 					</div>
 					
 				</div>
 				
 				
-				
-					<!-- 여기서 포이치문으로 줄 만들고 -->
-					<!-- 줄 만들 후에 콜에다가 같은 클래스 주고, 몇번 째 그 클래스 안에 집어넣기 이런식으로 해야 할 듯 하다-->
 					
 					
 				<div class="container mt-3" id="myLectures">

@@ -18,6 +18,7 @@
 
 		<typeAlias alias="memberBoard" type="com.spring.learn.memberboard.MemberBoardVO"/>
 		<typeAlias alias="CallcenterComment" type="com.spring.learn.memberboard.CallcenterCommentVO"/>	
+		<typeAlias alias="boardComment" type="com.spring.learn.board.BoardCommentVO"/>	
 		
 		
 		

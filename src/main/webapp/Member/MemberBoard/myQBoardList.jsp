@@ -179,7 +179,7 @@
 								<td style="height: 100px">
 								<div class="row">
 									<div class="col-10">
-									<a href="${pageContext.request.contextPath}/memberBoard//viewPage.do?qnaNo=${memberBoard.qnaNo }"><h4>${memberBoard.qnaTitle }</h4>
+									<a href="${pageContext.request.contextPath}/memberBoard/viewPage.do?qnaNo=${memberBoard.qnaNo }"><h4>${memberBoard.qnaTitle }</h4>
 									<p>${memberBoard.qnaContent }</p>
 									<p>${memberBoard.userId } ·${memberBoard.qnaRegdate } </p></a>
 									</div>	
@@ -201,7 +201,7 @@
 			        	<a href="#" disabled><li>이전페이지</li></a>
 					</c:if>
 					<c:if test="${pvo.beginPage != 1 }">
-			        	<a href="${pageContext.request.contextPath}/memberBoard//getMyQBoardList.do?cPage=${pvo.beginPage -1 }&searchKeyword=${memberBoard.searchKeyword}">
+			        	<a href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do?cPage=${pvo.beginPage -1 }&searchKeyword=${memberBoard.searchKeyword}">
 			        	<li>이전페이지</li></a>
 					</c:if>
 					
@@ -212,13 +212,13 @@
 						</c:if>
 						
 						<c:if test="${pageNo != pvo.nowPage }">
-					        <a href="${pageContext.request.contextPath}/memberBoard//getMyQBoardList.do?cPage=${pageNo }&searchKeyword=${memberBoard.searchKeyword}"><li>${pageNo }</li></a>
+					        <a href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do?cPage=${pageNo }&searchKeyword=${memberBoard.searchKeyword}"><li>${pageNo }</li></a>
 						</c:if>
 					</c:forEach>
 
 					
 					<c:if test="${pvo.endPage < pvo.totalPage }">
-				        <a href="${pageContext.request.contextPath}/memberBoard//getMyQBoardList.do?cPage=${pvo.endPage + 1 }&searchKeyword=${memberBoard.searchKeyword}"><li>다음페이지</li></a>
+				        <a href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do?cPage=${pvo.endPage + 1 }&searchKeyword=${memberBoard.searchKeyword}"><li>다음페이지</li></a>
 					</c:if>
 					<c:if test="${pvo.endPage >= pvo.totalPage }">
 				        <a href="#" class="" disabled><li>다음페이지</li></a>
