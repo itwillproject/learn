@@ -148,6 +148,13 @@
 		AND REPORTER = #{userId}
 	</select>
 	
+	<select id="getTopBoard" parameterType="board" resultType="board">
+		SELECT * FROM
+		(SELECT * FROM QUESTION_BOARD
+		ORDER BY BOARD_HIT DESC)
+		WHERE ROWNUM BETWEEN 1 AND 10	
+	</select>
+	
 
 </mapper>
 

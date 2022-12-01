@@ -236,15 +236,15 @@
 		 });
 		 
 		 $(document).on("click", "#linkTo", function(){
-// 			 $("#ShareUrl").value = window.location.href;
-			 
-// 			 console.log($("#ShareUrl").val());
-			
-// 			obShareUrl.select();  // 해당 값이 선택되도록 select() 합니다
-// 			document.execCommand("copy"); // 클립보드에 복사합니다.
-// 			obShareUrl.blur(); // 선택된 것을 다시 선택안된것으로 바꿈니다.
-
-// 			alert("URL이 클립보드에 복사되었습니다"); 
+			var url = '';
+			var textarea = document.createElement("textarea");
+			document.body.appendChild(textarea);
+			url = window.document.location.href;
+			textarea.value = url;
+			textarea.select();
+			document.execCommand("copy");
+			document.body.removeChild(textarea);
+			alert("URL이 복사되었습니다.")
 			 
 		 });
 		 
@@ -395,7 +395,7 @@
 				    <!-- 링크, 공유 -->
 				    <li class="nav-item d-flex justify-content-center align-items-center">
  						<img id="linkToTweet" height="20px" src="${pageContext.request.contextPath}/Community/img/tweeter.png">
-						<img id="linkToFace" height="20px" src="${pageContext.request.contextPath}/Community/img/face.png">
+<%-- 						<img id="linkToFace" height="20px" src="${pageContext.request.contextPath}/Community/img/face.png"> --%>
 						<img id="linkTo" height="20px" src="${pageContext.request.contextPath}/Community/img/LinkTo.png">
 				    </li>
 				    
@@ -581,7 +581,6 @@
 	</div>
 	
 	<p id="boardReport" style="visibility: hidden;">${boardReport }</p>
-	<input id="ShareUrl" type="text" style="visibility: hidden;">
 	
 	<%@include file="/Common/footer.jsp" %>
 

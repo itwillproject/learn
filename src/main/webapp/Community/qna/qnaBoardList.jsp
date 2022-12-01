@@ -384,8 +384,26 @@
 			
 			<!-- 오른쪽 네비 -->
 			<div class="col-sm-2">
-				<p>------오른쪽네비--------</p>
-				<p>---주간인기글 들어갈 자리---</p>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>주간 인기글</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="tops" items="${topList }">
+						<tr>
+							<td>
+								<a href="#">
+								${tops.boardTitle } <br>
+								${tops.userName }
+								</a>
+							</td>
+						</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+				
 			</div>
 		</div>
 	</div>

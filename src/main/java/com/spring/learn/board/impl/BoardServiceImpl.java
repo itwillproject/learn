@@ -95,6 +95,11 @@ public class BoardServiceImpl implements BoardService {
 		return boardDAO.getBoardReport(map);
 	}
 
+	@Override
+	public List<BoardVO> getTopBoard(BoardVO bvo) {
+		return boardDAO.getTopBoard(bvo);
+	}
+
 
   
 }

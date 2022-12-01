@@ -93,6 +93,23 @@ public class BoardController {
 		
 		Map<String, Object> QnaBoardListAj = getQnaBoardListCommon(bvo, model, p);
 		
+		List<BoardVO> topList = boardService.getTopBoard(bvo);
+		
+		for(BoardVO board : topList) {
+			
+			String getId = board.getUserId();
+			
+			UserVO vo = new UserVO();
+			vo.setUserId(getId);
+			
+			vo = userService.confirmUser(vo);
+			String setName = vo.getUserName();
+			board.setUserName(setName);
+		}
+		
+		model.addAttribute("topList", topList); // 탑 10 값을 저장하기
+		
+		
 		return "/Community/qna/qnaBoardList.jsp"; // 이동
 	}
 

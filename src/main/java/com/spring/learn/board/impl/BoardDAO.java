@@ -26,6 +26,7 @@ public interface BoardDAO {
 	void deleteQnaLike(Map<String, String> map);
 	void insertBoardReport(BoardReportVO boardReport);
 	BoardReportVO getBoardReport(Map<String, String> map);
+	List<BoardVO> getTopBoard(BoardVO bvo);
 }
 
 
