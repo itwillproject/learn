@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.learn.board.BoardVO;
+import com.spring.learn.board.QnaLikeVO;
 import com.spring.learn.board.BoardCommentVO;
+import com.spring.learn.board.BoardReportVO;
 import com.spring.learn.memberboard.MemberBoardVO;
 
 public interface BoardDAO {
@@ -19,6 +21,11 @@ public interface BoardDAO {
 	int countQnaBoard(BoardVO bvo); // qna보드 전체 수 검색
 	List<BoardVO> getQnaBoardList(Map<String, String> map); // qna보드 검색 가져오기
 	List<BoardCommentVO> getComment(BoardVO bvo); // 코멘트 가져오기 , 안에서 분기처리 할 것
+	QnaLikeVO getQnaLike(Map<String, String> map);
+	void insertQnaLike(Map<String, String> map);
+	void deleteQnaLike(Map<String, String> map);
+	void insertBoardReport(BoardReportVO boardReport);
+	BoardReportVO getBoardReport(Map<String, String> map);
 }
 
 

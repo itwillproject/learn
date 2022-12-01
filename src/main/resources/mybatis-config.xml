@@ -19,7 +19,8 @@
 		<typeAlias alias="memberBoard" type="com.spring.learn.memberboard.MemberBoardVO"/>
 		<typeAlias alias="CallcenterComment" type="com.spring.learn.memberboard.CallcenterCommentVO"/>	
 		<typeAlias alias="boardComment" type="com.spring.learn.board.BoardCommentVO"/>	
-		
+		<typeAlias alias="qnaLike" type="com.spring.learn.board.QnaLikeVO"/>
+		<typeAlias alias="boardReport" type="com.spring.learn.board.BoardReportVO"/>
 		
 		
 			
@@ -36,6 +37,7 @@
 		<typeAlias alias="lecture" type="com.spring.learn.lecture.LectureVO"/>
 		<typeAlias alias="class" type="com.spring.learn.lecture.ClassVO"/>
 		<typeAlias alias="offtimetable" type="com.spring.learn.lecture.OfftimetableVO"/>
+		
 		
 	
 	</typeAliases>

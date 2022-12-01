@@ -68,7 +68,23 @@
 	</update>
 	
 	
+	<select id="getQnaLike" parameterType="map" resultType="qnaLike">
+		SELECT * FROM QNA_LIKE
+		WHERE USER_ID = #{userId}
+		AND BOARD_NO = #{boardNo}
+	</select>
 	
+	<insert id="insertQnaLike" parameterType="map">
+		INSERT INTO QNA_LIKE
+		(USER_ID, BOARD_NO)
+		VALUES (#{userId}, #{boardNo})
+	</insert>
+	
+	<delete id="deleteQnaLike" parameterType="map">
+		DELETE FROM QNA_LIKE
+		WHERE USER_ID = #{userId}
+		AND BOARD_NO = #{boardNo}
+	</delete>
 	
 	
 	<delete id="deleteBoard" parameterType="board">
@@ -115,6 +131,23 @@
 		OR BOARD_CONTENT LIKE '%'|| #{searchKeyword} ||'%'
 		ORDER BY BOARD_REGDATE DESC
 	</select>
+	
+	<insert id="insertBoardReport" parameterType="boardReport">
+	
+		INSERT INTO BOARD_REPORT
+		(REPORT_REASON,BOARD_TYPE,BOARD_NO,REPORTER,REPPERSON)
+		VALUES 
+		(#{reportReason}, #{boardType}, #{boardNo}, #{reporter}, #{repperson} )
+	
+	</insert>
+	
+	<select id="getBoardReport" parameterType="map" resultType="boardReport">
+		SELECT * FROM BOARD_REPORT
+		WHERE BOARD_TYPE = #{boardType}
+		AND BOARD_NO = #{boardNo}
+		AND REPORTER = #{userId}
+	</select>
+	
 
 </mapper>
 

@@ -16,9 +16,12 @@
 	<script src="${pageContext.request.contextPath}/summernote/summernote-bs4.js"></script>
 	
 	
-	
 	<script type="text/javascript">
+	
 	$(document).ready(function() {
+		
+		var qboardNo = ${board.qboardNo};
+		
 		
 		var fontList = ['맑은 고딕','굴림','돋움','바탕','궁서','NotoSansKR','Arial','Courier New','Verdana','Tahoma','Times New Roamn'];
 		var setting = {
@@ -37,6 +40,82 @@
 					}
 				}
 		};
+		
+		$(document).on("click", "#adoptNo", function(){
+			$(this).text("해결");
+			$(this).removeAttr("id", "adoptNo");
+			$(this).attr("id", "adoptOk");
+			
+			QnaBoardAdoptToggleCommon()
+		});
+		
+		$(document).on("click", "#adoptOk", function(){
+			$(this).text("미해결");
+			$(this).removeAttr("id", "adoptOk");
+			$(this).attr("id", "adoptNo");
+			
+			QnaBoardAdoptToggleCommon()
+		});
+		
+		
+		function QnaBoardAdoptToggleCommon(){
+			var gogo = '${pageContext.request.contextPath}/board/QnaBoardAdoptToggle.do?qboardNo=' + qboardNo;
+			
+			$.ajax({
+				url: gogo,
+				type : "post",
+				async : true,
+				success : function(data){
+					console.log("ajax 성공");
+				},
+				error : function(){
+					console.log("ajax 실패");
+				},
+			});
+		}
+		
+		$(document).on("click", "#LikeOn", function(){
+			$(this).removeAttr("src", "${pageContext.request.contextPath}/Community/img/LikeOn.png");
+			$(this).attr("src", "${pageContext.request.contextPath}/Community/img/LikeOff.png");
+			
+			$(this).removeAttr("id", "LikeOn");
+			$(this).attr("id", "LikeOff");
+			
+			QnaBoardLikeToggleCommon();
+
+		});
+		
+		$(document).on("click", "#LikeOff", function(){
+			$(this).removeAttr("src", "${pageContext.request.contextPath}/Community/img/LikeOff.png");
+			$(this).attr("src", "${pageContext.request.contextPath}/Community/img/LikeOn.png");
+			
+			$(this).removeAttr("id", "LikeOff");
+			$(this).attr("id", "LikeOn");
+			
+			QnaBoardLikeToggleCommon();
+			
+		});
+		
+		function QnaBoardLikeToggleCommon(){
+			var gogo = '${pageContext.request.contextPath}/board/QnaBoardLikeToggle.do?qboardNo=' + qboardNo;
+			
+			$.ajax({
+				url: gogo,
+				type : "post",
+				async : true,
+				success : function(data){
+					console.log("ajax 성공");
+					
+					var likeCnt = data.boardLike;
+					
+					$("#boardLike").html(likeCnt);
+					
+				},
+				error : function(){
+					console.log("ajax 실패");
+				},
+			});
+		}
 		
 		
 		$('#summernote').summernote(setting);
@@ -86,21 +165,119 @@
 				 location.href = "${pageContext.request.contextPath}/board/delCallcenterComment.do?commentNo="+commentNo; 
 			 }
 		 };	
+		 
+		 
+		 $(document).on("click", "#reportBoard", function(){
+			 
+			 if ($("#boardReport").text() != ""){
+				 alert("이미 신고한 사용자 입니다");
+				 $('#myModal').modal('hide');
+				 return false;
+			 };
+			 
+			 reportBoard();
+			 
+			 $("#boardReport").text('입력함')
+		 });
+		 
+		 
+		 function reportBoard(){
+			 
+			 var reporter = "${user.userId}";
+			 var repperson = "${board.userId}";
+			 
+			 var reportReason = $("input:radio[name=reason]:checked").val();
+			 
+			 if (reportReason == '기타'){
+				 reportReason = $("#reasonEtc").val();
+			 }
+			 
+			 console.log(reportReason);
+			 
+			 
+			 var gogo = '${pageContext.request.contextPath}/board/insertBoardReport.do?boardType=questionBoard&boardNo=' + qboardNo;
+			 gogo += '&reporter='+ reporter +'&repperson='+ repperson + "&reportReason=" + reportReason;
+			 
+			 console.log(gogo);
+			 
+			 
+			$.ajax({
+				url: gogo,
+				type : "post",
+				async : true,
+				success : function(data){
+					console.log("ajax 성공");
+					
+					alert("신고가 완료되었습니다");					
+					
+				},
+				error : function(){
+					console.log("ajax 실패");
+				},
+			});
+			 
+			
+			 $('#myModal').modal('hide');
+			    return false;
+		 };
+		 
+		 
+		 
+		 $(document).on("click", "#linkToTweet", function(){
+			 var sendText = document.title;
+			 var sendUrl = window.location.href;
+			 window.open("https://twitter.com/intent/tweet?text=" + sendText + "&url=" + sendUrl);
+		 });
+		 
+		 
+		 $(document).on("click", "#linkToFace", function(){
+			var sendUrl = window.location.href;
+			document.execCommand('copy');
+		 });
+		 
+		 $(document).on("click", "#linkTo", function(){
+// 			 $("#ShareUrl").value = window.location.href;
+			 
+// 			 console.log($("#ShareUrl").val());
+			
+// 			obShareUrl.select();  // 해당 값이 선택되도록 select() 합니다
+// 			document.execCommand("copy"); // 클립보드에 복사합니다.
+// 			obShareUrl.blur(); // 선택된 것을 다시 선택안된것으로 바꿈니다.
+
+// 			alert("URL이 클립보드에 복사되었습니다"); 
+			 
+		 });
+		 
+		 
 	});	 
+	
+
+
+	
+	
 	
 	</script>	
 	
 	<style type="text/css">
 		.navbar {
-			top: 110px;
+			top: 70px;
+		}
+		
+		#reason{
+			padding: 10px;
+			background-color: #eeeeee;
+			border-radius: 10px;
 		}
 	</style>
+	
+	
 
 </head>
 <body>
 	<%@include file="/Common/header.jsp" %>
 
 	<div class="container-fluid mt-5 pb-3 d-flex justify-content-center">
+	
 		<div class="row w-100 pb-4 justify-content-center">
 			
 			<!-- 왼쪽 네비 -->
@@ -109,24 +286,68 @@
 			</div>
 
 			<!-- 중앙 위 내용 - 글내용 -->
-			<div class="col-6 pl-3 gray-line">
+			<div class="col-6 pl-3">
 				<div class="row align-items-center p-3">
 					<img class="mr-2" style="height: 30px" src="${pageContext.request.contextPath}/Community/img/qqq.png">					
 					<h3><b>${board.boardTitle }</b></h3>
 				</div>
-				<div class="row pl-3 pb-3">
-					<p class="mr-2"><b>${board.userName }</b></p><p class="text-muted">${board.boardRegdate }</p>
+				<div class="row pl-3 pb-3 gray-line">
+					<p><b>${board.userName }</b></p><p class="text-muted">${board.boardRegdate }</p>
 					
-					<c:if test="${user.userId == board.userId }">
+					<!-- 수정, 삭제하기 -->
 					<p class="ml-auto">
+					<c:if test="${user.userId == board.userId }">
 						<a class="mr-3" href="javascript:modifyBoard()">수정</a>
-						<a href="javascript:deleteBoard($(this))">삭제</a>
-<%-- 						<a class="mr-3" href="${pageContext.request.contextPath}/board/qnaModifyForm.do?qnaNo=${board.qnaNo }">수정</a> --%>
-<!-- 						<a href="javascript:deleteBoard($(this))">작성자삭제</a> -->
-					</p>
+						<a class="mr-3" href="javascript:deleteBoard($(this))">삭제</a>
 					</c:if>
 					
-					
+					<!-- 신고하기 -->
+					<c:if test="${qnaLike.userId != null && user.userId != board.userId}">
+						<a data-toggle="modal" href="#myModal" class="mr-3">신고하기</a>
+					</c:if>
+					</p>
+						
+							
+					  <!-- The Modal -->
+					  <div class="modal fade" id="myModal">
+					    <div class="modal-dialog modal-lg">
+					      <div class="modal-content">
+					      
+					        <!-- Modal Header -->
+					        <div class="modal-header">
+					          <h4 class="modal-title">게시글 신고하기</h4>
+					          <button type="button" class="close" data-dismiss="modal">×</button>
+					        </div>
+					        
+					        <!-- Modal body -->
+					        <div class="modal-body">
+						        <p>이 글이 이용규칙 위반으로 운영진에 의해 삭제되어야 마땅하다고 생각된다면 신고해주세요.</p>
+								<p>신고 3회 이상의 글은 신고될 수 있으며</p>
+								<p>이용규칙에 위배되는 글을 여러차례 게시하여 신고를 많이 받은 회원은 제한 조치가 취해집니다.</p>
+								<br>
+								<p>신고는 반대의견을 표시하는 기능이 아닙니다.</p>
+								<p>신고에 부적합한 글을 지속적으로 신고하는 회원에게는 제한 조치가 취해질 수 있습니다.</p>
+					          <div id="reason">
+					          	<p><input type="radio" name="reason" value="집단간싸움유발"><strong> 집단간 싸움 유발</strong> (학과, 작업간 서열/비교, 지역감정, 종교등)</p>
+					          	<p><input type="radio" name="reason" value="성(姓)관련순환주제"><strong> 성(姓)관련 순환 주제</strong> (양성평등, 군대, 혼전순결, 된장녀, 외모/몸매 등)</p>
+					          	<p><input type="radio" name="reason" value="욕설,비속어,인신공격"><strong> 욕설, 비속어, 인신공격</strong> (심한 불쾌감 유발)</p>
+					          	<p><input type="radio" name="reason" value="선정적,음란성"><strong> 선정적, 음란성</strong> (신고자가 선정적이라고 판단)</p>
+					          	<p><input type="radio" name="reason" value="낚시성,도배,무의미"><strong> 낚시성, 도배, 무의미</strong> (무의미한 짧을 글 포함)</p>
+					          	<p><input type="radio" name="reason" value="기타"><strong> 기타</strong> (신고자가 선정적이라고 판단)</p>
+					          	<textarea id="reasonEtc" rows="3" cols="90" placeholder="기타 선택시 사유 입력해주세요"></textarea>
+					          </div>
+					        </div>
+					        
+					        <!-- Modal footer -->
+					        <div class="modal-footer">
+					          <input type="button" class="btn btn-primary" id="reportBoard" value="신고">
+					          <input type="button" class="btn btn-danger" data-dismiss="modal" value="취소">
+					        </div>
+					        
+					      </div>
+					    </div>
+					  </div>	
+					  
 				</div>
 
 				<div class="d-flex flex-row p-3">
@@ -140,30 +361,64 @@
 				<nav class="navbar">
 				  <!-- Links -->
 				  <ul class="navbar-nav comNav">
+				    
+				    <c:if test="${user.userId == board.userId }">
 				    <li class="nav-item d-flex justify-content-center align-items-center">
-				      <a href="#">미해결</a>
+				    <c:choose>
+				    	<c:when test="${board.boardAdopt eq 'TRUE' }">
+							<a id="adoptOk" href="#">해결</a>
+				    	</c:when>
+				    	<c:otherwise>
+							<a id="adoptNo" href="#">미해결</a>
+				    	</c:otherwise>
+				    </c:choose>	
 				    </li>
+				    
 				    <li class="nav-item d-flex justify-content-center align-items-center">
+				    	
 				      <a href="#">
-				      	<img height="20px" src="${pageContext.request.contextPath}/Community/img/LikeOff.png">
-				      	<span class="ml-3">${board.boardLike }</span>
+				      	<c:choose>
+					      	<c:when test="${qnaLike.userId != null }">
+					      		<img id="LikeOn" height="20px" src="${pageContext.request.contextPath}/Community/img/LikeOn.png">
+					      	</c:when>
+					      	<c:otherwise>
+					      		<img id="LikeOff" height="20px" src="${pageContext.request.contextPath}/Community/img/LikeOff.png">
+					      	</c:otherwise>
+				      	</c:choose>
+				      	<span id="boardLike" class="ml-3">${board.boardLike }</span>
 				      </a>
+				      
 				    </li>
+				    
+				    </c:if>
+				    
+				    <!-- 링크, 공유 -->
 				    <li class="nav-item d-flex justify-content-center align-items-center">
-				      <a href="#">
-					     <img height="20px" src="${pageContext.request.contextPath}/Community/img/BookmarkOff.png">
-					     <span class="ml-3">0</span>
-				      </a>
+ 						<img id="linkToTweet" height="20px" src="${pageContext.request.contextPath}/Community/img/tweeter.png">
+						<img id="linkToFace" height="20px" src="${pageContext.request.contextPath}/Community/img/face.png">
+						<img id="linkTo" height="20px" src="${pageContext.request.contextPath}/Community/img/LinkTo.png">
 				    </li>
-				    <li class="nav-item d-flex justify-content-center align-items-center">
-				      <a href="#">
-				      	<img height="20px" src="${pageContext.request.contextPath}/Community/img/LinkTo.png">
-				      	<span class="ml-2">공유</span>
-				      </a>
-				    </li>
+				    
 				  </ul>
 				</nav>
+				
 			</div>
+								
+
+					  
+					  
+					  			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			
 			
 			
@@ -324,6 +579,9 @@
 			
 <!-- 		</div> -->
 	</div>
+	
+	<p id="boardReport" style="visibility: hidden;">${boardReport }</p>
+	<input id="ShareUrl" type="text" style="visibility: hidden;">
 	
 	<%@include file="/Common/footer.jsp" %>
 

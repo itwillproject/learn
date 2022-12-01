@@ -19,6 +19,11 @@ public interface BoardService {
 	int countQnaBoard(BoardVO bvo); // qna 보드 수량 검색	
 	List<BoardVO> getQnaBoardList(Map<String, String> map); // qna 보드 가져오기
 	List<BoardCommentVO> getComment(BoardVO bvo);
+	QnaLikeVO getQnaLike(Map<String, String> map);
+	void insertQnaLike(Map<String, String> map);
+	void deleteQnaLike(Map<String, String> map);
+	void insertBoardReport(BoardReportVO boardReport);
+	BoardReportVO getBoardReport(Map<String, String> map);
 
 	
 }

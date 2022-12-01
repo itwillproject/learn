@@ -22,6 +22,8 @@
 	function connect(){
 // 		websocket = new WebSocket("ws://본인 아이 피주소/www/chat-ws");
 		websocket = new WebSocket("ws://192.168.18.4:8088${pageContext.request.contextPath}/chat-ws");
+// 		websocket = new WebSocket("ws://192.168.18.4:8080${pageContext.request.contextPath}/chat-ws");
+// 		websocket = new WebSocket("ws://localhost:8088${pageContext.request.contextPath}/chat-ws");
 		
 			//웹 소켓에 이벤트가 발생했을 때 호출될 함수 등록
 			websocket.onopen = onOpen;

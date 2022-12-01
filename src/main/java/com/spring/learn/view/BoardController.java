@@ -26,8 +26,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.JsonObject;
 import com.spring.learn.board.BoardCommentVO;
+import com.spring.learn.board.BoardReportVO;
 import com.spring.learn.board.BoardService;
 import com.spring.learn.board.BoardVO;
+import com.spring.learn.board.QnaLikeVO;
 import com.spring.learn.common.Paging;
 import com.spring.learn.user.UserService;
 import com.spring.learn.user.UserVO;
@@ -47,9 +49,7 @@ public class BoardController {
 		System.out.println(">> BoardController() 생성");
 	}
 	
-	
-	
-	
+	// 서머노트 이미지 업로드 제어
 	@RequestMapping(value="/uploadSummernoteImageFile.do", produces = "application/json; charset=utf8")
 	@ResponseBody
 	public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request )  {
@@ -86,7 +86,7 @@ public class BoardController {
 		return a;
 	}
 	
-	
+	// qna 보드리스트 불러오기 (일반)
 	@RequestMapping("/getQnaBoardList.do")
 	public String getQnaBoardList(BoardVO bvo, Model model, Paging p, HttpSession session) {
 		System.out.println(">>> qna보드리스트 가져오기");		
@@ -95,7 +95,8 @@ public class BoardController {
 		
 		return "/Community/qna/qnaBoardList.jsp"; // 이동
 	}
-	
+
+	// qna 보드리스트 불러오기 (Ajax)
 	@RequestMapping("/getQnaBoardListAj.do")
 	@ResponseBody
 	public Map<String, Object> getQnaBoardListAj(BoardVO bvo, Model model, Paging p, HttpSession session) {
@@ -106,8 +107,7 @@ public class BoardController {
 		return QnaBoardListAj; // 이동
 	}
 
-
-
+	// qna 보드리스트 불러오기 (공통)
 	public Map<String, Object> getQnaBoardListCommon(BoardVO bvo, Model model, Paging p) {
 		System.out.println("bvo : " + bvo);
 		model.addAttribute("board", bvo);
@@ -201,9 +201,7 @@ public class BoardController {
 		return QnaBoardListAj;
 	}
 	
-	
-	
-	
+	// qna 글쓰기 폼으로 이동
 	@GetMapping("/qnaWriteForm.do")
 	public String toQnaWriteForm(BoardVO vo) {
 		System.out.println(">>> qna작성폼 이동");						
@@ -211,7 +209,7 @@ public class BoardController {
 		return "redirect:/Community/qna/qnaWriteForm.jsp"; // 이동
 	}
 	
-	// 입력
+	// qna, free 글쓰기 입력
 	@PostMapping("/boardWrite.do")
 	public String QnaWrite(BoardVO bvo, HttpSession session) {
 		
@@ -231,7 +229,6 @@ public class BoardController {
 			
 			boardService.insertQnaBoard(bvo);						
 			
-//			return "/Community/qna/qnaBoardList.jsp"; // 이동
 			return "/board/getQnaBoardList.do"; // 이동
 		}
 		
@@ -242,17 +239,14 @@ public class BoardController {
 			return "/Community/qna/FreeBoardList.jsp"; // 이동
 		}
 		
-		
-		
 		return "/Member/login.do";
 		
 	}
 	
 	
-	
-	
+	// 상세페이지, 글보기
 	@RequestMapping("/viewQnaPage")
-	public String viewQnaPage(BoardVO bvo, Model model) {
+	public String viewQnaPage(BoardVO bvo, Model model, HttpSession session) {
 		System.out.println(">>> 보드 상세페이지로 이동 : " + bvo);
 		
 		// vo 받아서 한개 가져오고 세션에 등록
@@ -260,7 +254,7 @@ public class BoardController {
 		bvo.setBoardHit(Integer.toString((Integer.parseInt(bvo.getBoardHit())+1)));
 		boardService.updateBoard(bvo);
 		
-		
+		// 이름 입력
 		String getName = bvo.getUserId();
 		UserVO vo = new UserVO();
 		vo.setUserId(getName);
@@ -268,17 +262,38 @@ public class BoardController {
 		String setName = vo.getUserName();
 		bvo.setUserName(setName);
 		
-		
 		model.addAttribute("board", bvo);
 		
 		System.out.println(">> 검색후 bvo : "+ bvo);
 		
-		// 커멘트 가져오기
+		// 코멘트 가져오기
 		List<BoardCommentVO> cvoList = boardService.getComment(bvo);
-		
 		model.addAttribute("cvoList", cvoList);
-		
 		System.out.println(">>>>> cvoList : " + cvoList);
+		
+		// map 만들어서 검색 / 좋아요 여부 가져오기
+		UserVO uvo = (UserVO) session.getAttribute("user");
+		
+		Map<String, String> map = new HashMap<String, String>();
+		
+		if (uvo != null) {
+			map.put("userId", uvo.getUserId());
+			map.put("boardNo", bvo.getQboardNo());
+			QnaLikeVO qnaLike = boardService.getQnaLike(map);
+			model.addAttribute("qnaLike", qnaLike);
+			System.out.println("qnaLike : " + qnaLike);
+		}
+		
+		
+		// 신고 여부 가져오기
+		if (uvo != null) {
+			map.put("boardType", "questionBoard");
+			BoardReportVO boardReport = boardService.getBoardReport(map);
+			model.addAttribute("boardReport", boardReport);
+			System.out.println("boardReport : " + boardReport);
+		}
+		
+		
 				
 		return "/Community/qna/qnaBoard.jsp"; // 이동
 	}
@@ -340,6 +355,94 @@ public class BoardController {
 		return "/board/viewQnaPage.do"; // 이동
 		
 	}
+	
+	
+	// adopt 토글
+	@PostMapping("/QnaBoardAdoptToggle.do")
+	@ResponseBody
+	public BoardVO QnaBoardAdoptToggle(BoardVO bvo, Model model) {
+		
+		bvo = boardService.getBoard(bvo);
+		
+		if (bvo.getBoardAdopt().equals("TRUE")) {
+			bvo.setBoardAdopt("FALSE");
+		} else if (bvo.getBoardAdopt().equals("FALSE")) {
+			bvo.setBoardAdopt("TRUE");
+		}
+		
+		boardService.updateBoard(bvo);
+		
+		System.out.println(">> 수정 입력 도착, bvo : " + bvo);		
+		
+		return bvo; // 반환
+		
+	}
+	
+	
+	// Like 토글
+	@PostMapping("/QnaBoardLikeToggle.do")
+	@ResponseBody
+	public BoardVO QnaBoardLikeToggle(BoardVO bvo, Model model, HttpSession session) {
+		
+		
+		System.out.println(">> 수정 입력 도착, bvo : " + bvo);
+		
+		
+		// 보드 라이크에 있으면 삭제, 없으면 입력 해야함
+		UserVO uvo = (UserVO) session.getAttribute("user");
+		
+		Map<String, String> map = new HashMap<String, String>(); 
+		map.put("userId", uvo.getUserId());
+		map.put("boardNo", bvo.getQboardNo());
+		
+		System.out.println("map : " + map);
+		
+		
+		
+		bvo = boardService.getBoard(bvo);
+		
+		QnaLikeVO qnaLike = boardService.getQnaLike(map);
+		
+		System.out.println("qnaLike : " + qnaLike);
+		
+		
+		int boardLike = Integer.parseInt(bvo.getBoardLike());
+		
+		// 보드 vo에 like 수 올리거나 내리거나 해야함
+		if (qnaLike == null) {
+			boardService.insertQnaLike(map);
+			bvo.setBoardLike(Integer.toString(boardLike+1));
+			boardService.updateBoard(bvo);
+		} else {
+			boardService.deleteQnaLike(map);
+			bvo.setBoardLike(Integer.toString(boardLike-1));
+			boardService.updateBoard(bvo);
+		}
+		
+		// 보드 vo 가져와서 갯수 알아야 함
+		return bvo; // 반환
+	}
+	
+	
+	
+	// Board신고 boardReport
+	@PostMapping("/insertBoardReport.do")
+	@ResponseBody
+	public void insertBoardReport(BoardReportVO boardReport) {
+		
+		System.out.println(">> 리포트 입력 도착, bvo : " + boardReport);
+		
+		boardService.insertBoardReport(boardReport);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

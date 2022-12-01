@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.spring.learn.board.BoardService;
 import com.spring.learn.board.BoardVO;
+import com.spring.learn.board.QnaLikeVO;
 import com.spring.learn.board.BoardCommentVO;
+import com.spring.learn.board.BoardReportVO;
 import com.spring.learn.memberboard.MemberBoardVO;
 
 // UserService
@@ -66,5 +68,33 @@ public class BoardServiceImpl implements BoardService {
 	public List<BoardCommentVO> getComment(BoardVO bvo) {
 		return boardDAO.getComment(bvo);
 	}
+
+	@Override
+	public QnaLikeVO getQnaLike(Map<String, String> map) {
+		return boardDAO.getQnaLike(map);
+	}
+
+	@Override
+	public void insertQnaLike(Map<String, String> map) {
+		boardDAO.insertQnaLike(map);
+	}
+
+	@Override
+	public void deleteQnaLike(Map<String, String> map) {
+		boardDAO.deleteQnaLike(map);
+	}
+
+	@Override
+	public void insertBoardReport(BoardReportVO boardReport) {
+		boardDAO.insertBoardReport(boardReport);
+		
+	}
+
+	@Override
+	public BoardReportVO getBoardReport(Map<String, String> map) {
+		return boardDAO.getBoardReport(map);
+	}
+
+
   
 }

@@ -44,7 +44,9 @@
 	
 	$(document).on("click", ".adopt", function(){
 		$(".adopt").removeClass('black-line');
+		$(".adopt").removeClass('active');
 		$(this).addClass('black-line');		
+		$(this).addClass('active');		
 		ajaxserachh();
 	});
 	
@@ -99,10 +101,10 @@
 						inHtml += '<td style="height: 100px">';
 						inHtml += '<div class="row">';
 						inHtml += '<div class="col-10">';
-						inHtml += '<a href="${pageContext.request.contextPath}/board/viewQnaPage.do?qboardNo='+ this.qboardNo +'">';
-						inHtml += '<h4>'+ this.boardTitle +'</h4>';
+						inHtml += '<a class="boardCon" href="${pageContext.request.contextPath}/board/viewQnaPage.do?qboardNo='+ this.qboardNo +'">';
+						inHtml += '<h4 class="boardTi">'+ this.boardTitle +'</h4>';
 						inHtml += '<div class="contentWrap">'+ this.boardContent +'</div>';
-						inHtml += '<p>'+ this.userId +'·'+ this.boardRegdate.substring(0,10) +'</p></a>';
+						inHtml += '<p class="boardEtc">'+ this.userId +'·'+ this.boardRegdate.substring(0,10) +'</p></a>';
 						inHtml += '</div>';
 						inHtml += '<div class="col-2">';
 						inHtml += '<div class="row d-flex justify-content-center">';
@@ -172,16 +174,70 @@
 </script>
 
 <style type="text/css">
- 	.contentWrap p:not(:first-of-type){
+
+ 	
+ 	a.nav-link, a.nav-link:hover{
+ 		color: black;
+ 	}
+ 	 	
+ 	a.boardCon, a.boardCon:hover {
+ 		text-decoration: none;
+ 		font-weight: inherit;
+ 	}
+ 	
+ 	h4.boardTi{
+ 		color: black;
+ 		font-size: 1.2em;
+ 		font-weight: bold;
+ 	}
+ 	
+ 	p.boardEtc{
+ 		color: #888888;
+ 		font-style: 0.9em
+ 	}
+ 	
+ 	
+ 	div.contentWrap p:not(:first-of-type){
  		display: none;
-		
  	}
  	 
- 	.contentWrap p:first-of-type{
+ 	div.contentWrap p:first-of-type{
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		
  	} 
+ 	
+	div.contentWrap {
+ 		color: #444444;
+ 		margin-bottom: 5px;
+ 	}
+ 	
+ 	
+ 	
+ 	a.nav-link{
+ 		color: black;
+ 		text-decoration: none;
+ 		font-weight: bold;
+ 	}
+ 	
+ 	a.nav-link:hover{
+ 		color: #666666;
+ 		text-decoration: none;
+ 		font-weight: bold;
+ 	}
+ 	
+ 	a.actived{
+ 		color: #00C471;
+ 		font-weight: bold;
+ 		font-size: 1.1em;
+ 	}
+ 	
+ 	a.actived:hover{
+ 		color: #00D481;
+ 		font-weight: bold;
+ 	}
+ 	
  	
 
 </style>
@@ -196,8 +252,16 @@
 		<div class="row justify-content-center">
 		
 			<!-- 왼쪽 네비 -->
-			<div class="col-sm-2">
-				<p>-------왼쪽네비-------</p>
+			<div class="col-sm-2 pl-5 ml-5">
+			<p style="color: #999999; font-size: 0.8em">함께 공부해요!</p>
+				  <ul class="nav flex-column">
+				    <li class="nav-item">
+				      <a class="nav-link actived" href="${pageContext.request.contextPath}/board/getQnaBoardList.do">질문 & 답변</a>
+				    </li>
+				    <li class="nav-item">
+				      <a class="nav-link" href="#">자유주제</a>
+				    </li>
+				  </ul>
 			</div>
 			
 			<div class="col-sm-6 align-content-center">
@@ -217,9 +281,9 @@
 	                        </li>
 	                    </ul>
 					</nav>
-					
-						<input type="text" class="w-75 float-left" id="searchKeyword" name="searchKeyword" placeholder="궁금한 질문을 검색해보세요!">
-						
+					<div class="p-3">
+						<input type="text" class="w-100 float-left" id="searchKeyword" name="searchKeyword" placeholder="궁금한 질문을 검색해보세요!">
+					</div>	
 					</form>
 				</div>
 
@@ -244,7 +308,7 @@
 				</div>
 				
 				
-				<table class="table table-hover mt-5" style="table-layout: fixed">
+				<table class="table table-hover mt-1 p-5" style="table-layout: fixed">
 					<tbody id="searchList">
 						<c:forEach var="qnaBoard" items="${qnaBoardList  }" >
 						
@@ -252,10 +316,10 @@
 							<td style="height: 100px;">
 							<div class="row">
 								<div class="col-10">
-								<a href="${pageContext.request.contextPath}/board/viewQnaPage.do?qboardNo=${qnaBoard.qboardNo }">
-								<h4>${qnaBoard.boardTitle }</h4>
+								<a class="boardCon" href="${pageContext.request.contextPath}/board/viewQnaPage.do?qboardNo=${qnaBoard.qboardNo }">
+								<h4 class="boardTi">${qnaBoard.boardTitle }</h4>
 								<div class="contentWrap">${qnaBoard.boardContent }</div>
-								<p>${qnaBoard.userName } · ${fn:substring(qnaBoard.boardRegdate,0,10) }  </p></a> <!--몇분전 , 강의 제목 추가 할까?? --> 
+								<p class="boardEtc">${qnaBoard.userName } · ${fn:substring(qnaBoard.boardRegdate,0,10) }  </p></a> <!--몇분전 , 강의 제목 추가 할까?? --> 
 								
 								</div>
 
@@ -321,6 +385,7 @@
 			<!-- 오른쪽 네비 -->
 			<div class="col-sm-2">
 				<p>------오른쪽네비--------</p>
+				<p>---주간인기글 들어갈 자리---</p>
 			</div>
 		</div>
 	</div>
