@@ -118,7 +118,6 @@
 
                 <div class="d-flex flex-row p-3 writeComments">
                 	<form method="post" class="w-100" id="submitForm" action="${pageContext.request.contextPath}/board/boardWrite.do">
-                	<input type="hidden" name="qboardNo" value="입력">
                     <table class="table table-borderless">
                         <thead>
                             <tr>
@@ -133,7 +132,6 @@
                                 <td class="d-flex flex-row justify-content-end">
                                     <input type="button" id="submitBoard" class="btn btn-success mr-3" value="등록"/>
                                     <input type="button" id="cancelWrite" class="btn btn-light mr-3" value="취소"/>
-                                    
                                 </td>
                             </tr>
                         </tbody>

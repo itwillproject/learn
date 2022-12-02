@@ -62,7 +62,7 @@
 		<if test="qboardNo != null">
 		UPDATE QUESTION_BOARD
 		 SET BOARD_TITLE = #{boardTitle}, BOARD_CONTENT = #{boardContent}, BOARD_FILE = #{boardFile},
-		  BOARD_ADOPT = #{boardAdopt}, BOARD_HIT = #{boardHit}, BOARD_LIKE = #{boardLike}
+		  BOARD_ADOPT = #{boardAdopt}, BOARD_HIT = #{boardHit}, BOARD_LIKE = #{boardLike}, COMMENT_CNT = #{commentCnt}
 		 WHERE QBOARD_NO = #{qboardNo}
 		</if>
 	</update>
@@ -150,12 +150,28 @@
 	
 	<select id="getTopBoard" parameterType="board" resultType="board">
 		SELECT * FROM
-		(SELECT * FROM QUESTION_BOARD
-		ORDER BY BOARD_HIT DESC)
-		WHERE ROWNUM BETWEEN 1 AND 10	
+		    (SELECT * FROM QUESTION_BOARD
+		    WHERE BOARD_REGDATE BETWEEN SYSDATE -7 AND SYSDATE
+		    ORDER BY BOARD_HIT DESC)
+		WHERE ROWNUM BETWEEN 1 AND 5
 	</select>
 	
-
+	<insert id="addComment" parameterType="boardComment">
+		<if test="qboardNo != null">
+			INSERT INTO QUESTION_ANSWER
+		</if>
+		(COMMENT_NO, USER_ID, BOARD_NO, GRADE, COMMENT_CONTENT)
+		VALUES ((SELECT NVL(MAX(COMMENT_NO),0) + 1 FROM QUESTION_ANSWER),
+		#{userId}, #{boardNo}, #{grade}, #{commentContent})
+	</insert>
+	
+	<delete id="delComment">
+		<if test="qboardNo != null">
+			DELETE FROM QUESTION_ANSWER
+		</if>
+		WHERE COMMENT_NO = #{commentNo}
+	</delete>
+	
 </mapper>
 
 

@@ -31,6 +31,8 @@ import com.spring.learn.board.BoardService;
 import com.spring.learn.board.BoardVO;
 import com.spring.learn.board.QnaLikeVO;
 import com.spring.learn.common.Paging;
+import com.spring.learn.memberboard.CallcenterCommentVO;
+import com.spring.learn.memberboard.MemberBoardVO;
 import com.spring.learn.user.UserService;
 import com.spring.learn.user.UserVO;
 
@@ -268,8 +270,12 @@ public class BoardController {
 		
 		// vo 받아서 한개 가져오고 세션에 등록
 		bvo = boardService.getBoard(bvo);
-		bvo.setBoardHit(Integer.toString((Integer.parseInt(bvo.getBoardHit())+1)));
-		boardService.updateBoard(bvo);
+		
+		System.out.println(">>>>>>>>>>>> 서비스 실행후 bvo : " + bvo);
+		
+//		if(bvo == null) {
+//			bvo = (BoardVO) session.getAttribute("board");
+//		}
 		
 		// 이름 입력
 		String getName = bvo.getUserId();
@@ -278,6 +284,10 @@ public class BoardController {
 		vo = userService.confirmUser(vo);
 		String setName = vo.getUserName();
 		bvo.setUserName(setName);
+		
+		
+		bvo.setBoardHit(Integer.toString((Integer.parseInt(bvo.getBoardHit())+1)));
+		boardService.updateBoard(bvo);
 		
 		model.addAttribute("board", bvo);
 		
@@ -355,19 +365,26 @@ public class BoardController {
 	@PostMapping("/boardModify.do")
 	public String QnaModify(BoardVO bvo, HttpSession session) {
 		
+		System.out.println(">> 수정 도착 : " + bvo);
+		
 		UserVO uvo = (UserVO) session.getAttribute("user");
 		
 		if(uvo == null) {
 			return "/Member/login.do";
 		}
 		
-		bvo.setUserId(uvo.getUserId());
-		bvo.setGrade(uvo.getGrade());
+		BoardVO modibvo = boardService.getBoard(bvo);
+		
+		modibvo.setBoardTitle(bvo.getBoardTitle());
+		modibvo.setBoardContent(bvo.getBoardContent());
+		
+		modibvo.setUserId(uvo.getUserId());
+		modibvo.setGrade(uvo.getGrade());
 		
 		System.out.println(">> 수정 입력 도착, uvo : " + uvo);
-		System.out.println(">> 수정 입력 도착, bvo : " + bvo);		
+		System.out.println(">> 수정 입력 도착, modibvo : " + modibvo);		
 		
-		boardService.updateBoard(bvo);
+		boardService.updateBoard(modibvo);
 		
 		return "/board/viewQnaPage.do"; // 이동
 		
@@ -451,6 +468,70 @@ public class BoardController {
 		
 		boardService.insertBoardReport(boardReport);
 		
+	}
+	
+	// qna게시판에 코멘트 추가
+	@PostMapping("/addComment.do")
+	public String addComment(BoardCommentVO cvo, Model model, HttpSession session) {
+		
+		System.out.println(">> 코멘트 입력 도착, cvo : " + cvo);
+		
+		UserVO uvo = (UserVO) session.getAttribute("user");
+		if (uvo != null) {
+			cvo.setUserId(uvo.getUserId());
+			cvo.setGrade(uvo.getGrade());
+		}
+		
+		if (cvo.getQboardNo() != null) {
+			cvo.setBoardNo(cvo.getQboardNo());
+		}
+	
+		boardService.addComment(cvo);
+		
+		// 보드 가져오기
+		BoardVO bvo = (BoardVO) session.getAttribute("board");
+		
+		// 코멘트 숫자 늘리기
+		bvo.setCommentCnt(Integer.toString(Integer.parseInt(bvo.getCommentCnt()) + 1));
+		boardService.updateBoard(bvo);
+		
+		System.out.println("완료후 cvo : " + cvo);
+		
+		return "/board/viewQnaPage.do";
+		
+	}
+	
+	
+	// 코멘트 삭제하기
+	@RequestMapping("/delComment.do")
+	public String delComment(BoardCommentVO cvo, Model model, HttpSession session) {
+		System.out.println(">>> 삭제하기 : " + cvo);
+		
+		// qboardNo을 사용해서 프리보드와 구분하기
+		if (cvo.getQboardNo() != null) {
+			cvo.setCommentNo(cvo.getQboardNo());
+		}
+		
+		boardService.delComment(cvo);
+		
+		// 보드 가져오기
+		BoardVO bvo = (BoardVO) session.getAttribute("board");
+		
+		// 코멘트 숫자 줄이기
+		bvo.setCommentCnt(Integer.toString(Integer.parseInt(bvo.getCommentCnt()) - 1));
+		boardService.updateBoard(bvo);
+		
+//		// 코멘트 가져오기
+//		List<BoardCommentVO> cvoList = boardService.getComment(bvo);
+//		model.addAttribute("cvoList", cvoList);
+//		
+//		
+//		model.addAttribute("cvoCnt", cvoList.size());
+//		
+//		
+//		System.out.println(">>>>> cvoList : " + cvoList);
+		
+		return "/board/viewQnaPage.do";
 	}
 	
 	

@@ -100,6 +100,16 @@ public class BoardServiceImpl implements BoardService {
 		return boardDAO.getTopBoard(bvo);
 	}
 
+	@Override
+	public void addComment(BoardCommentVO cvo) {
+		boardDAO.addComment(cvo);
+	}
+
+	@Override
+	public void delComment(BoardCommentVO cvo) {
+		boardDAO.delComment(cvo);
+	}
+
 
   
 }

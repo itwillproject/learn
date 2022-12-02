@@ -27,6 +27,8 @@ public interface BoardDAO {
 	void insertBoardReport(BoardReportVO boardReport);
 	BoardReportVO getBoardReport(Map<String, String> map);
 	List<BoardVO> getTopBoard(BoardVO bvo);
+	void addComment(BoardCommentVO cvo);
+	void delComment(BoardCommentVO cvo);
 }
 
 

@@ -201,11 +201,10 @@
  		display: none;
  	}
  	 
- 	div.contentWrap p:first-of-type{
+ 	div.contentWrap p:first-of-type, h4.contentWrap, p.contentWrap {
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-		
  	} 
  	
 	div.contentWrap {
@@ -237,6 +236,29 @@
  		color: #00D481;
  		font-weight: bold;
  	}
+ 	
+ 	.topTitle, .topUserName, .topA,.topTitle:hover, .topUserName:hover, .topA:hover {
+ 		color: #444444;
+ 		text-decoration: none;
+ 		font-weight: normal;
+ 	}
+ 	
+ 	.topUserName,.topUserName:hover{
+ 		color: black;
+ 		font-weight: bold;
+ 	}
+ 	
+ 	.topRanking:hover{
+ 		background-color: #eeeeee;
+ 	}
+ 	
+ 	.topTable{
+ 		border: 1px solid #eeeeee;
+ 		border-radius: 50px;
+ 	}
+ 	
+ 	
+ 	
  	
  	
 
@@ -317,7 +339,7 @@
 							<div class="row">
 								<div class="col-10">
 								<a class="boardCon" href="${pageContext.request.contextPath}/board/viewQnaPage.do?qboardNo=${qnaBoard.qboardNo }">
-								<h4 class="boardTi">${qnaBoard.boardTitle }</h4>
+								<h4 class="boardTi contentWrap">${qnaBoard.boardTitle }</h4>
 								<div class="contentWrap">${qnaBoard.boardContent }</div>
 								<p class="boardEtc">${qnaBoard.userName } · ${fn:substring(qnaBoard.boardRegdate,0,10) }  </p></a> <!--몇분전 , 강의 제목 추가 할까?? --> 
 								
@@ -384,19 +406,19 @@
 			
 			<!-- 오른쪽 네비 -->
 			<div class="col-sm-2">
-				<table class="table table-hover">
+				<table class="table table-borderless topTable" style="table-layout: fixed">
 					<thead>
 						<tr>
-							<th>주간 인기글</th>
+							<th style="font-size: 1.2em">주간 인기글</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="tops" items="${topList }">
 						<tr>
-							<td>
-								<a href="#">
-								${tops.boardTitle } <br>
-								${tops.userName }
+							<td class="topRanking" style="height: 20px; padding-top: 5px; padding-bottom: 5px;">
+								<a class="topA" href="${pageContext.request.contextPath}/board/viewQnaPage.do?qboardNo=${tops.qboardNo }">
+								<p class="topTitle contentWrap" style="margin-bottom: 8px;">${tops.boardTitle }</p>
+								<p class="topUserName" style="margin-bottom: 8px;"> ${tops.userName } </p>
 								</a>
 							</td>
 						</tr>

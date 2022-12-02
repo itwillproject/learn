@@ -1,7 +1,8 @@
 package com.spring.learn.board;
 
 public class BoardCommentVO {
-	private String commentNo,boardNo,userId,grade,commentContent,commentRegdate,categoryName,answerAdopt,commentFile;
+	private String commentNo,boardNo,userId,grade,commentContent,commentRegdate,categoryName,answerAdopt,commentFile
+	,qboardNo, fboardNo;
 
 	public String getCommentNo() {
 		return commentNo;
@@ -75,14 +76,28 @@ public class BoardCommentVO {
 		this.commentFile = commentFile;
 	}
 	
+	public String getQboardNo() {
+		return qboardNo;
+	}
 
+	public void setQboardNo(String qboardNo) {
+		this.qboardNo = qboardNo;
+	}
+
+	public String getFboardNo() {
+		return fboardNo;
+	}
+
+	public void setFboardNo(String fboardNo) {
+		this.fboardNo = fboardNo;
+	}
 
 	@Override
 	public String toString() {
-		return "CommentVO [commentNo=" + commentNo + ", boardNo=" + boardNo + ", userId=" + userId + ", grade=" + grade
-				+ ", commentContent=" + commentContent + ", commentRegdate=" + commentRegdate + ", categoryName="
-				+ categoryName + ", answerAdopt=" + answerAdopt + ", commentFile=" + commentFile + "]";
+		return "BoardCommentVO [commentNo=" + commentNo + ", boardNo=" + boardNo + ", userId=" + userId + ", grade="
+				+ grade + ", commentContent=" + commentContent + ", commentRegdate=" + commentRegdate
+				+ ", categoryName=" + categoryName + ", answerAdopt=" + answerAdopt + ", commentFile=" + commentFile
+				+ ", qboardNo=" + qboardNo + ", fboardNo=" + fboardNo + "]";
 	}
 
-	
 }
