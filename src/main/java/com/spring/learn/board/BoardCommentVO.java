@@ -2,7 +2,11 @@ package com.spring.learn.board;
 
 public class BoardCommentVO {
 	private String commentNo,boardNo,userId,grade,commentContent,commentRegdate,categoryName,answerAdopt,commentFile
-	,qboardNo, fboardNo;
+	,qboardNo, fboardNo
+	,comment2No, comment2Content, comment2Regdate
+	,userName
+	,section
+	;
 
 	public String getCommentNo() {
 		return commentNo;
@@ -91,13 +95,55 @@ public class BoardCommentVO {
 	public void setFboardNo(String fboardNo) {
 		this.fboardNo = fboardNo;
 	}
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}	
+
+	public String getComment2No() {
+		return comment2No;
+	}
+
+	public void setComment2No(String comment2No) {
+		this.comment2No = comment2No;
+	}
+
+	public String getComment2Content() {
+		return comment2Content;
+	}
+
+	public void setComment2Content(String comment2Content) {
+		this.comment2Content = comment2Content;
+	}
+
+	public String getComment2Regdate() {
+		return comment2Regdate;
+	}
+
+	public void setComment2Regdate(String comment2Regdate) {
+		this.comment2Regdate = comment2Regdate;
+	}
+	
+	public String getSection() {
+		return section;
+	}
+
+	public void setSection(String section) {
+		this.section = section;
+	}
 
 	@Override
 	public String toString() {
 		return "BoardCommentVO [commentNo=" + commentNo + ", boardNo=" + boardNo + ", userId=" + userId + ", grade="
 				+ grade + ", commentContent=" + commentContent + ", commentRegdate=" + commentRegdate
 				+ ", categoryName=" + categoryName + ", answerAdopt=" + answerAdopt + ", commentFile=" + commentFile
-				+ ", qboardNo=" + qboardNo + ", fboardNo=" + fboardNo + "]";
+				+ ", qboardNo=" + qboardNo + ", fboardNo=" + fboardNo + ", comment2No=" + comment2No
+				+ ", comment2Content=" + comment2Content + ", comment2Regdate=" + comment2Regdate + ", userName="
+				+ userName + ", section=" + section + "]";
 	}
 
 }

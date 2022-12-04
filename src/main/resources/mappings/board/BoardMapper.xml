@@ -166,11 +166,36 @@
 	</insert>
 	
 	<delete id="delComment">
-		<if test="qboardNo != null">
+		<if test="section == 'qboard'">
 			DELETE FROM QUESTION_ANSWER
 		</if>
 		WHERE COMMENT_NO = #{commentNo}
 	</delete>
+	
+	<insert id="addCocomment" parameterType="boardComment">
+		<if test="qboardNo != null">
+			INSERT INTO QUESTION_ANSWER_COMMENT
+		</if>
+		(COMMENT2_NO, COMMENT_NO, USER_ID, GRADE, COMMENT2_CONTENT)
+		VALUES ((SELECT NVL(MAX(COMMENT2_NO),0) + 1 FROM QUESTION_ANSWER_COMMENT),
+		#{commentNo}, #{userId}, #{grade}, #{comment2Content})	
+	</insert>
+	
+	<select id="getCocoment" parameterType="board" resultType="boardComment">
+		SELECT * FROM (
+		SELECT QAC.*, QA.BOARD_NO QBOARD_NO FROM QUESTION_ANSWER_COMMENT QAC, QUESTION_ANSWER QA
+		WHERE QAC.COMMENT_NO = QA.COMMENT_NO
+		ORDER BY COMMENT2_REGDATE ASC)
+		WHERE QBOARD_NO = #{qboardNo}
+	</select>
+	
+	<delete id="delCocomment" parameterType="boardComment">
+		<if test="qboardNo != null">
+			DELETE FROM QUESTION_ANSWER_COMMENT
+		</if>
+			WHERE COMMENT2_NO = #{comment2No}
+	</delete>
+	
 	
 </mapper>
 

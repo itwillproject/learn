@@ -267,6 +267,7 @@ public class BoardController {
 	@RequestMapping("/viewQnaPage")
 	public String viewQnaPage(BoardVO bvo, Model model, HttpSession session) {
 		System.out.println(">>> 보드 상세페이지로 이동 : " + bvo);
+				
 		
 		// vo 받아서 한개 가져오고 세션에 등록
 		bvo = boardService.getBoard(bvo);
@@ -277,7 +278,7 @@ public class BoardController {
 //			bvo = (BoardVO) session.getAttribute("board");
 //		}
 		
-		// 이름 입력
+		// 이름 입력 - 보드 상세에
 		String getName = bvo.getUserId();
 		UserVO vo = new UserVO();
 		vo.setUserId(getName);
@@ -295,8 +296,31 @@ public class BoardController {
 		
 		// 코멘트 가져오기
 		List<BoardCommentVO> cvoList = boardService.getComment(bvo);
-		model.addAttribute("cvoList", cvoList);
 		System.out.println(">>>>> cvoList : " + cvoList);
+		
+		// 코멘트에 이름 입력
+		for (BoardCommentVO cvo : cvoList) {
+			getName = cvo.getUserId();
+			vo = new UserVO();
+			vo.setUserId(getName);
+			vo = userService.confirmUser(vo);
+			setName = vo.getUserName();
+			cvo.setUserName(setName);
+		}
+		model.addAttribute("cvoList", cvoList);
+		
+		//대댓글 코코멘트 가져오기
+		List<BoardCommentVO> cocoList = boardService.getCocoment(bvo);
+		// 코멘트에 이름 입력
+		for (BoardCommentVO ccvo : cocoList) {
+			getName = ccvo.getUserId();
+			vo = new UserVO();
+			vo.setUserId(getName);
+			vo = userService.confirmUser(vo);
+			setName = vo.getUserName();
+			ccvo.setUserName(setName);
+		}
+		model.addAttribute("cocoList", cocoList);
 		
 		// map 만들어서 검색 / 좋아요 여부 가져오기
 		UserVO uvo = (UserVO) session.getAttribute("user");
@@ -472,7 +496,8 @@ public class BoardController {
 	
 	// qna게시판에 코멘트 추가
 	@PostMapping("/addComment.do")
-	public String addComment(BoardCommentVO cvo, Model model, HttpSession session) {
+	@ResponseBody
+	public Map<String, Object> addComment(BoardCommentVO cvo, Model model, HttpSession session) {
 		
 		System.out.println(">> 코멘트 입력 도착, cvo : " + cvo);
 		
@@ -491,26 +516,67 @@ public class BoardController {
 		// 보드 가져오기
 		BoardVO bvo = (BoardVO) session.getAttribute("board");
 		
+		
+		
+		// 이름 입력 - 보드 상세에
+		String getName = bvo.getUserId();
+		UserVO vo = new UserVO();
+		vo.setUserId(getName);
+		vo = userService.confirmUser(vo);
+		String setName = vo.getUserName();
+		bvo.setUserName(setName);
+		
 		// 코멘트 숫자 늘리기
 		bvo.setCommentCnt(Integer.toString(Integer.parseInt(bvo.getCommentCnt()) + 1));
 		boardService.updateBoard(bvo);
 		
 		System.out.println("완료후 cvo : " + cvo);
 		
-		return "/board/viewQnaPage.do";
 		
+		// 코멘트 가져오기
+		List<BoardCommentVO> cvoList = boardService.getComment(bvo);
+		System.out.println(">>>>> cvoList : " + cvoList);
+		
+		// 코멘트에 이름 입력
+		for (BoardCommentVO cvoo : cvoList) {
+			getName = cvoo.getUserId();
+			vo = new UserVO();
+			vo.setUserId(getName);
+			vo = userService.confirmUser(vo);
+			setName = vo.getUserName();
+			cvoo.setUserName(setName);
+		}
+		model.addAttribute("cvoList", cvoList);
+		
+		
+		//대댓글 코코멘트 가져오기
+		List<BoardCommentVO> cocoList = boardService.getCocoment(bvo);
+		// 코멘트에 이름 입력
+		for (BoardCommentVO ccvo : cocoList) {
+			getName = ccvo.getUserId();
+			vo = new UserVO();
+			vo.setUserId(getName);
+			vo = userService.confirmUser(vo);
+			setName = vo.getUserName();
+			ccvo.setUserName(setName);
+		}
+		model.addAttribute("cocoList", cocoList);		
+		
+				
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("board", bvo);
+		map.put("cvoList", cvoList);
+		map.put("cocoList", cocoList);
+		
+		return map;
 	}
 	
 	
 	// 코멘트 삭제하기
 	@RequestMapping("/delComment.do")
 	public String delComment(BoardCommentVO cvo, Model model, HttpSession session) {
-		System.out.println(">>> 삭제하기 : " + cvo);
-		
-		// qboardNo을 사용해서 프리보드와 구분하기
-		if (cvo.getQboardNo() != null) {
-			cvo.setCommentNo(cvo.getQboardNo());
-		}
+		System.out.println(">>> 삭제하기 : " + cvo);		
 		
 		boardService.delComment(cvo);
 		
@@ -521,15 +587,56 @@ public class BoardController {
 		bvo.setCommentCnt(Integer.toString(Integer.parseInt(bvo.getCommentCnt()) - 1));
 		boardService.updateBoard(bvo);
 		
-//		// 코멘트 가져오기
-//		List<BoardCommentVO> cvoList = boardService.getComment(bvo);
-//		model.addAttribute("cvoList", cvoList);
-//		
-//		
-//		model.addAttribute("cvoCnt", cvoList.size());
-//		
-//		
-//		System.out.println(">>>>> cvoList : " + cvoList);
+		System.out.println(">> 코멘트 삭제후 보드 : " + bvo);
+		
+		return "/board/viewQnaPage.do";
+	}
+	
+	
+	// qna게시판에 대댓글 코멘트 추가
+	@PostMapping("/addCocomment.do")
+	public String addCocomment(BoardCommentVO cvo, Model model, HttpSession session) {
+		
+		System.out.println(">> 대댓글 입력 도착, cvo : " + cvo);
+		
+		
+		UserVO uvo = (UserVO) session.getAttribute("user");
+		BoardVO bvo = (BoardVO) session.getAttribute("board");
+		model.addAttribute("board", bvo);
+		
+		if (uvo != null) {
+			cvo.setUserId(uvo.getUserId());
+			cvo.setGrade(uvo.getGrade());
+		}
+		
+		if (bvo.getQboardNo() != null) {
+			cvo.setQboardNo(bvo.getQboardNo());
+		}
+		
+		System.out.println(">> 대댓글 입력 직전   bvo : " + bvo);
+		System.out.println(">> 대댓글 입력 직전   cvo : " + cvo);
+		boardService.addCocomment(cvo);
+		
+		// 보드 가져오기
+		System.out.println("완료후 cvo : " + cvo);
+		
+		return "/board/viewQnaPage.do?qboardNo="+bvo.getQboardNo();
+		
+	}	
+	
+	
+	// 코멘트 삭제하기
+	@RequestMapping("/deleteCoco.do")
+	public String deleteCoco(BoardCommentVO ccvo, BoardVO bvo, Model model, HttpSession session) {
+		System.out.println(">>> 삭제하기 : " + ccvo);
+		System.out.println(">>> 연관 보드 넘버  : " + bvo);
+		
+		//qboardNo을 사용해서 프리보드와 구분하기
+		if (bvo.getQboardNo() != null) {
+			ccvo.setQboardNo(bvo.getQboardNo());
+		}
+		
+		boardService.delCocomment(ccvo);
 		
 		return "/board/viewQnaPage.do";
 	}

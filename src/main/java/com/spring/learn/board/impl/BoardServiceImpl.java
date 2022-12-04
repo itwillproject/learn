@@ -110,6 +110,21 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.delComment(cvo);
 	}
 
+	@Override
+	public void addCocomment(BoardCommentVO cvo) {
+		boardDAO.addCocomment(cvo);
+	}
+
+	@Override
+	public List<BoardCommentVO> getCocoment(BoardVO bvo) {
+		return boardDAO.getCocoment(bvo);
+	}
+
+	@Override
+	public void delCocomment(BoardCommentVO ccvo) {
+		boardDAO.delCocomment(ccvo);
+	}
+
 
   
 }

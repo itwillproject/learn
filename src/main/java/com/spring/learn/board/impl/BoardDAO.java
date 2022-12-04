@@ -29,6 +29,9 @@ public interface BoardDAO {
 	List<BoardVO> getTopBoard(BoardVO bvo);
 	void addComment(BoardCommentVO cvo);
 	void delComment(BoardCommentVO cvo);
+	void addCocomment(BoardCommentVO cvo);
+	List<BoardCommentVO> getCocoment(BoardVO bvo);
+	void delCocomment(BoardCommentVO ccvo);
 }
 
 

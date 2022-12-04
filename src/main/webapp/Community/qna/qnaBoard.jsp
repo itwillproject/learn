@@ -25,7 +25,7 @@
 		
 		var fontList = ['맑은 고딕','굴림','돋움','바탕','궁서','NotoSansKR','Arial','Courier New','Verdana','Tahoma','Times New Roamn'];
 		var setting = {
-				height: 300,                 // set editor height
+				height: 150,                 // set editor height
 				minHeight: null,             // set minimum height of editor
 				maxHeight: null,             // set maximum height of editor
 				focus: true,                  // set focus to editable area after initializing summernote
@@ -214,13 +214,7 @@
 			 var sendUrl = window.location.href;
 			 window.open("https://twitter.com/intent/tweet?text=" + sendText + "&url=" + sendUrl);
 		 });
-		 
-		 
-		 $(document).on("click", "#linkToFace", function(){
-			var sendUrl = window.location.href;
-			document.execCommand('copy');
-		 });
-		 
+		 		 
 		 $(document).on("click", "#linkTo", function(){
 			var url = '';
 			var textarea = document.createElement("textarea");
@@ -235,29 +229,173 @@
 		 });
 		 
 		 
-	});	 
+	});	
 	
-	 function deleteOk(commentNo){
-		 if (confirm("삭제하시겠습니까??")){
-			 location.href = "${pageContext.request.contextPath}/board/delComment.do?qboardNo="+commentNo; 
-		 }
-	 };	
+	
+	
+	
+	
+	
+	
+	
+	
+	function addComment(frm){
+		
+		console.log("commentCnt : " + $("#commentCnt").html());
+		
+		var gogo = "${pageContext.request.contextPath}/board/addComment.do?qboardNo=${board.qboardNo}";
+		gogo += "&commentContent="+ frm.commentContent.value ;
+		
+		
+		
+		
+		$.ajax({
+			url: gogo,
+			type : "post",
+			async : true,
+			success : function(data){
+				console.log("에이젝스 성공!!");
+				console.log(data);
+				
+				var inHtml = "";
+				intHtml = data.board.commentCnt;
+				
+				$("#commentCnt").html(intHtml);
+				
+				var inHtml = "";
+				for (var cvo of data.cvoList){
+					
+					intHtml += '<div class="row w-50 border mx-auto rounded bg-white p-3 mb-5" >';
+					intHtml += '<div class="row w-100  mt-3 mb-3">';
+					intHtml += '<div class="w-100 flex-row d-flex">';
+					intHtml += '<P class="ml-auto">';
+					intHtml += '<a href="javascript:deleteOk('+ cvo.commentNo +')">삭제</a>';
+					intHtml += '</P></div>';
+					intHtml += '<div class="text-editor-block flex-row d-flex w-100 mb-3">';
+					intHtml += '<div class="ml-3">';
+					intHtml += '<img class="mr-2 ml-5" style="height: 60px" src="${pageContext.request.contextPath}/Community/img/aaa.png">';
+					intHtml += '</div>';
+					intHtml += '<div class="ml-3">';
+					intHtml += '<div class="row">';
+					intHtml += '<span><h5><b><a href="#">'+ cvo.userName + '</a></b></h5></span>';
+					intHtml += '</div>';
+					intHtml += '<div class="row text-secondary">';
+					intHtml += '<span>'+ cvo.commentRegdate +'</span>';
+					intHtml += '</div></div></div>';
+					intHtml += '<div class="row w-100 ml-5">';
+					intHtml += '<p>'+ cvo.commentContent +'</p>';
+					intHtml += '</div></div>';
+					intHtml += '<div class="row mx-auto">';
+					
+					var j = 0;
+					for (var cocoment of data.cocoList){
+						if (cocoment.commentNo == cvo.commentNo){
+							if (j == 0){
+								intHtml += '<div class="border row p-3 mx-auto rounded" style="background-color: #F8F9FA; width: 695px;" >';
+								intHtml += '<div class="d-flex flex-row ml-3 mt-3 w-100 align-items-center">';
+								intHtml += '<span>';
+								intHtml += '<h5><b>댓글</b></h5>';
+								intHtml += '</span>';
+								intHtml += '</div>';
+							}
+							intHtml += '<div class="row w-100">';
+							intHtml += '<div class="row my-3 ml-3 w-100">';
+							intHtml += '<div class="ml-3">	';
+							intHtml += '<img class="mx-2 pb-2" style="height: 60px" src="${pageContext.request.contextPath}/Community/img/aaa.png">';
+							intHtml += '</div>';
+							intHtml += '<div class="ml-4 w-75">';
+							intHtml += '<div class="row">';
+							intHtml += '<span><h5><b><a href="#">'+ cocoment.userName +'</a></b></h5></span>';
+							intHtml += '<span class="ml-auto"><a href="javascript:deleteCoco('+ cocoment.comment2No +')">삭제</a></span>';
+							intHtml += '</div>';
+							intHtml += '<div class="row text-secondary">';
+							intHtml += '<span>'+cocoment.comment2Regdate +'</span>';
+							intHtml += '</div>';
+							intHtml += '</div>';
+							intHtml += '</div>';
+							intHtml += '<div class="row ml-5 w-100">';
+							intHtml += cocoment.comment2Content;
+							intHtml += '</div>';
+							intHtml += '</div>';							
+							
+							if (j == data.cocoList.length - 1){
+								intHtml += '</div>';
+							}
+						}
+						
+					}
+					
+					console.log("user.userId : " + "${user.userId}");
+					
+					if(${"user.userId" != null}){
+						
+						intHtml += '<div class="row ml-3 mt-3 w-100 align-items-center">';
+						intHtml += '<span class="mx-auto">';
+						intHtml += '<button data-toggle="collapse" data-target=".cocoment">답글쓰기</button>';
+						intHtml += '</span>';
+						intHtml += '</div>';
+						intHtml += '<div class="row p-3 mx-auto rounded cocoment collapse">';
+						intHtml += '<form method="post" class="w-100" action="${pageContext.request.contextPath}/board/addCocomment.do?commentNo='+ cvo.commentNo +'">';
+						intHtml += '<textarea class="summernote" name="comment2Content"></textarea>';
+						intHtml += '<div class="row mt-3">';
+						intHtml += '<input type="button" onclick="addCocoment(this.form)" class="btn btn-success ml-auto" value="답글등록">';
+						intHtml += '</div>';
+						intHtml += '</form>';
+						intHtml += '</div>';
+					}
+					intHtml += '</div>';
+					intHtml += '</div>';
+				}
+				
+				
+				
+				$("#commentLine").html(intHtml);
+				
+			},
+			error : function(){
+				console.log("에이젝스 실패!!");
+			}
+		});
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	function deleteOk(commentNo){
+		if (confirm("삭제하시겠습니까??")){
+			location.href = "${pageContext.request.contextPath}/board/delComment.do?qboardNo=${board.qboardNo}&section=qboard&commentNo="+commentNo; 
+		}
+	};	
 	 
 	 
-	 function deleteBoard(obj){
-		 if (confirm("삭제하시겠습니까??")){
-			 location.href = "${pageContext.request.contextPath}/board/deleteBoard.do?qboardNo=${board.qboardNo }" 
-		 }
-	 };
+	function deleteBoard(obj){
+		if (confirm("삭제하시겠습니까??")){
+			location.href = "${pageContext.request.contextPath}/board/deleteBoard.do?qboardNo=${board.qboardNo }" 
+		}
+	};
 	 
-	 function modifyBoard(){
-		 location.href = "${pageContext.request.contextPath}/board/boardModify.do?qboardNo=${board.qboardNo }";
-	 };
+	function modifyBoard(){
+		location.href = "${pageContext.request.contextPath}/board/boardModify.do?qboardNo=${board.qboardNo }";
+	};
 	 
-	 function addCoComent(frm){
-		 alert(frm);
-		 alert(frm.commentContent);
-	 }
+	function addCocoment(frm){
+		frm.submit();
+	}
+	 
+	function deleteCoco(comment2No){
+		 
+		if (confirm("삭제하시겠습니까??")){
+			location.href = "${pageContext.request.contextPath}/board/deleteCoco.do?qboardNo=${board.qboardNo }&comment2No="+comment2No; 
+		}
+	}
 	
 	
 	</script>	
@@ -275,9 +413,29 @@
 	</style>
 	
 	
+	
+	
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 </head>
 <body>
+
+	
 	<%@include file="/Common/header.jsp" %>
 
 	<div class="container-fluid mt-5 pb-3 d-flex justify-content-center">
@@ -296,7 +454,7 @@
 					<h3><b>${board.boardTitle }</b></h3>
 				</div>
 				<div class="row pl-3 pb-3 gray-line">
-					<p><b>${board.userName }</b></p><p class="text-muted">${board.boardRegdate }</p>
+					<p><b>${board.userName } </b></p><p class="text-muted ml-2"> ${board.boardRegdate }</p>
 					
 					<!-- 수정, 삭제하기 -->
 					<p class="ml-auto">
@@ -412,10 +570,11 @@
 		</div>		
 	</div>
 
-	<!-- 글 아래 파트 회색부분 -->
-	<div class="container-fluid py-5"  style="background-color: #F8F9FA;">
 
-		<!-- 여기서부터 입력부분은 질문게시판(관리) 쪽은 관리자만 답변 할 수 있도록 해야 한다 -->
+	<!-- 글 아래 파트 회색부분 -->
+	<div id="commentPart" class="container-fluid py-5"  style="background-color: #F8F9FA;">
+		
+		
 		
 		<div class="row w-50 border mx-auto rounded bg-white px-3 py-5" >
 			<div class="w-100 mb-3 ml-3 text-editor-block d-flex align-items-center">
@@ -427,7 +586,7 @@
 					<span><h5><b>
 					<c:choose>
 						<c:when test="${user != null }">
-						<a href="#" style="font-size: 1em">${user.userId}</a>님, 답변해주세요!
+						<a href="#" style="font-size: 1em">${user.userName}</a>님, 답변해주세요!
 						</c:when>
 						<c:otherwise>
 						로그인 후 답변이 가능합니다.
@@ -442,48 +601,51 @@
 				</div>
 			</div>
 		
-		<c:if test="${user != null }">
 		<!-- 댓글 입력 부분 -->
+		<c:if test="${user != null }">
 			<div class="row w-100 w-100 p-3 mx-auto">
-				<form method="post" class="w-100" action="${pageContext.request.contextPath}/board/addComment.do?qboardNo=${board.qboardNo}">
+				<form method="post" class="w-100">
 					<textarea id="summernote" name="commentContent"></textarea>
 					<div class="row mt-3">
-						<button class="btn btn-success ml-auto">답변등록</button>
+						<input type="button" onclick="addComment(this.form)" class="btn btn-success ml-auto" value="답변등록">
 					</div>
 				</form>
 			</div>
-			
 		</c:if>
 			
 		</div>
 		
 
-		<!-- 답변 몇개인, 글 정렬 옵션-->
+		<!-- 답변 몇개인-->
 		<div class="w-75 d-flex flex-row justify-content-center mx-auto mt-4 p-3">
 			<div class="row w-75 d-flex flex-row justify-content-around align-items-center" >
 					<span class="w-75 ml-4">
-					<h3 class="text-success">A</h3><p>총 ${board.commentCnt }개의 답변이 달렸습니다</p>
-					</span>
-					
-					<span class="mr-4">
-					<select>
-						<option>최신순</option>
-						<option>좋아요순</option>
-					</select>
-					</span>
+					<h3 class="text-success">A</h3><p>총 <span id="commentCnt">${board.commentCnt }</span>개의 답변이 달렸습니다</p>
+					</span>					
 			</div>				
 		</div>
 
 
-		<!-- 댓글 출력 부분 여기 포이치 문으로 해줘야 한다 -->
-		
+
+
+
+
+
+
+
+
+
+
+
+		<div id="commentLine">
+		<!-- 코멘트 댓글 출력 부분 여기 포이치 문으로 해줘야 한다 -->
 		<c:forEach var="cvo" items="${cvoList }">
-		
 		<div class="row w-50 border mx-auto rounded bg-white p-3 mb-5" >
+		
+		
 			<div class="row w-100  mt-3 mb-3">
 				<div class="w-100 flex-row d-flex">
 					<P class="ml-auto">
-<!-- 					<a>수정</a>  -->
 					<a href="javascript:deleteOk(${cvo.commentNo })">삭제</a>
 					</P>
 				</div>
@@ -494,7 +656,7 @@
 					</div>
 					<div class="ml-3">
 						<div class="row">
-						<span><h5><b><a href="#">${cvo.userId }</a></b></h5></span>
+						<span><h5><b><a href="#">${cvo.userName }</a></b></h5></span>
 						</div>
 						<div class="row text-secondary">
 						<span>${cvo.commentRegdate }</span>
@@ -510,81 +672,104 @@
 			
 			
 			
-		<!-- 대댓글 파트 -->
-		<div class="row mx-auto">
-			<div class="border row p-3 mx-auto rounded" style="background-color: #F8F9FA; width: 695px;" >
-				<div class="d-flex flex-row ml-3 mt-3 w-100 align-items-center">
-					<span>
-						<h5><b>댓글</b></h5>
-					</span>
-				</div>
-				
-				<!-- 글 출력되는 부분 - 포이치문 써야함 -->
-				<div class="comments">
-					<div class="text-editor-block d-flex align-items-center my-3">
-						<div class="ml-3">					
-							<img class="mr-2" style="height: 60px" src="${pageContext.request.contextPath}/Community/img/aaa.png">	
-						</div>
-						<div class="ml-4">
-							<div class="row">
-							<span><h5><b><a href="#">OMG</a></b></h5></span>
+		<!-- 대댓글 파트 cocoment -->
+			<div class="row mx-auto">
+		
+				<c:forEach varStatus="vr" var="ccvo" items="${cocoList }">
+					<c:if test="${ccvo.commentNo == cvo.commentNo}">
+						
+						<c:if test="${vr.first }">	
+						<div class="border row p-3 mx-auto rounded" style="background-color: #F8F9FA; width: 695px;" >
+							<div class="d-flex flex-row ml-3 mt-3 w-100 align-items-center">
+								<span>
+									<h5><b>댓글</b></h5>
+								</span>
 							</div>
-							<div class="row text-secondary">
-							<span>2022.11.18 오전 1:52</span>
+						</c:if>
+						
+						<div class="row w-100">
+							<div class="row my-3 ml-3 w-100">
+								<div class="ml-3">					
+									<img class="mx-2 pb-2 " style="height: 60px" src="${pageContext.request.contextPath}/Community/img/aaa.png">	
+								</div>
+								
+								<div class="ml-4 w-75">
+									<div class="row">
+										<span><h5><b><a href="#">${ccvo.userName }</a></b></h5></span>
+										<span class="ml-auto"><a href="javascript:deleteCoco(${ccvo.comment2No })">삭제</a></span>
+									</div>
+									<div class="row text-secondary">
+										<span>${ccvo.comment2Regdate }</span>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row ml-5 w-100">
+								${ccvo.comment2Content }
 							</div>
 						</div>
-					</div>
-					
-					<div class="row ml-5 ">
-						<pre > Lorem ipsum dolor sit, 이거 어떻게 해야 하나요? 대댓글</pre>
-					</div>
-				</div>
+						
+						<c:if test="${vr.last }">	
+						</div>
+						</c:if>
 				
 				
-			</div>
+					</c:if>
+				</c:forEach>
+				
+									
 
 			<!-- 대댓글 달기 - 질문게시판에서는 안하기로 했음 -->
-
-			<c:if test="${user != null }">
-			<div class="row ml-3 mt-3 w-100 align-items-center">
-				<span class="mx-auto">
-					<button data-toggle="collapse" data-target=".cocoment">답글쓰기</button>
-				</span>
-			</div>
-			
-			<div class="row p-3 mx-auto rounded cocoment collapse">
-				<form method="post" class="w-100">
-					<textarea class="summernote" name="commentContent"></textarea>
-					<div class="row mt-3">
-					<input type="hidden" name="userId" value="${user.userId }">
-					<input type="hidden" name="userGrade" value="${user.grade }">
-					<input type="hidden" name="qboardNo" value="${board.qboardNo}">
-					<input type="button" onclick="addCoComent(this.form)" class="btn btn-success ml-auto">답변등록</button>
+				<c:if test="${user != null }">
+					<div class="row ml-3 mt-3 w-100 align-items-center">
+						<span class="mx-auto">
+							<button data-toggle="collapse" data-target=".cocoment">답글쓰기</button>
+						</span>
 					</div>
-				</form>
+					
+					<div class="row p-3 mx-auto rounded cocoment collapse">
+						<form method="post" class="w-100" action="${pageContext.request.contextPath}/board/addCocomment.do?commentNo=${cvo.commentNo}">
+							<textarea class="summernote" name="comment2Content"></textarea>
+							<div class="row mt-3">
+								<input type="button" onclick="addCocoment(this.form)" class="btn btn-success ml-auto" value="답글등록">
+							</div>
+						</form>
+					</div>
+				</c:if>
+			
 			</div>
-			</c:if>
-			
 		</div>
-			
-			
-			
-			
-		</div>
-		
 		</c:forEach>
+		</div>
 		
-		
-
-
-
-
-
-	</div>
+	
 	
 	<p id="boardReport" style="visibility: hidden;">${boardReport }</p>
 	
 	<%@include file="/Common/footer.jsp" %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
