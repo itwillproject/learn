@@ -241,14 +241,15 @@
 	
 	function addComment(frm){
 		
-		console.log("commentCnt : " + $("#commentCnt").html());
-		
 		var gogo = "${pageContext.request.contextPath}/board/addComment.do?qboardNo=${board.qboardNo}";
 		gogo += "&commentContent="+ frm.commentContent.value ;
+
+		commonAjax(gogo);
 		
-		
-		
-		
+	}
+	
+	
+	function commonAjax(gogo){
 		$.ajax({
 			url: gogo,
 			type : "post",
@@ -297,6 +298,7 @@
 								intHtml += '<h5><b>댓글</b></h5>';
 								intHtml += '</span>';
 								intHtml += '</div>';
+								j++;
 							}
 							intHtml += '<div class="row w-100">';
 							intHtml += '<div class="row my-3 ml-3 w-100">';
@@ -318,12 +320,9 @@
 							intHtml += '</div>';
 							intHtml += '</div>';							
 							
-							if (j == data.cocoList.length - 1){
-								intHtml += '</div>';
-							}
 						}
-						
 					}
+							intHtml += '</div>';
 					
 					console.log("user.userId : " + "${user.userId}");
 					
@@ -355,24 +354,22 @@
 			error : function(){
 				console.log("에이젝스 실패!!");
 			}
-		});
-		
+		});		
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	function deleteOk(commentNo){
 		if (confirm("삭제하시겠습니까??")){
 			location.href = "${pageContext.request.contextPath}/board/delComment.do?qboardNo=${board.qboardNo}&section=qboard&commentNo="+commentNo; 
 		}
+		
+		
+		
+		
+		
+		
+		
 	};	
 	 
 	 
@@ -675,10 +672,12 @@
 		<!-- 대댓글 파트 cocoment -->
 			<div class="row mx-auto">
 		
+				<c:set var="idx" value="1" />					
 				<c:forEach varStatus="vr" var="ccvo" items="${cocoList }">
 					<c:if test="${ccvo.commentNo == cvo.commentNo}">
 						
-						<c:if test="${vr.first }">	
+						<c:if test="${idx == 1 }">
+						<c:set var="idx" value="${idx + 1}"/>
 						<div class="border row p-3 mx-auto rounded" style="background-color: #F8F9FA; width: 695px;" >
 							<div class="d-flex flex-row ml-3 mt-3 w-100 align-items-center">
 								<span>
@@ -709,13 +708,11 @@
 							</div>
 						</div>
 						
-						<c:if test="${vr.last }">	
-						</div>
-						</c:if>
 				
 				
 					</c:if>
 				</c:forEach>
+					</div>
 				
 									
 
