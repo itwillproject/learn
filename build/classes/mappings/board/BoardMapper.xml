@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.learn.board.impl.BoardDAO">
+
+	<insert id="insertBoard" parameterType="board">
+		<if test="qboardNo != null">
+		INSERT INTO QUESTION_BOARD
+		 (QBOARD_NO,LECTURE_NO,USER_ID,GRADE,CATEGORY_NAME,BOARD_TITLE,BOARD_CONTENT,BOARD_FILE)
+		VALUES ((SELECT NVL(MAX(QBOARD_NO),0) + 1 FROM QUESTION_BOARD), #{lectureNo},
+		 #{userId}, #{grade}, #{categoryName}, #{boardTitle}, #{boardContent}, #{boardFile})
+		</if>
+		
+		<if test="qboardNo == null">
+		INSERT INTO FREE_BOARD
+		 (FBOARD_NO,USER_ID,GRADE,BOARD_TITLE,BOARD_CONTENT,BOARD_FILE)
+		VALUES ((SELECT NVL(MAX(FBOARD_NO),0) + 1 FROM FREE_BOARD), #{userId},
+		 #{grade}, #{boardTitle}, #{boardContent}, #{boardFile})
+		</if>
+	</insert>
+		
+	<update id="updateBoard" parameterType="board">
+		<if test="qboardNo != null">
+		UPDATE QUESTION_BOARD
+		 SET BOARD_TITLE = #{boardTitle}, BOARD_CONTENT = #{boardContent}, BOARD_FILE = #{boardFile},
+		  BOARD_ADOPT = #{boardAdopt}, BOARD_HIT = #{boardHit}, BOARD_LIKE = #{boardLike}
+		 WHERE QBOARD_NO = #{qboardNo}
+		</if>
+		
+		<if test="qboardNo == null">
+		UPDATE FREE_BOARD
+		 SET BOARD_TITLE = #{boardTitle}, BOARD_CONTENT = #{boardContent}, BOARD_FILE = #{boardFile},
+		  BOARD_HIT = #{boardHit}, BOARD_LIKE = #{boardLike}
+		 WHERE FBOARD_NO = #{fboardNo}
+		</if>	
+	</update>
+	
+	<delete id="deleteBoard" parameterType="board">
+		<if test="qboardNo != null">
+			DELETE FROM QUESTION_BOARD WHERE QBOARD_NO = #{qboardNo}	
+		</if>
+		
+		<if test="qboardNo == null">
+			DELETE FROM FREE_BOARD WHERE FBOARD_NO = #{fboardNo}			
+		</if>
+	</delete>
+	
+	<select id="getBoard" parameterType="board" resultType="board">
+		<if test="qboardNo != null">
+			SELECT * FROM QUESTION_BOARD WHERE QBOARD_NO = #{qboardNo}
+		</if>
+		
+		<if test="qboardNo == null">
+			SELECT * FROM FREE_BOARD WHERE FBOARD_NO = #{fboardNo}
+		</if>	
+	</select>
+	
+	<select id="getBoardList" parameterType="board" resultType="board">
+		<if test="qboardNo != null">
+			SELECT * FROM QUESTION_BOARD
+		</if>
+		
+		<if test="qboardNo == null">
+			SELECT * FROM FREE_BOARD
+		</if>
+		WHERE BOARD_TITLE LIKE '%'|| #{searchKeyword} ||'%'
+		OR BOARD_CONTENT LIKE '%'|| #{searchKeyword} ||'%'
+		ORDER BY BOARD_REGDATE DESC
+	</select>
+
+</mapper>
+
+
+
+
+
+
