@@ -86,6 +86,22 @@
 			
 		});
 		
+		$(document).on("click", ".nav-item", function(){
+			$(".nav-item").removeClass("active");
+			$(".nav-item").removeClass("green-line");
+			$(this).addClass("active");
+			$(this).addClass("green-line");
+		});
+		
+		$(document).on("click", ".nav-link", function(){
+			var firstForm = document.forms[0];
+			if($(this).html() == '자유주제'){
+				firstForm.action = "${pageContext.request.contextPath}/board/boardWrite.do?section=fboard";
+			} else if ($(this).html() == '질문'){
+				firstForm.action = "${pageContext.request.contextPath}/board/boardWrite.do?section=qboard";
+			}
+		});
+		
 		
 	</script>
 
@@ -109,15 +125,15 @@
                             <li class="nav-item active green-line">
                             <a class="nav-link" href="#">질문</a>
                             </li>
-<!--                             <li class="nav-item"> -->
-<!--                             <a class="nav-link" href="#">자유주제</a> -->
-<!--                             </li> -->
+                            <li class="nav-item">
+                            <a class="nav-link" href="#">자유주제</a>
+                            </li>
                         </ul>
                     </nav>                        
                 </div>
 
                 <div class="d-flex flex-row p-3 writeComments">
-                	<form method="post" class="w-100" id="submitForm" action="${pageContext.request.contextPath}/board/boardWrite.do">
+                	<form method="post" class="w-100" id="submitForm" action="${pageContext.request.contextPath}/board/boardWrite.do?section=qboard">
                     <table class="table table-borderless">
                         <thead>
                             <tr>

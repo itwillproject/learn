@@ -5,6 +5,16 @@
   
 <mapper namespace="com.spring.learn.lecture.impl.ClassDAO">
 
+  <insert id="addClass" parameterType="class">
+    INSERT INTO CLASS
+    (CLASS_NO, LECTURE_NO, CATEGORY_NAME, SECTION_NO, CLASS_NAME, PREVIEW) VALUES
+    ((SELECT NVL(MAX(CLASS_NO), 0) + 1 FROM CLASS), #{lectureNo}, #{categoryName},
+    #{sectionNo}, #{className}, #{preview})
+  </insert>
+
+  <select id="getClassList" parameterType="String" resultType="class">
+    SELECT * FROM CLASS WHERE LECTURE_NO = #{lectureNo}
+  </select>
 
 </mapper>
 

@@ -12,9 +12,6 @@
 		 #{userId}, #{grade}, #{categoryName}, #{boardTitle}, #{boardContent}, #{boardFile})
 	</insert>
 	
-	
-	
-	
 	<insert id="insertFreeBoard" parameterType="board">
 		INSERT INTO FREE_BOARD
 		 (FBOARD_NO,USER_ID,GRADE,BOARD_TITLE,BOARD_CONTENT,BOARD_FILE)
@@ -22,27 +19,53 @@
 		 #{userId}, #{grade}, #{boardTitle}, #{boardContent}, #{boardFile})
 	</insert>
 	
+	<insert id="insertBoard" parameterType="board">
+		<if test="qboardNo != null">
+		INSERT INTO QUESTION_BOARD
+		 (QBOARD_NO,LECTURE_NO,USER_ID,GRADE,CATEGORY_NAME,BOARD_TITLE,BOARD_CONTENT,BOARD_FILE)
+		VALUES ((SELECT NVL(MAX(QBOARD_NO),0) + 1 FROM QUESTION_BOARD), #{lectureNo},
+		 #{userId}, #{grade}, #{categoryName}, #{boardTitle}, #{boardContent}, #{boardFile})
+		</if>
+		
+		<if test="qboardNo == null">
+		INSERT INTO FREE_BOARD
+		 (FBOARD_NO,USER_ID,GRADE,BOARD_TITLE,BOARD_CONTENT,BOARD_FILE)
+		VALUES ((SELECT NVL(MAX(FBOARD_NO),0) + 1 FROM FREE_BOARD), #{userId},
+		 #{grade}, #{boardTitle}, #{boardContent}, #{boardFile})
+		</if>
+	</insert>	
+	
 	
 	
 	
 	<select id="countQnaBoard" parameterType="board" resultType="int">
-		SELECT COUNT(QBOARD_NO) FROM QUESTION_BOARD
-		WHERE 1 = 1
+		<if test="section == 'qboard'">
+			SELECT COUNT(QBOARD_NO) FROM QUESTION_BOARD
+		</if>
+		<if test="section == 'fboard'">
+			SELECT COUNT(FBOARD_NO) FROM FREE_BOARD
+		</if>
+			WHERE 1 = 1
 		<if test="searchKeyword != null">		
-		AND (USER_ID LIKE '%'|| #{searchKeyword} ||'%'
-		OR BOARD_TITLE LIKE '%'|| #{searchKeyword} ||'%'
-		OR BOARD_CONTENT LIKE '%'|| #{searchKeyword} ||'%')		
+			AND (USER_ID LIKE '%'|| #{searchKeyword} ||'%'
+			OR BOARD_TITLE LIKE '%'|| #{searchKeyword} ||'%'
+			OR BOARD_CONTENT LIKE '%'|| #{searchKeyword} ||'%')		
 		</if>			
 		<if test="boardAdopt != 'all'">
-		AND BOARD_ADOPT = #{boardAdopt}
+			AND BOARD_ADOPT = #{boardAdopt}
 		</if>	
 	</select>
 	
 	
 	<select id="getQnaBoardList" parameterType="map" resultType="board">
 		SELECT * FROM
-			(SELECT ROWNUM R_NUM, B.* from 
-				(SELECT * FROM QUESTION_BOARD 
+			(SELECT ROWNUM R_NUM, B.* from
+				<if test="section=='qboard'"> 
+				(SELECT * FROM QUESTION_BOARD
+				</if> 
+				<if test="section=='fboard'"> 
+				(SELECT * FROM FREE_BOARD
+				</if> 
 					WHERE 1 = 1	
 					<if test="searchKeyword != null">
 					AND (
@@ -61,29 +84,62 @@
 	<update id="updateBoard" parameterType="board">
 		<if test="qboardNo != null">
 		UPDATE QUESTION_BOARD
+		</if>
+		<if test="fboardNo != null">
+		UPDATE FREE_BOARD
+		</if>
 		 SET BOARD_TITLE = #{boardTitle}, BOARD_CONTENT = #{boardContent}, BOARD_FILE = #{boardFile},
-		  BOARD_ADOPT = #{boardAdopt}, BOARD_HIT = #{boardHit}, BOARD_LIKE = #{boardLike}, COMMENT_CNT = #{commentCnt}
+		  BOARD_HIT = #{boardHit}, BOARD_LIKE = #{boardLike}, COMMENT_CNT = #{commentCnt}
+		<if test="qboardNo != null">
+		 ,BOARD_ADOPT = #{boardAdopt}  
 		 WHERE QBOARD_NO = #{qboardNo}
+		</if>
+		<if test="fboardNo != null">  
+		 WHERE FBOARD_NO = #{fboardNo}
 		</if>
 	</update>
 	
 	
 	<select id="getQnaLike" parameterType="map" resultType="qnaLike">
-		SELECT * FROM QNA_LIKE
-		WHERE USER_ID = #{userId}
-		AND BOARD_NO = #{boardNo}
+		<if test="qboardNo != null">
+		SELECT * FROM
+		 QNA_LIKE
+		 WHERE USER_ID = #{userId}
+		AND BOARD_NO = #{qboardNo}
+		</if>
+		
+		<if test="fboardNo != null">
+		 SELECT * FROM
+		 FREE_LIKE
+		 WHERE USER_ID = #{userId}
+		AND BOARD_NO = #{fboardNo}
+		</if>
+		
 	</select>
 	
 	<insert id="insertQnaLike" parameterType="map">
+		<if test="qboardNo != null">
 		INSERT INTO QNA_LIKE
 		(USER_ID, BOARD_NO)
-		VALUES (#{userId}, #{boardNo})
+		VALUES (#{userId}, #{qboardNo})
+		</if>
+		<if test="fboardNo != null">
+		INSERT INTO FREE_LIKE
+		(USER_ID, BOARD_NO)
+		VALUES (#{userId}, #{fboardNo})
+		</if>
 	</insert>
 	
 	<delete id="deleteQnaLike" parameterType="map">
+		<if test="qboardNo != null">
 		DELETE FROM QNA_LIKE
-		WHERE USER_ID = #{userId}
-		AND BOARD_NO = #{boardNo}
+		WHERE BOARD_NO = #{qboardNo}
+		</if>
+		
+		<if test="fboardNo != null">
+		DELETE FROM FREE_LIKE
+		WHERE BOARD_NO = #{fboardNo}
+		</if>
 	</delete>
 	
 	
@@ -100,11 +156,11 @@
 	
 	<select id="getComment" parameterType="board" resultType="boardComment">
 		<if test="qboardNo != null">
-			SELECT * FROM QUESTION_ANSWER WHERE BOARD_NO = #{qboardNo} ORDER BY COMMENT_REGDATE
+			SELECT * FROM QUESTION_ANSWER WHERE BOARD_NO = #{qboardNo} ORDER BY COMMENT_REGDATE ASC
 		</if>
 		
 		<if test="fboardNo != null">
-			SELECT * FROM BOARD_COMMENT WHERE BOARD_NO = #{fboardNo} ORDER BY COMMENT_REGDATE
+			SELECT * FROM BOARD_COMMENT WHERE BOARD_NO = #{fboardNo} ORDER BY COMMENT_REGDATE ASC
 		</if>	
 	</select>
 	
@@ -149,25 +205,41 @@
 	</select>
 	
 	<select id="getTopBoard" parameterType="board" resultType="board">
+	
 		SELECT * FROM
+			<if test="section=='qboard'">
 		    (SELECT * FROM QUESTION_BOARD
+		    </if>
+		    <if test="section=='fboard'">
+   		    (SELECT * FROM FREE_BOARD
+		    </if>
 		    WHERE BOARD_REGDATE BETWEEN SYSDATE -7 AND SYSDATE
 		    ORDER BY BOARD_HIT DESC)
 		WHERE ROWNUM BETWEEN 1 AND 5
+		
 	</select>
 	
 	<insert id="addComment" parameterType="boardComment">
-		<if test="qboardNo != null">
+		<if test="section == 'qboard'">
 			INSERT INTO QUESTION_ANSWER
+			(COMMENT_NO, USER_ID, BOARD_NO, GRADE, COMMENT_CONTENT)
+			VALUES ((SELECT NVL(MAX(COMMENT_NO),0) + 1 FROM QUESTION_ANSWER),
+			#{userId}, #{boardNo}, #{grade}, #{commentContent})
 		</if>
-		(COMMENT_NO, USER_ID, BOARD_NO, GRADE, COMMENT_CONTENT)
-		VALUES ((SELECT NVL(MAX(COMMENT_NO),0) + 1 FROM QUESTION_ANSWER),
-		#{userId}, #{boardNo}, #{grade}, #{commentContent})
+		<if test="section == 'fboard'">
+			INSERT INTO BOARD_COMMENT
+			(COMMENT_NO, USER_ID, BOARD_NO, GRADE, COMMENT_CONTENT)
+			VALUES ((SELECT NVL(MAX(COMMENT_NO),0) + 1 FROM BOARD_COMMENT),
+			#{userId}, #{boardNo}, #{grade}, #{commentContent})
+		</if>
 	</insert>
 	
 	<delete id="delComment">
 		<if test="section == 'qboard'">
 			DELETE FROM QUESTION_ANSWER
+		</if>
+		<if test="section == 'fboard'">
+			DELETE FROM BOARD_COMMENT
 		</if>
 		WHERE COMMENT_NO = #{commentNo}
 	</delete>
@@ -175,23 +247,44 @@
 	<insert id="addCocomment" parameterType="boardComment">
 		<if test="qboardNo != null">
 			INSERT INTO QUESTION_ANSWER_COMMENT
+			(COMMENT2_NO, COMMENT_NO, USER_ID, GRADE, COMMENT2_CONTENT)
+			VALUES ((SELECT NVL(MAX(COMMENT2_NO),0) + 1 FROM QUESTION_ANSWER_COMMENT),
+			#{commentNo}, #{userId}, #{grade}, #{comment2Content})	
 		</if>
-		(COMMENT2_NO, COMMENT_NO, USER_ID, GRADE, COMMENT2_CONTENT)
-		VALUES ((SELECT NVL(MAX(COMMENT2_NO),0) + 1 FROM QUESTION_ANSWER_COMMENT),
-		#{commentNo}, #{userId}, #{grade}, #{comment2Content})	
+		<if test="fboardNo != null">
+			INSERT INTO BOARD_COMMENT2
+			(COMMENT2_NO, COMMENT_NO, USER_ID, GRADE, COMMENT2_CONTENT)
+			VALUES ((SELECT NVL(MAX(COMMENT2_NO),0) + 1 FROM BOARD_COMMENT2),
+			#{commentNo}, #{userId}, #{grade}, #{comment2Content})	
+		</if>
 	</insert>
 	
 	<select id="getCocoment" parameterType="board" resultType="boardComment">
-		SELECT * FROM (
+		
+		<if test="qboardNo != null">
+		SELECT * FROM (		
 		SELECT QAC.*, QA.BOARD_NO QBOARD_NO FROM QUESTION_ANSWER_COMMENT QAC, QUESTION_ANSWER QA
-		WHERE QAC.COMMENT_NO = QA.COMMENT_NO
+		WHERE QAC.COMMENT_NO = QA.COMMENT_NO		
 		ORDER BY COMMENT2_REGDATE ASC)
 		WHERE QBOARD_NO = #{qboardNo}
+		</if>
+		
+		<if test="fboardNo != null">
+		SELECT * FROM (		
+		SELECT BCC.*, BC.BOARD_NO FBOARD_NO FROM BOARD_COMMENT BC, BOARD_COMMENT2 BCC
+		WHERE BC.COMMENT_NO = BCC.COMMENT_NO		
+		ORDER BY COMMENT2_REGDATE ASC)
+		WHERE FBOARD_NO = #{fboardNo}
+		</if>
+		
 	</select>
 	
 	<delete id="delCocomment" parameterType="boardComment">
 		<if test="qboardNo != null">
 			DELETE FROM QUESTION_ANSWER_COMMENT
+		</if>
+		<if test="fboardNo != null">
+			DELETE FROM BOARD_COMMENT2
 		</if>
 			WHERE COMMENT2_NO = #{comment2No}
 	</delete>

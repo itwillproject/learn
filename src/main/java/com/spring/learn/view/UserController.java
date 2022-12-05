@@ -1,6 +1,11 @@
 package com.spring.learn.view;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.support.RequestPartServletServerHttpRequest;
 
+import com.spring.learn.user.LikeVO;
 import com.spring.learn.user.MailSendService;
 import com.spring.learn.user.UserService;
 import com.spring.learn.user.UserVO;
@@ -83,6 +89,33 @@ public class UserController {
 	}
 	
 	//로그인 처리
+	@RequestMapping(value = "/login.do", method = RequestMethod.POST) // 4.3버전 부터 사용가능
+	public String login(HttpServletRequest request, UserVO vo){
+		System.out.println(">>> 로그인 처리임"); System.out.println("vo : " + vo);
+		
+		UserVO user = userService.getUser(vo);
+			 
+		String str = null;
+			 
+		//3. 화면 네비게이션(화면전환, 화면이동) // 로그인 성공 : 게시글 목록 보여주기 // 로그인 실패 : 로그인 화면으로 이동
+		if (user != null) {
+			System.out.println(">> 로그인 성공!!!");
+			HttpSession session = request.getSession();
+			UserVO vo2 = userService.getUser(vo);
+			session.setAttribute("user", vo2);
+			if (vo2.getGrade().equals("관리자")) {
+				str = "/Admin/adminIndex.jsp"; //회원등급이 관리자일 경우 관리자 페이지로 전환
+				} else { 
+					str = "/Common/index.jsp";
+				}
+			} else {
+				System.out.println(">> 로그인 실패~~~");
+				}
+			return str;
+		}
+	
+	 /*
+	 //로그인 처리
 	 @RequestMapping(value = "/login.do", method = RequestMethod.POST) // 4.3버전 부터 사용가능
 	 public String login(HttpServletRequest request, UserVO vo){
 		 System.out.println(">>> 로그인 처리임"); System.out.println("vo : " + vo);
@@ -104,6 +137,7 @@ public class UserController {
 			 }
 		 return "/Common/index.jsp";
 	 }
+	 */
 
 	 /*
 	  * @RequestMapping(value = "/login.do", method = RequestMethod.GET) // 4.3버전 부터 사용가능 
@@ -170,5 +204,160 @@ public class UserController {
 		userService.deleteUser(user);
 		return "/Common/index.jsp";
 	}
-
+	
+	@RequestMapping("/likeGo.do")
+	public String likeGo (LikeVO vo, Model model) {
+		System.out.println(">>>likeGo() 실행");
+		System.out.println("LikeVO vo : " + vo);
+		List<LikeVO> likeList = userService.getLikeList(vo);
+		System.out.println("likeList : >>>" + likeList);
+		for(LikeVO cvo : likeList) {
+			int a = 0;//별점 사람 수 용
+			int b = 0;//별점 평균 용
+			int c = 0;//주문한 상품인지 아닌지 체크 용
+			a = userService.getReviewCnt(cvo);
+			b = userService.getReviewRate(cvo);
+			c = userService.getOrderCh(cvo);
+			if (c == 0) {
+				cvo.setOrderCh(c);				
+			} else {
+				cvo.setOrderCh(1);
+			}
+			cvo.setReviewCnt(a);//리뷰에 참가한 사람 수
+			cvo.setReviewRate(b);// 리뷰에 별점 평균
+			cvo.setReviewAverage();
+			cvo.setLectureSalePrice();//세일되서 총금액
+			cvo.setRealSalePrice();//세일 되는 금액
+			System.out.println("cvo : "+cvo);
+		}
+		
+		model.addAttribute("likeList", likeList);
+		System.out.println(likeList);
+		
+		return "/Member/myLike.jsp";
+	}
+	//좋아요 추가
+	@RequestMapping("/insertLike.do")
+	@ResponseBody
+	public int insertLike(LikeVO vo) {
+		System.out.println("insertLike 좋아요 추가!");
+		System.out.println("vo : " + vo);
+		int cnt = 1;
+		userService.insertLike(vo);
+		System.out.println("cnt : " + cnt);
+		
+		return cnt;
+	}
+	//좋아요 삭제
+	@RequestMapping("/deleteLike.do")
+	@ResponseBody
+	public int deleteLike(LikeVO vo) {
+		System.out.println("deleteLike 좋아요 삭제!");
+		System.out.println("vo : " + vo);
+		int cnt = 1;
+		userService.deleteLike(vo);
+		System.out.println("cnt : " + cnt);
+		
+		return cnt;
+	}
+	
+	//좋아요 삭제
+	@RequestMapping("/searchLike.do")
+	@ResponseBody
+	public List<LikeVO> searchLike(LikeVO vo) {
+		System.out.println("searchLike 검색요청이 들어왔어요~!");
+		System.out.println("vo : " + vo);
+		//System.out.println("list : " + list);
+		String searchStatus = vo.getSearchStatus();//유료 무료 전체 체크
+		String searchOrder = vo.getSearchOrder();//정렬 기준 선택
+		List<LikeVO> list = new ArrayList<LikeVO>();
+		/////
+		List<LikeVO> likeList = userService.getLikeList(vo);
+		for(LikeVO cvo : likeList) {
+			int a = 0;//별점 사람 수 용
+			int b = 0;//별점 평균 용
+			int c = 0;//주문한 상품인지 아닌지 체크 용
+			a = userService.getReviewCnt(cvo);
+			b = userService.getReviewRate(cvo);
+			c = userService.getOrderCh(cvo);
+			if (c == 0) {
+				cvo.setOrderCh(c);				
+			} else {
+				cvo.setOrderCh(1);
+			}
+			cvo.setReviewCnt(a);//리뷰에 참가한 사람 수
+			cvo.setReviewRate(b);// 리뷰에 별점 평균
+			cvo.setReviewAverage();
+			cvo.setLectureSalePrice();//세일되서 총금액
+			cvo.setRealSalePrice();//세일 되는 금액
+		}
+		/////list = list.stream().sorted(Comparator.comparing(Student::getMath)).collect(Collectors.toList());
+		if (searchOrder.equalsIgnoreCase("reviewAverage")) {
+			System.out.println(">>>likeList : "+likeList);
+			for(LikeVO cvo : likeList) {
+				double v = userService.getReviewAverage(cvo);
+				int test = (int)(v*10);
+				cvo.setReviewSearchAverage(test);
+				System.out.println(cvo.getReviewSearchAverage());
+			}
+			System.out.println("여기까지는 오는거지?");
+			likeList = likeList.stream().sorted(Comparator.comparing(LikeVO::getReviewSearchAverage).reversed()).collect(Collectors.toList());
+			System.out.println(">>>이게 진짜 된다고? likeList!!!!"+likeList);
+			if(searchStatus.equals("전체")) {
+				System.out.println("전체 검색");
+				return likeList;
+			} else if(searchStatus.equals("유료")) {
+				for (int i = 0; i < likeList.size(); i++) {
+					if(likeList.get(i).getLecturePrice() > 0) {
+						list.add(likeList.get(i));
+					}
+				}
+				return list;
+			} else if(searchStatus.equals("무료")) {
+				for (int i = 0; i < likeList.size(); i++) {
+					if(likeList.get(i).getLecturePrice() == 0) {
+						list.add(likeList.get(i));
+					}
+				}
+				return list;
+			}
+			
+		}else {
+			if(searchStatus.equals("전체")) {
+				System.out.println("전체 검색");
+				System.out.println("이값을 보내줍니다 vo : " + vo);
+				list = userService.getSearchLikeList(vo);					
+			} else if(searchStatus.equals("유료")) {
+				System.out.println("유료 검색");
+				list = userService.getSearchPaidLikeList(vo);
+			} else if(searchStatus.equals("무료")) {
+				list = userService.getSearchFreeLikeList(vo);
+			}
+			
+			for(LikeVO cvo : list) {
+				int a = 0;//별점 사람 수 용
+				int b = 0;//별점 평균 용
+				int c = 0;//주문한 상품인지 아닌지 체크 용
+				a = userService.getReviewCnt(cvo);
+				b = userService.getReviewRate(cvo);
+				c = userService.getOrderCh(cvo);
+				if (c == 0) {
+					cvo.setOrderCh(c);				
+				} else {
+					cvo.setOrderCh(1);
+				}
+				cvo.setReviewCnt(a);//리뷰에 참가한 사람 수
+				cvo.setReviewRate(b);// 리뷰에 별점 평균
+				cvo.setReviewAverage();
+				cvo.setLectureSalePrice();//세일되서 총금액
+				cvo.setRealSalePrice();//세일 되는 금액
+			}
+		}
+		
+		System.out.println("리턴 전 list : " + list);
+		
+		
+		return list;
+	}
+	
 }

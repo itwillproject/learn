@@ -5,6 +5,7 @@ public class BoardVO {
   				boardHit,boardLike,boardFile
   				,searchCondition,searchKeyword,
   				commentCnt, ordering, userName
+  				,section
   				;
 
 	public String getQboardNo() {
@@ -150,6 +151,14 @@ public class BoardVO {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	
+	public String getSection() {
+		return section;
+	}
+
+	public void setSection(String section) {
+		this.section = section;
+	}
 
 	@Override
 	public String toString() {
@@ -158,9 +167,7 @@ public class BoardVO {
 				+ ", boardContent=" + boardContent + ", boardRegdate=" + boardRegdate + ", boardAdopt=" + boardAdopt
 				+ ", boardHit=" + boardHit + ", boardLike=" + boardLike + ", boardFile=" + boardFile
 				+ ", searchCondition=" + searchCondition + ", searchKeyword=" + searchKeyword + ", commentCnt="
-				+ commentCnt + ", ordering=" + ordering + ", userName=" + userName + "]";
+				+ commentCnt + ", ordering=" + ordering + ", userName=" + userName + ", section=" + section + "]";
 	}
-
-	
 
 }

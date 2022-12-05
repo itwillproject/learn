@@ -91,11 +91,14 @@ public class BoardController {
 	// qna 보드리스트 불러오기 (일반)
 	@RequestMapping("/getQnaBoardList.do")
 	public String getQnaBoardList(BoardVO bvo, Model model, Paging p, HttpSession session) {
-		System.out.println(">>> qna보드리스트 가져오기");		
+		System.out.println(">>> 보드리스트 가져오기 : " + bvo);		
 		
 		Map<String, Object> QnaBoardListAj = getQnaBoardListCommon(bvo, model, p);
 		
+		System.out.println("bvo 보드리스트 일반 도착 : " + bvo);
+		
 		List<BoardVO> topList = boardService.getTopBoard(bvo);
+		
 		
 		for(BoardVO board : topList) {
 			
@@ -111,9 +114,36 @@ public class BoardController {
 		
 		model.addAttribute("topList", topList); // 탑 10 값을 저장하기
 		
+		if(bvo.getSection().equals("qboard")) {
+			return "/Community/qna/qnaBoardList.jsp"; // 이동
+		}
 		
-		return "/Community/qna/qnaBoardList.jsp"; // 이동
+		return "/Community/free/freeBoardList.jsp";
 	}
+		
+	
+//	@RequestMapping("/getQnaBoardList.do")
+//	public String getQnaBoardList(BoardVO vo, Model model) {
+//		System.out.println(">>> 보드리스트 가져오기");		
+//		System.out.println("vo : " + vo);
+//		
+//		if(vo.getQboardNo() == null) vo.setQboardNo("a");
+//		
+//		List<BoardVO> boardList = boardService.getBoardList(vo); // 조회하고
+//		
+//		model.addAttribute("boardList", boardList); // 값 저장하고
+//
+//		return "/Community/qna/qnaBoardList.jsp"; // 이동
+//	}
+//	
+//	@GetMapping("/qnaWriteForm.do")
+//	public String toQnaWriteForm(BoardVO vo) {
+//		System.out.println(">>> qna작성폼 이동");						
+//				
+//		return "redirect:/Community/qna/qnaWriteForm.jsp"; // 이동
+//	}	
+	
+
 
 	// qna 보드리스트 불러오기 (Ajax)
 	@RequestMapping("/getQnaBoardListAj.do")
@@ -125,6 +155,11 @@ public class BoardController {
 		
 		return QnaBoardListAj; // 이동
 	}
+	
+	
+	
+	
+	
 
 	// qna 보드리스트 불러오기 (공통)
 	public Map<String, Object> getQnaBoardListCommon(BoardVO bvo, Model model, Paging p) {
@@ -184,6 +219,7 @@ public class BoardController {
 		map.put("end", Integer.toString(p.getEnd()));
 		map.put("ordering", bvo.getOrdering());
 		map.put("boardAdopt", bvo.getBoardAdopt());
+		map.put("section", bvo.getSection());
 		
 		System.out.println(">>>>> map : " + map);
 		
@@ -228,6 +264,14 @@ public class BoardController {
 		return "redirect:/Community/qna/qnaWriteForm.jsp"; // 이동
 	}
 	
+	// free 글쓰기 폼으로 이동
+	@GetMapping("/freeWriteForm.do")
+	public String toFreeWriteForm(BoardVO vo) {
+		System.out.println(">>> free작성폼 이동");						
+		
+		return "redirect:/Community/free/freeWriteForm.jsp"; // 이동
+	}
+	
 	// qna, free 글쓰기 입력
 	@PostMapping("/boardWrite.do")
 	public String QnaWrite(BoardVO bvo, HttpSession session) {
@@ -244,22 +288,17 @@ public class BoardController {
 		System.out.println(">> boardWrite 입력 도착, uvo : " + uvo);
 		System.out.println(">> boardWrite 입력 도착, bvo : " + bvo);
 		
-		if (bvo.getQboardNo() != null) {
-			
+		if (bvo.getSection().equals("qboard")) {
 			boardService.insertQnaBoard(bvo);						
-			
 			return "/board/getQnaBoardList.do"; // 이동
 		}
 		
-		if (bvo.getFboardNo() != null) {
-			
+		if (bvo.getSection().equals("fboard")) {
 			boardService.insertFreeBoard(bvo);						
-			
-			return "/Community/qna/FreeBoardList.jsp"; // 이동
+			return "/board/getQnaBoardList.do"; // 이동
 		}
 		
 		return "/Member/login.do";
-		
 	}
 	
 	
@@ -268,15 +307,11 @@ public class BoardController {
 	public String viewQnaPage(BoardVO bvo, Model model, HttpSession session) {
 		System.out.println(">>> 보드 상세페이지로 이동 : " + bvo);
 				
-		
 		// vo 받아서 한개 가져오고 세션에 등록
 		bvo = boardService.getBoard(bvo);
 		
 		System.out.println(">>>>>>>>>>>> 서비스 실행후 bvo : " + bvo);
 		
-//		if(bvo == null) {
-//			bvo = (BoardVO) session.getAttribute("board");
-//		}
 		
 		// 이름 입력 - 보드 상세에
 		String getName = bvo.getUserId();
@@ -309,8 +344,11 @@ public class BoardController {
 		}
 		model.addAttribute("cvoList", cvoList);
 		
+		
+		
 		//대댓글 코코멘트 가져오기
 		List<BoardCommentVO> cocoList = boardService.getCocoment(bvo);
+		
 		// 코멘트에 이름 입력
 		for (BoardCommentVO ccvo : cocoList) {
 			getName = ccvo.getUserId();
@@ -329,7 +367,8 @@ public class BoardController {
 		
 		if (uvo != null) {
 			map.put("userId", uvo.getUserId());
-			map.put("boardNo", bvo.getQboardNo());
+			map.put("qboardNo", bvo.getQboardNo());
+			map.put("fboardNo", bvo.getFboardNo());
 			QnaLikeVO qnaLike = boardService.getQnaLike(map);
 			model.addAttribute("qnaLike", qnaLike);
 			System.out.println("qnaLike : " + qnaLike);
@@ -338,15 +377,23 @@ public class BoardController {
 		
 		// 신고 여부 가져오기
 		if (uvo != null) {
-			map.put("boardType", "questionBoard");
+			if(bvo.getQboardNo() != null) {
+				map.put("boardType", "questionBoard");
+			}
+			if(bvo.getFboardNo() != null) {
+				map.put("boardType", "freeBoard");
+			}
 			BoardReportVO boardReport = boardService.getBoardReport(map);
 			model.addAttribute("boardReport", boardReport);
 			System.out.println("boardReport : " + boardReport);
 		}
 		
 		
-				
-		return "/Community/qna/qnaBoard.jsp"; // 이동
+		if (bvo.getQboardNo() != null) {
+			return "/Community/qna/qnaBoard.jsp"; // 이동
+		}
+		
+		return "/Community/free/freeBoard.jsp"; // 이동
 	}
 	
 	
@@ -358,7 +405,10 @@ public class BoardController {
 		
 		boardService.deleteBoard(bvo);
 		
-		return "/board/getQnaBoardList.do"; // 이동
+		if (bvo.getQboardNo() != null) {
+			return "/board/getQnaBoardList.do?section=qboard"; // 이동
+		}
+		return "/board/getQnaBoardList.do?section=fboard"; // 이동
 	}
 	
 	
@@ -372,17 +422,13 @@ public class BoardController {
 		bvo = boardService.getBoard(bvo);
 		
 		model.addAttribute("board", bvo);
-		
-		
-		if (bvo.getFboardNo() != null) {
-			
-		}
+				
 		
 		if (bvo.getQboardNo() != null) {
 			return "/Community/qna/qnaModifyForm.jsp"; // 이동
 		}
 		
-		return "/Member/login.do";
+		return "/Community/free/freeModifyForm.jsp";
 	}
 	
 	// 수정
@@ -451,18 +497,14 @@ public class BoardController {
 		
 		Map<String, String> map = new HashMap<String, String>(); 
 		map.put("userId", uvo.getUserId());
-		map.put("boardNo", bvo.getQboardNo());
+		map.put("qboardNo", bvo.getQboardNo());
+		map.put("fboardNo", bvo.getFboardNo());
 		
 		System.out.println("map : " + map);
-		
-		
-		
 		bvo = boardService.getBoard(bvo);
 		
 		QnaLikeVO qnaLike = boardService.getQnaLike(map);
-		
 		System.out.println("qnaLike : " + qnaLike);
-		
 		
 		int boardLike = Integer.parseInt(bvo.getBoardLike());
 		
@@ -509,14 +551,18 @@ public class BoardController {
 		
 		if (cvo.getQboardNo() != null) {
 			cvo.setBoardNo(cvo.getQboardNo());
+			cvo.setSection("qboard");
 		}
-	
+		
+		if (cvo.getFboardNo() != null) {
+			cvo.setBoardNo(cvo.getFboardNo());
+			cvo.setSection("fboard");
+		}
+		
 		boardService.addComment(cvo);
 		
 		// 보드 가져오기
-		BoardVO bvo = (BoardVO) session.getAttribute("board");
-		
-		
+		BoardVO bvo = (BoardVO) session.getAttribute("board");		
 		
 		// 이름 입력 - 보드 상세에
 		String getName = bvo.getUserId();
@@ -532,7 +578,17 @@ public class BoardController {
 		
 		System.out.println("완료후 cvo : " + cvo);
 		
+		// 코멘트랑 코코멘트 불러와서 맵에 넣기
+		Map<String, Object> map = crudAjaxCommon(model, bvo);
 		
+		return map;
+	}
+	
+	// 코멘트랑 코코멘트 불러와서 맵에 넣기
+	public Map<String, Object> crudAjaxCommon(Model model, BoardVO bvo) {
+		String getName;
+		UserVO vo;
+		String setName;
 		// 코멘트 가져오기
 		List<BoardCommentVO> cvoList = boardService.getComment(bvo);
 		System.out.println(">>>>> cvoList : " + cvoList);
@@ -568,14 +624,14 @@ public class BoardController {
 		map.put("board", bvo);
 		map.put("cvoList", cvoList);
 		map.put("cocoList", cocoList);
-		
 		return map;
 	}
 	
 	
 	// 코멘트 삭제하기
 	@RequestMapping("/delComment.do")
-	public String delComment(BoardCommentVO cvo, Model model, HttpSession session) {
+	@ResponseBody
+	public Map<String, Object> delComment(BoardCommentVO cvo, Model model, HttpSession session) {
 		System.out.println(">>> 삭제하기 : " + cvo);		
 		
 		boardService.delComment(cvo);
@@ -589,13 +645,17 @@ public class BoardController {
 		
 		System.out.println(">> 코멘트 삭제후 보드 : " + bvo);
 		
-		return "/board/viewQnaPage.do";
+		// 코멘트랑 코코멘트 불러와서 맵에 넣기
+		Map<String, Object> map = crudAjaxCommon(model, bvo);				
+		
+		return map;
 	}
 	
 	
 	// qna게시판에 대댓글 코멘트 추가
 	@PostMapping("/addCocomment.do")
-	public String addCocomment(BoardCommentVO cvo, Model model, HttpSession session) {
+	@ResponseBody
+	public Map<String, Object> addCocomment(BoardCommentVO cvo, Model model, HttpSession session) {
 		
 		System.out.println(">> 대댓글 입력 도착, cvo : " + cvo);
 		
@@ -613,6 +673,10 @@ public class BoardController {
 			cvo.setQboardNo(bvo.getQboardNo());
 		}
 		
+		if (bvo.getFboardNo() != null) {
+			cvo.setFboardNo(bvo.getFboardNo());
+		}
+		
 		System.out.println(">> 대댓글 입력 직전   bvo : " + bvo);
 		System.out.println(">> 대댓글 입력 직전   cvo : " + cvo);
 		boardService.addCocomment(cvo);
@@ -620,14 +684,18 @@ public class BoardController {
 		// 보드 가져오기
 		System.out.println("완료후 cvo : " + cvo);
 		
-		return "/board/viewQnaPage.do?qboardNo="+bvo.getQboardNo();
 		
+		// 코멘트랑 코코멘트 불러와서 맵에 넣기
+		Map<String, Object> map = crudAjaxCommon(model, bvo);				
+		
+		return map;
 	}	
 	
 	
-	// 코멘트 삭제하기
+	// 코코멘트 삭제하기
 	@RequestMapping("/deleteCoco.do")
-	public String deleteCoco(BoardCommentVO ccvo, BoardVO bvo, Model model, HttpSession session) {
+	@ResponseBody
+	public Map<String, Object> deleteCoco(BoardCommentVO ccvo, BoardVO bvo, Model model, HttpSession session) {
 		System.out.println(">>> 삭제하기 : " + ccvo);
 		System.out.println(">>> 연관 보드 넘버  : " + bvo);
 		
@@ -635,10 +703,16 @@ public class BoardController {
 		if (bvo.getQboardNo() != null) {
 			ccvo.setQboardNo(bvo.getQboardNo());
 		}
+		if (bvo.getFboardNo() != null) {
+			ccvo.setFboardNo(bvo.getFboardNo());
+		}
 		
 		boardService.delCocomment(ccvo);
 		
-		return "/board/viewQnaPage.do";
+		// 코멘트랑 코코멘트 불러와서 맵에 넣기
+		Map<String, Object> map = crudAjaxCommon(model, bvo);				
+		
+		return map;
 	}
 	
 	

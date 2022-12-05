@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>질문게시판리스트</title>
+<title>질문게시판</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -78,6 +78,7 @@
 		if (ordering != null){
 			var gogo = gogo + '&boardAdopt=' + boardAdopt
 		}
+		var gogo = gogo + '&section=qboard'
 		
 		
 		$.ajax({
@@ -167,8 +168,14 @@
 			}
 				
 		});
-		
-		
+	}
+	
+	function qnaWriteForm() {
+		if(${user.userId == null}){
+			alert("로그인 후 입력해주시기 바랍니다");
+			return false;
+		}
+		location.href='${pageContext.request.contextPath}/board/qnaWriteForm.do';
 	}
 	
 </script>
@@ -278,10 +285,10 @@
 			<p style="color: #999999; font-size: 0.8em">함께 공부해요!</p>
 				  <ul class="nav flex-column">
 				    <li class="nav-item">
-				      <a class="nav-link actived" href="${pageContext.request.contextPath}/board/getQnaBoardList.do">질문 & 답변</a>
+				      <a class="nav-link actived" href="${pageContext.request.contextPath}/board/getQnaBoardList.do?section=qboard">질문 & 답변</a>
 				    </li>
 				    <li class="nav-item">
-				      <a class="nav-link" href="#">자유주제</a>
+				      <a class="nav-link" href="${pageContext.request.contextPath}/board/getQnaBoardList.do?section=fboard">자유주제</a>
 				    </li>
 				  </ul>
 			</div>
@@ -325,8 +332,8 @@
                             </li>
                         </ul>
 					</nav>					
-					<button class="btn btn-dark ml-auto my-auto h-50"
-					 onclick="location.href='${pageContext.request.contextPath}/board/qnaWriteForm.do'">글쓰기</button>
+					<input type="button" class="btn btn-dark ml-auto my-auto h-50"
+					 onclick="javascript:qnaWriteForm()" value="글쓰기"/>
 				</div>
 				
 				

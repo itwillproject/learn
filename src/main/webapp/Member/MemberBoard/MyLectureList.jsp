@@ -202,7 +202,7 @@
 							
 							<div class="col-4 border">
 							
-							<p>${myOrderDetail.lectureNo }</p> <!-- 보낼 강의 번호 -->
+							<p>${myOrderDetail.lectureNo } 보낼 강의 번호</p>
 							<a href="#"><img class="mx-auto" width="220px" alt="lectureImg" src="${myOrderDetail.lectureCoverimg }"></a>  <!-- 이미지 파일에서 불러오는 것은 차후에 구현 -->
 							<p><a href="#">${myOrderDetail.lectureTitle }</a></p>
 							

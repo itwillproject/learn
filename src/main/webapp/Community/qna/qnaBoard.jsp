@@ -120,8 +120,6 @@
 		
 		$('#summernote').summernote(setting);
 		   
-		$('.summernote').summernote(setting);
-		
 		function uploadSummernoteImageFile(file, editor) {
 			  // 파일 전송을 위한 폼생성
 				data = new FormData();
@@ -228,16 +226,7 @@
 			 
 		 });
 		 
-		 
 	});	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	function addComment(frm){
 		
@@ -247,7 +236,6 @@
 		commonAjax(gogo);
 		
 	}
-	
 	
 	function commonAjax(gogo){
 		$.ajax({
@@ -270,7 +258,11 @@
 					intHtml += '<div class="row w-100  mt-3 mb-3">';
 					intHtml += '<div class="w-100 flex-row d-flex">';
 					intHtml += '<P class="ml-auto">';
-					intHtml += '<a href="javascript:deleteOk('+ cvo.commentNo +')">삭제</a>';
+					
+					// 여기 확인 할 것 삭제 파트
+					if("${user.userId}" == cvo.userId){
+						intHtml += '<a href="javascript:deleteOk('+ cvo.commentNo +')">삭제</a>';
+					}
 					intHtml += '</P></div>';
 					intHtml += '<div class="text-editor-block flex-row d-flex w-100 mb-3">';
 					intHtml += '<div class="ml-3">';
@@ -308,7 +300,11 @@
 							intHtml += '<div class="ml-4 w-75">';
 							intHtml += '<div class="row">';
 							intHtml += '<span><h5><b><a href="#">'+ cocoment.userName +'</a></b></h5></span>';
-							intHtml += '<span class="ml-auto"><a href="javascript:deleteCoco('+ cocoment.comment2No +')">삭제</a></span>';
+							intHtml += '<span class="ml-auto">';
+							if("${user.userId}" == cocoment.userId){
+								intHtml += '<a href="javascript:deleteCoco('+ cocoment.comment2No +')">삭제</a>';
+							}	
+							intHtml += '</span>';
 							intHtml += '</div>';
 							intHtml += '<div class="row text-secondary">';
 							intHtml += '<span>'+cocoment.comment2Regdate +'</span>';
@@ -322,8 +318,9 @@
 							
 						}
 					}
+						if (j == 1){
 							intHtml += '</div>';
-					
+						}
 					console.log("user.userId : " + "${user.userId}");
 					
 					if(${"user.userId" != null}){
@@ -334,10 +331,11 @@
 						intHtml += '</span>';
 						intHtml += '</div>';
 						intHtml += '<div class="row p-3 mx-auto rounded cocoment collapse">';
-						intHtml += '<form method="post" class="w-100" action="${pageContext.request.contextPath}/board/addCocomment.do?commentNo='+ cvo.commentNo +'">';
-						intHtml += '<textarea class="summernote" name="comment2Content"></textarea>';
+						intHtml += '<form method="post" class="w-100">';
+						intHtml += '<textarea class="cocoText" name="comment2Content"></textarea>';
 						intHtml += '<div class="row mt-3">';
-						intHtml += '<input type="button" onclick="addCocoment(this.form)" class="btn btn-success ml-auto" value="답글등록">';
+						intHtml += '<input type="button" onclick="addCocomment(this.form)" class="btn btn-success ml-auto" value="답글등록">';
+						intHtml += '<input type="hidden" name="commentNo" value='+ cvo.commentNo +'>';
 						intHtml += '</div>';
 						intHtml += '</form>';
 						intHtml += '</div>';
@@ -346,30 +344,25 @@
 					intHtml += '</div>';
 				}
 				
-				
-				
 				$("#commentLine").html(intHtml);
 				
 			},
 			error : function(){
 				console.log("에이젝스 실패!!");
 			}
-		});		
+		});
 		
 	}
 	
 	
 	function deleteOk(commentNo){
 		if (confirm("삭제하시겠습니까??")){
-			location.href = "${pageContext.request.contextPath}/board/delComment.do?qboardNo=${board.qboardNo}&section=qboard&commentNo="+commentNo; 
+			
+			var gogo = "${pageContext.request.contextPath}/board/delComment.do?qboardNo=${board.qboardNo}&section=qboard&commentNo=";
+			gogo += commentNo ;
+			commonAjax(gogo);
+			
 		}
-		
-		
-		
-		
-		
-		
-		
 	};	
 	 
 	 
@@ -382,15 +375,27 @@
 	function modifyBoard(){
 		location.href = "${pageContext.request.contextPath}/board/boardModify.do?qboardNo=${board.qboardNo }";
 	};
-	 
-	function addCocoment(frm){
-		frm.submit();
+
+	function addCocomment(frm){
+		
+// 		var gogo = '${pageContext.request.contextPath}/board/addCocomment.do?commentNo='+frm.commentNo.value;
+		
+		console.log("frm.commentNo.value : " + frm.commentNo.value);
+
+		var gogo = '${pageContext.request.contextPath}/board/addCocomment.do?commentNo='+frm.commentNo.value;
+		gogo += '&comment2Content='+ frm.comment2Content.value ;
+
+		commonAjax(gogo);
+		
 	}
 	 
 	function deleteCoco(comment2No){
 		 
 		if (confirm("삭제하시겠습니까??")){
-			location.href = "${pageContext.request.contextPath}/board/deleteCoco.do?qboardNo=${board.qboardNo }&comment2No="+comment2No; 
+// 			location.href = "${pageContext.request.contextPath}/board/deleteCoco.do?qboardNo=${board.qboardNo }&comment2No="+comment2No; 
+			
+			var gogo = "${pageContext.request.contextPath}/board/deleteCoco.do?qboardNo=${board.qboardNo }&comment2No="+comment2No; 
+			commonAjax(gogo);
 		}
 	}
 	
@@ -407,25 +412,12 @@
 			background-color: #eeeeee;
 			border-radius: 10px;
 		}
+		
+		.cocoText{
+			width: 800px;
+			height: 150px;
+		}
 	</style>
-	
-	
-	
-	
-
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 
@@ -441,7 +433,7 @@
 			
 			<!-- 왼쪽 네비 -->
 			<div class="col-2 d-flex justify-content-center">
-				<a href="${pageContext.request.contextPath}/board/getQnaBoardList.do" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
+				<a href="${pageContext.request.contextPath}/board/getQnaBoardList.do?section=qboard" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
 			</div>
 
 			<!-- 중앙 위 내용 - 글내용 -->
@@ -532,6 +524,7 @@
 				    	</c:otherwise>
 				    </c:choose>	
 				    </li>
+				    </c:if>
 				    
 				    <li class="nav-item d-flex justify-content-center align-items-center">
 				    	
@@ -549,7 +542,6 @@
 				      
 				    </li>
 				    
-				    </c:if>
 				    
 				    <!-- 링크, 공유 -->
 				    <li class="nav-item d-flex justify-content-center align-items-center">
@@ -624,26 +616,17 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
 		<div id="commentLine">
 		<!-- 코멘트 댓글 출력 부분 여기 포이치 문으로 해줘야 한다 -->
 		<c:forEach var="cvo" items="${cvoList }">
 		<div class="row w-50 border mx-auto rounded bg-white p-3 mb-5" >
 		
-		
 			<div class="row w-100  mt-3 mb-3">
 				<div class="w-100 flex-row d-flex">
 					<P class="ml-auto">
+					<c:if test="${user.userId == cvo.userId }">
 					<a href="javascript:deleteOk(${cvo.commentNo })">삭제</a>
+					</c:if>
 					</P>
 				</div>
 			
@@ -675,7 +658,6 @@
 				<c:set var="idx" value="1" />					
 				<c:forEach varStatus="vr" var="ccvo" items="${cocoList }">
 					<c:if test="${ccvo.commentNo == cvo.commentNo}">
-						
 						<c:if test="${idx == 1 }">
 						<c:set var="idx" value="${idx + 1}"/>
 						<div class="border row p-3 mx-auto rounded" style="background-color: #F8F9FA; width: 695px;" >
@@ -685,34 +667,36 @@
 								</span>
 							</div>
 						</c:if>
-						
-						<div class="row w-100">
-							<div class="row my-3 ml-3 w-100">
-								<div class="ml-3">					
-									<img class="mx-2 pb-2 " style="height: 60px" src="${pageContext.request.contextPath}/Community/img/aaa.png">	
+							<div class="row w-100">
+								<div class="row my-3 ml-3 w-100">
+									<div class="ml-3">					
+										<img class="mx-2 pb-2 " style="height: 60px" src="${pageContext.request.contextPath}/Community/img/aaa.png">	
+									</div>
+									
+									<div class="ml-4 w-75">
+										<div class="row">
+											<span><h5><b><a href="#">${ccvo.userName }</a></b></h5></span>
+											<span class="ml-auto">
+											<c:if test="${user.userId == ccvo.userId }">
+											<a href="javascript:deleteCoco(${ccvo.comment2No })">삭제</a>
+											</c:if>
+											</span>
+										</div>
+										<div class="row text-secondary">
+											<span>${ccvo.comment2Regdate }</span>
+										</div>
+									</div>
 								</div>
 								
-								<div class="ml-4 w-75">
-									<div class="row">
-										<span><h5><b><a href="#">${ccvo.userName }</a></b></h5></span>
-										<span class="ml-auto"><a href="javascript:deleteCoco(${ccvo.comment2No })">삭제</a></span>
-									</div>
-									<div class="row text-secondary">
-										<span>${ccvo.comment2Regdate }</span>
-									</div>
+								<div class="row ml-5 w-100">
+									${ccvo.comment2Content }
 								</div>
 							</div>
-							
-							<div class="row ml-5 w-100">
-								${ccvo.comment2Content }
-							</div>
-						</div>
-						
-				
-				
 					</c:if>
 				</c:forEach>
+					<c:if test="${idx == 2 }">
 					</div>
+					</c:if>
 				
 									
 
@@ -724,12 +708,15 @@
 						</span>
 					</div>
 					
-					<div class="row p-3 mx-auto rounded cocoment collapse">
-						<form method="post" class="w-100" action="${pageContext.request.contextPath}/board/addCocomment.do?commentNo=${cvo.commentNo}">
-							<textarea class="summernote" name="comment2Content"></textarea>
-							<div class="row mt-3">
-								<input type="button" onclick="addCocoment(this.form)" class="btn btn-success ml-auto" value="답글등록">
+					<div class="row p-3 rounded cocoment collapse w-100">
+						<form method="post" class="w-100">
+							<div class="row">
+							<textarea class="cocoText mx-auto" name="comment2Content"></textarea>
 							</div>
+							<div class="row mt-3">
+								<input type="button" onclick="addCocomment(this.form)" class="btn btn-success ml-auto" value="답글등록">
+							</div>
+							<input type="hidden" name="commentNo" value="${cvo.commentNo}">
 						</form>
 					</div>
 				</c:if>
@@ -739,35 +726,11 @@
 		</c:forEach>
 		</div>
 		
-	
+	</div>	
 	
 	<p id="boardReport" style="visibility: hidden;">${boardReport }</p>
 	
 	<%@include file="/Common/footer.jsp" %>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

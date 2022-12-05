@@ -62,7 +62,53 @@
 	<update id="addNaverUser" parameterType="userVO">
 		UPDATE USERS SET SOCIAL_TYPE = 'naver' WHERE USER_ID = #{userId}
 	</update>
-
+	
+	<select id="getLikeList" parameterType="likeVO" resultType="likeVO">
+		select * from like_view	where user_id = #{userId}
+	</select>
+	
+	<select id="getReviewCnt" parameterType="likeVO" resultType="int">
+		select count(*) as review_cnt FROM lecture_review where lecture_no = #{lectureNo}
+	</select>
+	
+	<select id="getReviewRate" parameterType="likeVO" resultType="int">
+		select nvl(sum(board_rate), 0) as review_rate from lecture_review where lecture_no = #{lectureNo}
+	</select>
+	
+	<select id="getOrderCh" parameterType="likeVO" resultType="int">
+		select count(*) as order_ch from order_detail where lecture_no = #{lectureNo} and user_id = #{userId}
+		order by lecture_no
+	</select>
+	
+	<insert id="insertLike" parameterType="likeVO">
+		INSERT INTO lecture_like VALUES (
+		nvl((SELECT max(like_no)from lecture_like), 1)+1, #{lectureNo}, #{userId})
+	</insert>
+	
+	<delete id="deleteLike" parameterType="likeVO">
+		DELETE from lecture_like where lecture_no = #{lectureNo} and user_id = #{userId}
+	</delete>
+	
+	<select id="getSearchLikeList" parameterType="likeVO" resultType="likeVO">
+		select * from like_view	where user_id = #{userId}
+		order by ${searchOrder}
+	</select>
+	
+	<select id="getSearchPaidLikeList" parameterType="likeVO" resultType="likeVO">
+		select * from like_view	where user_id = #{userId} and lecture_price > 0
+		order by ${searchOrder}
+	</select>
+	
+	<select id="getSearchFreeLikeList" parameterType="likeVO" resultType="likeVO">
+		select * from like_view	where user_id = #{userId} and lecture_price = 0
+		order by ${searchOrder}
+	</select>
+	
+	<select id="getReviewAverage" parameterType="likeVO" resultType="double">
+		select nvl(avg(board_rate), 0) from lecture_review where lecture_no = #{lectureNo}
+	</select>
+	
+	
 </mapper>
 
 

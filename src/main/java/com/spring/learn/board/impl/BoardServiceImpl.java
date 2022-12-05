@@ -125,6 +125,11 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.delCocomment(ccvo);
 	}
 
+	@Override
+	public void insertBoard(BoardVO vo) {
+		boardDAO.insertBoard(vo);
+	}
+
 
   
 }

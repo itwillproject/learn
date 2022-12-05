@@ -22,6 +22,33 @@ public class FaqDAO {
 	  System.out.println("===> Mybatis 사용 getFaqList() 실행");
 	  return mybatis.selectList("faqDAO.getFaqList");
   }
+  
+  public void deleteFaq(FaqVO vo) {
+	  mybatis.delete("faqDAO.deleteFaq", vo);
+  }
+  
+  public void updateFaq(FaqVO vo) {
+	  mybatis.update("faqDAO.updateFaq", vo);
+  }
+  
+  public void insertFaq(FaqVO vo) {
+	  mybatis.insert("faqDAO.insertFaq", vo);
+  }
+  
+  
+//  public List<FaqVO> latestInfo() {
+//	  return mybatis.selectList("faqDAO.latestInfo");
+//  }
+  
+//  public FaqVO getFaq(FaqVO vo) {
+//	  System.out.println("===> Mybatis 사용 getFaq() 실행");
+//	  return mybatis.selectOne("faqDAO.getFaq", vo);
+//  }
+  
+//  public List<FaqVO> getFaqListExcept(FaqVO vo) {
+//	  System.out.println("===> Mybatis 사용 getFaqListExcept() 실행");
+//	  return mybatis.selectList("getFaqListExcept", vo);
+//  }
 
 }
 

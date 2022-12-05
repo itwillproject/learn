@@ -11,6 +11,7 @@ import com.spring.learn.memberboard.MemberBoardVO;
 
 public interface BoardDAO {
 	// 메소드명이 Mapper 파일의 id명으로 사용
+	void insertBoard(BoardVO vo);
 	void updateBoard(BoardVO vo);
 	void deleteBoard(BoardVO vo);
 	BoardVO getBoard(BoardVO vo);
