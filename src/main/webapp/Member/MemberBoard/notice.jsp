@@ -14,18 +14,18 @@
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <style>
 	.getNotice a {color: black;}
-	 	.getNotice a:hover {
+	.getNotice a:hover {
 	  	text-decoration: none;
-	  	color: green;
+	  	color: #00C471;
 	 }
-	 .center { text-align: center; }
+	.center { text-align: center; }
 	.tape {
 		height: 100px;
 		margin: 50px auto;
 		padding-top: 15px;
 		color: white;
 	}
-	.table #N { color: lime;}  
+	.table #N { color: #00C471;}  
 	.table #fontSize { font-size: 0.7em }
 	.inner {
 		display: inline-block;
@@ -39,7 +39,7 @@
 	    margin: 0;
 	    padding: 0;
 	    overflow: hidden;
-		    border-bottom: 1px solid #e7e7e7; 
+		border-bottom: 1px solid #e7e7e7; 
 	}
 	.menu {
 	    float: left;
@@ -89,96 +89,67 @@
 		margin-left:7px;
 	}
 	.page_nation a.active {
-		background-color:green;
+		background-color : #00C471;
 		color:white;
-		border:1px solid green;
+		border:1px solid #00C471;
 	}
-/* 	.textfield {
-		position: relative;
-		text-align: center;
-		width: 500px;
-		height: 32px;
-		font-size: 15px;
-		border: 0;
-	 	border-radius: 15px;
-		outline: none;
-		padding-left: 10px;
-		background-color: rgb(233, 233, 233);
-	} */
 	
 </style>
 <script>
-	/*
-	$(function(){
-	    $.ajax(
-	        type:post,
-	        url:url1,
-	        success:function(){
-	        },
-	        error:function(){
-	        }
-	    );
-	    $.ajax(
-	        type:post,
-	        url:url2,
-	        success:function(){
-	        },
-	        error:function(){
-	        }
-	    );
-	})
-	 */
-
 	function getJsonNoticeListData(frm) {
 		//alert("getJsonNoticeListData(frm) 실행");
-		console.log($(frm).serialize());
+		//console.log($(frm).serialize());
 		
 		$.ajax("getJsonNoticeList.do", {
 			type: "get",
 			data: $(frm).serialize(), //서버쪽으로 JSON 문자열 전달
 			dataType: "json", //서버로부터 응답받는 데이터 형식
 			success: function(data){ 
-				//alert("게시글 list ajax 성공"); 
-				console.log(data);
 				
-				let dispHtml = "";
+				let list = "";
 				
-				for (let board of data) {					
-					dispHtml += "<tr>";
-					dispHtml += "<td class='getNotice'>";
-					dispHtml += "<a href='getNotice.do?boardNo=" + board.boardNo + "'>";
-					dispHtml += "<span id='N'>N. </span>" + board.boardTitle;
-					dispHtml += "<br>";
-					dispHtml += "<span id='fontSize'>" + board.boardRegdate.substring(0,10) + " 관리자</span>"
-					dispHtml += "</a>";
-					dispHtml += "</td>";
-					dispHtml += "</tr>";
-				} 
-				$("#dispBody").html(dispHtml);
+				for (let notice of data.list) {				
+					console.log("list : " + notice.boardTitle);
+					list += '<tr>';
+					list += '<td class="getNotice">';
+					list += '<a href="getNotice.do?boardNo=' + notice.boardNo + '">';
+					list += '<span id="N">N.</span>' + notice.boardTitle;     
+					list += "<br>";
+					list += '<span id="fontSize">' + notice.boardRegdate.substring(0,10) + ' 관리자</span>';
+					list += "</a>";
+					list += "</td>";
+					list += "</tr>";
+				}
+				
+		        console.log("page : " + data.pvo.beginPage);  
+	            let page = "";
+	            page += '<div class="page_wrap">';
+	            page += '<div class="page_nation">';
+	            if (data.pvo.beginPage != 1) {
+	            	page += '<a class="arrow prev" href="getJsonNoticeList.do?cPage=' + data.pvo.beginPage + '- 1 ">&lt</a>';
+				}
+	            for (let i = data.pvo.beginPage; i <= data.pvo.endPage; i++) {
+					if (i == data.pvo.nowPage) {
+						page += '<a class="active">' + i + '</a>';
+					} else if (i != data.pvo.nowPage) {
+						page += '<a href="getJsonNoticeList.do?cPage=${pageNo }">' + i + '</a>';
+					}
+				}
+	            if (data.pvo.endPage < data.pvo.totalPage) {
+	            	 page += '   <a class="arrow next" href="getJsonNoticeList.do?cPage=' + data.pvo.endPage + ' + 1">&gt</a>';    
+	            }
+	            page += '</div>';
+	            page += '</div>';
+		            
+				$("#dispBody").html(list);
+				$("#dispBody2").html(page);
+				
 			},
 			error: function(){
 				alert("[ERROR]오류");
 			}
-		}); 
-		$.ajax("getJsonNoticePage.do", {
-			type: "get",
-			data: $(frm).serialize(), //서버쪽으로 JSON 문자열 전달
-			dataType: "json", //서버로부터 응답받는 데이터 형식
-			success: function(data){ 
-				//alert("페이징 ajax 성공"); 
-				console.log(data);
-				
-				let dispHtml = "";
-				
-				for (let page of data) {		
-
-				} 
-				$("#page_nation").html(dispHtml);
- 			},
-			error: function(){
-				alert("[ERROR]오류");
-			}
-		}); 
+		});
+		
 	}
 </script>
 </head>
@@ -199,24 +170,15 @@
 			<div class="container">
 				<div class="row">
 					<%--<form method="get" name="search"> --%>
-					<form action="getNoticeList.do" >
+					<form action="getNoticeList.do" method="post">
 						<table class="pull-right">
 							<tr>
-								<td>
-								<%--
-									<select class="form-control" name="searchCondition">
-									<c:forEach var="option" items="${conditionMap }">
-										<option value="${option.value }">${option.key }</option>
-									</c:forEach>
-									</select>
-								 --%>
-								</td>
 								<td>
 									<input type="text" class="form-control" placeholder="검색어를 입력하세요." name="searchKeyword">
 								</td>
 								<td>
- 									<!-- <button type="button" class="btn btn-success" onclick="getJsonNoticeListData(this.form)">검색</button> -->
-									<button type="submit" class="btn btn-success">검색</button>
+ 									<button type="button" class="btn btn-success" onclick="getJsonNoticeListData(this.form)">검색</button>
+									<!--  <button type="submit" class="btn btn-success">검색</button> -->
 								</td>
 							</tr>
 						</table>
@@ -225,14 +187,6 @@
 			</div>
 		</div>
 	</div>
-	
-<%--   	<div class="outer">
-		<div class="inner">
-			<form action="getJsonNoticeList.do?keyword=${keyword }" method="get" name="search">
-		        <input  class="textfield" name="keyword" type="text" size="30" onkeypress="JavaScript:press(this.form)" placeholder="검색어를 입력하세요."> 
-			</form>
-		</div>
-	</div> --%>
 
  	<br><br>
     
@@ -263,100 +217,28 @@
 	</div>
 	
 	<!-- 페이징처리-->
-	<div class="page_wrap">
-	   <div class="page_nation">
-		<c:if test="${pvo.beginPage != 1}">	
-			<a class="arrow prev" href="getNoticeList.do?cPage=${pvo.beginPage - 1 }">&lt</a>
-		</c:if>
-		
-		<c:forEach var="pageNo" begin="${pvo.beginPage }" end="${pvo.endPage }">
-			<c:if test="${pageNo == pvo.nowPage }">
-				<a class="active">${pageNo}</a>
+	<div id="dispBody2">
+		<div class="page_wrap">
+		   <div class="page_nation">
+			<c:if test="${pvo.beginPage != 1}">	
+				<a class="arrow prev" href="getNoticeList.do?cPage=${pvo.beginPage - 1 }">&lt</a>
 			</c:if>
-			<c:if test="${pageNo != pvo.nowPage }">
-				<a href="getNoticeList.do?cPage=${pageNo }">${pageNo}</a>
+			
+			<c:forEach var="pageNo" begin="${pvo.beginPage }" end="${pvo.endPage }">
+				<c:if test="${pageNo == pvo.nowPage }">
+					<a class="active">${pageNo}</a>
+				</c:if>
+				<c:if test="${pageNo != pvo.nowPage }">
+					<a href="getNoticeList.do?cPage=${pageNo }">${pageNo}</a>
+				</c:if>
+			</c:forEach>	
+			
+			<c:if test="${pvo.endPage < pvo.totalPage}">
+				<a class="arrow next" href="getNoticeList.do?cPage=${pvo.endPage + 1 }">&gt</a>
 			</c:if>
-		</c:forEach>	
-		
-		<c:if test="${pvo.endPage < pvo.totalPage}">
-			<a class="arrow next" href="getNoticeList.do?cPage=${pvo.endPage + 1 }">&gt</a>
-		</c:if>
-	   </div>
-	</div> 		
-
-<%--	
-	<div class="page_wrap">
-	   <div class="page_nation">
-		<c:if test="${pageMaker.prev}">
-			<a class="arrow prev" href="getNoticeList.do${pageMaker.makeQuery(pageMaker.startPage - 1)}">&lt</a>
-		</c:if>
-		
-		<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-            <a href="getNoticeList.do${pageMaker.makeQuery(idx)}">${idx}</a>
-	    </c:forEach>
-	    
-	    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-	    	<a class="arrow next" href="getNoticeList.do${pageMaker.makeQuery(pageMaker.endPage + 1)}">&gt</a>
-	    </c:if> 
-	   </div>
+		   </div>
+		</div> 		
 	</div>
---%>	
-	
-<%--	<div>
-	  <ul>
-	    <c:if test="${pageMaker.prev}">
-	    	<li><a href="getNoticeList.do${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a></li>
-	    </c:if> 
-	
-	    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-	    	<li><a href="getNoticeList.do${pageMaker.makeQuery(idx)}">${idx}</a></li>
-	    </c:forEach>
-	
-	    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-	    	<li><a href="getNoticeList.do${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a></li>
-	    </c:if> 
-	  </ul>
-	</div> --%>
-	
-	
-<%--	<div class="page_wrap">
-	   <div class="page_nation">
-		<c:if test="${pvo.beginPage != 1}">	
-			<a class="arrow prev" href="noticePage.do?cPage=${pvo.beginPage - 1 }">&lt</a>
-		</c:if>
-		
-		<c:forEach var="pageNo" begin="${pvo.beginPage }" end="${pvo.endPage }">
-			<c:if test="${pageNo == pvo.nowPage }">
-				<a class="active">${pageNo}</a>
-			</c:if>
-			<c:if test="${pageNo != pvo.nowPage }">
-				<a href="noticePage.do?cPage=${pageNo }">${pageNo}</a>
-			</c:if>
-		</c:forEach>	
-		
-		<c:if test="${pvo.endPage < pvo.totalPage}">
-			<a class="arrow next" href="noticePage.do?cPage=${pvo.endPage + 1 }">&gt</a>
-		</c:if>
-	   </div>
-	</div> --%>
-	
-<%-- <div class="page_wrap">
-	   <div class="page_nation">
-	      <a class="arrow prev" href="#">&lt</a>
-	      <a href="#" class="active">1</a>
-	      <a href="#">2</a>
-	      <a href="#">3</a>
-	      <a href="#">4</a>
-	      <a href="#">5</a>
-	      <a href="#">6</a>
-	      <a href="#">7</a>
-	      <a href="#">8</a>
-	      <a href="#">9</a>
-	      <a href="#">10</a>
-	      <a class="arrow next" href="#">&gt</a>
-	   </div>
-	</div> --%>
-	
 	<br><br><br>
 	 <%@ include file="/Common/footer.jsp" %>
 </body>

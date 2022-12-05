@@ -50,7 +50,7 @@
 	}
 	.menu a.active {
 	    color: white;
-	    background-color: #4CAF50;
+	    background-color: #00C471;
 	}
 	a:hover {
 		text-decoration: none;
@@ -64,11 +64,11 @@
 	<div class="outer">
 		<div class="inner">
 			<ul class="menuborder">
-			  <li class="menu"><a href="/learn/getFaqList.do">자주 묻는 질문</a></li>
-			  <li class="menu"><a href="#">고객센터 문의하기</a></li>
-			  <li class="menu"><a href="/learn/Member/MemberBoard/serviceIntegrationPolicy.jsp">통합서비스 이용약관</a></li>
-			  <li class="menu"><a class="active" href="/learn/Member/MemberBoard/generalPolicy.jsp">아웃풋런 이용약관</a></li>
-			  <li class="menu"><a href="/learn/Member/MemberBoard/privacyPolicy.jsp">개인정보 취급방침</a></li>
+			  <li class="menu"><a href="${pageContext.request.contextPath }/getFaqList.do">자주 묻는 질문</a></li>
+			  <li class="menu"><a href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터 문의하기</a></li>
+			  <li class="menu"><a href="${pageContext.request.contextPath }/Member/MemberBoard/serviceIntegrationPolicy.jsp">통합서비스 이용약관</a></li>
+			  <li class="menu"><a class="active" href="${pageContext.request.contextPath }/Member/MemberBoard/generalPolicy.jsp">아웃풋런 이용약관</a></li>
+			  <li class="menu"><a href="${pageContext.request.contextPath }/Member/MemberBoard/privacyPolicy.jsp">개인정보 취급방침</a></li>
 			</ul>
 		</div>
 	</div>

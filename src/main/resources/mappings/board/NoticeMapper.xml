@@ -4,12 +4,6 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="noticeDAO">
 
-	<!-- 	<update id="updateNoticeHit" parameterType="noticeVO">
-		UPDATE NOTICE_BOARD
-		SET BOARD_HIT = (SELECT NVL(MAX(BOARD_HIT), 1) + 1 FROM NOTICE_BOARD)
-		WHERE BOARD_NO = #{boardNo}
-	</update> -->
-
 	<!-- 전체 리스트 -->
 	<select id="getNoticeList" parameterType="noticeVO" resultType="noticeVO">
 		SELECT * FROM NOTICE_BOARD ORDER BY BOARD_NO DESC
@@ -46,106 +40,37 @@
 		</if>		
 	</select>
 	
+	<delete id="deleteNotice" parameterType="noticeVO">
+		DELETE FROM NOTICE_BOARD WHERE BOARD_NO = #{boardNo}
+	</delete>
 	
-	<!-- 페이지에 해당하는 게시글 리스트 -->
-<!-- 
-	<select id="listPage" resultType="noticeVO" parameterType="criteria">
-		SELECT *
+	<insert id="insertNotice" parameterType="noticeVO">
+		INSERT INTO NOTICE_BOARD (BOARD_NO, USER_ID, GRADE, BOARD_TITLE, BOARD_CONTENT, BOARD_REGDATE)
+	 	VALUES ((SELECT NVL(MAX(BOARD_NO),0) + 1 FROM NOTICE_BOARD), #{userId}, #{grade}, #{boardTitle},#{boardContent}, SYSDATE)
+	</insert>
+	
+	<update id="updateNotice" parameterType="noticeVO">
+		UPDATE NOTICE_BOARD 
+		SET BOARD_TITLE = #{boardTitle}, 
+			BOARD_CONTENT = #{boardContent}
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	<select id="lastNo" resultType="int">
+		SELECT NVL(MAX(BOARD_NO),0) FROM NOTICE_BOARD
+	</select>
+	
+	<select id="latestInfo" resultType="noticeVO">
+        SELECT *
 		FROM (SELECT ROWNUM R_NUM, B.*
-	        FROM (SELECT *
+	        FROM (	SELECT *
 	                FROM NOTICE_BOARD
-	                ORDER BY BOARD_NO DESC
+	                 	ORDER BY BOARD_NO DESC
 	             ) B 
 	         )
-		WHERE R_NUM BETWEEN #{rowStart} AND #{rowEnd}
+            WHERE R_NUM BETWEEN 1 AND 5
 	</select>
- -->
- 	
-	<!-- 전체 게시글 수 -->
-<!-- 
-	<select id="listCount" resultType="int">
-	<![CDATA[
-		SELECT COUNT(BOARD_NO)
-		  FROM NOTICE_BOARD
-		 WHERE BOARD_NO > 0
-	]]>
-	</select>
- -->
- 	
-	<!-- 키워드로 검색(제목) -->
-<!-- 
-	<select id="getBoardList_T" parameterType="string" resultType="noticeVO">
-		SELECT * 
-		FROM NOTICE_BOARD 
-		WHERE BOARD_TITLE LIKE '%'|| #{searchKeyword} ||'%' 
-		ORDER BY BOARD_NO DESC
-	</select>
- -->
- 	
-	<!-- 키워드로 검색(내용) -->
-<!-- 
-	<select id="getBoardList_C" parameterType="string" resultType="noticeVO">
-		SELECT * 
-		FROM NOTICE_BOARD 
-		WHERE BOARD_CONTENT LIKE '%'|| #{searchKeyword} ||'%' 
-		ORDER BY BOARD_NO DESC
-	</select>
- -->
- 	
-	<!-- 키워드에 해당하는 게시글수 조회(제목)-->
-<!-- 	
-	<select id="getBoardCnt_T"  resultType="int">
-	SELECT COUNT(*)
-	FROM (SELECT ROWNUM R_NUM, B.*
-        FROM (	SELECT *
-                FROM NOTICE_BOARD
-	                WHERE BOARD_TITLE LIKE '%' || #{searchKeyword} || '%'
-                ORDER BY BOARD_NO DESC
-             ) B 
-         )
-    </select>
- -->	
- 
-	<!-- 키워드에 해당하는 게시글수 조회(내용)-->
-<!-- 
-	<select id="getBoardCnt_C"  resultType="int">
-	SELECT COUNT(*)
-	FROM (SELECT ROWNUM R_NUM, B.*
-        FROM (	SELECT *
-                FROM NOTICE_BOARD
-	                WHERE BOARD_CONTENT LIKE '%' || #{searchKeyword} || '%'
-                ORDER BY BOARD_NO DESC
-             ) B 
-         )
-	</select>
- -->	
- 
-<!-- 
-	<select id="getBoardListPage_T" resultType="noticeVO" parameterType="map">
-	SELECT *
-	FROM (SELECT ROWNUM R_NUM, B.*
-        FROM (	SELECT *
-                FROM NOTICE_BOARD
-	                WHERE BOARD_TITLE LIKE '%' || #{searchKeyword} || '%'
-                 	ORDER BY BOARD_NO DESC
-             ) B 
-         )
-	WHERE R_NUM BETWEEN #{rowStart} AND #{rowEnd}
-	</select>
- 	
-	<select id="getBoardListPage_C" resultType="noticeVO" parameterType="map">
-	SELECT *
-	FROM (SELECT ROWNUM R_NUM, B.*
-        FROM (	SELECT *
-                FROM NOTICE_BOARD
-	                WHERE BOARD_CONTENT LIKE '%' || #{searchKeyword} || '%'
-                 	ORDER BY BOARD_NO DESC
-             ) B 
-         )
-	WHERE R_NUM BETWEEN #{rowStart} AND #{rowEnd}
-	</select>
--->
- 
+	
 </mapper>
 
 

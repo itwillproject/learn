@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+            
 <!DOCTYPE html>
 <html>
 <head>
@@ -97,15 +99,14 @@
 <body>
 	<%@ include file="/Common/header.jsp" %>
 	<br><br>
-	
 	<div class="outer">
 		<div class="inner">
 			<ul class="menuborder">
-			  <li class="menu"><a class="active" href="#">자주 묻는 질문</a></li>
-			  <li class="menu"><a href="#">통합서비스 이용약관</a></li>
-			  <li class="menu"><a href="#">인프런 이용약관</a></li>
-			  <li class="menu"><a href="#">개인정보 취급방침</a></li>
-			  <li class="menu"><a href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">나의 질문</a></li>
+			  <li class="menu"><a href="/learn/getFaqList.do">자주 묻는 질문</a></li>
+			  <li class="menu"><a class="active"  href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터 문의하기</a></li>
+			  <li class="menu"><a href="/learn/Member/MemberBoard/serviceIntegrationPolicy.jsp">통합서비스 이용약관</a></li>
+			  <li class="menu"><a href="/learn/Member/MemberBoard/generalPolicy.jsp">아웃풋런 이용약관</a></li>
+			  <li class="menu"><a href="/learn/Member/MemberBoard/privacyPolicy.jsp">개인정보 취급방침</a></li>
 			</ul>
 		</div>
 	</div>
@@ -118,7 +119,12 @@
 				<p>-------왼쪽네비-------</p>
 			</div>
 			
+			
+			<!-- 가운데 내용 -->
+			
 			<div class="col-sm-6 align-content-center">
+			
+			<!-- 섹션 구분 -->
 				<div class="d-flex flex-row pr-5">
 				<nav class="navbar navbar-expand-sm navbar-light p-3">
                     <ul class="navbar-nav gray-botton w-100" style="border-bottom: 1px solid gray">
@@ -147,42 +153,54 @@
 								
 				<table class="table table-hover mt-5">
 					<tbody>
-						<tr>
-							<td style="height: 100px">
-							<div class="row">
-								<div class="col-10">
-								<h4>목차용 에디터 만들기 강좌에서</h4>
-								<p>내용이 어쩌고 저쩌고</p>
-								<p>아이디 ·몇분전·강의제목</p>
+						<c:forEach var="memberBoard" items="${memberBoardList }">							
+							<tr>
+								<td style="height: 100px">
+								<div class="row">
+									<div class="col-10">
+									<a href="${pageContext.request.contextPath}/memberBoard//viewPage.do?qnaNo=${memberBoard.qnaNo }"><h4>${memberBoard.qnaTitle }</h4>
+									<p>${memberBoard.qnaContent }</p>
+									<p>${memberBoard.userId } ·${memberBoard.qnaRegdate } </p></a>
+									</div>	
 								</div>
-
-								<div class="col-2">
-									<div class="row d-flex justify-content-center">
-										<div class="ball">
-											<p>0</p>
-											<p>답변</p>
-										</div>
-									</div>
-									<div class="row d-flex justify-content-center">
-										<p class="text-center">♥ 0</p>
-									</div>
-								</div>
-							</div>
-							</td>
-						</tr>
-
+								</td>
+							</tr>
+						</c:forEach>
 				</table>
+				
+				
+				
+				<!-- 페이지네이션 페이징 paging -->
 				
 				<div class="pagination p12 justify-content-center">
 			      <ul>
-			        <a href="#"><li>이전페이지</li></a>
-			        <a href="#"><li>1</li></a>
-			        <a href="#"><li>2</li></a>
-			        <a href="#"><li>3</li></a>
-			        <a href="#"><li>4</li></a>
-			        <a href="#"><li>5</li></a>
-			        <a class="is-active" href="#"><li>6</li></a>
-			        <a href="#"><li>다음페이지</li></a>
+ 					<c:if test="${pvo.beginPage == 1 }">
+			        	<a href="#" disabled><li>이전페이지</li></a>
+					</c:if>
+					<c:if test="${pvo.beginPage != 1 }">
+			        	<a href="${pageContext.request.contextPath}/memberBoard//getMyQBoardList.do?cPage=${pvo.beginPage -1 }&searchKeyword=${memberBoard.searchKeyword}">
+			        	<li>이전페이지</li></a>
+					</c:if>
+					
+					
+					<c:forEach var="pageNo" begin="${pvo.beginPage }" end="${pvo.endPage }">
+						<c:if test="${pageNo == pvo.nowPage }">
+				        	<a href="#" class="is-active" disabled><li>${pageNo }</li></a>
+						</c:if>
+						
+						<c:if test="${pageNo != pvo.nowPage }">
+					        <a href="${pageContext.request.contextPath}/memberBoard//getMyQBoardList.do?cPage=${pageNo }&searchKeyword=${memberBoard.searchKeyword}"><li>${pageNo }</li></a>
+						</c:if>
+					</c:forEach>
+
+					
+					<c:if test="${pvo.endPage < pvo.totalPage }">
+				        <a href="${pageContext.request.contextPath}/memberBoard//getMyQBoardList.do?cPage=${pvo.endPage + 1 }&searchKeyword=${memberBoard.searchKeyword}"><li>다음페이지</li></a>
+					</c:if>
+					<c:if test="${pvo.endPage >= pvo.totalPage }">
+				        <a href="#" class="" disabled><li>다음페이지</li></a>
+					</c:if>
+					
 			      </ul>
 			    </div>
 				

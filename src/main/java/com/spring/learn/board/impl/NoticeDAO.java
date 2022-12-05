@@ -22,7 +22,33 @@ import com.spring.learn.board.NoticeVO;
 	//글 1개 조회
 	public NoticeVO getNotice(NoticeVO vo) {
 		System.out.println("===> MyBatis 사용 getNotice() 실행");
-	return mybatis.selectOne("noticeDAO.getNotice", vo);
+		return mybatis.selectOne("noticeDAO.getNotice", vo);
+	}
+	
+	//글 삭제
+	public void deleteNotice(NoticeVO vo) {
+		System.out.println("===> MyBatis 사용 deleteNotice() 실행");
+		mybatis.delete("noticeDAO.deleteNotice", vo);
+	}
+	
+	//글 추가
+	public void insertNotice(NoticeVO vo) {
+		System.out.println("===> MyBatis 사용 insertNotice() 실행");
+		mybatis.insert("noticeDAO.insertNotice", vo);
+	}
+	
+	//글 수정
+	public void updateNotice(NoticeVO vo) {
+		System.out.println("===> MyBatis 사용 updateNotice() 실행");
+		mybatis.update("noticeDAO.updateNotice", vo);
+	}
+	
+	public int lastNo() {
+		return mybatis.selectOne("noticeDAO.lastNo");
+	}
+	
+	public List<NoticeVO> latestInfo() {
+		return mybatis.selectList("noticeDAO.latestInfo");
 	}
 	
 	//페이징추가
@@ -33,6 +59,7 @@ import com.spring.learn.board.NoticeVO;
 	int countBoard(NoticeVO vo) {
 		return mybatis.selectOne("noticeDAO.countBoard", vo);
 	}
+	
 	
 	
 //	//게시글 목록 조회

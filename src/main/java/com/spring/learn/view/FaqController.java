@@ -28,21 +28,56 @@ public class FaqController {
 		
 		return "Member/MemberBoard/faq.jsp";
 	}
-
 	
-	// 메소드의 정의부에 선언된 @ModelAttribute 는 리턴된 데이터를 View에 전달
-	// @ModelAttribute 선언된 메소드는 @RequestMapping 메소드보다 먼저 실행
-	// 뷰(View)에 전달될 때 설정된 명칭 사용(예: conditionMap)
-	//	@ModelAttribute("conditionMap")
-	//	public Map<String, String> searchConditionMap() {
-	//		System.out.println("=======> Map searchConditionMap() 실행");
-	//		Map<String, String> conditionMap = new HashMap<String, String>();
-	//		conditionMap.put("제목", "TITLE");
-	//		conditionMap.put("내용", "CONTENT");
-	//		
-	//		return conditionMap;
-	//	}
+	@RequestMapping("/getAdminFaqList.do")
+	public String getAdminFaqList(FaqVO vo, Model model) {
 
-
-
+		List<FaqVO> list = faqService.getFaqList(vo);
+		
+		model.addAttribute("list", list);
+		
+		return "Admin/adminFaq.jsp";
+	}
+	
+	//게시글 삭제(관리자)
+	@RequestMapping("/deleteFaq.do")
+	public String deleteFaq(FaqVO vo) {
+		System.out.println(">> 게시글 삭제하기");
+		
+		System.out.println("삭제 vo : " + vo);
+		
+		faqService.deleteFaq(vo);
+	
+		return "getAdminFaqList.do";
+	}
+	
+	//게시글 수정(관리자)
+	@RequestMapping("/updateFaq.do")
+	public String updateNotice(Model model, FaqVO vo) {
+		System.out.println(">> 게시글 수정하기");
+		
+		System.out.println("update vo : " + vo);
+		
+		faqService.updateFaq(vo);
+		
+		model.addAttribute("vo", vo);
+	
+		return "getAdminFaqList.do";
+	}
+	
+	//게시글 추가(관리자)
+	@RequestMapping("/insertFaq.do")
+	public String inserNotice(Model model, FaqVO vo) {
+		System.out.println(">> 게시글 추가하기");
+		
+		System.out.println("insert vo : " + vo);
+		
+		faqService.insertFaq(vo);
+		
+		model.addAttribute("vo", vo);
+	
+		return "getAdminFaqList.do";
+	}
+	
+	
 }
