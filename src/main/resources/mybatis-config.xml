@@ -17,6 +17,10 @@
 		<typeAlias alias="CallcenterComment" type="com.spring.learn.memberboard.CallcenterCommentVO"/>	
 		<typeAlias alias="boardComment" type="com.spring.learn.board.BoardCommentVO"/>	
 		<typeAlias alias="qnaLike" type="com.spring.learn.board.QnaLikeVO"/>
+		<typeAlias alias="memberChatRoomList" type="com.spring.learn.user.MemberChatRoomListVO"/>
+		<typeAlias alias="memberChatContents" type="com.spring.learn.user.MemberChatContentsVO"/>
+		
+		
 		<!-- ===================================== -->
 		
 		

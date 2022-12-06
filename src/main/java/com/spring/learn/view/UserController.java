@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.support.RequestPartServletServerHttpRequest;
 
+import com.spring.learn.lecture.LectureVO;
 import com.spring.learn.user.LikeVO;
 import com.spring.learn.user.MailSendService;
 import com.spring.learn.user.UserService;
@@ -36,6 +37,38 @@ public class UserController {
 	private MailSendService mailService;
 	@Autowired
 	private UserService userService;
+	
+	// 멤버 디테일로 이동
+	@RequestMapping("/memberDetail.do")
+	public String memberDetail(UserVO uvo, Model model) {
+			System.out.println(">>> 멤버디테일 페이지로 이동  입력 lvo :" + uvo);
+			
+			// 유저아이디로  찾아서 uvo를 (유저디테일이란 이름으로) 보내야 한다
+			uvo = userService.confirmUser(uvo);
+			model.addAttribute("userDetail", uvo);
+			
+			// 유저아이디로 강의목록 보내야 한다
+			
+			// 유저아이디로 수강후기 보내야 한다 - 두렬씨랑 나중에 이야기 하기
+			
+			// 유저아이디로 게시글 목록 보내야 한다
+			
+			// 유저에 자기 소개 파트 넣어야 한다 - 컬럼 추가 -> VO 추가?? 이건 나중에 생각하기 / 문제 생김 - 인서트에 올 넣는 경우 있어서, 컬럼 추가가 문제 된다고 함... 이거 어떻게?
+			
+			
+			
+			
+			return "/Member/Detail/merberDetail.jsp";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	@RequestMapping("/insertUser.do")
 	public String insertUser(@ModelAttribute UserVO vo) {

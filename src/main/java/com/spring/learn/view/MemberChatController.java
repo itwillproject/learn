@@ -1,0 +1,118 @@
+package com.spring.learn.view;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.google.gson.JsonObject;
+import com.spring.learn.board.BoardCommentVO;
+import com.spring.learn.board.BoardReportVO;
+import com.spring.learn.board.BoardService;
+import com.spring.learn.board.BoardVO;
+import com.spring.learn.board.QnaLikeVO;
+import com.spring.learn.common.Paging;
+import com.spring.learn.memberboard.CallcenterCommentVO;
+import com.spring.learn.memberboard.MemberBoardVO;
+import com.spring.learn.user.ChatVO;
+import com.spring.learn.user.MemberChatContentsVO;
+import com.spring.learn.user.MemberChatRoomListVO;
+import com.spring.learn.user.MemberChatService;
+import com.spring.learn.user.UserService;
+import com.spring.learn.user.UserVO;
+
+@Controller					// 단 현재 위치(클래스)에서만 유효
+//@SessionAttributes({"board", "qnaBoardList"}) // board라는 이름의 Model객체가 있으면 세션에 저장
+@RequestMapping({"/memberChat", "/MemberChat"})
+@SessionAttributes({"memberChatRoomList", "memberChatContents"}) // 같은 이름의 Model객체가 있으면 세션에 저장
+public class MemberChatController {
+
+	@Autowired
+	private MemberChatService memberChatService;
+	
+	public MemberChatController() {
+		System.out.println(">> MemberChatController() 생성");
+	}
+	
+	// 채팅방 입장
+	@RequestMapping("/memberChatRoom.do")
+	public String view_chat(MemberChatRoomListVO mcrlvo, Model model) throws Exception {
+		
+		System.out.println("채팅방 입장하니?");
+		System.out.println("mcrlvo : " + mcrlvo);
+		
+		MemberChatRoomListVO mcrlvoIm = new MemberChatRoomListVO();
+		
+		mcrlvoIm = memberChatService.getChatroom(mcrlvo);
+		
+		// 찾은 결과가 비어있지 않다면, 그거 가져오기 - 번호랑 다 챙겨올 수 있음
+		if (mcrlvoIm != null) {
+			mcrlvo = mcrlvoIm;
+		} else {
+			// 찾은 결과가 비어 있다면, 채팅룸을 추가하기
+			String senderName = memberChatService.getName(mcrlvo.getSenderId());
+			String receiverName = memberChatService.getName(mcrlvo.getReceiverId());
+			
+			// 이름 추가 하기
+			mcrlvo.setSenderName(senderName);
+			mcrlvo.setReceiverName(receiverName);
+			
+			System.out.println(">> DB 집어 넣기 전 new mcrlvo : " + mcrlvo);
+			// 룸 DB에 집어 넣고 다시 가져오기
+			memberChatService.addChatroom(mcrlvo);
+			mcrlvo = memberChatService.getChatroom(mcrlvo);
+		}
+		
+		System.out.println("mcrlvo : " + mcrlvo);
+		
+		// 새로 만든 것이거나 그게 아니더라도 채팅방이 없을 수도 있다
+		List<MemberChatContentsVO> memberChatContents = memberChatService.getMemberChatContents(mcrlvo);
+		
+		System.out.println("memberChatContents : " + memberChatContents);
+		
+		model.addAttribute("memberChatRoomList", mcrlvo);
+		model.addAttribute("memberChatContents", memberChatContents);
+		
+		return "/Member/Detail/memberChatRoom.jsp";
+	}
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+}

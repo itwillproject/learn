@@ -52,7 +52,8 @@ public class LectureDetailController {
 			getTimetables(vo.getLectureNo(), model);
 		}
 		
-		return "/Lecture/lectureDetail.jsp";
+//		return "/Lecture/lectureDetail.jsp";
+		return "/Lecture/lectureDetail-prac.jsp";
 		
 	}
 	//해당 강의의 좋아요수 확인
