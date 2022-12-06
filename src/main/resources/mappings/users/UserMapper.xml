@@ -108,6 +108,12 @@
 		select nvl(avg(board_rate), 0) from lecture_review where lecture_no = #{lectureNo}
 	</select>
 	
+	<!-- 강의자 신청 승인을 위한 기능  -->
+	<update id="updateUserLecture" parameterType="userVO">
+		UPDATE USERS 
+		SET GRADE = '강의자' 
+		WHERE USER_ID = #{userId}
+	</update>
 	
 </mapper>
 

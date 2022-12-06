@@ -176,7 +176,7 @@
 	}
 	.menu a.active {
 	    color: white;
-	    background-color: #4CAF50;
+	    background-color: #00C471;
 	}
 	a:hover {
 		text-decoration: none;

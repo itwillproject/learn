@@ -3,6 +3,19 @@ package com.spring.learn.board;
 public class BoardReportVO {
 	private String reportReason,reportDate,reportStatus,boardType,boardNo,reporter,repperson;
 
+	//상태변경을 위해 추가
+	private String result;
+	
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
+	
+	//==================================
+	
 	public String getReportReason() {
 		return reportReason;
 	}
@@ -63,8 +76,10 @@ public class BoardReportVO {
 	public String toString() {
 		return "BoardReportVO [reportReason=" + reportReason + ", reportDate=" + reportDate + ", reportStatus="
 				+ reportStatus + ", boardType=" + boardType + ", boardNo=" + boardNo + ", reporter=" + reporter
-				+ ", repperson=" + repperson + "]";
+				+ ", repperson=" + repperson + ", result=" + result + "]";
 	}
+
+	
 	
 	
 	

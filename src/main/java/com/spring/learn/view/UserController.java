@@ -360,4 +360,20 @@ public class UserController {
 		return list;
 	}
 	
+	//관리자페이지를 위한 추가 기능=========================
+	@RequestMapping("/rejectResumeMail.do")
+	@ResponseBody
+	public String rejectResumeMail(String email) {
+		System.out.println("수신 이메일 주소 : " + email);
+		return mailService.rejectResumeMail(email);
+	}
+
+	@RequestMapping("/approveResumeMail.do")
+	@ResponseBody
+	public String approveResumeMail(String email) {
+		System.out.println("수신 이메일 주소 : " + email);
+		return mailService.approveResumeMail(email);
+	}
+	//==============================
+	
 }

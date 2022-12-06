@@ -118,5 +118,11 @@ public class UserServiceImpl implements UserService {
 	public double getReviewAverage(LikeVO vo) {
 		return userDAO.getReviewAverage(vo);
 	}
+	
+	//강의자 신청 승인을 위한 기능
+	@Override
+	public void updateUserLecture(UserVO vo) {
+		userDAO.updateUserLecture(vo);
+	}
 
 }
