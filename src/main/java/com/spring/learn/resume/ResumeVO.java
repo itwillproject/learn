@@ -6,7 +6,8 @@ public class ResumeVO {
 	userName,
 	userTel,
 	userIntroduce,
-	userLink
+	userLink,
+	regdate
 	;
 	private String resumeStatus = "false";
 	
@@ -36,6 +37,14 @@ public class ResumeVO {
 		this.userIntroduce = userIntroduce;
 		this.userLink = userLink;
 		this.resumeStatus = resumeStatus;
+	}
+	
+	public String getRegdate() {
+		return regdate;
+	}
+
+	public void setRegdate(String regdate) {
+		this.regdate = regdate;
 	}
 
 	public String getUserId() {
@@ -99,8 +108,8 @@ public class ResumeVO {
 	@Override
 	public String toString() {
 		return "ResumeVO [userId=" + userId + ", categoryName=" + categoryName + ", userName=" + userName + ", userTel="
-				+ userTel + ", userIntroduce=" + userIntroduce + ", userLink=" + userLink + ", resumeStatus="
-				+ resumeStatus + "]";
+				+ userTel + ", userIntroduce=" + userIntroduce + ", userLink=" + userLink + ", regdate=" + regdate
+				+ ", resumeStatus=" + resumeStatus + "]";
 	}
 
 

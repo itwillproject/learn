@@ -60,27 +60,14 @@
     <div class="row w-100 pb-4 justify-content-center">
         <!-- 왼쪽 네비 -->
         <div class="col-2 d-flex justify-content-center">
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                    <h5><b>강의자 메뉴</b></h5>
-                </li>
-                <li class="list-group-item">
-                    <a class="norm-menu" href="dashboard.jsp">대시보드</a>
-                </li>
-                <li class="list-group-item">
-                    <a class="active-menu" href="lectureManager.jsp">강의 관리</a>
-                </li>
-                <li class="list-group-item">
-                    <a class="norm-menu" href="salesView.jsp">매출 조회</a>
-                </li>
-                <li class="list-group-item">
-                    <a class="norm-menu" href="roadmapManager.jsp">로드맵 관리</a>
-                </li>
-                <li class="list-group-item">
-                    <a class="norm-menu" href="chatView.jsp">채팅방 조회</a>
-                </li>
-            </ul>
+            <%@ include file="sidebar.jspf"%>
         </div>
+        <script>
+          var menu = $('#lectureManager');
+          console.log(menu);
+          menu.removeClass('norm-menu');
+          menu.addClass('active-menu');
+        </script>
 
         <!-- 중앙 위 내용 - 글내용 -->
         <div class="col-8 pl-3 gray-line">
