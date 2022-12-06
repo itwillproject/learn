@@ -106,6 +106,12 @@ public class UserDAO {
 	public double getReviewAverage(LikeVO vo) {
 		return mybatis.selectOne("userDAO.getReviewAverage", vo);
 	}
+	
+	//강의자 신청 승인을 위한 기능
+	public void updateUserLecture(UserVO vo) {
+		mybatis.update("userDAO.updateUserLecture", vo);
+	}
+	
 }
 
 

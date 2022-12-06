@@ -39,6 +39,7 @@
 		<typeAlias alias="noticeVO" type="com.spring.learn.board.NoticeVO"/>
 		<typeAlias alias="faqVO" type="com.spring.learn.board.FaqVO"/>
 		<typeAlias alias="lectureNewsVO" type="com.spring.learn.lecture.LectureNewsVO"/>
+		<typeAlias alias="reportResultVO" type="com.spring.learn.board.ReportResultVO"/>
 		<!-- ========================== -->
 	
 		<typeAlias alias="roadmap" type="com.spring.learn.roadmap.RoadmapVO"/>

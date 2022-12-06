@@ -1,6 +1,7 @@
 package com.spring.learn.resume.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,27 @@ public class ResumeDAO {
 		
 		return null;
 		
+	}
+	
+	//관리자페이지 데이터 확인용
+	int countFalseResume() {
+		return mybatis.selectOne("resumeDAO.countFalseResume");
+	}
+
+	List<ResumeVO> getFalseResume(Map<String, String> map) {
+		return mybatis.selectList("resumeDAO.getFalseResume", map);
+	}
+
+	int countTrueResume() {
+		return mybatis.selectOne("resumeDAO.countTrueResume");
+	}
+
+	List<ResumeVO> getTrueResume(Map<String, String> map) {
+		return mybatis.selectList("resumeDAO.getTrueResume", map);
+	}
+
+	int updateResumeStatus(ResumeVO vo) {
+		return mybatis.update("resumeDAO.updateResumeStatus", vo);
 	}
 	
 }

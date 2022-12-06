@@ -37,5 +37,9 @@ public interface UserService {
 		List<LikeVO> getSearchPaidLikeList(LikeVO vo);
 		List<LikeVO> getSearchFreeLikeList(LikeVO vo);
 		double getReviewAverage(LikeVO vo);
+		
+	//강의자 신청 승인을 위한 기능
+	void updateUserLecture(UserVO vo);
+
 	
 }
