@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.learn.user.LikeVO;
 import com.spring.learn.user.UserService;
 import com.spring.learn.user.UserVO;
 
@@ -66,6 +67,56 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void addNaverUser(UserVO user) {
 		userDAO.addNaverUser(user);
+	}
+	
+	@Override
+	public List<LikeVO> getLikeList(LikeVO vo) {
+		return userDAO.getLikeList(vo);
+	}
+
+	@Override
+	public int getReviewCnt(LikeVO vo) {
+		return userDAO.getReviewCnt(vo);
+	}
+
+	@Override
+	public int getReviewRate(LikeVO vo) {
+		return userDAO.getReviewRate(vo);
+	}
+
+	@Override
+	public int getOrderCh(LikeVO vo) {
+		return userDAO.getOrderCh(vo);
+	}
+
+	@Override
+	public int insertLike(LikeVO vo) {
+		return userDAO.insertLike(vo);
+	}
+
+	@Override
+	public int deleteLike(LikeVO vo) {
+		return userDAO.deleteLike(vo);
+	}
+
+	@Override
+	public List<LikeVO> getSearchLikeList(LikeVO vo) {
+		return userDAO.getSearchLikeList(vo);
+	}
+
+	@Override
+	public List<LikeVO> getSearchPaidLikeList(LikeVO vo) {
+		return userDAO.getSearchPaidLikeList(vo);
+	}
+
+	@Override
+	public List<LikeVO> getSearchFreeLikeList(LikeVO vo) {
+		return userDAO.getSearchFreeLikeList(vo);
+	}
+
+	@Override
+	public double getReviewAverage(LikeVO vo) {
+		return userDAO.getReviewAverage(vo);
 	}
 
 }

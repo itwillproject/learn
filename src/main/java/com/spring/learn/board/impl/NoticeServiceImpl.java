@@ -34,6 +34,31 @@ public class NoticeServiceImpl implements NoticeService {
 	public int countBoard(NoticeVO vo) {
 		return noticeDao.countBoard(vo);
 	}
+
+	@Override
+	public void deleteNotice(NoticeVO vo) {
+		noticeDao.deleteNotice(vo);
+	}
+
+	@Override
+	public void insertNotice(NoticeVO vo) {
+		noticeDao.insertNotice(vo);
+	}
+
+	@Override
+	public void updateNotice(NoticeVO vo) {
+		noticeDao.updateNotice(vo);
+	}
+
+	@Override
+	public int lastNo() {
+		return noticeDao.lastNo();
+	}
+
+	@Override
+	public List<NoticeVO> latestInfo() {
+		return noticeDao.latestInfo();
+	}
 	
 	//@Override
 	//public List<NoticeVO> getNoticeList(NoticeVO vo) {

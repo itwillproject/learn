@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,10 +27,11 @@ import com.spring.learn.memberboard.AdminQNAReplyVO;
 
 import com.spring.learn.memberboard.MemberBoardService;
 import com.spring.learn.memberboard.MemberBoardVO;
+import com.spring.learn.memberboard.OrdersDetailVO;
 import com.spring.learn.user.UserVO;
 
 @Controller					// 단 현재 위치(클래스)에서만 유효
-@SessionAttributes({"memberBoard", "callBvo", "cvoList"}) // memberBoard라는 이름의 Model객체가 있으면 세션에 저장
+@SessionAttributes({"memberBoard", "callBvo", "cvoList", "myOrderDetailList"}) // memberBoard라는 이름의 Model객체가 있으면 세션에 저장
 @RequestMapping("/memberBoard")
 public class MemberBoardController {
 
@@ -48,16 +50,19 @@ public class MemberBoardController {
 	@RequestMapping("/getMyQBoardList.do")
 	public String getQnaBoardList(MemberBoardVO bvo, Model model, Paging p, HttpSession session) {
 		System.out.println(">>> 보드리스트 가져오기");		
+		UserVO uvo = (UserVO) session.getAttribute("user");
+		bvo.setUserId(uvo.getUserId());
+		
 		System.out.println("vo : " + bvo);
 		model.addAttribute("memberBoard", bvo);
-		UserVO uvo = (UserVO) session.getAttribute("user");
 		
-		if(uvo == null) {
-			return "/Member/login.do";
+		if(uvo.getUserId() == null) {
+			return "redirect:/Member/login.do";
 		}
 		
-		// 전체 페이지 수 구하기
+		// 전체 페이지 수 구하기 - 이게 유저 아이디로 찾아야함 - > 일반 게시판에서는 조건으로 바꿔야함 , 검색 키워드와 유저아이디로
 		p.setTotalRecord(memberBoardService.countBoard(bvo));
+		
 		p.setTotalPage();
 		
 		// 현재 페이지 구하기
@@ -88,6 +93,7 @@ public class MemberBoardController {
 		map.put("userId", uvo.getUserId());
 		map.put("begin", Integer.toString(p.getBegin()));
 		map.put("end", Integer.toString(p.getEnd()));
+		map.put("qnaAdopt", bvo.getQnaAdopt());
 		
 		System.out.println(">>>>> map : " + map);
 
@@ -196,7 +202,7 @@ public class MemberBoardController {
 	
 	// 삭제하기
 	@RequestMapping("/deleteBoard.do")
-	public String viewPage(MemberBoardVO bvo) {
+	public String deleteBoard(MemberBoardVO bvo) {
 		System.out.println(">>> 삭제하기 : " + bvo);
 		
 		memberBoardService.deleteBoard(bvo);
@@ -328,5 +334,62 @@ public class MemberBoardController {
 		System.out.println(BoardList);
 		return "/Member/inquiry.jsp"; // 이동
 	}
+	
+	
+	// 내학습 부분
+	// 내 학습 리스트 보기 - 일반검색
+	@GetMapping("/goMyLectureList.do")
+	public String goMyLectureList(UserVO uvo, HttpSession session, Model model, OrdersDetailVO oov) {
+		System.out.println(">>> 내 학습 리스트 보기로 이동");	
+		uvo = (UserVO) session.getAttribute("user");
+		
+		if (uvo.getUserId() == null) {
+			return "/member/login.do";
+		}
+		
+		oov.setUserId(uvo.getUserId());
+		
+		List<OrdersDetailVO> myOrderDetailList = memberBoardService.goMyLectureList(oov);
+		
+		model.addAttribute("myOrderDetailList", myOrderDetailList);
+		
+		System.out.println("oov : " + oov);
+		System.out.println("myOrderDetailList : " + myOrderDetailList);
+		
+				
+		return "/Member/MemberBoard/MyLectureList.jsp"; // 이동
+	}
+	
+	
+	// 내학습 부분 - ajax 검색
+	// 내 학습 리스트 보기
+	@GetMapping("/goMyLectureListAj.do")
+	@ResponseBody
+	public List<OrdersDetailVO> goMyLectureListAj(UserVO uvo, HttpSession session, Model model, OrdersDetailVO oov) {
+		System.out.println(">>> 내 학습 리스트 보기로 이동");	
+		uvo = (UserVO) session.getAttribute("user");
+				
+		oov.setUserId(uvo.getUserId());
+		
+		List<OrdersDetailVO> myOrderDetailList = memberBoardService.goMyLectureList(oov);
+		
+		model.addAttribute("myOrderDetailList", myOrderDetailList);
+		
+		System.out.println("oov : " + oov);
+		System.out.println("myOrderDetailList : " + myOrderDetailList);
+		
+				
+		return myOrderDetailList;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

@@ -1,6 +1,7 @@
 package com.spring.learn.lecture;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class OfftimetableVO {
 	
@@ -9,8 +10,10 @@ public class OfftimetableVO {
 	private String lectureNo;
 	private String lectureAddress;
 	private int maxSeat;
-	private Date timetableStart;
-	private Date timetableEnd;
+	private Timestamp timetableStart;
+	private Timestamp timetableEnd;
+	private String lecturePastAddress;
+	
 	
 	
 	public String getTimetableNo() {
@@ -37,26 +40,32 @@ public class OfftimetableVO {
 	public void setMaxSeat(int maxSeat) {
 		this.maxSeat = maxSeat;
 	}
-	public Date getTimetableStart() {
+
+	public Timestamp getTimetableStart() {
 		return timetableStart;
 	}
-	public void setTimetableStart(Date timetableStart) {
+	public void setTimetableStart(Timestamp timetableStart) {
 		this.timetableStart = timetableStart;
 	}
-	public Date getTimetableEnd() {
+	public Timestamp getTimetableEnd() {
 		return timetableEnd;
 	}
-	public void setTimetableEnd(Date timetableEnd) {
+	public void setTimetableEnd(Timestamp timetableEnd) {
 		this.timetableEnd = timetableEnd;
 	}
-	
-	
+	public String getLecturePastAddress() {
+		return lecturePastAddress;
+	}
+	public void setLecturePastAddress(String lecturePastAddress) {
+		this.lecturePastAddress = lecturePastAddress;
+	}
 	@Override
 	public String toString() {
 		return "OfftimetableVO [timetableNo=" + timetableNo + ", lectureNo=" + lectureNo + ", lectureAddress="
 				+ lectureAddress + ", maxSeat=" + maxSeat + ", timetableStart=" + timetableStart + ", timetableEnd="
-				+ timetableEnd + "]";
+				+ timetableEnd + ", lecturePastAddress=" + lecturePastAddress + "]";
 	}
+
 
 	
 	

@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+   <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script> -->
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
@@ -20,57 +20,73 @@
     margin-top: 0;
 }
    
+#divView {
+position:absolute;
+display:none;
+background-color:#ffffff;
+border:solid 2px #d0d0d0;
+width:350px;
+height:150px;
+padding:10px;
+}
+  
    </style>
 
    </head>
 
-      <header>
+    <header>
 
-
-  <div class="container">
-
-  <ul class="nav">
+  <ul class="nav mr-auto justify-content-center bg-white" >
+  	<li class="nav-item">
+  			<a href="${pageContext.request.contextPath}/Common/index.jsp"><img src="${pageContext.request.contextPath}/picture/mainlogo.png" alt="mainlogo" width="120px" height="40px"></a>
+  	</li>
     <li class="nav-item">
-<div class="dropdown">
-    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-      온라인
-    </button>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="#">개발 프로그래밍</a>
-      <a class="dropdown-item" href="#">보안 네트워크</a>
-      <a class="dropdown-item" href="#">데이터 사이언스</a>
-    </div>
-  </div>
-</li>
-
-      <li class="nav-item">
-          <div class="dropdown">
-              <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                  오프라인
-              </button>
-              <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">개발 프로그래밍</a>
-                  <a class="dropdown-item" href="#">보안 네트워크</a>
-                  <a class="dropdown-item" href="#">데이터 사이언스</a>
-              </div>
-          </div>
-      </li>
-   
+		<div class="dropdown">
+   			<button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+      			온라인
+    		</button>
+	   		<div class="dropdown-menu">
+				<a class="dropdown-item" href="${pageContext.request.contextPath}/lecture/getOnlineLectureList.do?categoryNo=" class="text-dark">전체</a>
+	   			<c:forEach var="category" items="${categories }">
+	    			<a class="dropdown-item" href="${pageContext.request.contextPath}/lecture/getOnlineLectureList.do?categoryNo=${category.categoryNo }">${category.categoryName }</a>
+			    </c:forEach>
+	    	</div>    
+  		</div>
+	</li>
     <li class="nav-item">
-
-    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-      로드맵
-    </button>
-
-</li>
+		<div class="dropdown">
+   			<button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+      			오프라인
+    		</button>
+	   		<div class="dropdown-menu">
+				<a class="dropdown-item" href="${pageContext.request.contextPath}/lecture/getOfflineLectureList.do?categoryNo=" class="text-dark">전체</a>
+	   			<c:forEach var="category" items="${categories }">
+	    			<a class="dropdown-item" href="${pageContext.request.contextPath}/lecture/getOfflineLectureList.do?categoryNo=${category.categoryNo }">${category.categoryName }</a>
+			    </c:forEach>
+	    	</div>    
+  		</div>
+	</li>
+    <li class="nav-item">
+		<div class="dropdown">
+   			<button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+      			로드맵
+    		</button>
+	   		<div class="dropdown-menu">
+				<a class="dropdown-item" href="${pageContext.request.contextPath}/roadmap/getRoadmapList.do?categoryNo=" class="text-dark">전체</a>
+	   			<c:forEach var="category" items="${categories }">
+	    			<a class="dropdown-item" href="${pageContext.request.contextPath}/roadmap/getRoadmapList.do?categoryNo=${category.categoryNo }">${category.categoryName }</a>
+			    </c:forEach>
+	    	</div>    
+  		</div>
+	</li>
     <li class="nav-item">
  <div class="dropdown">
 <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
       커뮤니티
     </button>
     <div class="dropdown-menu">
-      <a class="dropdown-item" href="${pageContext.request.contextPath}/board/getQnaBoardList.do">질문 & 답변</a>
-      <a class="dropdown-item" href="#">자유주제</a>
+      <a class="dropdown-item" href="${pageContext.request.contextPath}/board/getQnaBoardList.do?section=qboard">질문 & 답변</a>
+      <a class="dropdown-item" href="${pageContext.request.contextPath}/board/getQnaBoardList.do?section=fboard">자유주제</a>
       <a class="dropdown-item" href="${pageContext.request.contextPath}/getNoticeList.do">공지사항</a>
     </div>
     </div>
@@ -144,8 +160,11 @@
 </c:if>
 <c:if test="${not empty user.userId }">
 <li>
-      <button type="button" class="btn"><i class="fas fa-cart-plus fa-lg"></i></button> &nbsp;
-</li>
+					<button type="button" class="btn"
+						onclick="location.href='${pageContext.request.contextPath}/order/myCartGo.do?userId=${user.userId }'">
+						<i class="fas fa-cart-plus fa-lg"></i>
+					</button> &nbsp;
+				</li>
 <li>
     <div class="dropdown">
         <button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/Member/myPage.jsp'"><i class="far fa-user fa-lg"></i></button>
@@ -155,15 +174,20 @@
             <a class="dropdown-item"><small>포인트: ${user.points }점</small></a>
             <a class="dropdown-item"><hr></a>
             <c:if test="${user.grade == '강의자' }">
-                <a class="dropdown-item" href="#">강의자 페이지로 이동</a>
+                <a class="dropdown-item" href="${pageContext.request.contextPath}/Teacher/dashboard.do">강의자 페이지로 이동</a>
                 <a class="dropdown-item"><hr></a>
             </c:if>
             <a class="dropdown-item" href="#">내 학습</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/inquiry.jsp">작성한 게시글</a>
-            <a class="dropdown-item" href="#">좋아요</a>
-            <a class="dropdown-item" href="#">구매내역</a>
-            <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/logout.do">로그아웃</a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/likeGo.do?userId=${user.userId }">좋아요</a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/Order/orderDetailGo.do?userId=${user.userId }">구매내역</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터</a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/logout.do">로그아웃</a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatTest.jsp">실시간 접속자와 채팅</a>
+			<a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatTest2.do?bang_id=${user.userId}&userId=${user.userId}">실시간 상담2(09:00 ~ 18:00)</a>
+			<c:if test="${user.grade == '관리자' }">
+				<a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatGoAdmin.do">관리자 상담 확인하기</a>
+			</c:if>
         </div>
     </div>
     </li>
@@ -175,7 +199,6 @@
 
 
 </ul>
-</div>
 
 
 
@@ -183,3 +206,19 @@
 
 
     </header>
+    
+    	<div class="fixed box" id="inquiry"
+		style="position: fixed; right: 50px; bottom: 30px;">
+		<div class="dropup">
+			<button type="button" class="btn"
+				data-toggle="dropdown">
+				<img style="width: 200px; height: auto;" src="https://cf.channel.io/file/4627/5e6a5d75a92dc24b92e4/deskimage-d800cd849d6339739fcda00ca21eadb9" alt="메롱">
+				</button>
+			<div class="dropdown-menu">
+				<a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatTest.jsp">실시간 상담(09:00 ~ 18:00)</a> 
+				<a class="dropdown-item" href="#">24시 질문 게시판</a>
+			</div>
+		</div>
+		<!-- <button type="button" class="btn" onclick=""><i class="fas fa-cart-plus fa-lg"></i></button> -->
+		<%-- <a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatTest.jsp">1:1채팅하러 가기</a> --%>
+	</div>

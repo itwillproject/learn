@@ -16,4 +16,5 @@ public interface MemberBoardService {
 	void delCallcenterComment(CallcenterCommentVO cvo);
 	List<MemberBoardVO> resolvedCBoardList(MemberBoardVO vo);
 	List<MemberBoardVO> unResolvedCBoardList(MemberBoardVO vo);
+	List<OrdersDetailVO> goMyLectureList(OrdersDetailVO oov);
 }

@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.spring.learn.board.FaqService;
 import com.spring.learn.board.FaqVO;
-import com.spring.learn.board.NoticeService;
-import com.spring.learn.board.NoticeVO;
 
 //@Service : @Component 상속확장 어노테이션
 //비즈니스 로직 처리 서비스 영역에 사용
@@ -25,6 +23,37 @@ public class FaqServiceImpl implements FaqService {
 	public List<FaqVO> getFaqList(FaqVO vo) {
 		return faqDao.getFaqList(vo);
 	}
+
+	@Override
+	public void deleteFaq(FaqVO vo) {
+		faqDao.deleteFaq(vo);
+	}
+
+	@Override
+	public void updateFaq(FaqVO vo) {
+		faqDao.updateFaq(vo);
+		
+	}
+
+	@Override
+	public void insertFaq(FaqVO vo) {
+		faqDao.insertFaq(vo);
+	}
+
+//	@Override
+//	public List<FaqVO> latestInfo() {
+//		return faqDao.latestInfo();
+//	}
+
+//	@Override
+//	public FaqVO getFaq(FaqVO vo) {
+//		return faqDao.getFaq(vo);
+//	}
+
+//	@Override
+//	public List<FaqVO> getFaqListExcept(FaqVO vo) { 
+//		return faqDao.getFaqListExcept(vo);
+//	}
 
 
 	

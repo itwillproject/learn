@@ -34,6 +34,9 @@
 				(SELECT * FROM CALL_CENTER
 					WHERE 1 = 1
 					AND USER_ID = #{userId}
+					<if test="qnaAdopt != null">
+					AND QNA_ADOPT = #{qnaAdopt}
+					</if>		
 					<if test="searchKeyword != null">
 					AND ( QNA_TITLE LIKE '%'|| #{searchKeyword} ||'%'
 					OR QNA_CONTENT LIKE '%'|| #{searchKeyword} ||'%')		
@@ -42,10 +45,44 @@
 		WHERE R_NUM BETWEEN #{begin} AND #{end}
 	</select>
 	
+	<!-- 기존에 있던 것 문제 되면 이야기해서 수정하기 -->
+<!-- 	<select id="getBoardListMap" parameterType="map" resultType="memberBoard"> -->
+<!-- 		SELECT * FROM  -->
+<!-- 			(SELECT ROWNUM R_NUM, B.* from  -->
+<!-- 				(SELECT * FROM CALL_CENTER -->
+<!-- 					WHERE 1 = 1 -->
+<!-- 					AND USER_ID = #{userId} -->
+<!-- 					<if test="searchKeyword != null"> -->
+<!-- 					AND ( QNA_TITLE LIKE '%'|| #{searchKeyword} ||'%' -->
+<!-- 					OR QNA_CONTENT LIKE '%'|| #{searchKeyword} ||'%')		 -->
+<!-- 					</if>		 -->
+<!-- 					ORDER BY QNA_REGDATE DESC) B) -->
+<!-- 		WHERE R_NUM BETWEEN #{begin} AND #{end} -->
+<!-- 	</select>	 -->
+
+
+
+	
 	
 	<select id="countBoard" parameterType="memberBoard" resultType="int">
 		SELECT COUNT(QNA_NO) FROM CALL_CENTER
+		WHERE 1 = 1
+		AND USER_ID = #{userId}
+		<if test="searchKeyword != null">
+		AND ( QNA_TITLE LIKE '%'|| #{searchKeyword} ||'%'
+		OR QNA_CONTENT LIKE '%'|| #{searchKeyword} ||'%')		
+		</if>			
+		<if test="qnaAdopt != null">
+		AND QNA_ADOPT = #{qnaAdopt}
+		</if>	
 	</select>
+	
+	<!-- 기존에 있던 것 문제 되면 이야기해서 수정하기 -->	
+<!-- 	<select id="countBoard" parameterType="memberBoard" resultType="int"> -->
+<!-- 		SELECT COUNT(QNA_NO) FROM CALL_CENTER -->
+<!-- 	</select>	 -->
+	
+	
 	
 	<select id="getBoardList" parameterType="memberBoard" resultType="memberBoard">
 		SELECT * FROM CALL_CENTER
@@ -91,6 +128,80 @@
 		WHERE USER_ID = #{userId} AND QNA_ADOPT = 'FALSE'
 		ORDER BY QNA_REGDATE DESC
 	</select>
+	
+	<select id="goMyLectureList" parameterType="OrdersDetail" resultType="OrdersDetail">
+		SELECT J.LECTURE_NO LECTURE_NO, J.USER_ID USER_ID, ORDER_NO, ORDER_REGDATE,
+		LECTURE_COVERIMG, LECTURE_TITLE, LECTURE_SUMMARY, LECTURE_DUE, LECTURE_RATE,
+		LECTURE_WRITER
+		FROM (
+		 SELECT LECTURE_NO, D.USER_ID USER_ID, D.ORDER_NO ORDER_NO, ORDER_REGDATE, LECTURE_RATE
+		 FROM ORDER_DETAIL D
+		 LEFT JOIN ORDERS O
+		 ON (D.ORDER_NO = O.ORDER_NO)
+		 WHERE D.USER_ID = #{userId}
+		) J LEFT JOIN LECTURE L
+		ON (J.LECTURE_NO = L.LECTURE_NO)
+		WHERE 1 = 1
+		<if test="searchKeyword != null">
+        AND (LECTURE_TITLE LIKE '%'|| #{searchKeyword} ||'%'
+        OR LECTURE_CONTENT LIKE '%'|| #{searchKeyword} ||'%'
+        OR LECTURE_WRITER LIKE '%'|| #{searchKeyword} ||'%')
+        </if>
+        <if test="lectureRate != null">
+       		<if test="lectureRate == 'perfect'">
+       			AND LECTURE_RATE = 100
+       		</if>
+       		<if test="lectureRate == 'ing'">
+       			AND LECTURE_RATE != 100
+       		</if>
+        </if>
+        
+        <choose>
+        	<when test="sorting == null">
+        		ORDER BY ORDER_REGDATE DESC
+        	</when>
+        	
+        	<otherwise>
+	        	<if test="sorting == 'regdate'">
+	        	ORDER BY ORDER_REGDATE DESC
+	        	</if>
+	        	
+	        	<if test="sorting == 'title'">
+	        	ORDER BY LECTURE_TITLE ASC
+	        	</if>
+        	</otherwise>
+        </choose>
+	
+	</select>
+	
+
+	<!-- 관리자 페이지 추가1 -->
+	<select id="latestFalseInfo" resultType="memberBoard">
+		SELECT *
+		FROM (SELECT ROWNUM R_NUM, B.*
+	        FROM (	SELECT *
+	                FROM CALL_CENTER
+                    WHERE QNA_ADOPT = 'FALSE'
+	                ORDER BY QNA_NO DESC
+	             ) B 
+	         )
+         WHERE R_NUM BETWEEN 1 AND 5
+	</select>
+	
+	<!-- 관리자 페이지 추가2 -->
+	<select id="latestFaqInfo" resultType="memberBoard">
+        SELECT *
+		FROM (SELECT ROWNUM R_NUM, B.*
+	        FROM (	SELECT *
+	                FROM CALL_CENTER
+	                 	ORDER BY QNA_NO DESC
+	             ) B 
+	         )
+            WHERE R_NUM BETWEEN 1 AND 5
+	</select>
+
+
+
 	
 	
 </mapper>

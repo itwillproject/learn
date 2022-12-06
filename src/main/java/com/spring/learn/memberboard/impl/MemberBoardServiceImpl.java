@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.spring.learn.memberboard.CallcenterCommentVO;
 import com.spring.learn.memberboard.MemberBoardService;
 import com.spring.learn.memberboard.MemberBoardVO;
+import com.spring.learn.memberboard.OrdersDetailVO;
 
 // UserService
 @Service("memberBoardService")
@@ -77,14 +78,17 @@ public class MemberBoardServiceImpl implements MemberBoardService {
 
 	@Override
 	public List<MemberBoardVO> resolvedCBoardList(MemberBoardVO vo) {
-		// TODO Auto-generated method stub
 		return memberBoardDAO.resolvedCBoardList(vo);
 	}
 
 	@Override
 	public List<MemberBoardVO> unResolvedCBoardList(MemberBoardVO vo) {
-		// TODO Auto-generated method stub
 		return memberBoardDAO.unResolvedCBoardList(vo);
+	}
+
+	@Override
+	public List<OrdersDetailVO> goMyLectureList(OrdersDetailVO oov) {
+		return memberBoardDAO.goMyLectureList(oov);
 	}
 
 

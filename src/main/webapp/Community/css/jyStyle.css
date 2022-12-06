@@ -1,4 +1,16 @@
 <style>	
+
+	a:link {
+		color: black;
+		text-decoration: none;
+	}
+	
+	a:hover {
+		color: black;
+		font-weight: bold;
+		text-decoration: none;
+	}
+	
 	.black-line{
 		border-bottom: 2px solid black;
 	}	
@@ -114,7 +126,12 @@
 	  color: #fff;
 	  font-weight: bold;
 	  border-radius: 10px;
-	}           
+	}       
+	
+	a.disabled{
+		pointer-events: none; /*이벤트를 막음*/
+		cursor: default; /*마우스 커서를 포인트에서 디폴트로 변경*/
+	}    
         
 
 </style>

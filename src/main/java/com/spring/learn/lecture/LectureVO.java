@@ -1,5 +1,7 @@
 package com.spring.learn.lecture;
 
+import java.util.List;
+
 public class LectureVO {
 	
 	private String lectureNo;
@@ -19,6 +21,21 @@ public class LectureVO {
 	private String lectureCoverimg;
 	private String lectureSection; // 슬래시/ 로 구분 ex.스프링입문/스프링이란/스프링의이해 (배열 인덱스 사용)
 	private String lectureOnOff; //0: 온라인 / 1: 오프라인
+	private int isBuy; // 0: 미구매 / 1: 구매 (DB 에는 추가 X)
+	
+	private String lecturePastAddress; //지도 검색용 지번 주소
+	
+	//할인가 필드 변수 
+	private int salePrice; //원가 * 할인가
+	
+	//수강생 수
+	private int studentCount;
+	
+	//수강 평점
+	private double lectureRate;
+	
+	//수강 리뷰 개수
+	private int reviewCount;
 	
 	
 	public String getLectureNo() {
@@ -125,6 +142,49 @@ public class LectureVO {
 	}
 	
 	
+	public double getSalePrice() {
+		return salePrice;
+	}
+	
+	public void setSalePrice() {
+		this.salePrice = 
+			(int)(Integer.valueOf(lecturePrice)-((Integer.valueOf(lecturePrice) * (Integer.valueOf(lectureSalerate)/100.0))));
+	}
+	
+	public int getStudentCount() {
+		return studentCount;
+	}
+	public void setStudentCount(int studentCount) {
+		this.studentCount = studentCount;
+	}
+	
+	public double getLectureRate() {
+		return lectureRate;
+	}
+	public void setLectureRate(double lectureRate) {
+		this.lectureRate = lectureRate;
+	}
+	public int getReviewCount() {
+		return reviewCount;
+	}
+	public void setReviewCount(int reviewCount) {
+		this.reviewCount = reviewCount;
+	}
+	
+	public String getLecturePastAddress() {
+		return lecturePastAddress;
+	}
+	public void setLecturePastAddress(String lecturePastAddress) {
+		this.lecturePastAddress = lecturePastAddress;
+	}
+	
+	public int getIsBuy() {
+		return isBuy;
+	}
+
+	public void setIsBuy(int isBuy) {
+		this.isBuy = isBuy;
+	}
 	
 	@Override
 	public String toString() {
@@ -134,8 +194,21 @@ public class LectureVO {
 				+ ", lectureSummary=" + lectureSummary + ", lectureSalerate=" + lectureSalerate + ", lectureSaledue="
 				+ lectureSaledue + ", lecturePrice=" + lecturePrice + ", lectureRegdate=" + lectureRegdate
 				+ ", lectureCoverimg=" + lectureCoverimg + ", lectureSection=" + lectureSection + ", lectureOnOff="
-				+ lectureOnOff + "]";
+				+ lectureOnOff + ", isBuy=" + isBuy + ", lecturePastAddress=" + lecturePastAddress + ", salePrice="
+				+ salePrice + ", studentCount=" + studentCount + ", lectureRate=" + lectureRate + ", reviewCount="
+				+ reviewCount + "]";
 	}
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
 	
 
 	
