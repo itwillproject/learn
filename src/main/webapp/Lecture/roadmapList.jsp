@@ -65,8 +65,8 @@
 	        dataType: "json",
 	        success : function(data){
 	            
-	        	alert("성공");
-	        	alert(data.p.nowPage); //nowPage는 안 바뀜
+	        	//alert("성공");
+	        	//alert(data.p.nowPage); //nowPage는 안 바뀜
 	            
 	            var dispHTML = "";
 			

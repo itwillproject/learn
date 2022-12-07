@@ -1,6 +1,6 @@
 package com.spring.learn.common;
 
-public class PagingLecRoad {
+public class PagingSK {
 	
 	private int nowPage = 1; //현재 페이지
 	private int nowBlock = 1; //현재 블록

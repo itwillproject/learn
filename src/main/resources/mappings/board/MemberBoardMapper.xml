@@ -33,9 +33,7 @@
 			(SELECT ROWNUM R_NUM, B.* from 
 				(SELECT * FROM CALL_CENTER
 					WHERE 1 = 1
-					<if test='!grade.equals("관리자")'>
 					AND USER_ID = #{userId}
-					</if>
 					<if test="qnaAdopt != null">
 					AND QNA_ADOPT = #{qnaAdopt}
 					</if>		
@@ -69,9 +67,7 @@
 	<select id="countBoard" parameterType="memberBoard" resultType="int">
 		SELECT COUNT(QNA_NO) FROM CALL_CENTER
 		WHERE 1 = 1
-		<if test='!userGrade.equals("관리자")'>
 		AND USER_ID = #{userId}
-		</if>
 		<if test="searchKeyword != null">
 		AND ( QNA_TITLE LIKE '%'|| #{searchKeyword} ||'%'
 		OR QNA_CONTENT LIKE '%'|| #{searchKeyword} ||'%')		

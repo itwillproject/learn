@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.spring.learn.common.PagingLecRoad;
+import com.spring.learn.common.PagingSK;
 import com.spring.learn.lecture.CategoryVO;
 import com.spring.learn.lecture.LectureService;
 import com.spring.learn.lecture.LectureVO;
@@ -54,11 +54,12 @@ public class RoadmapController {
 		
 		//카테고리 이름 찾기
 		String categoryName = lectureService.getCategoryName(categoryNo);
+		model.addAttribute("categoryName", categoryName);
 		//System.out.println(categoryName);
 		
 		
 		//페이징 
-		PagingLecRoad p = paging(categoryName, null, null, page);
+		PagingSK p = paging(categoryName, null, null, page);
 		model.addAttribute("p", p);
 		
 		//카테고리별 로드맵 가져오기
@@ -92,7 +93,7 @@ public class RoadmapController {
 		System.out.println(find.get("page"));
 		
 		
-		PagingLecRoad p = paging(find.get("categoryName"), find.get("searchFilter"), find.get("searchKeyword"), find.get("page"));
+		PagingSK p = paging(find.get("categoryName"), find.get("searchFilter"), find.get("searchKeyword"), find.get("page"));
 		model.addAttribute("p", p);
 		
 		Map<String, String> map = new HashMap<String, String>();
@@ -129,9 +130,9 @@ public class RoadmapController {
 	}
 	
 	
-	public PagingLecRoad paging (String categoryName, String searchFilter, String searchKeyword, String page) {
+	public PagingSK paging (String categoryName, String searchFilter, String searchKeyword, String page) {
 
-		PagingLecRoad p =  new PagingLecRoad();
+		PagingSK p =  new PagingSK();
 		
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("categoryName", categoryName);

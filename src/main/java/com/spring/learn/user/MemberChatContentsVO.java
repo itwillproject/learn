@@ -1,7 +1,9 @@
 package com.spring.learn.user;
 
 public class MemberChatContentsVO {
-	private String chatroomNo, senderId, chatContent, chatRegdate;
+	
+	private String
+	chatroomNo, senderId, chatContent, chatRegdate, chatStatus;
 
 	public String getChatroomNo() {
 		return chatroomNo;
@@ -35,10 +37,19 @@ public class MemberChatContentsVO {
 		this.chatRegdate = chatRegdate;
 	}
 
+	public String getChatStatus() {
+		return chatStatus;
+	}
+
+	public void setChatStatus(String chatStatus) {
+		this.chatStatus = chatStatus;
+	}
+
 	@Override
 	public String toString() {
 		return "MemberChatContentsVO [chatroomNo=" + chatroomNo + ", senderId=" + senderId + ", chatContent="
-				+ chatContent + ", chatRegdate=" + chatRegdate + "]";
+				+ chatContent + ", chatRegdate=" + chatRegdate + ", chatStatus=" + chatStatus + "]";
 	}
 
+	
 }

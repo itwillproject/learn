@@ -139,8 +139,6 @@ public class MemberChatController {
 	// 채팅방 리스트에서 채팅방으로 입장
 	
 	
-	
-	
 }	
 	
 	
