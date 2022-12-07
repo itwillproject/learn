@@ -43,8 +43,14 @@
 	
 	<select id="getLectureTotalCount" parameterType="map" resultType="int">
 		SELECT COUNT(*)
-		FROM ( SELECT L.*, O.LECTURE_PAST_ADDRESS 
-				FROM LECTURE L, (SELECT LECTURE_NO, LECTURE_PAST_ADDRESS FROM OFF_TIMETABLE GROUP BY LECTURE_NO, LECTURE_PAST_ADDRESS) O
+		FROM ( SELECT L.*
+				FROM LECTURE L, (SELECT LECTURE_NO FROM OFF_TIMETABLE 
+								<where>
+									<if test="address != null and address != ''">
+						   				LECTURE_PAST_ADDRESS LIKE #{address}||'%'
+						   			</if>
+								</where>
+								GROUP BY LECTURE_NO) O
 				<where>
 					L.LECTURE_NO = O.LECTURE_NO
 					AND NOT USER_ID IN (SELECT USER_ID FROM USERS WHERE GRADE = '탈퇴')
@@ -61,9 +67,6 @@
 					</if>
 			   		<if test="searchKeyword != null and searchKeyword != ''">
 			   			AND LECTURE_TITLE LIKE '%'||#{searchKeyword}||'%'
-			   		</if>
-			   		<if test="address != null and address != ''">
-			   			AND LECTURE_PAST_ADDRESS LIKE #{address}||'%'
 			   		</if>
 				</where>
 			 ) T
@@ -131,8 +134,13 @@
 	<select id="getLecturesFiltering" parameterType="map" resultType="lecture">
 	SELECT A.*
 	FROM  ( SELECT ROWNUM AS ROW_NUM, T.*
-			FROM (SELECT L.*, O.LECTURE_PAST_ADDRESS 
-					FROM LECTURE L, (SELECT LECTURE_NO, LECTURE_PAST_ADDRESS FROM OFF_TIMETABLE GROUP BY LECTURE_NO, LECTURE_PAST_ADDRESS) O
+			FROM (SELECT L.*
+					FROM LECTURE L, (SELECT LECTURE_NO FROM OFF_TIMETABLE
+									<if test="address != null and address != ''">
+						   				WHERE LECTURE_PAST_ADDRESS LIKE #{address}||'%'
+						   			</if>
+									GROUP BY LECTURE_NO
+									) O
 					<where>
 						L.LECTURE_NO = O.LECTURE_NO
 						AND NOT USER_ID IN (SELECT USER_ID FROM USERS WHERE GRADE = '탈퇴')
@@ -149,9 +157,6 @@
 						</if>
 				   		<if test="searchKeyword != null and searchKeyword != ''">
 				   			AND L.LECTURE_TITLE LIKE '%'||#{searchKeyword}||'%'
-				   		</if>
-				   		<if test="address != null and address != ''">
-				   			AND O.LECTURE_PAST_ADDRESS LIKE #{address}||'%'
 				   		</if>
 					</where>
 					<trim prefix="ORDER BY">

@@ -10,6 +10,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="${pageContext.request.contextPath }/Admin/css/adminHeader.css" rel="stylesheet" type="text/css">
 <style>
+	.dropdown:hover .dropdown-menu {
+	    display: block;
+	    margin-top: 0;
+	}
 	.sticky{
 	    background-color: yellow;
 	    position:sticky;
@@ -20,10 +24,18 @@
 <body>
 <div class="sticky">
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-	  <a class="navbar-brand" href="${pageContext.request.contextPath }/Admin/adminIndex.jsp"><img src="${pageContext.request.contextPath}/picture/mainlogo2.png" alt="mainlogo" width="120px" height="40px"></a>
+	  <a class="navbar-brand" href="${pageContext.request.contextPath }/admin/adminIndex.do"><img src="${pageContext.request.contextPath}/picture/mainlogo2.png" alt="mainlogo" width="120px" height="40px"></a>
 	  <ul class="navbar-nav">
 	    <li class="nav-item">
-	      <a class="nav-link" href="#">고객관리</a>
+		 	<div class="dropdown">
+				<button type="button" class="btn dropdown-toggle" data-toggle="dropdown"  style="color:white;">
+			      고객관리
+			    </button>
+			    <div class="dropdown-menu">
+			      <a class="dropdown-item" href="${pageContext.request.contextPath }/Admin/adminJoiner.jsp">가입자 통계</a>
+			      <a class="dropdown-item" href="${pageContext.request.contextPath }/Admin/sendMessage.jsp">메일링</a>
+			    </div>
+		    </div>
 	    </li>
 	    <li class="nav-item">
 	      <a class="nav-link" href="${pageContext.request.contextPath }/latestInfo.do">CS관리</a>
@@ -35,7 +47,7 @@
 	      	      <a class="nav-link" href="${pageContext.request.contextPath}/getFalseReport.do">신고관리</a>
 	    </li>
 	    <li class="nav-item">
-	      <a class="nav-link" href="#">매출관리</a>
+	      <a class="nav-link" href="${pageContext.request.contextPath }/admin/adminRevenue.do">매출관리</a>
 	    </li>
 	    <li class="nav-item">
 	    	<a class="nav-link" href="${pageContext.request.contextPath}/Admin/chatGoAdmin.do">관리자 상담 확인하기</a>

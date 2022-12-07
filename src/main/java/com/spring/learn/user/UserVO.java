@@ -3,7 +3,7 @@ package com.spring.learn.user;
 import java.sql.Date;
 
 public class UserVO {
-	private String userId, grade, userName, userPwd, userBirth, socialType;
+	private String userId, grade, userName, userPwd, userBirth, socialType, userIntro;
 	private int points;
 	private Date userRegdate;
 	
@@ -56,12 +56,22 @@ public class UserVO {
 	public void setSocialType(String socialType) {
 		this.socialType = socialType;
 	}
+	
+	
+	public String getUserIntro() {
+		return userIntro;
+	}
+	public void setUserIntro(String userIntro) {
+		this.userIntro = userIntro;
+	}
+	
 	@Override
 	public String toString() {
 		return "UserVO [userId=" + userId + ", grade=" + grade + ", userName=" + userName + ", userPwd=" + userPwd
-				+ ", userBirth=" + userBirth + ", socialType=" + socialType + ", points=" + points + ", userRegdate="
-				+ userRegdate + "]";
+				+ ", userBirth=" + userBirth + ", socialType=" + socialType + ", userIntro=" + userIntro + ", points="
+				+ points + ", userRegdate=" + userRegdate + "]";
 	}
+	
 
 	
 

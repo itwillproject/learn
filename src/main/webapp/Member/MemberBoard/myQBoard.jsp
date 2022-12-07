@@ -1,12 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>글상세페이지</title>
-
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
@@ -78,27 +76,14 @@
 
 </head>
 <body>
+	<%@include file="/Common/header.jsp" %>
 
-<%-- <c:if test="${user.grade eq '관리자'}">
-<jsp:include page="/Admin/common/adminHeader.jspf"/>
-</c:if>
-<c:if test="${user.grade ne '관리자'}">
-<jsp:include page ="/Common/header.jsp"/>
-</c:if> --%>
-
-	<jsp:include page ="/Common/header.jsp"/>
-	
 	<div class="container-fluid mt-5 pb-3 d-flex justify-content-center">
 		<div class="row w-100 pb-4 justify-content-center">
 			
 			<!-- 왼쪽 네비 -->
 			<div class="col-2 d-flex justify-content-center">
-				<c:if test="${user.grade eq '관리자'}">
-				<a href="${pageContext.request.contextPath}/memberBoard/getMyQBoardListM.do" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
-				</c:if>
-				<c:if test="${user.grade ne '관리자'}">
 				<a href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
-				</c:if>
 			</div>
 
 			<!-- 중앙 위 내용 - 글내용 -->
@@ -166,9 +151,8 @@
 	<div class="container-fluid py-5"  style="background-color: #F8F9FA;">
 
 		<!-- 여기서부터 입력부분은 질문게시판(관리) 쪽은 관리자만 답변 할 수 있도록 해야 한다 -->
-		<c:if test="${user.grade eq '관리자'}">
-		<div class="row w-50 border mx-auto rounded bg-white px-3 py-5" >
 		
+		<div class="row w-50 border mx-auto rounded bg-white px-3 py-5" >
 			<div class="w-100 mb-3 ml-3 text-editor-block d-flex align-items-center">
 				<div class="ml-3">
 					<img class="mr-2" style="height: 60px" src="${pageContext.request.contextPath}/Community/img/aaa.png">
@@ -194,7 +178,7 @@
 				</form>
 			</div>
 		</div>
-		</c:if>
+		
 
 		<!-- 답변 몇개인, 글 정렬 옵션-->
 		<div class="w-75 d-flex flex-row justify-content-center mx-auto mt-4 p-3">

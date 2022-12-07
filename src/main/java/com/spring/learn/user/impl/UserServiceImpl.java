@@ -125,4 +125,9 @@ public class UserServiceImpl implements UserService {
 		userDAO.updateUserLecture(vo);
 	}
 
+	@Override
+	public void updateUserIntro(UserVO vo) {
+		userDAO.updateUserIntro(vo);
+	}
+
 }

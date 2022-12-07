@@ -82,7 +82,7 @@
 		        contentType : "application/json",
 		        dataType: "json",
 		        success : function(data){
-		            alert("성공");
+		            //alert("성공");
 		            console.log(data);
 		            
 		            let dispHtml = "";

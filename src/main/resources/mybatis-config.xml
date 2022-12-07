@@ -17,10 +17,6 @@
 		<typeAlias alias="CallcenterComment" type="com.spring.learn.memberboard.CallcenterCommentVO"/>	
 		<typeAlias alias="boardComment" type="com.spring.learn.board.BoardCommentVO"/>	
 		<typeAlias alias="qnaLike" type="com.spring.learn.board.QnaLikeVO"/>
-		<typeAlias alias="memberChatRoomList" type="com.spring.learn.user.MemberChatRoomListVO"/>
-		<typeAlias alias="memberChatContents" type="com.spring.learn.user.MemberChatContentsVO"/>
-		
-		
 		<!-- ===================================== -->
 		
 		
@@ -44,6 +40,7 @@
 		<typeAlias alias="faqVO" type="com.spring.learn.board.FaqVO"/>
 		<typeAlias alias="lectureNewsVO" type="com.spring.learn.lecture.LectureNewsVO"/>
 		<typeAlias alias="reportResultVO" type="com.spring.learn.board.ReportResultVO"/>
+		<typeAlias alias="homeVO" type="com.spring.learn.home.HomeVO"/>
 		<!-- ========================== -->
 	
 		<typeAlias alias="roadmap" type="com.spring.learn.roadmap.RoadmapVO"/>
@@ -54,6 +51,11 @@
 		<typeAlias alias="lectureComment" type="com.spring.learn.lecture.LectureCommentVO"/>
 		<typeAlias alias="lectureCommentReply" type="com.spring.learn.lecture.LectureReviewCommentVO"/>
 		
+		
+		<!-- 수경 admin 추가 -->
+		<typeAlias alias="revenueDetail" type="com.spring.learn.admin.AdminRevenueDatailVO"/>
+		<typeAlias alias="revenue" type="com.spring.learn.admin.RevenueVO"/>
+		<typeAlias alias="joiner" type="com.spring.learn.admin.JoinerVO"/>
 	
 	</typeAliases>
 			

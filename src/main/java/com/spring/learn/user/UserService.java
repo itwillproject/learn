@@ -41,5 +41,6 @@ public interface UserService {
 	//강의자 신청 승인을 위한 기능
 	void updateUserLecture(UserVO vo);
 
+	void updateUserIntro(UserVO vo);
 	
 }
