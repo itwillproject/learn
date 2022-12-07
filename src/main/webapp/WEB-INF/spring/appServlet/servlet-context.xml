@@ -34,4 +34,10 @@
         <websocket:sockjs websocket-enabled="true" />
 	</websocket:handlers>
 	<bean id="handlerChat" class="com.spring.learn.echo.HandlerChat"></bean>
+	
+	<websocket:handlers>
+		<websocket:mapping handler="memberChatHandler" path="/memberChat" />
+        <websocket:sockjs websocket-enabled="true" />
+	</websocket:handlers>
+	<bean id="memberChatHandler" class="com.spring.learn.echo.memberChatHandler"></bean>
 </beans>

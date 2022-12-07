@@ -11,18 +11,24 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.js"></script>
 	<script type="text/javascript">
 	
+		function timeCal(){
+			var today = new Date();   
+
+			var hours = ('0' + today.getHours()).slice(-2); 
+			var minutes = ('0' + today.getMinutes()).slice(-2);
+
+			var timeString = hours + ':' + minutes;
+			
+			return timeString;
+		}
+	
 	
 		var webSocket = {
+				
 			init: function(param) {
 				this._url = param.url;
 				this._initSocket();
-				
-				
-				
-				
 			},
-			
-			
 			
 			
 			sendChat: function() {
@@ -31,69 +37,53 @@
 					return false;
 				}
 				
+				var ChatroomNo = "${memberChatRoomList.chatroomNo}";
+				var SenderId = "${user.userId}";
+				var ChatContent = $('#message').val();
 				
-				var content2 = $('#message').val();
-				var userId2 = "${user.userId}";
-				var typeVl = null;
-				var bang_id2 = "${param.bang_id}";
+				sendMessages = {
+						chatroomNo : ChatroomNo,
+						senderId :  SenderId,
+						chatContent : ChatContent
+				};
 				
-				
-				
-				
-				
-				
-				
-				typeVl = {
-						userId : bang_id2,
-						content : content2,
-						sendId : userId2
-					};
-						$.ajax({
-							url : "${pageContext.request.contextPath }/admin/updateContent.do",
-							data : typeVl,
-							type : "post",
-							async : false,
+				$.ajax({
+					url : "${pageContext.request.contextPath }/memberChat/sendMessage.do",
+					data : sendMessages,
+					type : "post",
+					async : false,
 
-							success : function(data) {
-								console.log("업데이트 성공");
-								
-							},
-							error : function() {
-								console.log("실패");
-							}
-						});
+					success : function(data) {
+						console.log("업데이트 성공");
 						
+					},
+					error : function() {
+						console.log("실패");
+					}
+				});
 						
-				this._sendMessage('${param.bang_id}', 'CMD_MSG_SEND', $('#message').val());
 				// this._sendMessage 하기 전에 컨텐트 내용 업데이트 하기
-				
-				
-				
+				var time = timeCal();
+				this._sendMessage('${memberChatRoomList.chatroomNo}', 'CMD_MSG_SEND', $('#message').val(), '${user.userName}', time);
 				
 			},
-			
 			
 			
 			sendEnter: function() {
-				
-				
-				
-				
-				this._sendMessage('${param.bang_id}', 'CMD_ENTER', $('#message').val());
+				var time = timeCal();
+				this._sendMessage('${memberChatRoomList.chatroomNo}', 'CMD_ENTER', $('#message').val(), '${user.userName}', time);
 				$('#message').val('');
 				
-				
-				
-				
 			},
+			
+			
 			receiveMessage: function(msgData) {
-				
-				
-				
 				
 				var myMsg = $('#message').val();
 				console.log(myMsg);
 				console.log(msgData.msg);
+				
+				console.log(msgData);
 				
 				
 				// 정의된 CMD 코드에 따라서 분기 처리
@@ -101,6 +91,7 @@
 					if(msgData.cmd == 'CMD_MSG_SEND') {		
 						var str = "<div class='col-10' style='text-align: right;'>";
 						str += "<div class='alert alert-success'>";
+						str += "<div><b>" + msgData.userName + "</b> (" + msgData.time +")</div>";
 						str += "<div>" + msgData.msg + "</div></div></div>";
 						$('#divChatData').append(str);
 					}
@@ -108,6 +99,7 @@
 					if(msgData.cmd == 'CMD_MSG_SEND') {		
 						var str = "<div class='col-10' style='text-align: left;'>";
 						str += "<div class='alert alert-warning'>";
+						str += "<div><b>" + msgData.userName + "</b></div>";
 						str += "<div>" + msgData.msg + "</div></div></div>";
 						$('#divChatData').append(str);
 					}
@@ -131,41 +123,23 @@
 				
 				$("#mydiv").scrollTop($("#mydiv")[0].scrollHeight);
 				
-				
-				
-				
-				
 			},
+			
+			
+			
 			closeMessage: function(str) {
-				
-				
-				
-				
 				
 				$('#divChatData').append('<div>' + '연결 끊김 : ' + str + '</div>');
 				$("#mydiv").scrollTop($("#mydiv")[0].scrollHeight);
 				
-				
-				
-				
-				
 			},
 			disconnect: function() {
 				
-				
-				
-				
 				this._socket.close();
-				
-				
-				
 				
 			},
 			
 			_initSocket: function() {
-				
-				
-				
 				
 				this._socket = new SockJS(this._url);
 				this._socket.onopen = function(evt) {
@@ -175,45 +149,34 @@
 					webSocket.receiveMessage(JSON.parse(evt.data));
 				};
 				this._socket.onclose = function(evt) {
-					webSocket.closeMessage(JSON.parse(evt.data));
+// 					webSocket.closeMessage(JSON.parse(evt.data));
 				}
 				
-				
-				
-				
-				
 			},
-			_sendMessage: function(bang_id, cmd, msg) {
-				
-				
-				
-				
+			
+			_sendMessage: function(bang_id, cmd, msg, userName, time) {
 				
 				var msgData = {
 						bang_id : bang_id,
 						cmd : cmd,
-						msg : msg
+						msg : msg,
+						userName : userName,
+						time : time
 				};
 				var jsonData = JSON.stringify(msgData);
 				this._socket.send(jsonData);
-				
-				
-				
-				
-				
 			}
 		};
+		
+		
+		
 	</script>	
 	<script type="text/javascript">
+	
+	
         $(window).on('load', function () {
         	
-        	
-        	
-        	
-			webSocket.init({ url: '<c:url value="/chat" />' });	
-			
-			
-			
+			webSocket.init({ url: '<c:url value="/memberChat" />' });	
 			
 		});
         
@@ -233,29 +196,59 @@
 	</div>
 	<div class="container">
 			<div class="col-12 justify-content-center" style='text-align: center; flex-direction:column_reverse; color: green; '>
-				<h2>인프런에 문의하기</h2>
+				<h2>
+				<c:choose>
+					<c:when test="${user.userId != memberChatRoomList.senderId } ">
+						${memberChatRoomList.senderName }님과의 채팅방
+					</c:when>
+					<c:otherwise>
+						${memberChatRoomList.receiverName }님과의 채팅방
+					</c:otherwise>
+				</c:choose>
+				</h2>
 				<div style="color: gray;"></div>
-				<p>성장 기회의 평등</p>
-				<p>궁금한 점은 언제든지 문의해주세요.</p>
+				<p>성장 기회의 평등 평화로운 채팅되세요</p>
 			</div>
 			<div class="col-12 justify-content-center" id="mydiv" style="overflow-y: scroll; height:600px; overflow: auto;">
 				<div id="divChatData" class="">
 				
 				
-					<c:if test="${not empty contentList}">
-						<c:forEach var="contentList" items="${contentList }">
-							<c:if test="${contentList.sendId == user.userId}">
+					<c:if test="${not empty memberChatContents}">
+						<c:forEach var="contentList" items="${memberChatContents }">
+							<c:if test="${contentList.senderId == user.userId}">
+
 								<div class='col-10' style='text-align: right;'>
 									<div class='alert alert-success'>
-										<div>${contentList.content }</div>
+										<div>
+											<c:choose>
+												<c:when test="${memberChatRoomList.senderId == user.userId}">
+													<b>${memberChatRoomList.senderName} </b> (${contentList.chatRegdate.substring(0,16)})
+												</c:when>
+												<c:otherwise>
+													<b>${memberChatRoomList.receiverName}</b> (${contentList.chatRegdate.substring(0,16)})
+												</c:otherwise>
+											</c:choose>
+										</div>									
+										<div>${contentList.chatContent }</div>
 									</div>
 								</div>
+								
 							</c:if>
 							
-							<c:if test="${contentList.sendId != user.userId}">
+							<c:if test="${contentList.senderId != user.userId}">
 								<div class='col-10' style='text-align: left;'>
 									<div class='alert alert-warning'>
-										<div>${contentList.content }</div>
+										<div>
+											<c:choose>
+												<c:when test="${memberChatRoomList.senderId != user.userId}">
+													<b>${memberChatRoomList.senderName}</b> (${contentList.chatRegdate.substring(0,16)})
+												</c:when>
+												<c:otherwise>
+													<b>${memberChatRoomList.receiverName}</b> (${contentList.chatRegdate.substring(0,16)})
+												</c:otherwise>
+											</c:choose>
+										</div>										
+										<div>${contentList.chatContent }</div>
 									</div>
 								</div>
 							</c:if>
@@ -267,17 +260,21 @@
 				
 				</div>
 			</div>
+			<br>
 			<div class="col-12 justify-content-center"><!--  style="position: absolute; bottom: 5%;" -->
 					<div class="row">
 						<div class="col-11">
-							<input type="text" id="message" class="form-control" style="width: 100%;"
+							<input type="text" placeholder="메세지를 입력해주세요" id="message" class="form-control" style="width: 100%;"
 							onkeypress="if(event.keyCode==13){webSocket.sendChat();}" />
 						</div>
-						<div class="col-1">
-							<input type="button" id="btnSend" value="전송" onclick="webSocket.sendChat()" />
-						</div>
+<!-- 						<div class="col-1"> -->
+<!-- 							<input type="button" id="btnSend" value="전송" onclick="webSocket.sendChat()" /> -->
+<!-- 						</div> -->
 					</div>
 			</div>
+			<br>
+			<br>
+			
 			<div class="col-6"></div>
 		</div>
 </body>

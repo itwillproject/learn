@@ -54,5 +54,21 @@ public class MemberChatServiceImpl implements MemberChatService {
 	public List<MemberChatContentsVO> getMemberChatContents(MemberChatRoomListVO mcrlvo) {
 		return memberChatDAO.getMemberChatContents(mcrlvo);
 	}
+
+	@Override
+	public void addMemberChatContents(MemberChatContentsVO memberChatContents) {
+		memberChatDAO.addMemberChatContents(memberChatContents);
+	}
+
+	@Override
+	public void updateMemberChatList(MemberChatContentsVO memberChatContents) {
+		memberChatDAO.updateMemberChatList(memberChatContents);
+	}
+
+	@Override
+	public List<MemberChatRoomListVO> getMemberChatList(UserVO uvo) {
+		
+		return memberChatDAO.getMemberChatList(uvo);
+	}
 	
 }

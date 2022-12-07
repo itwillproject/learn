@@ -11,8 +11,11 @@ public interface MemberChatService {
 	String getName(String senderId);
 
 	List<MemberChatContentsVO> getMemberChatContents(MemberChatRoomListVO mcrlvo);
-	
-		
-	
+
+	void addMemberChatContents(MemberChatContentsVO memberChatContents);
+
+	void updateMemberChatList(MemberChatContentsVO memberChatContents);
+
+	List<MemberChatRoomListVO> getMemberChatList(UserVO uvo);
 	
 }

@@ -55,8 +55,8 @@
 </head>
 <%@include file ="/Common/header.jsp" %>
 <br><br>
-<!-- <a href="getLecture.do?lectureNo=10">오프라인</a><br>
-<a href="getLecture.do?lectureNo=3">온라인</a> -->
+<a href="getLecture.do?lectureNo=10">오프라인</a><br>
+<a href="getLecture.do?lectureNo=3">온라인</a>
 
 <%-- 배너부분 --%>
 <div class="slide slide_wrap">

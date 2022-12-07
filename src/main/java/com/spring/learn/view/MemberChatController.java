@@ -3,6 +3,7 @@ package com.spring.learn.view;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,9 +55,9 @@ public class MemberChatController {
 		System.out.println(">> MemberChatController() 생성");
 	}
 	
-	// 채팅방 입장
+	// 채팅방 입장 - 아이디 클릭햇을 때
 	@RequestMapping("/memberChatRoom.do")
-	public String view_chat(MemberChatRoomListVO mcrlvo, Model model) throws Exception {
+	public String view_chat(MemberChatRoomListVO mcrlvo, Model model) {
 		
 		System.out.println("채팅방 입장하니?");
 		System.out.println("mcrlvo : " + mcrlvo);
@@ -94,18 +95,53 @@ public class MemberChatController {
 		model.addAttribute("memberChatContents", memberChatContents);
 		
 		return "/Member/Detail/memberChatRoom.jsp";
+		
 	}
 	
 
 	
 	
+	// 채팅 입력시 ajax로 인서트와 업데이트 동시 진행
+	@PostMapping("/sendMessage.do")
+	@ResponseBody
+	public String sendMessage(MemberChatContentsVO memberChatContents, Model model) {
+		
+		// 에이젝스로 들어온 
+		System.out.println("sendMessage() 로 들어옴 : " + memberChatContents);
+		
+		// MEMBER_CHAT_ROOM_LIST 에 입력
+		memberChatService.addMemberChatContents(memberChatContents);
+		
+		
+		// MEMBER_CHAT_CONTENTS 에 업데이트
+		memberChatService.updateMemberChatList(memberChatContents);
+		
+		return "성공";
+	}	
 	
 	
 	
 	
+	// 채팅방 리스트 - 아이디 클릭햇을 때
+	@RequestMapping("/memberChatListGo.do")
+	public String memberChatListGo(UserVO uvo, Model model) {
+		
+		
+		//리스트 불러오기
+		List<MemberChatRoomListVO> memberChatList = memberChatService.getMemberChatList(uvo); 
+		
+		model.addAttribute("memberChatList", memberChatList);
+		
+		
+		return "/Member/Detail/memberChatList.jsp";
+	}
+	
+	// 채팅방 리스트에서 채팅방으로 입장
 	
 	
 	
+	
+}	
 	
 	
 	
@@ -115,4 +151,4 @@ public class MemberChatController {
 
 	
 	
-}
+

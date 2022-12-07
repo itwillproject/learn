@@ -39,8 +39,34 @@
 	<select id="getMemberChatContents" parameterType="memberChatRoomList" resultType="memberChatContents">
 		SELECT * FROM MEMBER_CHAT_CONTENTS
 		WHERE CHATROOM_NO = #{chatroomNo}
+		ORDER BY CHAT_REGDATE ASC
 	</select>
 	
+	
+	<insert id="addMemberChatContents" parameterType="memberChatContents">
+		INSERT INTO MEMBER_CHAT_CONTENTS
+		(CHATROOM_NO, SENDER_ID, CHAT_CONTENT)
+		VALUES
+		(#{chatroomNo}, #{senderId}, #{chatContent})
+	</insert>
+	
+	<update id="updateMemberChatList" parameterType="memberChatContents">
+		UPDATE MEMBER_CHAT_ROOM_LIST
+		SET CHAT_CONTENTS = #{chatContent},CHAT_REGDATE = SYSDATE,LAST_CHATER = #{senderId}
+		WHERE CHATROOM_NO = #{chatroomNo}
+	</update>
+	
+	<select id="getMemberChatList" parameterType="userVO" resultType="memberChatRoomList">
+		SELECT * FROM
+		(SELECT * FROM MEMBER_CHAT_ROOM_LIST
+		WHERE
+		SENDER_ID = #{userId}
+		UNION		
+		SELECT * FROM MEMBER_CHAT_ROOM_LIST
+		WHERE
+		RECEIVER_ID = #{userId})
+		ORDER BY CHAT_REGDATE DESC
+	</select>
 	
 </mapper>
 
