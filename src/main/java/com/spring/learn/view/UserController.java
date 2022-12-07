@@ -1,28 +1,24 @@
 package com.spring.learn.view;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.support.RequestPartServletServerHttpRequest;
 
-import com.spring.learn.lecture.LectureVO;
+import com.spring.learn.lecture.LectureService;
 import com.spring.learn.user.LikeVO;
 import com.spring.learn.user.MailSendService;
 import com.spring.learn.user.UserService;
@@ -37,38 +33,8 @@ public class UserController {
 	private MailSendService mailService;
 	@Autowired
 	private UserService userService;
-	
-	// 멤버 디테일로 이동
-	@RequestMapping("/memberDetail.do")
-	public String memberDetail(UserVO uvo, Model model) {
-			System.out.println(">>> 멤버디테일 페이지로 이동  입력 lvo :" + uvo);
-			
-			// 유저아이디로  찾아서 uvo를 (유저디테일이란 이름으로) 보내야 한다
-			uvo = userService.confirmUser(uvo);
-			model.addAttribute("userDetail", uvo);
-			
-			// 유저아이디로 강의목록 보내야 한다
-			
-			// 유저아이디로 수강후기 보내야 한다 - 두렬씨랑 나중에 이야기 하기
-			
-			// 유저아이디로 게시글 목록 보내야 한다
-			
-			// 유저에 자기 소개 파트 넣어야 한다 - 컬럼 추가 -> VO 추가?? 이건 나중에 생각하기 / 문제 생김 - 인서트에 올 넣는 경우 있어서, 컬럼 추가가 문제 된다고 함... 이거 어떻게?
-			
-			
-			
-			
-			return "/Member/Detail/merberDetail.jsp";
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+    @Autowired
+    private LectureService lectureService;
 
 	@RequestMapping("/insertUser.do")
 	public String insertUser(@ModelAttribute UserVO vo) {
@@ -137,9 +103,9 @@ public class UserController {
 			UserVO vo2 = userService.getUser(vo);
 			session.setAttribute("user", vo2);
 			if (vo2.getGrade().equals("관리자")) {
-				str = "/Admin/adminIndex.jsp"; //회원등급이 관리자일 경우 관리자 페이지로 전환
+				str = "/Admin/adminIndex.do"; //회원등급이 관리자일 경우 관리자 페이지로 전환
 				} else { 
-					str = "/Common/index.jsp";
+					str = "/common/main.do";
 				}
 			} else {
 				System.out.println(">> 로그인 실패~~~");
@@ -183,7 +149,7 @@ public class UserController {
 	  
 	  @RequestMapping("/logout.do") public String logout(HttpSession session) {
 		  System.out.println(">> 로그아웃 처리"); session.invalidate();
-		  return "/Common/index.jsp";
+		  return "/common/main.do";
 	  }
 	  
 	//현재 Id 체크
@@ -409,4 +375,41 @@ public class UserController {
 	}
 	//==============================
 	
+	
+	@RequestMapping("/goToPersonalPage.do")
+	public String PersonalPage(UserVO vo, Model model) {
+		
+		//사용자 페이지를 위한
+		UserVO person = userService.findUserId(vo); //아이디로 유저 정보 가져오기
+		model.addAttribute("person", person);
+		
+		System.out.println(person.getGrade());
+		
+		if (person.getGrade().equals("강의자")) {
+	        // 총 수강생 수
+	        Integer studentCnt = lectureService.getStudentCount(person.getUserName());
+	        model.addAttribute("studentCnt", studentCnt);
+	        
+	        // 평균 평점
+	        String lectureRate = String.format("%.2f", lectureService.getLectureAvgRate(person.getUserName()));
+	        model.addAttribute("lectureRate", lectureRate);
+	        
+			return "/Member/userPage.jsp";		
+			
+		} else {
+			return "/Member/userGeneralPage.jsp";
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping("/editUserIntro.do")
+	public Map<String, String> UserIntro(UserVO vo, HttpSession session) {
+		Map<String, String> map = new HashMap<>();
+		System.out.println(vo);
+		userService.updateUserIntro(vo);
+		session.setAttribute("user", userService.getUser((UserVO)session.getAttribute("user")));
+		System.out.println((UserVO)session.getAttribute("user"));
+		map.put("intro", ((UserVO)session.getAttribute("user")).getUserIntro());
+		return map;
+	}
 }

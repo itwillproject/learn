@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.spring.learn.common.PagingLecRoad;
+import com.spring.learn.common.PagingSK;
 import com.spring.learn.lecture.CategoryVO;
 import com.spring.learn.lecture.ClassService;
 import com.spring.learn.lecture.LectureService;
@@ -55,7 +55,7 @@ public class LectureController {
 
 		model.addAttribute("categoryName", categoryName);						
 		
-		PagingLecRoad p = paging(categoryName, page, "on"); //off라인은 off
+		PagingSK p = paging(categoryName, page, "on"); //off라인은 off
 		model.addAttribute("p", p);
 		
 		Map<String, String> search = new HashMap();
@@ -96,7 +96,7 @@ public class LectureController {
 
 		model.addAttribute("categoryName", categoryName);						
 		
-		PagingLecRoad p = paging(categoryName, page, "off"); //off라인은 off
+		PagingSK p = paging(categoryName, page, "off"); //off라인은 off
 		model.addAttribute("p", p);
 		
 		Map<String, String> search = new HashMap();
@@ -126,9 +126,9 @@ public class LectureController {
 	
 	
 	
-	public PagingLecRoad paging (String categoryName, String page, String onoff) {
+	public PagingSK paging (String categoryName, String page, String onoff) {
 		
-		PagingLecRoad p =  new PagingLecRoad();
+		PagingSK p =  new PagingSK();
 		
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("onoff", onoff);

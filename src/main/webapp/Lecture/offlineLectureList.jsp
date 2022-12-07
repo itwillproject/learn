@@ -71,7 +71,7 @@
 	        dataType: "json",
 	        success : function(data){
 	            
-	        	alert("성공");
+	        	//alert("성공");
 	        	console.log(data);
 	        	
 	        	
@@ -81,7 +81,7 @@
 	        		
 	            } else {
 	            	
-	            	alert(data.length);
+	            	//alert(data.length);
 					
 	            	$.each(data, function(index, obj){
 
@@ -100,7 +100,7 @@
 
 	        			        // 인포윈도우로 장소에 대한 설명을 표시합니다
 	        			        var infowindow = new kakao.maps.InfoWindow({
-	        			            content: '<div style="padding:5px; width:200px;"><small><b>'+obj.lectureTitle+'</b></small><br><a href="https://map.kakao.com/link/map/강의 이름,37.4953666908089,127.03306536185" style="text-decoration:none; font-weight-bold;" target="_blank">상세정보보기</a></div>',
+	        			            content: '<div style="padding:5px; width:200px;"><small><b>'+obj.lectureTitle+'</b></small><br><a href="${pageContext.request.contextPath}/Member/getLecture.do?lectureNo='+obj.lectureNo+'" style="text-decoration:none; font-weight-bold;" target="_blank">상세정보보기</a></div>',
 	        			            removable : true
 	        			        });
 								
@@ -245,7 +245,7 @@
 		find.address = address;
 	 	
 	 	console.log(JSON.stringify(find));
-	 	alert();
+	 	//alert();
 	 	
 		$.ajax(url, {
 			
@@ -255,7 +255,7 @@
 	        dataType: "json",
 	        success : function(data){
 	            
-	        	alert("성공");
+	        	//alert("성공");
 	
 	            var dispHTML = "";
 	
@@ -293,7 +293,7 @@
 				            dispHTML += '<span class="font-weight-bold h5">&#8361;'+this.lecturePrice+'</span>';			            	
 			            }
 			            dispHTML += '</p>';
-			            dispHTML += '<a href="${pageContext.request.contextPath}/Lecture/lectureDetail.jsp?lectureNo='+this.lectureNo+'" class="stretched-link"></a>';
+			            dispHTML += '<a href="${pageContext.request.contextPath}/Member/getLecture.do?lectureNo='+this.lectureNo+'" class="stretched-link"></a>';
 			            dispHTML += '<span class="badge badge-success">+'+this.studentCount+'명</span>';
 			            dispHTML += '</div>';
 			            
@@ -508,7 +508,7 @@
 												</p>										
 											</c:otherwise>
 										</c:choose>
-								      	<a href="${pageContext.request.contextPath}/Lecture/lectureDetail.jsp?lectureNo=${lecture.lectureNo }" class="stretched-link"></a>
+								      	<a href="${pageContext.request.contextPath}/Member/getLecture.do?lectureNo=${lecture.lectureNo }" class="stretched-link"></a>
 								  		<span class="badge badge-success">+${lecture.studentCount }명</span>
 								  	</div>
 								    <div class="info">

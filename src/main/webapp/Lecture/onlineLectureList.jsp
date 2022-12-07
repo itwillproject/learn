@@ -95,8 +95,7 @@
 		        contentType : "application/json",
 		        dataType: "json",
 		        success : function(data){
-		            
-		        	alert("성공");
+		          
 
 		            var dispHTML = "";
 
@@ -135,7 +134,7 @@
 					            dispHTML += '<span class="font-weight-bold h5">&#8361;'+this.lecturePrice+'</span>';			            	
 				            }
 				            dispHTML += '</p>';
-				            dispHTML += '<a href="${pageContext.request.contextPath}/Lecture/lectureDetail.jsp?lectureNo='+this.lectureNo+'" class="stretched-link"></a>';
+				            dispHTML += '<a href="${pageContext.request.contextPath}/Member/getLecture.do?lectureNo='+this.lectureNo+'" class="stretched-link"></a>';
 				            dispHTML += '<span class="badge badge-success">+'+this.studentCount+'명</span>';
 				            dispHTML += '</div>';
 				            
@@ -325,7 +324,7 @@
 												</p>										
 											</c:otherwise>
 										</c:choose>
-								      	<a href="${pageContext.request.contextPath}/Lecture/lectureDetail.jsp?lectureNo=${lecture.lectureNo }" class="stretched-link"></a>
+								      	<a href="${pageContext.request.contextPath}/Member/getLecture.do?lectureNo=${lecture.lectureNo }" class="stretched-link"></a>
 								  		<span class="badge badge-success">+${lecture.studentCount }명</span>
 								  	</div>
 								    <div class="info">

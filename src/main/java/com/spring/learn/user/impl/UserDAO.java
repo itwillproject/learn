@@ -112,6 +112,10 @@ public class UserDAO {
 		mybatis.update("userDAO.updateUserLecture", vo);
 	}
 	
+	public void updateUserIntro(UserVO vo) {
+		mybatis.update("userDAO.updateUserIntro", vo);;
+	}
+
 }
 
 

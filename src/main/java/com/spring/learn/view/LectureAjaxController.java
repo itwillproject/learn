@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.spring.learn.common.PagingLecRoad;
+import com.spring.learn.common.PagingSK;
 import com.spring.learn.lecture.CategoryVO;
 import com.spring.learn.lecture.ClassService;
 import com.spring.learn.lecture.LectureService;
@@ -60,7 +60,7 @@ public class LectureAjaxController {
 		System.out.println(find.get("page"));
 		System.out.println(find.get("address"));
 		
-		PagingLecRoad p = paging(find.get("categoryName"), find.get("searchKeyword"), find.get("page"), find.get("onoff"), find.get("address")); //off-on					
+		PagingSK p = paging(find.get("categoryName"), find.get("searchKeyword"), find.get("page"), find.get("onoff"), find.get("address")); //off-on					
 		model.addAttribute("p", p);
 		
 		
@@ -163,9 +163,9 @@ public class LectureAjaxController {
 	}
 
 	
-	public PagingLecRoad paging (String categoryName, String searchKeyword, String page, String onoff, String address) {
+	public PagingSK paging (String categoryName, String searchKeyword, String page, String onoff, String address) {
 		
-		PagingLecRoad p =  new PagingLecRoad();
+		PagingSK p =  new PagingSK();
 		
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("onoff", onoff);
