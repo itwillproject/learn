@@ -1,8 +1,11 @@
 package com.spring.learn.view;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -10,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.learn.common.Paging;
 import com.spring.learn.home.HomeService;
@@ -247,6 +253,24 @@ System.out.println(">>> CommonController 실행됨");
 		model.addAttribute("searchKeyword", hvo.getSearchKeyword());
 		
 		return "/Common/indexSearch.jsp";
+	}
+	
+	@RequestMapping("imgUpload.do")
+	@ResponseBody
+	public String uploadMailImageFile(@RequestParam("file") MultipartFile file) throws IOException {
+        
+		System.out.println("uploadFile.isEmpty() : " + file.isEmpty());
+        String fileName = file.getOriginalFilename(); //원본파일명
+        System.out.println("::: 원본파일명 : " + fileName);
+
+        String savedFileName = UUID.randomUUID().toString();
+        System.out.println("::: 저장파일명 : " + savedFileName);
+
+        //물리적 파일 복사
+        String url = "\\\\192.168.18.11\\temp\\" + savedFileName;
+        file.transferTo(new File(url));
+
+        return savedFileName;
 	}
 
 }

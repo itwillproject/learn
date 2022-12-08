@@ -42,7 +42,6 @@
 			  focus: true,                  // set focus to editable area after initializing summernote
 			callbacks: { // 콜백을 사용
 			    // 이미지를 업로드할 경우 이벤트를 발생
-			    /*
 			    onImageUpload: function(files, editor, welEditable) {
 			         // 파일 업로드(다중업로드를 위해 반복문 사용)
 			         for (var i = files.length - 1; i >= 0; i--) {
@@ -50,7 +49,6 @@
 			            this);
 			         }
 			    },
-			    */
 			}
 		});
 	});
@@ -70,7 +68,9 @@
 	        success : function(data){
 	        	
 				console.log(data);
-				$("#introHTML").html(data.intro);
+				var text = data.intro;
+				$("#introHTML").html(text);
+				
 	        },
 	        error: function(){
 	            alert("실패");
@@ -78,6 +78,34 @@
 		});
 		
 	});
+	
+	
+	function uploadSummernoteImageFile(file, el) {
+	    var data = new FormData();	
+	    data.append("file",file);
+	    console.log(data);
+	    
+	    $.ajax({
+	      url: "${pageContext.request.contextPath }/common/imgUpload.do",
+	      type: "POST",
+	      enctype: 'multipart/form-data',
+	      data: data,
+	      cache: false,
+	      contentType : false,
+	      processData : false,
+	      success : function(data) {
+	    	  alert("성공");
+	                
+	                console.log(data);
+	                console.log("${pageContext.request.contextPath}/filepath");
+	                $(el).summernote('editor.insertImage', 'http://localhost:8080/${pageContext.request.contextPath}/filepath/' + data);
+	            },
+	            error : function(e) {
+	                console.log(e);
+	            }
+	   });
+	}   
+	    
 </script>
 </head>
 <body>
@@ -105,8 +133,11 @@
 					      <a href="${pageContext.request.contextPath}/member/goToPersonalPage.do?userId=${person.userId}" class="text-dark">홈</a>
 					    </li>
 					    <li class="nav-item d-flex p-2 w-100">
-					      <a href="#" class="text-dark">강의</a>
+    					  <a href="${pageContext.request.contextPath}/member/goToPersonalPage_Lecture.do?userId=${person.userId }" class="text-dark">강의</a>
 					    </li>
+   					  	<li class="nav-item d-flex p-2 w-100">
+						  <a href="#" class="text-dark">로드맵</a>
+					  	</li>
 					    <li class="nav-item d-flex p-2 w-100">
 					      <a href="#" class="text-dark">수강후기</a>
 					    </li>
@@ -140,10 +171,84 @@
 					</div>
 				</div>
 				<hr>
-				<div id="lecture"> <!-- 강의 출력 div 시작 -->		
+				<div id="lecture"> 
 					<p class="h4 d-inline font-weight-bold">강의</p>
+					<br><br>
 					<div class="d-flex" style="min-height: 200px;">
-						<p class="align-self-center text-center mx-auto">강의가 없습니다.</p>
+						<c:if test="${not empty lectures }">
+							<c:forEach var="lecture" items="${lectures }">
+								<div class="col-4 card course course_card_item border-0 mb-5" style="height:360px; width: 260px; float: left; text-align: left;">
+									<div class="card h-100 border-0" style="float: left;">
+									  	<div class="card-image h-50">
+											<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/${lecture.lectureCoverimg }" width="100%" alt="${lecture.lectureTitle }">
+									  	</div>
+									  	<div class="card-body w-100 overflow-hidden">
+										    <p class="card-title font-weight-bold" style="height:50px;">${lecture.lectureTitle }</a></p>								
+											<span class="card-user font-weight-bold">${lecture.lectureWriter }</span>
+											<br>
+											<span>
+												<c:forEach var="num" begin="1" end="${Math.round(lecture.lectureRate) }" step="1"> 
+													<i class="fa-solid fa-star" style="color: #fada5e;"></i>
+												</c:forEach>
+												<c:forEach var="num" begin="1" end="${5 - Math.round(lecture.lectureRate) }" step="1">
+													<i class="fa-regular fa-star" style="color: #fada5e;"></i>											
+												</c:forEach>
+												(${lecture.reviewCount })
+											</span>
+											<c:choose>
+												<c:when test="${lecture.lecturePrice != lecture.salePrice}">
+													<p class="card-price">	
+														<del class="text-secondary">&#8361; ${lecture.lecturePrice }</del>
+														<span class="text-primary font-weight-bold h5">&#8361; ${Math.round(lecture.salePrice) }</span>
+													</p>
+												</c:when>
+												<c:otherwise>
+													<p class="card-price">
+														<span class="font-weight-bold h5">&#8361; ${lecture.lecturePrice }</span>
+													</p>										
+												</c:otherwise>
+											</c:choose>
+									      	<a href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo=${lecture.lectureNo }" class="stretched-link"></a>
+									  		<span class="badge badge-success">+${lecture.studentCount }명</span>
+									  	</div>
+									    <div class="info">
+										     <div class="w-100 h-75 overflow-hidden">
+											      <p class="font-weight-bold">${lecture.lectureTitle }</p>
+													<c:choose>
+														<c:when test="${fn:length(lecture.lectureContent) gt 100}">
+															<p>${fn:substring(lecture.lectureContent, 0, 100)}...</p>
+														</c:when>
+														<c:otherwise>
+															<p>${lecture.lectureContent }</p>
+														</c:otherwise>
+													</c:choose>
+										     </div>
+										     <div class="position-absolute bottom-0 w-100 h-15">
+											      <p class="text-info font-weight-bold">${lecture.lectureLevel }</p>
+											      <p class="text-info font-weight-bold">${lecture.categoryName }</p>
+										     </div>
+									    </div>
+									</div>
+								</div>
+							</c:forEach>
+						</c:if>
+						<c:if test="${empty lectures }">
+							<p class="align-self-center text-center mx-auto">강의가 없습니다.</p>
+						</c:if>
+					</div>
+				</div>
+				<c:if test="${not empty lectures }">
+					<c:if test="${lecturesSize > 3}">
+						<p class="align-self-center text-center mx-auto">
+							<button type="submit" class="btn btn-success" onclick="location.href='${pageContext.request.contextPath}/member/goToPersonalPage_Lecture.do?userId=${person.userId }'">더보기</button>
+						</p>
+					</c:if>
+				</c:if>		
+				<hr>
+				<div id="roadmap"> <!-- 로드맵 출력 div 시작 -->
+					<p class="h4 d-inline font-weight-bold">로드맵</p>
+					<div class="d-flex" style="min-height: 200px;">
+						<p class="align-self-center text-center mx-auto">로드맵이 없습니다.</p>
 					</div>
 				</div>
 				<hr>
@@ -155,10 +260,49 @@
 				</div>
 				<hr>
 				<div id="board">	
-					<p class="h4 d-inline font-weight-bold">게시글</p>
-					<div class="d-flex" style="min-height: 200px;">
-						<p class="align-self-center text-center mx-auto">게시글이 없습니다.</p>
+					<div>
+						<span class="h4 d-inline font-weight-bold">게시글</span>
+						<a class="float-right" href="#">전체 보기 ></a>
 					</div>
+					<c:if test="${empty boardList }">
+						<div class="d-flex" style="min-height: 200px;">
+							<p class="align-self-center text-center mx-auto">게시글이 없습니다.</p>
+						</div>
+					</c:if>
+					<c:forEach items="${boardList}" var="board" begin="1" end="5">
+						<div class="pt-3 pb-3 row" style="border-bottom: 1px solid lightgrey">
+							<c:if test="${not empty board.boardAdopt}">
+								<div class="col-4">질문&답변&nbsp;
+									<c:if test="${board.boardAdopt == 'FALSE'}">
+										<span style="color: darkgray">미해결</span>
+									</c:if>
+									<c:if test="${board.boardAdopt == 'TRUE'}">
+										<span style="color: #00a760">해결됨</span>
+									</c:if>
+								</div>
+							</c:if>
+							<c:if test="${empty board.boardAdopt}">
+								<div class="col-4">자유주제</div>
+							</c:if>
+							<div class="col-8 text-right">
+								<span style="color: darkgray">${board.boardRegdate}</span>
+							</div>
+							<div class="col-12 pt-2 pb-1">
+								<!-- 질문게시판: 링크 연결해야 함!!! -->
+								<c:if test="${not empty board.boardAdopt}">
+									<a class="h5" href="#">${board.boardTitle}</a>
+								</c:if>
+								<!-- 자유게시판: 링크 연결해야 함!!! -->
+								<c:if test="${empty board.boardAdopt}">
+									<a class="h5" href="#">${board.boardTitle}</a>
+								</c:if>
+							</div>
+							<div class="col-12">
+								<i class="fa-regular fa-heart"></i> ${board.boardLike}&nbsp;&nbsp;
+								<i class="fa-regular fa-comment-alt"></i> ${board.commentCnt}
+							</div>
+						</div>
+					</c:forEach>
 				</div>
 			</div>
 		</div>

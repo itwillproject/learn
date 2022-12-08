@@ -337,6 +337,42 @@
     SELECT MAX(LECTURE_NO) FROM LECTURE
   </select>
   
+  <!-- 프로필 확인용 -->
+  <select id="getLectureProfile" parameterType="userVO" resultType="lecture">
+		SELECT L.*
+		FROM (SELECT ROWNUM AS ROW_NUM, C.*
+		        FROM (SELECT * FROM LECTURE
+                        WHERE USER_ID = #{userId}
+				        ORDER BY LECTURE_NO DESC ) C) L
+		WHERE ROW_NUM BETWEEN 1 AND 3
+  </select>
+  
+  <select id="getLectureProfileAll" parameterType="userVO" resultType="lecture" >
+  		SELECT * FROM LECTURE 
+  		WHERE USER_ID = #{userId}
+  </select>
+  
+  <select id="getLectureProfilePage" parameterType="map" resultType="lecture">
+		SELECT *
+		FROM (SELECT ROWNUM R_NUM, B.*
+	        FROM (	SELECT *
+	                FROM LECTURE
+		                WHERE USER_ID = #{userId}
+	                 	ORDER BY LECTURE_NO DESC
+	             ) B 
+	         )
+		WHERE R_NUM BETWEEN #{begin} AND #{end}
+  </select>
+  
+  <select id="countLectureProfilePage" parameterType="userVO" resultType="int">
+  		SELECT COUNT(*) FROM LECTURE
+		WHERE USER_ID = #{userId}
+  </select>
+   <!-- ===================== -->
+  
+  
+  
+  
 </mapper>
 
 

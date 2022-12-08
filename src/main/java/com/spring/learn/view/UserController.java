@@ -18,7 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.spring.learn.board.BoardService;
+import com.spring.learn.board.BoardVO;
+import com.spring.learn.common.Paging;
 import com.spring.learn.lecture.LectureService;
+import com.spring.learn.lecture.LectureVO;
 import com.spring.learn.user.LikeVO;
 import com.spring.learn.user.MailSendService;
 import com.spring.learn.user.UserService;
@@ -35,6 +39,8 @@ public class UserController {
 	private UserService userService;
     @Autowired
     private LectureService lectureService;
+    @Autowired
+    private BoardService boardService;
 
 	@RequestMapping("/insertUser.do")
 	public String insertUser(@ModelAttribute UserVO vo) {
@@ -385,6 +391,10 @@ public class UserController {
 		
 		System.out.println(person.getGrade());
 		
+		// 게시글 가져오기(지수)
+		List<BoardVO> boardList = boardService.getMyBoardList(vo.getUserId());
+		model.addAttribute("boardList",  boardList);
+		
 		if (person.getGrade().equals("강의자")) {
 	        // 총 수강생 수
 	        Integer studentCnt = lectureService.getStudentCount(person.getUserName());
@@ -393,6 +403,26 @@ public class UserController {
 	        // 평균 평점
 	        String lectureRate = String.format("%.2f", lectureService.getLectureAvgRate(person.getUserName()));
 	        model.addAttribute("lectureRate", lectureRate);
+	        
+	        //!!!!!!!!!!!!강의자 프로필 조회 기능(현지)====================
+	        List<LectureVO> lectures = lectureService.getLectureProfile(person);
+			for (int i = 0; i < lectures.size(); i++) {
+				lectures.get(i).setSalePrice();
+				lectures.get(i).setStudentCount(lectureService.countStudents(lectures.get(i).getLectureNo())); // 수강생수
+				lectures.get(i).setLectureRate(lectureService.getAvgLecture(lectures.get(i).getLectureNo())); //평점
+				lectures.get(i).setReviewCount(lectureService.countLectureReview(lectures.get(i).getLectureNo())); //리뷰 개수
+			}			
+			
+			List<LectureVO> all = lectureService.getLectureProfileAll(person);
+			
+			if (all.size() != 0) {
+				model.addAttribute("lecturesSize", all.size());
+			}
+	        System.out.println("lectures : " + lectures);
+	        System.out.println("lectures.size() : " + lectures.size());
+	        
+	        model.addAttribute("lectures", lectures);
+	        //=======================================
 	        
 			return "/Member/userPage.jsp";		
 			
@@ -412,4 +442,76 @@ public class UserController {
 		map.put("intro", ((UserVO)session.getAttribute("user")).getUserIntro());
 		return map;
 	}
+	
+	//사용자조회 - 강의목록(현지)
+	@RequestMapping("/goToPersonalPage_Lecture.do")
+	public String goToPersonalPage_Lecture(UserVO vo, Paging p, Model model) {
+		
+		UserVO person = userService.findUserId(vo); 
+		model.addAttribute("person", person);
+		
+		System.out.println(person.getGrade());
+	
+        Integer studentCnt = lectureService.getStudentCount(person.getUserName());
+        model.addAttribute("studentCnt", studentCnt);
+        
+        String lectureRate = String.format("%.2f", lectureService.getLectureAvgRate(person.getUserName()));
+        model.addAttribute("lectureRate", lectureRate);
+        
+        //==================================================
+        p.setNumPerPage(6);
+		p.setNumPerBlock(10);
+		
+		// 전체 페이지 수 구하기
+		p.setTotalRecord(lectureService.countLectureProfilePage(person));
+		p.setTotalPage();
+		
+		// 현재 페이지 구하기
+		if (p.getcPage() != 0) {
+			p.setNowPage(p.getcPage());
+		}
+		
+		// 현재 페이지에 시작할 첫게시글 번호, 끝 게시글 번호
+		p.setEnd(p.getNowPage()*p.getNumPerPage());
+		p.setBegin(p.getEnd() - p.getNumPerPage() +1);
+		
+		// 끝번호가 더 크면 토탈번호와 맞게 하기 - 끝블록 끝페이지 때문
+		if (p.getEnd() > p.getTotalRecord()) p.setEnd(p.getTotalRecord());
+		
+		// 블록 계산하기
+		int nowPage = p.getNowPage();
+		int beginPage = (nowPage -1) / p.getNumPerBlock() * p.getNumPerBlock() + 1;
+		p.setBeginPage(beginPage);
+		p.setEndPage(beginPage + p.getNumPerBlock() - 1);
+		
+		if (p.getEndPage() > p.getTotalPage()) p.setEndPage(p.getTotalPage());		
+		
+		System.out.println("계산된 lectures paging : " + p);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", person.getUserId());
+		map.put("begin", Integer.toString(p.getBegin()));
+		map.put("end", Integer.toString(p.getEnd()));
+		
+		List<LectureVO> all = lectureService.getLectureProfileAll(person);
+		if (all.size() != 0) {
+			model.addAttribute("lecturesSize", all.size());
+		}
+
+		// 리스트 가져오기
+		List<LectureVO> list = lectureService.getLectureProfilePage(map);
+
+		// 리스트 모델에 저장
+		if (list != null) {
+			model.addAttribute("lectures", list);
+			model.addAttribute("pvo", p);
+		}		
+		
+		System.out.println("list : " + list);
+        
+		return "/Member/userPageLecture.jsp";		
+			
+	}
+	
+	
 }

@@ -289,6 +289,17 @@
 			WHERE COMMENT2_NO = #{comment2No}
 	</delete>
 	
+	<select id="getMyBoardList" parameterType="String" resultType="board">
+		SELECT * FROM (
+		                  SELECT USER_ID, FBOARD_NO, NULL QBOARD_NO, NULL BOARD_ADOPT, BOARD_TITLE, BOARD_REGDATE, BOARD_LIKE, COMMENT_CNT FROM FREE_BOARD
+		                  UNION ALL
+		                  SELECT USER_ID, NULL FBOARD_NO, QBOARD_NO, BOARD_ADOPT, BOARD_TITLE, BOARD_REGDATE, BOARD_LIKE, COMMENT_CNT FROM QUESTION_BOARD
+		              )
+		WHERE USER_ID = #{userId}
+		ORDER BY BOARD_REGDATE
+	</select>
+	
+	
 	
 </mapper>
 

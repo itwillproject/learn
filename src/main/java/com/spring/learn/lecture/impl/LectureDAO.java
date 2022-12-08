@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.learn.lecture.CategoryVO;
 import com.spring.learn.lecture.LectureVO;
+import com.spring.learn.user.UserVO;
 
 @Repository
 public interface LectureDAO {
@@ -71,6 +72,13 @@ public interface LectureDAO {
 	  void addLecture(LectureVO lecture);
 
 	  int getLectureNo();
+	  
+	  //프로필 조회용
+	  List<LectureVO> getLectureProfile(UserVO vo); 
+	  List<LectureVO> getLectureProfileAll(UserVO vo); 
+	  List<LectureVO> getLectureProfilePage(Map<String, Object> map); 
+	  int countLectureProfilePage(UserVO vo);
+
 	
 }
 
