@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.learn.board.BoardService;
 import com.spring.learn.board.BoardVO;
+
 import com.spring.learn.common.Paging;
+
 import com.spring.learn.lecture.LectureService;
 import com.spring.learn.lecture.LectureVO;
 import com.spring.learn.user.LikeVO;
@@ -524,6 +526,8 @@ public String login(HttpServletRequest request, UserVO vo, Model model){
 
 		List<BoardVO> boardList = boardService.getMyBoardList(map);
 		model.addAttribute("boardList",  boardList);
+		
+		// 게시글 가져오기(지수)
 		
 		if (person.getGrade().equals("강의자")) {
 	        // 총 수강생 수

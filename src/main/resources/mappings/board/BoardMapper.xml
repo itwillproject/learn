@@ -288,7 +288,7 @@
 		</if>
 			WHERE COMMENT2_NO = #{comment2No}
 	</delete>
-	
+		
 	
 		<!-- 사용자 조회: 게시글 조회 -->
 	<select id="getMyBoardList" parameterType="hashMap" resultType="board">

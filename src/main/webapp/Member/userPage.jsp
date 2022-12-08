@@ -266,6 +266,13 @@
 					</div>
 				</div>
 				<hr>
+				<div id="roadmap"> <!-- 로드맵 출력 div 시작 -->
+					<p class="h4 d-inline font-weight-bold">로드맵</p>
+					<div class="d-flex" style="min-height: 200px;">
+						<p class="align-self-center text-center mx-auto">로드맵이 없습니다.</p>
+					</div>
+				</div>
+				<hr>
 				<div id="review">	
 					<p class="h4 d-inline font-weight-bold">수강후기</p>
 					<div class="d-flex" style="min-height: 200px;">
@@ -276,14 +283,18 @@
 				<div id="board">	
 					<div>
 						<span class="h4 d-inline font-weight-bold">게시글</span>
+
 						<a class="float-right" href="userBoardPage.do?userId=${person.userId}">전체 보기 ></a>
+
 					</div>
 					<c:if test="${empty boardList }">
 						<div class="d-flex" style="min-height: 200px;">
 							<p class="align-self-center text-center mx-auto">게시글이 없습니다.</p>
 						</div>
 					</c:if>
+
 					<c:forEach items="${boardList}" var="board">
+
 						<div class="pt-3 pb-3 row" style="border-bottom: 1px solid lightgrey">
 							<c:if test="${not empty board.boardAdopt}">
 								<div class="col-4">질문&답변&nbsp;
