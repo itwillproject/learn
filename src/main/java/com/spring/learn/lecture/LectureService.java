@@ -3,6 +3,8 @@ package com.spring.learn.lecture;
 import java.util.List;
 import java.util.Map;
 
+import com.spring.learn.user.UserVO;
+
 public interface LectureService {
 
 	LectureVO getLecture(String lecNo);
@@ -13,11 +15,11 @@ public interface LectureService {
 	
 	  List<LectureVO> getTeacherLectureList(Map<String, String> map);
 	
-	  Double getLectureAvgRate(String userName);
+	  Double getLectureAvgRate(String userId);
 	
 	  Integer getLectureSales(String userName);
 	
-	  Integer getStudentCount(String userName);
+	  Integer getStudentCount(String userId);
 	
 	  List<LectureVO> getRealtimeSales(Map<String, String> map);
 	
@@ -72,5 +74,16 @@ public interface LectureService {
 	
 	List<LectureVO> lectureLocationAll();
 
-	
+	//프로필 조회용
+	List<LectureVO> getLectureProfile(UserVO vo);
+	List<LectureVO> getLectureProfileAll(UserVO vo); 
+    List<LectureVO> getLectureProfilePage(Map<String, Object> map); 
+    int countLectureProfilePage(UserVO vo);
+
+	List<UserVO> getLectureStudentList(Map<String, String> map);
+
+	void addLectureCoverimg(LectureVO lecture);
+
+	void editLecture(LectureVO lecture);
+    
 }

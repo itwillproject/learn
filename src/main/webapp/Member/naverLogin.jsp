@@ -35,7 +35,7 @@
           dataType: "json", //서버로부터 응답받는 데이터 형식
           success: function(data){
             console.log(data);
-            location.href='myPage.jsp';
+            location.href='${pageContext.request.contextPath }/common/main.do';
           },
           error: function(){
             alert("실패~~");

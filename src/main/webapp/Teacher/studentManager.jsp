@@ -32,6 +32,34 @@
     padding-top: 15px;
     color: white;
   }
+  .pagination > li > a
+  {
+    background-color: white;
+    color: #1dc078;
+  }
+
+  .pagination > li > a:focus,
+  .pagination > li > a:hover,
+  .pagination > li > span:focus,
+  .pagination > li > span:hover
+  {
+    color: #5a5a5a;
+    background-color: #eee;
+    border-color: #ddd;
+  }
+
+  .pagination > .active > a
+  {
+    color: white;
+    background-color: #00C471 !Important;
+    border: solid 1px #00C471 !Important;
+  }
+
+  .pagination > .active > a:hover
+  {
+    background-color: #00C471 !Important;
+    border: solid 1px #00C471;
+  }
 </style>
 <body>
 <%@include file="/Common/header.jsp" %>
@@ -61,6 +89,7 @@
             <table class="table mt-4">
                 <thead>
                 <tr>
+                    <th>번호</th>
                     <th>이름</th>
                     <th>아이디</th>
                     <th>등록일</th>
@@ -69,17 +98,73 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>안지수</td>
-                    <td>gee1suu@gmail.com</td>
-                    <td>2022-11-23</td>
-                    <td>5</td>
-                    <td>
-                        <button class="active-btn">채팅</button>
-                    </td>
-                </tr>
+                <c:forEach items="${studentList}" var="stu" varStatus="status">
+                    <tr>
+                        <td>${pvo.getBegin() + status.index}</td>
+                        <td>${stu.userName}</td>
+                        <td>${stu.userId}</td>
+                        <td>${stu.userRegdate}</td>
+                        <td>
+                            <c:if test="${empty lectureNo}">-</c:if>
+                            <c:if test="${empty timetableNo}">${stu.points}</c:if>
+                        </td>
+                        <td>
+                            <button class="active-btn">채팅</button>
+                        </td>
+                    </tr>
+                </c:forEach>
                 </tbody>
             </table>
+            <div class="pt-4">
+                <ul class="pagination justify-content-center">
+                    <!-- 이전 -->
+                    <li class="page-item">
+                        <c:if test="${pvo.beginPage == 1 }">
+                            <a class="page-link disabled">이전</a>
+                        </c:if>
+                        <c:if test="${pvo.beginPage != 1 }">
+                            <c:if test="${empty lectureNo}">
+                                <a class="page-link" href="${pageContext.request.contextPath}/Teacher/studentManager.do?cPage=${pvo.beginPage - 1 }&timetableNo=${timetableNo}">이전</a>
+                            </c:if>
+                            <c:if test="${empty timetableNo}">
+                                <a class="page-link" href="${pageContext.request.contextPath}/Teacher/studentManager.do?cPage=${pvo.beginPage - 1 }&lectureNo=${lectureNo}">이전</a>
+                            </c:if>
+                        </c:if>
+                    </li>
+                    <!-- 페이지 번호 -->
+                    <c:forEach var="pageNo" begin="${pvo.beginPage }" end="${pvo.endPage }">
+                        <c:if test="${pageNo == pvo.nowPage }">
+                            <li class="page-item active">
+                                <a class="page-link">${pageNo }</a>
+                            </li>
+                        </c:if>
+                        <c:if test="${pageNo != pvo.nowPage }">
+                            <li class="page-item">
+                                <c:if test="${empty lectureNo}">
+                                    <a class="page-link" href="${pageContext.request.contextPath}/Teacher/studentManager.do?cPage=${pageNo }&timetableNo=${timetableNo}">${pageNo }</a>
+                                </c:if>
+                                <c:if test="${empty timetableNo}">
+                                    <a class="page-link" href="${pageContext.request.contextPath}/Teacher/studentManager.do?cPage=${pageNo }&lectureNo=${lectureNo}">${pageNo }</a>
+                                </c:if>
+                            </li>
+                        </c:if>
+                    </c:forEach>
+                    <!-- 다음 -->
+                    <li class="page-item">
+                        <c:if test="${pvo.endPage < pvo.totalPage }">
+                            <c:if test="${empty lectureNo}">
+                                <a class="page-link" href="${pageContext.request.contextPath}/Teacher/studentManager.do?cPage=${pvo.endPage + 1 }&timetableNo=${timetableNo}">다음</a>
+                            </c:if>
+                            <c:if test="${empty timetableNo}">
+                                <a class="page-link" href="${pageContext.request.contextPath}/Teacher/studentManager.do?cPage=${pvo.endPage + 1 }&lectureNo=${lectureNo}">다음</a>
+                            </c:if>
+                        </c:if>
+                        <c:if test="${pvo.endPage >= pvo.totalPage }">
+                            <a class="page-link disabled">다음</a>
+                        </c:if>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="col-2 d-flex justify-content-center">
         </div>

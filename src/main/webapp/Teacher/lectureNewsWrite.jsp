@@ -4,30 +4,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
-<link rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
-      integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
-      crossorigin="anonymous">
-      
-
-<!-- 서머노트를 위해 추가해야할 부분 -->
-<script src="${pageContext.request.contextPath}/summernote/summernote-lite.js"></script>
-<script src="${pageContext.request.contextPath}/summernote/lang/summernote-ko-KR.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/summernote/summernote-lite.css">
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+	<link href="${pageContext.request.contextPath}/summernote/summernote-bs4.css" rel="stylesheet">
+	<script src="${pageContext.request.contextPath}/summernote/summernote-bs4.js"></script>
 <title>강의자  - 강의 관리 - 새소식 작성</title>
 <style>
 	.dropdown:hover .dropdown-menu {
     	display: block;
     	margin-top: 0;
 	}
-	
-	<!-- 본문css -->
 	.active-menu {
 	  color: #1dc078;
 	  font-weight: bold;
@@ -60,14 +48,14 @@
     <div class="row w-100 pb-4 justify-content-center">
         <!-- 왼쪽 네비 -->
         <div class="col-2 d-flex justify-content-center">
-            <%@ include file="sidebar.jspf"%>
+			<%@ include file="sidebar.jspf"%>
+			<script>
+				var menu = $('#lectureManager');
+				console.log(menu);
+				menu.removeClass('norm-menu');
+				menu.addClass('active-menu');
+			</script>
         </div>
-        <script>
-          var menu = $('#lectureManager');
-          console.log(menu);
-          menu.removeClass('norm-menu');
-          menu.addClass('active-menu');
-        </script>
 
         <!-- 중앙 위 내용 - 글내용 -->
         <div class="col-8 pl-3 gray-line">

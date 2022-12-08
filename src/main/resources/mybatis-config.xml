@@ -60,6 +60,8 @@
 		<typeAlias alias="revenueDetail" type="com.spring.learn.admin.AdminRevenueDatailVO"/>
 		<typeAlias alias="revenue" type="com.spring.learn.admin.RevenueVO"/>
 		<typeAlias alias="joiner" type="com.spring.learn.admin.JoinerVO"/>
+
+		<typeAlias alias="pointlog" type="com.spring.learn.user.PointLogVO"/>
 	
 	</typeAliases>
 			

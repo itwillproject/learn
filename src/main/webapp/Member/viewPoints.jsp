@@ -1,113 +1,120 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-    <title>강의자 페이지 - 로드맵 관리</title>
+    <title>마이페이지</title>
+    <style>
+      .active-menu {
+        color: #1dc078;
+        font-weight: bold;
+      }
+      .norm-menu {
+        color: black;
+      }
+      .tape {
+        height: 100px;
+        margin: 50px auto;
+        padding-top: 30px;
+        color: white;
+      }
+      .pagination > li > a
+      {
+        background-color: white;
+        color: #1dc078;
+      }
+
+      .pagination > li > a:focus,
+      .pagination > li > a:hover,
+      .pagination > li > span:focus,
+      .pagination > li > span:hover
+      {
+        color: #5a5a5a;
+        background-color: #eee;
+        border-color: #ddd;
+      }
+
+      .pagination > .active > a
+      {
+        color: white;
+        background-color: #00C471 !Important;
+        border: solid 1px #00C471 !Important;
+      }
+
+      .pagination > .active > a:hover
+      {
+        background-color: #00C471 !Important;
+        border: solid 1px #00C471;
+      }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script
+            src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-<style>
-  .active-menu {
-    color: #1dc078;
-    font-weight: bold;
-  }
-  .norm-menu {
-    color: black;
-  }
-  .active-btn {
-    color: #fff;
-    background-color: #00C471;
-    border-style: none;
-    padding: 5px;
-    border-radius: 5px;
-    margin-right: 5px;
-  }
-  .tape {
-    height: 70px;
-    margin: 50px auto;
-    padding-top: 15px;
-    color: white;
-  }
-  .pagination > li > a
-  {
-      background-color: white;
-      color: #1dc078;
-  }
-
-  .pagination > li > a:focus,
-  .pagination > li > a:hover,
-  .pagination > li > span:focus,
-  .pagination > li > span:hover
-  {
-      color: #5a5a5a;
-      background-color: #eee;
-      border-color: #ddd;
-  }
-
-  .pagination > .active > a
-  {
-      color: white;
-      background-color: #00C471 !Important;
-      border: solid 1px #00C471 !Important;
-  }
-
-  .pagination > .active > a:hover
-  {
-      background-color: #00C471 !Important;
-      border: solid 1px #00C471;
-  }
-</style>
 <body>
-<%@include file="/Common/header.jsp" %>
+<%@ include file="../Common/header.jsp"%>
 <div class="container-fluid bg-dark">
     <div class="container tape">
         <section class="tapeContent">
-            <h2>로드맵 관리</h2>
+            <h2>포인트 조회</h2>
         </section>
     </div>
 </div>
 <div class="container-fluid mt-5 pb-3 d-flex justify-content-center">
     <div class="row w-100 pb-4 justify-content-center">
-        <!-- 왼쪽 네비 -->
         <div class="col-2 d-flex justify-content-center">
             <%@ include file="sidebar.jspf"%>
+            <script>
+              var menu = $('#pointMenu');
+              console.log(menu);
+              menu.removeClass('norm-menu');
+              menu.addClass('active-menu');
+            </script>
         </div>
-        <script>
-          var menu = $('#roadmapManager');
-          console.log(menu);
-          menu.removeClass('norm-menu');
-          menu.addClass('active-menu');
-        </script>
-
-        <!-- 중앙 위 내용 - 글내용 -->
         <div class="col-8 pl-3 gray-line">
-            <button class="active-btn" onclick="location.href='${pageContext.request.contextPath}/Teacher/roadmapWrite.do'">로드맵 작성</button>
-            <table class="table mt-4" style="table-layout: fixed">
+            <div class="pb-3">
+                <h4>현재 사용가능 포인트:
+                    <span style="font-weight: bold; color: #00C471;">${user.points}</span> P</h4>
+            </div>
+            <table class="table">
                 <thead>
-                <tr>
-                    <th style="width: 15%">로드맵 ID</th>
-                    <th style="width: 70%">로드맵 제목</th>
-                    <th style="width: 15%" colspan="2"></th>
+                <tr class="text-center">
+                    <th>주문번호</th>
+                    <th>사용포인트</th>
+                    <th>적립포인트</th>
+                    <th>날짜</th>
                 </tr>
                 </thead>
                 <tbody id="rtContent">
-                <c:forEach items="${roadmapList}" var="roadmap">
-                    <tr>
-                        <td>${roadmap.rboardNo}</td>
-                        <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                            <a href="${pageContext.request.contextPath}/Lecture/roadmapDetail.do?rboardNo=${roadmap.rboardNo}">
-                                    ${roadmap.rboardTitle}
-                            </a>
+                <c:forEach items="${list}" var="p">
+                    <tr class="text-center">
+                        <td>${p.orderNo}</td>
+                        <td>
+                            <c:if test="${p.usepointLog != 0}">
+                                <span style="color: blue">- ${p.usepointLog}</span>
+                            </c:if>
+                            <c:if test="${p.usepointLog == 0}">
+                                ${p.usepointLog}
+                            </c:if>
                         </td>
-                        <td colspan="2">
-                            <button class="active-btn" onclick="location.href='${pageContext.request.contextPath}/Teacher/roadmapWrite.do?rboardNo=${roadmap.rboardNo}'">수정</button>
-                            <button class="active-btn" onclick="location.href='${pageContext.request.contextPath}/Teacher/removeRoadmap.do?rboardNo=${roadmap.rboardNo}'">삭제</button>
+                        <td>
+                            <c:if test="${p.earnPoint != 0}">
+                                <span style="color: red">+ ${p.earnPoint}</span>
+                            </c:if>
+                            <c:if test="${p.earnPoint == 0}">
+                                ${p.earnPoint}
+                            </c:if>
                         </td>
+                        <td>${fn:substring(p.pointDate, 0, 16)}</td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -154,20 +161,39 @@
                     cPage : cPage
                   },
                   type : "GET",
-                  url : "${pageContext.request.contextPath}/Teacher/getRoadmapPaging.do",
+                  url : "${pageContext.request.contextPath}/Member/getPointPaging.do",
                   dataType: "json",
                   success : function(data) { // 처리가 성공할 경우
                     $('#rtContent').html('');
                     $.each(data.pmap, function() {
-                      let dispHtml = '<tr>';
-                      dispHtml += '<td>' + this.rboardNo + '</td>';
-                      dispHtml += '<td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">';
-                      dispHtml += '<a href="/learn/Lecture/roadmapDetail.do?rboardNo=' + this.rboardNo + '">' + this.rboardTitle + '</a>'
+                      let usepoint = this.usepointLog;
+                      let earnpoint = this.earnPoint;
+                      let date = new Date(this.pointDate);
+                      let mon = date.getMonth() + 1;
+                      let day = date.getDate();
+                      let hour = date.getHours();
+                      let min = date.getMinutes();
+                      let pointDate = date.getFullYear() + '-' + (mon > 9 ? mon : '0' + mon)
+                          + '-' + (day > 9 ? day : '0' + day) + ' '
+                          + (hour > 9 ? hour : '0' + hour) + ':' + (min > 9 ? min : '0' + min);
+
+                      let dispHtml = '<tr class="text-center">';
+                      dispHtml += '<td>' + this.orderNo + '</td>';
+                      dispHtml += '<td>';
+                      if(usepoint !== 0) {
+                        dispHtml += '<span style="color: blue">- ' + usepoint + '</span>';
+                      } else {
+                        dispHtml += usepoint;
+                      }
                       dispHtml += '</td>';
-                      dispHtml += '<td colspan="2">'
-                      dispHtml += '<a class="active-btn" href="/learn/Teacher/roadmapWrite.do?rboardNo=' + this.rboardNo + '">수정</button>';
-                      dispHtml += '<a class="active-btn" href="/learn/Teacher/removeRoadmap.do?rboardNo=' + this.rboardNo +'">삭제</button>';
+                      dispHtml += '<td>'
+                      if(earnpoint !== 0) {
+                        dispHtml += '<span style="color: red">+ ' + earnpoint + '</span>'
+                      } else {
+                        dispHtml += earnpoint;
+                      }
                       dispHtml += '</td>';
+                      dispHtml += '<td>' + pointDate + '</td>'
                       dispHtml += '</tr>';
                       $('#rtContent').append(dispHtml);
                     })

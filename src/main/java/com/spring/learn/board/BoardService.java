@@ -31,6 +31,7 @@ public interface BoardService {
 	void addCocomment(BoardCommentVO cvo);
 	List<BoardCommentVO> getCocoment(BoardVO bvo);
 	void delCocomment(BoardCommentVO ccvo);
-
+	List<BoardVO> getMyBoardList(Map<String, String> map);
+	int getMyBoardCount(Map<String, String> map);
 	
 }

@@ -12,10 +12,31 @@ public class OfftimetableVO {
 	private int maxSeat;
 	private Timestamp timetableStart;
 	private Timestamp timetableEnd;
+	private String lectureTitle;
+	private int studentCount;
+
 	private String lecturePastAddress;
-	
-	
-	
+
+	private String ttStart;
+
+	private String ttEnd;
+
+	public String getTtStart() {
+		return ttStart;
+	}
+
+	public void setTtStart(String ttStart) {
+		this.ttStart = ttStart;
+	}
+
+	public String getTtEnd() {
+		return ttEnd;
+	}
+
+	public void setTtEnd(String ttEnd) {
+		this.ttEnd = ttEnd;
+	}
+
 	public String getTimetableNo() {
 		return timetableNo;
 	}
@@ -53,12 +74,31 @@ public class OfftimetableVO {
 	public void setTimetableEnd(Timestamp timetableEnd) {
 		this.timetableEnd = timetableEnd;
 	}
+
+	public String getLectureTitle() {
+		return lectureTitle;
+	}
+
+	public void setLectureTitle(String lectureTitle) {
+		this.lectureTitle = lectureTitle;
+	}
+
+	public int getStudentCount() {
+		return studentCount;
+	}
+
+	public void setStudentCount(int studentCount) {
+		this.studentCount = studentCount;
+	}
+
 	public String getLecturePastAddress() {
 		return lecturePastAddress;
 	}
+
 	public void setLecturePastAddress(String lecturePastAddress) {
 		this.lecturePastAddress = lecturePastAddress;
 	}
+
 	@Override
 	public String toString() {
 		return "OfftimetableVO [timetableNo=" + timetableNo + ", lectureNo=" + lectureNo + ", lectureAddress="

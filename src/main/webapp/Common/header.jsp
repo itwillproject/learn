@@ -10,7 +10,10 @@
    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
    <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
-   <link rel="stylesheet"
+   <script src="https://accounts.google.com/gsi/client" async defer></script>
+   <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="stylesheet"
           href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
           crossorigin="anonymous">
@@ -31,7 +34,65 @@ padding:10px;
 }
   
    </style>
+    <script>
+      function onSignIn() {
+        google.accounts.id.initialize({
+          client_id: "932637000454-3m003tk3bsj54qae85sr3ue49cp4ajsg.apps.googleusercontent.com",
+          callback: handleCredentialResponse
+        });
+        google.accounts.id.prompt();
+      }
 
+      function handleCredentialResponse(response) {
+        var profile = jwt_decode(response.credential);
+        var userBirth;
+
+        data = new FormData();
+        data.append("userName", profile.name);
+        data.append("userId", profile.email);
+        data.append("socialType", "google");
+
+        $.ajax({
+          data : data,
+          type : "POST",
+          url: "${pageContext.request.contextPath}/Member/checkSignUp.do",
+          cache : false,
+          contentType : false,
+          processData : false,
+          success: function(result) {
+            if(result === 0) {
+              Swal.fire({
+                title: '생년월일 입력',
+                text: '아이디 찾기에 이용됩니다.',
+                input: 'number',
+                inputPlaceholder: '형식: 숫자 8자리'
+              }).then(function(r) {
+                if(r.isConfirmed) {
+                  data.append("userBirth", r.value);
+                  $.ajax({
+                    data : data,
+                    type : "POST",
+                    url : "${pageContext.request.contextPath}/Member/googleLogin.do",
+                    cache : false,
+                    contentType : false,
+                    processData : false,
+                    success: function (url) {
+                      location.href = url;
+                    },
+                    error: function () {
+                      alert("실패...");
+                    }
+                  })
+                }
+              })
+            }
+          },
+          error: function () {
+            alert("회원가입 여부 확인 실패");
+          }
+        })
+      }
+    </script>
    </head>
 
     <header>
@@ -122,7 +183,7 @@ padding:10px;
                     <input type="password" class="form-control w-100 mb-4" id="userPwd" placeholder="비밀번호" name="userPwd">
                     <button type="submit" class="btn w-100" style="background-color: #00C471; color: white">로그인</button>
                 </form>
-                <div>
+                <div class="pt-2">
                     <a style="color: black" href="${pageContext.request.contextPath}/Member/findId.jsp">아이디(이메일) 찾기</a> |
                     <a style="color: black" href="${pageContext.request.contextPath}/Member/findPassword.jsp">비밀번호 찾기</a> |
                     <a style="color: black" href="${pageContext.request.contextPath}/Member/newMember.jsp">회원가입</a>
@@ -145,9 +206,11 @@ padding:10px;
                       );
                       naverLogin.init();
                     </script>
-                    <span style="display:inline-block;width: 40px; height: 40px; background-color: #f8f8f8; border-radius: 5px">
-                <img style="margin:10px; width: 20px; height: 20px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/24px-Google_%22G%22_Logo.svg.png?20210618182606"/>
-            </span>
+                    <button type="button" class="btn btn-link p-0" onclick="onSignIn()">
+                                    <span style="display:inline-block;width: 40px; height: 40px; background-color: #f8f8f8; border-radius: 5px">
+                                        <img style="margin:10px; width: 20px; height: 20px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/24px-Google_%22G%22_Logo.svg.png?20210618182606"/>
+                                    </span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -159,30 +222,19 @@ padding:10px;
 </c:if>
 <c:if test="${not empty user.userId }">
 <li>
-	<button type="button" class="btn"
-		onclick="location.href='${pageContext.request.contextPath}/order/myCartGo.do?userId=${user.userId }'">
-		<i class="fas fa-cart-plus fa-lg"></i>
-	</button> &nbsp;
-</li>
-
-<li>
-	<button class="btn" style="width: 40px; padding: 6px 12px" type="button" onclick="location.href='${pageContext.request.contextPath}/memberChat/memberChatListGo.do?userId=${user.userId }'">
-		<img alt="채팅리스트" src="${pageContext.request.contextPath}/picture/chat/chatOff.png">
-	</button>
-</li>
-
+					<button type="button" class="btn"
+						onclick="location.href='${pageContext.request.contextPath}/order/myCartGo.do?userId=${user.userId }'">
+						<i class="fas fa-cart-plus fa-lg"></i>
+					</button> &nbsp;
+				</li>
 <li>
     <div class="dropdown">
         <button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/Member/myPage.jsp'"><i class="far fa-user fa-lg"></i></button>
         <div class="dropdown-menu">
             <a class="dropdown-item">${user.userName }</a>
             <a class="dropdown-item"><small>${user.grade }</small></a>
-            <a class="dropdown-item"><small>포인트: ${user.points }점</small></a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/viewPoints.do"><small>포인트: ${user.points }점</small></a>
             <a class="dropdown-item"><hr></a>
-            <c:if test="${user.grade == '강의자' }">
-                <a class="dropdown-item" href="${pageContext.request.contextPath}/Teacher/dashboard.do">강의자 페이지로 이동</a>
-                <a class="dropdown-item"><hr></a>
-            </c:if>
             <a class="dropdown-item" href="#">내 학습</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/inquiry.jsp">작성한 게시글</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/likeGo.do?userId=${user.userId }">좋아요</a>
@@ -198,11 +250,17 @@ padding:10px;
     </div>
     </li>
 
-
 </c:if>
-    <li>
-<button type="button" class="btn" onclick = "location.href='${pageContext.request.contextPath}/Member/Belecture/beLecture.jsp'">지식 공유 참여</button>
-</li>
+      <c:if test="${user.grade != '강의자' }">
+          <li>
+              <button type="button" class="btn" onclick = "location.href='${pageContext.request.contextPath}/Member/Belecture/beLecture.jsp'">지식 공유 참여</button>
+          </li>
+      </c:if>
+      <c:if test="${user.grade == '강의자' }">
+          <li>
+              <button type="button" class="btn" onclick = "location.href='${pageContext.request.contextPath}/Teacher/dashboard.do'">강의자 페이지</button>
+          </li>
+      </c:if>
 
 
 </ul>

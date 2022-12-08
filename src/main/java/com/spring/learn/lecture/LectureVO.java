@@ -1,6 +1,8 @@
 package com.spring.learn.lecture;
 
+import java.util.Date;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 public class LectureVO {
 	
@@ -36,8 +38,23 @@ public class LectureVO {
 	
 	//수강 리뷰 개수
 	private int reviewCount;
-	
-	
+
+	private MultipartFile uploadFile;
+
+	private int qsWeekdays;
+	private String qsStartStr;
+	private String qsEndStr;
+	private Date qsStart;
+	private Date qsEnd;
+
+	public MultipartFile getUploadFile() {
+		return uploadFile;
+	}
+
+	public void setUploadFile(MultipartFile uploadFile) {
+		this.uploadFile = uploadFile;
+	}
+
 	public String getLectureNo() {
 		return lectureNo;
 	}
@@ -185,7 +202,51 @@ public class LectureVO {
 	public void setIsBuy(int isBuy) {
 		this.isBuy = isBuy;
 	}
-	
+
+	public void setSalePrice(int salePrice) {
+		this.salePrice = salePrice;
+	}
+
+	public int getQsWeekdays() {
+		return qsWeekdays;
+	}
+
+	public void setQsWeekdays(int qsWeekdays) {
+		this.qsWeekdays = qsWeekdays;
+	}
+
+	public String getQsStartStr() {
+		return qsStartStr;
+	}
+
+	public void setQsStartStr(String qsStartStr) {
+		this.qsStartStr = qsStartStr;
+	}
+
+	public String getQsEndStr() {
+		return qsEndStr;
+	}
+
+	public void setQsEndStr(String qsEndStr) {
+		this.qsEndStr = qsEndStr;
+	}
+
+	public Date getQsStart() {
+		return qsStart;
+	}
+
+	public void setQsStart(Date qsStart) {
+		this.qsStart = qsStart;
+	}
+
+	public Date getQsEnd() {
+		return qsEnd;
+	}
+
+	public void setQsEnd(Date qsEnd) {
+		this.qsEnd = qsEnd;
+	}
+
 	@Override
 	public String toString() {
 		return "LectureVO [lectureNo=" + lectureNo + ", userId=" + userId + ", categoryName=" + categoryName

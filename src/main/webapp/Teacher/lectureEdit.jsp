@@ -85,7 +85,7 @@
 <div class="container-fluid bg-dark">
     <div class="container tape">
         <section class="tapeContent">
-            <h2>강의 추가</h2>
+            <h2>강의 수정</h2>
         </section>
     </div>
 </div>
@@ -103,84 +103,33 @@
                 <li class="list-group-item">
                     <a class="norm-menu" data-toggle="tab" href="#detail">상세소개</a>
                 </li>
-                <li class="list-group-item" id="curriMenu">
-                    <a class="norm-menu" data-toggle="tab" href="#curriculum">커리큘럼</a>
-                </li>
                 <li class="list-group-item">
                     <a class="norm-menu" data-toggle="tab" href="#coverimg">커버 이미지</a>
                 </li>
                 <li class="list-group-item">
                     <a class="norm-menu" data-toggle="tab" href="#setting">강의설정</a>
                     <div class="pt-3">
-                        <button type="button" class="active-btn w-100" id="submitBtn">제출하기</button>
+                        <button type="button" class="active-btn w-100" id="submitBtn">수정하기</button>
                         <script>
                           $('#submitBtn').on('click', function() {
-                            // 섹션 저장
-                            let ls = '';
-                            $('.lectureSection').each(function () {
-                              ls = ls + $(this).val() + '/';
-                              console.log("ls: " + ls);
-                            });
-                            $('#lectureSection').val(ls.slice(0, -1));
-
-                            // 실시간 질문 시간 저장: yyyy-MM-dd HH:mm:ss
-                            let qsStart = $('#qsStart');
-                            if(qsStart.val() !== '') {
-                              let start = '2022-12-05 ' + qsStart.val() + ':00';
-                              let end = '2022-12-05 ' + $('#qsEnd').val() + ':00';
-                              $('#qsStartStr').val(start);
-                              $('#qsEndStr').val(end);
-                            }
-
                             let form = $('#testForm')[0];
                             let formData = new FormData(form);
 
-                            let cnt = 0;
-
                             $.ajax({
                               type : 'POST',
-                              url : '${pageContext.request.contextPath}/Teacher/addLecture.do',
+                              url : '${pageContext.request.contextPath}/Teacher/editLecture.do',
                               data : formData,
                               dataType : 'json',
                               cache: false,
                               contentType: false,
                               processData: false,
-                              error: function(){
+                              error: function(data){
                                 alert('실패');
                               },
-                              success: function(lectureNo) {
-                                for (let i = 0; i <= secNum; i++) {
-                                  let classes = $("form[id^='sn" + i + "']");
-                                  if(classes.length !== 0) { // 섹션에 수업 있는지 확인
-                                    classes.each(async function() {
-                                      $(this).children('#lectureNo').val(lectureNo);
-                                      $(this).children('#catName').val($('#categoryName').val());
-                                      let formData = await new FormData($(this)[0]);
-                                      $.ajax({
-                                        type : 'POST',
-                                        url : '${pageContext.request.contextPath}/Teacher/addClass.do',
-                                        data : formData,
-                                        dataType : 'json',
-                                        async: false,
-                                        cache: false,
-                                        contentType: false,
-                                        processData: false,
-                                        error: function(data){
-                                          alert('실패...');
-                                        },
-                                        success: function(data) {
-                                          alert('성공');
-                                        }
-                                      })
-                                    })
-                                  }
-                                } // 끝
-                                cnt = 1;
-                                if(cnt === 1) {
-                                  location.href = '${pageContext.request.contextPath}/Teacher/lectureManager.do';
-                                }
-                              } // SUCCESS 끝
-                            }); // AJAX 끝
+                              success : function(data){
+                                location.href = '${pageContext.request.contextPath}/Teacher/lectureManager.do';
+                              }
+                            });
                           })
                         </script>
                     </div>
@@ -200,100 +149,41 @@
                     onclick="location.href='${pageContext.request.contextPath}/Teacher/lectureManager.do'"
                     class="active-btn mb-2">강의 관리로</button>
             <form name="testForm" id="testForm" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="userId" value="${user.userId}"/>
-                <input type="hidden" name="lectureWriter" value="${user.userName}"/>
+                <input type="hidden" name="lectureNo" value="${lecture.lectureNo}"/>
                 <div class="tab-content">
                     <div class="tab-pane container active border mt-2 p-5" id="info">
                         <h3>강의정보</h3>
                         <div>
                             <label>
                                 <h6>강의제목</h6>
-                                <input type="text" class="form-control" style="width: 700px"
-                                       name="lectureTitle">
+                                <input readonly type="text" class="form-control" style="width: 700px"
+                                       value="${lecture.lectureTitle}">
                             </label>
                         </div>
                         <div>
                             <label>
                                 <h6>온/오프라인</h6>
-                                <button type='button' class="active-btn light-btn" id="on"
-                                        onclick="changeOnOff(0)">온라인</button>
-                                <button type='button' class="active-btn light-btn" id="off"
-                                        onclick="changeOnOff(1)">오프라인</button>
-                                <input type="hidden" name="lectureOnOff" id="lectureOnOff">
+                                <c:if test="${lecture.lectureOnOff == 0}">
+                                    <button type='button' class="active-btn light-btn" id="on">온라인</button>
+                                </c:if>
+                                <c:if test="${lecture.lectureOnOff == 1}">
+                                    <button type='button' class="active-btn light-btn" id="off">오프라인</button>
+                                </c:if>
                             </label>
-                            <script>
-                              function changeOnOff(num) {
-                                if(num === 0) { // 온라인
-                                  $('#on').removeClass('light-btn');
-                                  $('#off').addClass('light-btn');
-                                  $('#lectureOnOff').val(0);
-
-                                  $('#curriMenu').css('display', ''); // 커리큘럼(사이드바) O
-                                  $('#lectureDueDiv').css('display', ''); // 강의기한 O
-                                  $('#realtimeQuestionDiv').css('display', ''); // 질문 O
-                                } else if(num === 1) { // 오프라인
-                                  $('#on').addClass('light-btn');
-                                  $('#off').removeClass('light-btn');
-                                  $('#lectureOnOff').val(1);
-
-                                  $('#curriMenu').css('display', 'none'); // 커리큘럼(사이드바) X
-                                  $('#lectureDueDiv').css('display', 'none'); // 강의기한 X
-                                  $('#realtimeQuestionDiv').css('display', 'none'); // 질문 X
-                                }
-                              }
-                            </script>
                         </div>
                         <div>
                             <label>
                                 <h6>카테고리</h6>
-                                <c:forEach items="${categories}" var="cat" varStatus="status">
-                                    <button type='button' class="active-btn light-btn"
-                                            id="cat${status.index}"
-                                            onclick="changeCat(${status.index})">
-                                            ${cat.categoryName}
-                                    </button>
-                                </c:forEach>
-                                <input type="hidden" id="categoryName" name="categoryName">
+                                <button type='button' class="active-btn light-btn">
+                                    ${lecture.categoryName}
+                                </button>
                             </label>
-                            <script>
-                              function changeCat(num) {
-                                <c:forEach items="${categories}" var="cat" varStatus="status">
-                                if('${status.index}' === String(num)) {
-                                  $('#cat${status.index}').removeClass('light-btn');
-                                  $('#categoryName').val('${cat.categoryName}');
-                                } else {
-                                  $('#cat${status.index}').addClass('light-btn');
-                                }
-                                </c:forEach>
-                              }
-                            </script>
                         </div>
                         <div>
                             <label>
                                 <h6>강의수준</h6>
-                                <button type='button' class="active-btn light-btn" id="lv1"
-                                        onclick="changeLevel(1)">입문</button>
-                                <button type='button' class="active-btn light-btn" id="lv2"
-                                        onclick="changeLevel(2)">초급</button>
-                                <button type='button' class="active-btn light-btn" id="lv3"
-                                        onclick="changeLevel(3)">중급이상</button>
-                                <input type="hidden" id="lectureLevel" name="lectureLevel">
+                                <button type='button' class="active-btn light-btn">${lecture.lectureLevel}</button>
                             </label>
-                            <script>
-                                function changeLevel(num) {
-                                  let level = $('#lectureLevel');
-                                  let str = ['입문', '초급', '중급이상'];
-
-                                  for(let i = 1; i <= 3; i++) {
-                                    if(i === num) {
-                                      $('#lv' + i).removeClass('light-btn');
-                                      level.val(str[i - 1]);
-                                    } else {
-                                      $('#lv' + i).addClass('light-btn');
-                                    }
-                                  }
-                                }
-                            </script>
                         </div>
                     </div>
                     <div class="tab-pane container fade border mt-2 p-5" id="detail">
@@ -304,14 +194,14 @@
                                     (해당 내용은 강의리스트와 강의소개 상단에 보여집니다.)
                                 </span>
                             </h6>
-                            <textarea class="form-control" style="width: 900px" name="lectureSummary"></textarea>
+                            <textarea class="form-control" style="width: 900px" name="lectureSummary">${lecture.lectureSummary}</textarea>
                         </label>
                         <label>
                             <h6>강의 상세 내용
                                 <span style="color: red">(해당 내용은 강의소개에서 보여집니다)</span>
                             </h6>
                             <textarea class="form-control" style="width: 900px" name="lectureContent"
-                                      id="lectureContent">주제 소개, 왜 배워야 하는지, 이 강의에서 배우는 것들, 강의 특징, 섹션마다 간단한 소개 등을 작성해주세요.</textarea>
+                                      id="lectureContent">${lecture.lectureContent}</textarea>
                         </label>
                         <script>
                           $('#lectureContent').summernote({
@@ -350,13 +240,6 @@
                           }
                         </script>
                     </div>
-                    <div class="tab-pane container fade border mt-2 p-5" id="curriculum">
-                        <input type="hidden" name="lectureSection" id="lectureSection"/>
-                        <h3>커리큘럼</h3>
-                        <button type="button" onclick="addSection()" class="active-btn">섹션 추가</button>
-                        <div id="classDiv" class="pt-3">
-                        </div>
-                    </div>
                     <div class="tab-pane container fade border mt-2 p-5" id="coverimg">
                         <h3>커버 이미지</h3>
                         <div class="p-4" style="background-color: #f5f5f5">
@@ -366,8 +249,13 @@
                         </div>
                         <div class="row pt-3">
                             <div class="col-5 text-center">
-                                <img width="400px" alt="lectureCoverimg"
-                                     src="https://blog.kakaocdn.net/dn/PUn3J/btqCvx1gkCr/IiQ89PF6VfFqqDw3wFmpH1/img.png"/>
+                                <c:if test="${not empty lecture.lectureCoverimg}">
+                                    <img width="400px" alt="lectureCoverimg" src="/learn/filepath/${lecture.lectureCoverimg}"/>
+                                </c:if>
+                                <c:if test="${empty lecture.lectureCoverimg}">
+                                    <img width="400px" alt="lectureCoverimg"
+                                         src="https://blog.kakaocdn.net/dn/PUn3J/btqCvx1gkCr/IiQ89PF6VfFqqDw3wFmpH1/img.png"/>
+                                </c:if>
                             </div>
                             <div class="col-7">
                                 <br><br>
@@ -383,7 +271,12 @@
                                        style="border-radius: 5px 0 0 5px; margin-right: -4px">업로드</label>
                                 <span class="border" style="border-radius: 0 5px 5px 0; padding: 5px 5px 11px 5px;">
                                     <i class="fas fa-image" style="color: #00C471"></i>
-                                    <a class="filePreview">이미지</a>
+                                    <c:if test="${not empty lecture.lectureCoverimg}">
+                                        <a class="filePreview">${lecture.lectureCoverimg}</a>
+                                    </c:if>
+                                    <c:if test="${empty lecture.lectureCoverimg}">
+                                        <a class="filePreview">이미지</a>
+                                    </c:if>
                                 </span>
                             </div>
                             <script>
@@ -403,17 +296,8 @@
                                 <h6>가격 설정
                                     <span style="color: red">(무료 강의는 '0'으로 입력해주세요.)</span>
                                 </h6>
-                                <input type="number" class="form-control" style="width: 700px"
-                                       id="lecturePrice" name="lecturePrice" value="0">
-                                <script>
-                                  $('#lecturePrice').change(function() {
-                                    if($(this).val() === '0' || $(this).val() === '') {
-                                      $('#discountDiv').css('display', 'none');
-                                    } else {
-                                      $('#discountDiv').css('display', '');
-                                    }
-                                  });
-                                </script>
+                                <input readonly type="number" class="form-control" style="width: 700px"
+                                       id="lecturePrice" name="lecturePrice" value="${lecture.lecturePrice}">
                             </label>
                         </div>
                         <div>
@@ -428,12 +312,14 @@
                                 <div class="form-inline" id="salerateDiv">
                                     <span>할인률(%)&nbsp;:&nbsp;</span>
                                     <input type="number" class="form-control mb-2" style="width: 617px"
-                                           id="lectureSalerate" name="lectureSalerate" placeholder="할인률(%)">
+                                           id="lectureSalerate" name="lectureSalerate" placeholder="할인률(%)"
+                                           value="${lecture.lectureSalerate}">
                                 </div>
                                 <div class="form-inline" id="saledueDiv">
                                     <span>할인기한&nbsp;:&nbsp;&nbsp;</span>
                                     <input type="date" class="form-control" style="width: 617px"
-                                           id="lectureSaledue" name="lectureSaledue" placeholder="할인기한">
+                                           id="lectureSaledue" name="lectureSaledue" placeholder="할인기한"
+                                           value="${fn:substring(lecture.lectureSaledue, 0, 10)}">
                                 </div>
                             </label>
                             <script>
@@ -462,28 +348,14 @@
                                 <h6>수강 기한
                                     <span style="color: red">(일수를 입력하세요.)</span>
                                 </h6>
-                                <button type='button' class="active-btn light-btn" id="free"
-                                        onclick="setFree(1)">무제한</button>
-                                <button type='button' class="active-btn light-btn mb-2" id="limit"
-                                        onclick="setFree(0)">제한</button>
-                                <input type="hidden" class="form-control" style="width: 700px"
-                                       id="lectureDue" name="lectureDue">
+                                <c:if test="${lecture.lectureDue == 0}">
+                                    <button type='button' class="active-btn light-btn">무제한</button>
+                                </c:if>
+                                <c:if test="${lecture.lectureDue != 0}">
+                                    <button type='button' class="active-btn light-btn mb-2">제한</button>
+                                    <input readonly type="number" class="form-control" style="width: 700px" value="${lecture.lectureDue}">
+                                </c:if>
                             </label>
-                            <script>
-                              function setFree(num) {
-                                if(num === 1) {
-                                  let due = $('#lectureDue');
-                                  $('#free').removeClass('light-btn');
-                                  $('#limit').addClass('light-btn');
-                                  due.prop('type', 'hidden');
-                                  due.val(0);
-                                } else {
-                                  $('#free').addClass('light-btn');
-                                  $('#limit').removeClass('light-btn');
-                                  $('#lectureDue').prop('type', 'number');
-                                }
-                              }
-                            </script>
                         </div>
                         <div id="realtimeQuestionDiv">
                             <label>
@@ -506,12 +378,10 @@
                                 </div>
                                 <div class="form-inline pb-2" id="qsStartDiv" style="display:none">
                                     시작시간:&nbsp;&nbsp;
-                                    <input class="form-control" type="time" id="qsStart"/>
                                     <input type="hidden" id="qsStartStr" name="qsStartStr">
                                 </div>
                                 <div class="form-inline" id="qsEndDiv" style="display:none">
                                     종료시간:&nbsp;&nbsp;
-                                    <input class="form-control" type="time" id="qsEnd"/>
                                     <input type="hidden" id="qsEndStr" name="qsEndStr">
                                 </div>
                             </label>
@@ -546,113 +416,29 @@
 </div>
 <%@include file="/Common/footer.jsp" %>
 <script>
-    let secNum = 0;
-    let clsNum = 1;
+    $(function() {
+      if('${lecture.lectureOnOff == 1}' === 'true') {
+        $('#lectureDueDiv').css('display', 'none');
+        $('#realtimeQuestionDiv').css('display', 'none');
+      }
 
-    function addSection() {
-      let dispHtml = '<div id="s' + secNum + '" class="border p-3 mb-3 section">';
-      dispHtml += '<div class="pb-4 form-inline row" id="sec' + secNum + '">';
-      dispHtml += '<div class="col-1" style="font-weight: bold;">섹션 : </div>';
-      dispHtml += '<div class="col-9">';
-      dispHtml += '<input type="text" class="form-control w-100 lectureSection "/>';
-      dispHtml += '</div>';
-      dispHtml += '<div class="col-2">';
-      dispHtml += '<button type="button" class="btn btn-sm btn-link" onclick="addClass(' + secNum + ')">수업 추가</button>';
-      dispHtml += '<button type="button" class="btn btn-sm btn-danger" onclick="removeSection(' + secNum + ')">삭제</button>';
-      dispHtml += '</div>';
-      dispHtml += '</div>';
-      dispHtml += '</div>';
-      $('#classDiv').append(dispHtml);
-      secNum++;
-    }
+      if('${empty lecture.qsStart}' === 'true') {
+        setQuestion(0);
+      } else {
+        let qsStart = '${lecture.qsStart}'.substring(11, 16);
+        let qsEnd = '${lecture.qsEnd}'.substring(11, 16);
+        setQuestion(1);
+        $('#qsWeekdays').val(${lecture.qsWeekdays});
+        $('#qsStartDiv').append('<input class="form-control" type="time" id="qsStart" value="' + qsStart + '" />')
+        $('#qsEndDiv').append('<input class="form-control" type="time" id="qsEnd" value="' + qsEnd + '" />')
+      }
 
-    function addClass(num) {
-      // FORM 시작
-      let dispHtml = '<form class="border row col-11 ml-2 mt-3 p-3" method="post" enctype="multipart/form-data" id="sn'+ num +'class'+ clsNum +'">';
-      dispHtml += '<input type="hidden" name="sectionNo" value="' + num + '">';
-      dispHtml += '<input type="hidden" id="lectureNo" name="lectureNo">';
-      dispHtml += '<input type="hidden" id="catName" name="categoryName">';
-
-      // 수업 이름
-      dispHtml += '<div class="col-1">수업 : </div>';
-      dispHtml += '<div class="col-9"><input name="className" type="text" class="form-control w-100 className"/></div>';
-      dispHtml += '<div class="col-2 text-right">';
-      dispHtml += '<button type="button" class="btn btn-sm btn-primary mr-2" data-toggle="collapse" data-target="#class' + clsNum + '">상세</button>';
-      dispHtml += '<button type="button" class="btn btn-sm btn-danger" onclick="removeClass('+ num +', ' + clsNum + ')">삭제</button>';
-      dispHtml += '</div>';
-
-      // 수업 상세 시작
-      dispHtml += '<div id="class'+ clsNum + '" class="w-100 collapse border p-3 mt-3 ml-1">';
-
-      // 수업 상세: 강의 파일
-      dispHtml += '<div>';
-      dispHtml += '<input type="file" name="uploadVideo" class="uploadVideo" id="uploadVideo'+ clsNum + '" style="display:none;" accept="video/mp4, video/mkv"/>';
-      dispHtml += '<label class="active-btn" for="uploadVideo'+ clsNum + '" style="padding-bottom: 5px; margin-bottom: 10px">영상 업로드</label>';
-      dispHtml += '<span class="border" style="border-radius: 5px; padding: 5px;">';
-      dispHtml += '<i class="fas fa-image" style="color: #00C471"></i>';
-      dispHtml += '<a class="videoPreview">동영상(mp4, mkv 파일만 가능)</a>';
-      dispHtml += '</span>';
-      dispHtml += '</div>';
-
-      // 수업 상세: 수업 미리보기 여부
-      dispHtml += '<div class="pb-4 pt-4"><h6>무료 공개 여부</h6>';
-      dispHtml += '<button type="button" class="active-btn light-btn openBtn">공개</button>';
-      dispHtml += '<button type="button" class="active-btn light-btn closeBtn">비공개</button>';
-      dispHtml += '<input type="hidden" name="preview" class="preview">';
-      dispHtml += '</div>';
-
-      // 수업 상세: 자료 파일
-      dispHtml += '<div>';
-      dispHtml += '<input type="file" name="uploadBook" class="uploadBook" id="uploadBook'+ clsNum + '" style="display:none;" accept="application/pdf"/>';
-      dispHtml += '<label class="active-btn" for="uploadBook'+ clsNum + '" style="padding-bottom: 5px; margin-bottom: 10px">자료파일 업로드</label>';
-      dispHtml += '<span class="border" style="border-radius: 5px; padding: 5px;">';
-      dispHtml += '<i class="fas fa-image" style="color: #00C471"></i>';
-      dispHtml += '<a class="bookPreview">자료파일(pdf 파일만 가능)</a>';
-      dispHtml += '</span>';
-
-      // 수업 상세 끝
-      dispHtml += '</div>';
-
-      // FORM 끝
-      dispHtml += '</form>';
-      $('#sec' + num).append(dispHtml);
-      clsNum++;
-    }
-
-    function removeSection(num) {
-      $('#s' + num).remove();
-    }
-
-    function removeClass(secNum, clsNum) {
-      $('#sn' + secNum + 'class' + clsNum).remove();
-    }
-
-    $(document).on('change', '.uploadVideo', function() {
-      let file = $(this).val().substring(12);
-      let preview = $(this).parent('div').children('span').children('a');
-      preview.html(file);
-      preview.removeAttr('href');
-    });
-
-    $(document).on('change', '.uploadBook', function() {
-      let file = $(this).val().substring(12);
-      let preview = $(this).parent('div').children('span').children('a');
-      preview.html(file);
-      preview.removeAttr('href');
-    });
-
-    $(document).on('click', '.openBtn', function() {
-      $(this).removeClass('light-btn');
-      $(this).parent('div').children('button:eq(1)').addClass('light-btn');
-      $(this).parent('div').children('input').val('0');
-    });
-
-    $(document).on('click', '.closeBtn', function() {
-      $(this).removeClass('light-btn');
-      $(this).parent('div').children('button:eq(0)').addClass('light-btn');
-      $(this).parent('div').children('input').val('1');
-    });
-
+      if('${lecture.lectureSalerate == 0}' === 'true') {
+        setDiscount(0);
+      } else {
+        setDiscount(1);
+      }
+    })
 </script>
 </body>
 </html>

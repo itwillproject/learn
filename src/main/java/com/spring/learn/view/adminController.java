@@ -292,7 +292,7 @@ public class adminController {
 		}
 		
 		//통계 데이터 조회
-		if ("byMonth".equals(find.get("filter"))) {
+		if ("byMonth".equals(find.get("filter")) || null == find.get("filter")) {
 			List<RevenueVO> list = adminService.getRevenueEachMonth(map);
 			data.put("list", list);			
 		} else if ("byWeek".equals(find.get("filter"))) {
@@ -423,7 +423,7 @@ public class adminController {
 		return list;
 	}
 	
-	@RequestMapping("mailImgUpload.do")
+	/*@RequestMapping("mailImgUpload.do")
 	@ResponseBody
 	public String uploadMailImageFile(@RequestParam("file") MultipartFile file) throws IOException {
         
@@ -439,7 +439,7 @@ public class adminController {
         file.transferTo(new File(url));
 
         return savedFileName;
-	}
+	}*/
 	
 	
 	@RequestMapping("/sendMail.do")
@@ -494,7 +494,7 @@ public class adminController {
 	public PagingSK paging (String type, String startDate, String endDate, String page) {
 		
 		PagingSK p =  new PagingSK();
-		p.setNumPerPage(1);
+		p.setNumPerPage(5);
 		Map<String, String> map = new HashMap<String, String>();
 		
 		map.put("startDate", startDate);

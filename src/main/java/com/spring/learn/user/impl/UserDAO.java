@@ -1,8 +1,10 @@
 package com.spring.learn.user.impl;
 
+import com.spring.learn.user.PointLogVO;
 import java.util.List;
 
 
+import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -114,6 +116,14 @@ public class UserDAO {
 	
 	public void updateUserIntro(UserVO vo) {
 		mybatis.update("userDAO.updateUserIntro", vo);;
+	}
+
+	public int getPointLogCount(String userId) {
+		return mybatis.selectOne("userDAO.getPointLogCount", userId);
+	}
+
+	public List<PointLogVO> getPointLogList(Map<String, String> map) {
+		return mybatis.selectList("userDAO.getPointLogList", map);
 	}
 
 }

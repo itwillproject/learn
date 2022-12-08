@@ -290,6 +290,44 @@
 	</delete>
 	
 	
+		<!-- 사용자 조회: 게시글 조회 -->
+	<select id="getMyBoardList" parameterType="hashMap" resultType="board">
+		SELECT * FROM (SELECT ROWNUM R_NUM, K.* FROM ( SELECT * FROM (
+		SELECT USER_ID, FBOARD_NO, NULL QBOARD_NO, NULL BOARD_ADOPT, BOARD_TITLE, BOARD_REGDATE, BOARD_LIKE, COMMENT_CNT FROM FREE_BOARD
+		UNION ALL
+		SELECT USER_ID, NULL FBOARD_NO, QBOARD_NO, BOARD_ADOPT, BOARD_TITLE, BOARD_REGDATE, BOARD_LIKE, COMMENT_CNT FROM QUESTION_BOARD
+		) WHERE USER_ID = #{userId}
+
+		<if test="type != null">
+			<if test="type == 1"> AND QBOARD_NO IS NOT NULL</if> <!-- 질문게시판 -->
+			<if test="type == 2"> AND FBOARD_NO IS NOT NULL</if> <!-- 자유게시판 -->
+		</if>
+		<if test="order != null">
+			<if test="order == 1"> ORDER BY BOARD_REGDATE DESC</if> <!-- 최신순 -->
+			<if test="order == 2"> ORDER BY BOARD_REGDATE</if> <!-- 오래된순 -->
+			<if test="order == 3"> ORDER BY BOARD_LIKE, BOARD_REGDATE DESC</if> <!-- 좋아요순 -->
+		</if>) K
+		) WHERE R_NUM BETWEEN #{begin} AND #{end}
+	</select>
+
+	<select id="getMyBoardCount" parameterType="hashMap" resultType="int">
+		SELECT COUNT(*) FROM (
+		SELECT USER_ID, FBOARD_NO, NULL QBOARD_NO, NULL BOARD_ADOPT, BOARD_TITLE, BOARD_REGDATE, BOARD_LIKE, COMMENT_CNT FROM FREE_BOARD
+		UNION ALL
+		SELECT USER_ID, NULL FBOARD_NO, QBOARD_NO, BOARD_ADOPT, BOARD_TITLE, BOARD_REGDATE, BOARD_LIKE, COMMENT_CNT FROM QUESTION_BOARD
+		)
+		WHERE USER_ID = #{userId}
+		<if test="type != null">
+			<if test="type == 1"> AND QBOARD_NO IS NOT NULL</if> <!-- 질문게시판 -->
+			<if test="type == 2"> AND FBOARD_NO IS NOT NULL</if> <!-- 자유게시판 -->
+		</if>
+		<if test="order != null">
+			<if test="order == 1"> ORDER BY BOARD_REGDATE DESC</if> <!-- 최신순 -->
+			<if test="order == 2"> ORDER BY BOARD_REGDATE</if> <!-- 오래된순 -->
+			<if test="order == 3"> ORDER BY BOARD_LIKE, BOARD_REGDATE DESC</if> <!-- 좋아요순 -->
+		</if>
+	</select>
+	
 </mapper>
 
 

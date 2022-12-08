@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.spring.learn.lecture.CategoryVO;
 import com.spring.learn.lecture.LectureService;
 import com.spring.learn.lecture.LectureVO;
+import com.spring.learn.user.UserVO;
 
 @Service("lectureService")
 public class LectureServiceImpl implements LectureService {
@@ -85,6 +86,20 @@ public class LectureServiceImpl implements LectureService {
 		return lectureDAO.lectureLocationAll();
 	}
 
+	@Override
+	public List<UserVO> getLectureStudentList(Map<String, String> map) {
+		return lectureDAO.getLectureStudentList(map);
+	}
+
+	@Override
+	public void addLectureCoverimg(LectureVO lecture) {
+		lectureDAO.addLectureCoverimg(lecture);
+	}
+
+	@Override
+	public void editLecture(LectureVO lecture) {
+		lectureDAO.editLecture(lecture);
+	}
 
 	@Override
 	public List<LectureVO> getOnLecturesFiltering(Map<String, String> map) {
@@ -117,8 +132,8 @@ public class LectureServiceImpl implements LectureService {
 	}
 
 	@Override
-	public Double getLectureAvgRate(String userName) {
-		return lectureDAO.getLectureAvgRate(userName);
+	public Double getLectureAvgRate(String userId) {
+		return lectureDAO.getLectureAvgRate(userId);
 	}
 
 	@Override
@@ -127,8 +142,8 @@ public class LectureServiceImpl implements LectureService {
 	}
 
 	@Override
-	public Integer getStudentCount(String userName) {
-		return lectureDAO.getStudentCount(userName);
+	public Integer getStudentCount(String userId) {
+		return lectureDAO.getStudentCount(userId);
 	}
 
 	@Override
@@ -181,6 +196,30 @@ public class LectureServiceImpl implements LectureService {
 		return lectureDAO.getLectureNo();
 	}
 
+	//사용자조회(강의) 기능 ================
+	@Override
+	public List<LectureVO> getLectureProfile(UserVO vo) {
+		return lectureDAO.getLectureProfile(vo);
+	}
+
+
+	@Override
+	public List<LectureVO> getLectureProfileAll(UserVO vo) {
+		return lectureDAO.getLectureProfileAll(vo);
+	}
+
+
+	@Override
+	public List<LectureVO> getLectureProfilePage(Map<String, Object> map) {
+		return lectureDAO.getLectureProfilePage(map);
+	}
+
+
+	@Override
+	public int countLectureProfilePage(UserVO vo) {
+		return lectureDAO.countLectureProfilePage(vo);
+	}
+	//==================================
 	
 	
 }

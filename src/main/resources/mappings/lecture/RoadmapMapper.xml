@@ -52,9 +52,11 @@
   </delete>
   <insert id="insertRoadmap" parameterType="roadmap">
     INSERT INTO ROADMAP
-    (RBOARD_NO, USER_ID, RBOARD_TITLE, RBOARD_CONTENT, LECTURE_LIST, CATEGORY_NAME, RBOARD_COVERIMG)
+    (RBOARD_NO, USER_ID, RBOARD_TITLE, RBOARD_CONTENT, LECTURE_LIST, CATEGORY_NAME, RBOARD_COVERIMG,
+		USER_NAME)
     VALUES ((SELECT NVL(MAX(RBOARD_NO), 0) + 1 FROM ROADMAP)
-    , #{userId}, #{rboardTitle}, #{rboardContent}, #{lectureList}, #{categoryName}, #{rboardCoverimg})
+    , #{userId}, #{rboardTitle}, #{rboardContent}, #{lectureList}, #{categoryName}, #{rboardCoverimg},
+		#{userName})
   </insert>
   <update id="editRoadmap" parameterType="roadmap">
     UPDATE ROADMAP SET
@@ -65,9 +67,11 @@
     RBOARD_COVERIMG = #{rboardCoverimg}
     WHERE RBOARD_NO = #{rboardNo}
   </update>
-  
-  
-  
+
+	<select id="getFileName" parameterType="String" resultType="String">
+		SELECT RBOARD_COVERIMG FROM ROADMAP WHERE RBOARD_NO = #{robardNo}
+	</select>
+
 	<select id="getRoadmaps" parameterType="map" resultType="roadmap">
 	SELECT *
 	FROM (SELECT ROWNUM AS ROW_NUM, C.* 

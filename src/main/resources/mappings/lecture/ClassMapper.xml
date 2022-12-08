@@ -7,9 +7,9 @@
 
   <insert id="addClass" parameterType="class">
     INSERT INTO CLASS
-    (CLASS_NO, LECTURE_NO, CATEGORY_NAME, SECTION_NO, CLASS_NAME, PREVIEW) VALUES
+    (CLASS_NO, LECTURE_NO, CATEGORY_NAME, SECTION_NO, CLASS_NAME, PREVIEW, FILENAME, ORINAME, VIDEONAME) VALUES
     ((SELECT NVL(MAX(CLASS_NO), 0) + 1 FROM CLASS), #{lectureNo}, #{categoryName},
-    #{sectionNo}, #{className}, #{preview})
+    #{sectionNo}, #{className}, #{preview}, #{filename}, #{oriname}, #{videoname})
   </insert>
 
   <select id="getClassList" parameterType="String" resultType="class">

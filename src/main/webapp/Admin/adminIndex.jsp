@@ -206,7 +206,7 @@
 	            	
 	            	dispHTML += '';
 					$.each(data.list, function(idx, obj){
-						dispHTML += '<a href=""><p class="h6">'+obj.qnaTitle +'</p></a>';
+						dispHTML += '<p class="h6" onclick="location.href=\'${pageContext.request.contextPath}/Member/getLecture.do?qnaNo='+obj.qnaNo+'\';">'+obj.qnaTitle+'</p>';
 					})
 					$(".callcenter").html(dispHTML);
 					
@@ -334,7 +334,7 @@
 		<div class="weeklyNewLectures">
 			<c:forEach var="lecture" items="${newWeeklyLectures }">
 				<c:set var="j" value="${j+1 }"/>
-				<p class="h6" onclick="location.href='${pageContext.request.contextPath}/Member/getLecture.do?lectureNo=${lecture.lectureNo }';">${j}. ${lecture.lectureTitle }</p></a>
+				<p class="h6" onclick="location.href='${pageContext.request.contextPath}/Member/getLecture.do?lectureNo=${lecture.lectureNo }';">${j}. ${lecture.lectureTitle }</p>
 			</c:forEach>
 		</div>
     </div>
@@ -353,7 +353,7 @@
       <h3 class="text-center">미답변 문의</h3>
       <div class="callcenter" style="height:150px;">
      	<c:forEach var="call" items="${callcenters }">
-			<a href=""><p class="h6">${call.qnaTitle }</p></a>
+			<p class="h6" onclick="location.href='${pageContext.request.contextPath}/Member/getLecture.do?qnaNo=${call.qnaNo }';">${call.qnaTitle }</p>
 		</c:forEach>
       </div>
       <div class="pagingAreaCallcenter mx-auto">

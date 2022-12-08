@@ -130,6 +130,15 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.insertBoard(vo);
 	}
 
+	@Override
+	public List<BoardVO> getMyBoardList(Map<String, String> map) {
+		return boardDAO.getMyBoardList(map);
+	}
+
+	@Override
+	public int getMyBoardCount(Map<String, String> map) {
+		return boardDAO.getMyBoardCount(map);
+	}
 
   
 }

@@ -1,6 +1,5 @@
 package com.spring.learn.view;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,13 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.spring.learn.board.BoardVO;
 import com.spring.learn.common.Paging;
-import com.spring.learn.memberboard.CallcenterCommentVO;
-
 import com.spring.learn.memberboard.AdminQNAReplyService;
 import com.spring.learn.memberboard.AdminQNAReplyVO;
-
+import com.spring.learn.memberboard.CallcenterCommentVO;
 import com.spring.learn.memberboard.MemberBoardService;
 import com.spring.learn.memberboard.MemberBoardVO;
 import com.spring.learn.memberboard.OrdersDetailVO;

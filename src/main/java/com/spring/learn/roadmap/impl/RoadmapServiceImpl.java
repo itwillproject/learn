@@ -106,4 +106,9 @@ public class RoadmapServiceImpl implements RoadmapService {
 	  public int getRoadmapCount(String userId) {
 	    return roadmapDAO.getRoadmapCount(userId);
 	  }
+
+	@Override
+	public String getFileName(String rboardNo) {
+		return roadmapDAO.getFileName(rboardNo);
+	}
 }
