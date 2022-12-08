@@ -20,121 +20,91 @@
 
 <script type="text/javascript">
 
-	$(document).ready(function(){
-		removeImg();
-	});
-	
-	function removeImg(){
-		$(".contentWrap br").remove();
-		$(".contentWrap img").unwrap();
-		$(".contentWrap img").remove();		
-		$(".contentWrap hr").remove();		
-	}
-	
-	
-	$(document).on("keyup", "#searchKeyword", function(){
-		ajaxserachh();
-	});
-	
-	function pageGo(pageNum){		
-		ajaxserachh(pageNum);
-	}
-	
-	$(document).on("click", ".adopt", function(){
-		$(".adopt").removeClass('black-line');
-		$(".adopt").removeClass('active');
-		$(this).addClass('black-line');		
-		$(this).addClass('active');		
-		ajaxserachh();
-	});
-	
-	$(document).on("click", ".adoptItem", function(){
-		$(".adoptItem").removeAttr('id', 'adopt');
-		$(this).attr('id', 'adopt');
-	});
-	
-	function ajaxserachh(pageNum){
-		var searchKeyword = $("#searchKeyword").val().trim();
-		var boardAdopt =  $("#adopt").text();
-		
-		console.log("ordering : " + ordering);
-		
-		var gogo = "${pageContext.request.contextPath}/member/getQBoardListAj.do?searchKeyword=" + searchKeyword
-		if (pageNum != null){
-			var gogo = gogo + '&cPage=' + pageNum
-		}
-		if (ordering != null){
-			var gogo = gogo + '&ordering=' + ordering
-		}
-		if (ordering != null){
-			var gogo = gogo + '&qnaAdopt=' + boardAdopt
-		}		
-		
-		$.ajax({
-			url: gogo,
-			type : "get",
-			async : true,
-			
-			success : function(data){
-				console.log("에이젝스 성공!!");
-				console.log(data);
-				
-				var inHtml = "";
-				
-				if (data.length == 0){
-					inHtml = '<div class="row w-100">검색 결과가 없습니다.</div>';
-				} else {
-					
-					$.each(data.qnaBoardList, function(index, obj){
-					
+$(document).ready(function(){
+	removeImg();
+});
 
-									
-					})
-				
-				$("#searchList").html(inHtml);
-				
-					var pvo = data.pvo;
-					var inPage = "";
-					var preP = pvo.beginPage -1;
-					var nexP = pvo.endPage +1;
-					
-					inPage += '<ul>';
-					if (pvo.beginPage == 1){
-						inPage += '<a href="#" class="disabled"><li>이전페이지</li></a>';
-					}
-					
-					if (pvo.beginPage != 1){
-						inPage += '<a href="javascript:pageGo('+ preP +') ">';
-						inPage += '<li>이전페이지</li></a>';
-					}
-					
-					for (var pageNo  = pvo.beginPage ; pageNo <= pvo.endPage ; pageNo++){
-						if (pageNo == pvo.nowPage){
-							inPage += '<a href="#" class="is-active disabled" ><li>'+ pageNo +'</li></a>';
-						} else {
-							inPage += '<a href="javascript:pageGo('+pageNo+') "><li>'+ pageNo +'</li></a>';
-						}
-					}
-					
-					if (pvo.endPage < pvo.totalPage){
-						inPage += '<a href="javascript:pageGo('+ nexP +') "><li>다음페이지</li></a>';
-					} else {
-						inPage += '<a href="#" class="disabled" ><li>다음페이지</li></a>';
-					}
-					inPage += '</ul>';						        
-							
-					$("#paginations").html(inPage);
-				}
-				
-					removeImg();
-			},
+function removeImg(){
+	$(".contentWrap br").remove();
+	$(".contentWrap img").unwrap();
+	$(".contentWrap img").remove();		
+	$(".contentWrap hr").remove();		
+}
+
+$(document).on("keyup", "#searchKeyword", function(){
+	ajaxserachh();
+});
+
+$(document).on("click", ".adopt", function(){
+	$(".adopt").removeClass('black-line');
+	$(".adopt").removeClass('active');
+	$(this).addClass('black-line');		
+	$(this).addClass('active');		
+	ajaxserachh();
+});
+
+$(document).on("click", ".adoptItem", function(){
+	$(".adoptItem").removeAttr('id', 'adopt');
+	$(this).attr('id', 'adopt');
+});
+
+
+function pageGo(pageNum){		
+	ajaxserachh(pageNum);
+}
+
+function ajaxserachh(pageNum){
+	var searchKeyword = $("#searchKeyword").val().trim();
+	var boardAdopt =  $("#adopt").text();
+	
+	var gogo = "${pageContext.request.contextPath}/memberBoard/getMyQBoardListAj.do?searchKeyword=" + searchKeyword
+	if (boardAdopt != null){
+		var gogo = gogo + '&qnaAdopt=' + boardAdopt
+	}
+	if (pageNum != null){
+		var gogo = gogo + '&cPage=' + pageNum
+	}
+	
+	
+	$.ajax({
+		url: gogo,
+		type : "get",
+		async : true,
+		
+		success : function(data){
+			console.log("에이젝스 성공!!");
+			console.log(data);
+
+			var html = jQuery('<div>').html(data);
+			var table = html.find("div#table").html();
 			
-			error : function(){
-				console.log("에이젝스 실패!!");
-			}
-				
-		});
-	}	
+				$("#searchList").html(table);
+			
+			var paging = html.find("div#paging").html();
+			
+				$("#paginations").html(paging);
+			
+			removeImg();
+		},
+		
+		error : function(){
+			console.log("에이젝스 실패!!");
+		}
+			
+	});
+	
+}
+
+
+
+
+function qnaWriteForm() {
+	if(${user.userId == null}){
+		alert("로그인 후 입력해주시기 바랍니다");
+		return false;
+	}
+	location.href='${pageContext.request.contextPath}/memberBoard/qnaWriteForm.do';
+}
 	
 </script>  
   
@@ -233,64 +203,66 @@
 <body>
 	<%@ include file="/Common/header.jsp" %>
 
-	<div class="container-fluid">
-		<div class="row justify-content-center">
+<div class="container-fluid">
+	<div class="row justify-content-center">
 		
 			<!-- 왼쪽 네비 -->
-			<div class="col-sm-2">
-				
-			</div>
+		<div class="col-sm-2">
+			
+		</div>
 			
 			
 			<!-- 가운데 내용 -->
 			
-			<div class="col-sm-6 align-content-center">
+		<div class="col-sm-6 align-content-center">
 			
 				<br><br>
-				<!-- 하위 네비 -->
-				<div class="outer">
-					<div class="inner">
-						<ul class="menuborder">
-						  <li class="menu"><a href="/learn/getFaqList.do">자주 묻는 질문</a></li>
-						  <li class="menu"><a class="active"  href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터 문의하기</a></li>
-						  <li class="menu"><a href="/learn/Member/MemberBoard/serviceIntegrationPolicy.jsp">통합서비스 이용약관</a></li>
-						  <li class="menu"><a href="/learn/Member/MemberBoard/generalPolicy.jsp">아웃풋런 이용약관</a></li>
-						  <li class="menu"><a href="/learn/Member/MemberBoard/privacyPolicy.jsp">개인정보 취급방침</a></li>
-						</ul>
-					</div>
+				
+			<!-- 하위 네비 -->
+			<div class="outer">
+				<div class="inner">
+					<ul class="menuborder">
+					  <li class="menu"><a href="/learn/getFaqList.do">자주 묻는 질문</a></li>
+					  <li class="menu"><a class="active"  href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터 문의하기</a></li>
+					  <li class="menu"><a href="/learn/Member/MemberBoard/serviceIntegrationPolicy.jsp">통합서비스 이용약관</a></li>
+					  <li class="menu"><a href="/learn/Member/MemberBoard/generalPolicy.jsp">아웃풋런 이용약관</a></li>
+					  <li class="menu"><a href="/learn/Member/MemberBoard/privacyPolicy.jsp">개인정보 취급방침</a></li>
+					</ul>
 				</div>
+			</div>
+			
+			
 			
 			<!-- 섹션 구분 -->
-				<div class="d-flex flex-row pr-5">
+			<div class="d-flex flex-row pr-5">
+			
+				<form method="get" class="w-100">
+				
 				<nav class="navbar navbar-expand-sm navbar-light p-3">
                     <ul class="navbar-nav gray-botton w-100" style="border-bottom: 1px solid gray">
-                        <li class="nav-item active black-line">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">전체</a>
+                        <li class="nav-item active adopt black-line">
+                        <a class="nav-link adoptItem" id="adopt" >전체</a>
                         </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do?qnaAdopt=FALSE">미해결</a>
+                        <li class="nav-item adopt">
+                        <a class="nav-link adoptItem" >미해결</a>
                         </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do?qnaAdopt=TRUE">해결됨</a>
+                        <li class="nav-item adopt">
+                        <a class="nav-link adoptItem" >해결됨</a>
                         </li>
                     </ul>
 				</nav>
+				<div class="p-3">
+					<input type="text" class="w-100 float-left" id="searchKeyword" name="searchKeyword" placeholder="궁금한 질문을 검색해보세요!">
+				</div>	
+				</form>
 				
 				
 				
+				<input type="button" class="btn btn-dark ml-auto my-auto h-50"
+					 onclick="javascript:qnaWriteForm()" value="글쓰기"/>
+			</div>
 				
-				
-				<button class="btn btn-dark ml-auto my-auto h-50"
-				 onclick="location.href='${pageContext.request.contextPath}/memberBoard/qnaWriteForm.do'" style="height: 30px">글쓰기</button>
-				</div>
-				
-				<div class="d-flex flex-row p-3">
-					<form action="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do" class="w-100 d-flex align-content-center">
-						<input type="text" class="w-75" id="searchKeyword" name="searchKeyword" placeholder="궁금한 질문을 검색해보세요!">
-						<button class="btn btn-success ml-auto px-4">검색</button>
-					</form>
-				</div>
-								
+				<div id="searchList">				
 				<c:if test="${pvo.totalRecord == 0 }">
 					<p>검색한 내용이 없습니다.</p>
 				</c:if>
@@ -304,7 +276,7 @@
 									<div class="col-10">
 									<a href="${pageContext.request.contextPath}/memberBoard/viewPage.do?qnaNo=${memberBoard.qnaNo }"><h4>${memberBoard.qnaTitle }</h4>
 									<p>${memberBoard.qnaContent }</p>
-									<p>${memberBoard.userId } ·${memberBoard.qnaRegdate } </p></a>
+									<p>${memberBoard.userName } ·${memberBoard.qnaRegdate } </p></a>
 									</div>	
 								</div>
 								</td>
@@ -312,10 +284,7 @@
 						</c:forEach>
 					</tbody>
 				</table>
-				
-				
-				
-				
+				</div>
 				
 				<!-- 페이지네이션 페이징 paging -->
 				
@@ -354,7 +323,7 @@
 			    </div>
 			    </c:if>
 				
-			</div>			
+		</div>			
 			
 			<!-- 오른쪽 네비 -->
 			<div class="col-sm-2">
