@@ -130,6 +130,10 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.insertBoard(vo);
 	}
 
+	@Override
+	public List<BoardVO> getMyBoardList(String userId) {
+		return boardDAO.getMyBoardList(userId);
+	}
 
   
 }

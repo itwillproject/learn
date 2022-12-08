@@ -111,7 +111,7 @@
 				            dispHTML += '<div class="col-4 card course course_card_item border-0 mb-5" style="height:380px;">';
 				            dispHTML += '<div class="card h-100 border-0">';
 				            dispHTML += '<div class="card-image h-50">';
-				            dispHTML += '<img class="card-img-top" src="'+this.lectureCoverimg+'" width="100%" alt="'+this.lectureTitle+'">';
+				            dispHTML += '<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/'+this.lectureCoverimg+'" width="100%" alt="'+this.lectureTitle+'">';
 				            dispHTML += '</div>';
 				            dispHTML += '<div class="card-body w-100 overflow-hidden">';
 				            dispHTML += '<p class="card-title font-weight-bold" style="height:50px;">'+this.lectureTitle+'</a></p>';
@@ -296,7 +296,7 @@
 							<div class="col-4 card course course_card_item border-0 mb-5" style="height:380px;">
 								<div class="card h-100 border-0">
 								  	<div class="card-image h-50">
-										<img class="card-img-top" src="${lecture.lectureCoverimg }" width="100%" alt="${lecture.lectureTitle }">
+										<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/${lecture.lectureCoverimg }" width="100%" alt="${lecture.lectureTitle }">
 								  	</div>
 								  	<div class="card-body w-100 overflow-hidden">
 									    <p class="card-title font-weight-bold" style="height:50px;">${lecture.lectureTitle }</a></p>								

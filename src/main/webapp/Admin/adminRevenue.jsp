@@ -85,15 +85,15 @@
 	});
     
    	$(document).on("click", "#byMonth", function () {
-		ajaxProcess ("${pageContext.request.contextPath }/admin/getRevenueFiltering.do", $("#nowPage").text(), $(this).attr('value'));
+		ajaxProcess ("${pageContext.request.contextPath }/admin/getRevenueFiltering.do", $("#nowPage").text(), "byMonth");
 	});
    	
    	$(document).on("click", "#byWeek", function () {
-		ajaxProcess ("${pageContext.request.contextPath }/admin/getRevenueFiltering.do", $("#nowPage").text(), $(this).attr('value'));
+		ajaxProcess ("${pageContext.request.contextPath }/admin/getRevenueFiltering.do", $("#nowPage").text(), "byWeek");
 	});
    	
    	$(document).on("click", "#byDay", function () {
-		ajaxProcess ("${pageContext.request.contextPath }/admin/getRevenueFiltering.do", $("#nowPage").text(), $(this).attr('value'));
+		ajaxProcess ("${pageContext.request.contextPath }/admin/getRevenueFiltering.do", $("#nowPage").text(), "byDay");
 	});
     
    	$(document).on("click", "#download", function () {
@@ -278,9 +278,9 @@
   <div class="row">
     <div class="col-sm-12">
       <h3>매출통계</h3>
-      <input type="button" id="byMonth" value="월간">
-      <input type="button" id="byWeek" value="주간">
-      <input type="button" id="byDay" value="일간">
+      <input type="button" id="byMonth" value="월간" class="h6 btn btn-ligh">
+      <input type="button" id="byWeek" value="주간" class="h6 btn btn-ligh">
+      <input type="button" id="byDay" value="일간" class="h6 btn btn-ligh">
       <div id="revenueChart" style="font-size: 3rem">
       </div>
     </div>
@@ -290,7 +290,7 @@
 <div class="container" style="margin-top:30px">
   <div class="row">
     <div class="col-sm-12">
-      <p><input type="button" id="download" value="다운로드"></p>
+      <p><input type="button" id="download" value="다운로드" class="h6 btn btn-ligh"></p>
       <h3>수익 상세 내역</h3>
       <div class="RevenueDetail">
       	<table class="w-100">
