@@ -1,6 +1,5 @@
 package com.spring.learn.view;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,16 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-
 import com.spring.learn.common.Paging;
-import com.spring.learn.memberboard.CallcenterCommentVO;
-
 import com.spring.learn.memberboard.AdminQNAReplyService;
 import com.spring.learn.memberboard.AdminQNAReplyVO;
-
+import com.spring.learn.memberboard.CallcenterCommentVO;
 import com.spring.learn.memberboard.MemberBoardService;
 import com.spring.learn.memberboard.MemberBoardVO;
 import com.spring.learn.memberboard.OrdersDetailVO;
+import com.spring.learn.user.UserService;
 import com.spring.learn.user.UserVO;
 
 @Controller					// 단 현재 위치(클래스)에서만 유효
@@ -41,6 +37,9 @@ public class MemberBoardController {
 	@Autowired
 	private AdminQNAReplyService adminQNAReplyService;
 	
+	@Autowired
+	private UserService userService;
+	
 	
 	public MemberBoardController() {
 		System.out.println(">> MemberBoardController() 생성");
@@ -51,14 +50,46 @@ public class MemberBoardController {
 	public String getQnaBoardList(MemberBoardVO bvo, Model model, Paging p, HttpSession session) {
 		System.out.println(">>> 보드리스트 가져오기");		
 		UserVO uvo = (UserVO) session.getAttribute("user");
-		bvo.setUserId(uvo.getUserId());
-		
-		System.out.println("vo : " + bvo);
-		model.addAttribute("memberBoard", bvo);
-		
 		if(uvo.getUserId() == null) {
 			return "redirect:/Member/login.do";
 		}
+		
+		getMyQBoardListCommon(bvo, model, p, uvo);
+
+		return "/Member/MemberBoard/myQBoardList.jsp"; // 이동
+	}
+	
+	
+	// 검색과 페이지 보기, 페이징- 아작스 버전 하나 만들기
+	@RequestMapping("/getMyQBoardListAj.do")
+	public String getMyQBoardListAj(MemberBoardVO bvo, Model model, Paging p, HttpSession session) {
+		
+		System.out.println(">>> 보드리스트 가져오기");		
+		UserVO uvo = (UserVO) session.getAttribute("user");
+		if(uvo.getUserId() == null) {
+			return "redirect:/Member/login.do";
+		}
+		
+		System.out.println("vo : " + bvo);
+		if(bvo.getQnaAdopt().equals("미해결")) {
+			bvo.setQnaAdopt("FALSE");
+		} else if(bvo.getQnaAdopt().equals("해결됨")) {
+			bvo.setQnaAdopt("TRUE");
+		} else if(bvo.getQnaAdopt().equals("전체")) {
+			bvo.setQnaAdopt(null);
+		}
+		
+		getMyQBoardListCommon(bvo, model, p, uvo);
+		
+		return "/Member/MemberBoard/searchQboard/SearchQboard.jsp"; // 이동
+		
+	}
+
+	private void getMyQBoardListCommon(MemberBoardVO bvo, Model model, Paging p, UserVO uvo) {
+		bvo.setUserId(uvo.getUserId());
+		
+		model.addAttribute("memberBoard", bvo);
+		
 		
 		// 전체 페이지 수 구하기 - 이게 유저 아이디로 찾아야함 - > 일반 게시판에서는 조건으로 바꿔야함 , 검색 키워드와 유저아이디로
 		p.setTotalRecord(memberBoardService.countBoard(bvo));
@@ -96,10 +127,21 @@ public class MemberBoardController {
 		map.put("qnaAdopt", bvo.getQnaAdopt());
 		
 		System.out.println(">>>>> map : " + map);
-
+		
 		// 리스트 가져오기
 		List<MemberBoardVO> memberBoardList = memberBoardService.getBoardList(map); // 조회하고
-				
+		
+		for(MemberBoardVO board : memberBoardList) {
+			
+			String getId = board.getUserId();
+			
+			UserVO vo = new UserVO();
+			vo.setUserId(getId);
+			
+			vo = userService.confirmUser(vo);
+			String setName = vo.getUserName();
+			board.setUserName(setName);
+		}		
 		
 		// 리스트 모델에 저장
 		if (memberBoardList != null) {
@@ -108,9 +150,10 @@ public class MemberBoardController {
 		}		
 		
 		System.out.println("memberBoardList : " + memberBoardList);
-
-		return "/Member/MemberBoard/myQBoardList.jsp"; // 이동
 	}
+	
+	
+	
 	
 	// 입력폼으로 이동
 	@GetMapping("/qnaWriteForm.do")
@@ -183,6 +226,15 @@ public class MemberBoardController {
 		
 		// vo 받아서 한개 가져오고 세션에 등록
 		bvo = memberBoardService.getBoard(bvo);
+		
+		// 이름 입력 - 보드 상세에
+		String getName = bvo.getUserId();
+		UserVO vo = new UserVO();
+		vo.setUserId(getName);
+		vo = userService.confirmUser(vo);
+		String setName = vo.getUserName();
+		bvo.setUserName(setName);
+		
 		model.addAttribute("callBvo", bvo);
 		
 		System.out.println(">> 검색후 callBvo : "+ bvo);

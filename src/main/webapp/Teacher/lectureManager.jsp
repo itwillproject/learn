@@ -88,17 +88,17 @@
         <!-- 중앙 위 내용 - 글내용 -->
         <div class="col-8 pl-3 gray-line">
             <button onclick="location.href='lectureWrite.do'" class="active-btn">강의 추가</button>
-            <table class="table mt-4">
+            <table class="table mt-4" style="table-layout: fixed">
                 <thead>
                     <tr>
                         <th style="width: 8%">강의ID</th>
                         <th style="width: 8%">강의종류</th>
                         <th style="width: 12%">카테고리</th>
-                        <th style="width: 24%">강의명</th>
+                        <th style="width: 20%">강의명</th>
                         <th style="width: 10%">가격</th>
                         <th style="width: 10%">강의기한</th>
                         <th style="width: 10%">강의등록일</th>
-                        <th style="width: 18%" colspan="3"></th>
+                        <th style="width: 22%" colspan="3"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -110,16 +110,8 @@
                             <c:if test="${lec.lectureOnOff == 1}">오프라인</c:if>
                         </td>
                         <td>${lec.categoryName}</td>
-                        <td>
-                            <c:set var="title" value="${lec.lectureTitle}" />
-                            <a href="#">
-                                <c:if test="${fn:length(title) > 19}">
-                                    ${fn:substring(title, 0, 18)}...
-                                </c:if>
-                                <c:if test="${fn:length(title) <= 19}">
-                                    ${lec.lectureTitle}
-                                </c:if>
-                            </a>
+                        <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                            <a href="#">${lec.lectureTitle}</a>
                         </td>
                         <td>${lec.lecturePrice}원</td>
                         <td>
@@ -138,9 +130,17 @@
                         <c:set var="regdate" value="${lec.lectureRegdate}" />
                         <td>${fn:substring(regdate, 0, 10)}</td>
                         <td colspan="3">
-                            <button onclick="location.href='lectureWrite.do?lectureNo=${lec.lectureNo}'" class="active-btn" style="background-color: #ffc107">수정</button>
-                            <button onclick="location.href='studentManager.jsp?lectureNo=${lec.lectureNo}'" class="active-btn">수강자</button>
+                            <button onclick="location.href='lectureEdit.do?lectureNo=${lec.lectureNo}'" class="active-btn" style="background-color: #ffc107">수정</button>
                             <button onclick="location.href='${pageContext.request.contextPath}/getLectureNewsList.do?lectureNo=${lec.lectureNo}'" class="active-btn" style="background-color: #17a2b8">새소식</button>
+                            <c:if test="${lec.lectureOnOff == 0}">
+                                <button onclick="location.href='studentManager.do?lectureNo=${lec.lectureNo}'" class="active-btn">수강자</button>
+                                <button class="active-btn" style="background-color: #7dd99f"
+                                        onclick="location.href='${pageContext.request.contextPath}/Teacher/realtimeQuestion.do?lectureNo=${lec.lectureNo}'">질문</button>
+
+                            </c:if>
+                            <c:if test="${lec.lectureOnOff == 1}">
+                                <button onclick="location.href='timetableManager.do?lectureNo=${lec.lectureNo}'" class="active-btn" style="background-color: #007bff">시간표</button>
+                            </c:if>
                         </td>
                     </tr>
                 </c:forEach>

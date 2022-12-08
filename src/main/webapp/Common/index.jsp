@@ -14,7 +14,19 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/Common/css/slide.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/Common/css/index.css" />
 <script src="https://kit.fontawesome.com/80bed6a544.js" crossorigin="anonymous"></script>
-
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+	<script src='https://cdn.jsdelivr.net/npm/sweetalert2@10'></script>
+	<script>
+		$().ready(function () {
+			if(${not empty loginError}) {
+				Swal.fire({
+					icon: 'error',
+					title: '로그인 실패',
+					text: '아이디와 비밀번호를 확인해주세요'
+				});
+			}
+		});
+	</script>
 </head>
 <%@include file ="/Common/header.jsp" %>
 <br><br>
@@ -128,12 +140,7 @@
 				<div class="col-4 card course course_card_item border-0 mb-5" style="height:300px; width: 260px; float: left; text-align: left;">
 					<div class="card h-100 border-0" style="float: left;">
 					  	<div class="card-image h-50">
-					  	<c:if test="${not empty lecture.lectureCoverimg}">
-							<img class="card-img-top" src="${lecture.lectureCoverimg }" width="100%" alt="${lecture.lectureTitle }">
-						</c:if>
-						<c:if test="${empty lecture.lectureCoverimg}">
-							<img class="card-img-top" src="${pageContext.request.contextPath}/picture/myPageMark.png" width="100%" height="100%" alt="${lecture.lectureTitle }">
-						</c:if>
+							<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/myPageMark.png" width="100%" height="100%" alt="${lecture.lectureTitle }">
 					  	</div>
 					  	<div class="card-body w-100 overflow-hidden">
 						    <p class="card-title font-weight-bold" style="height:50px;">${lecture.lectureTitle }</a></p>								
@@ -206,7 +213,7 @@
 				<div class="col-4 card course course_card_item border-0 mb-5" style="height:300px; width: 260px; float: left; text-align: left;">
 					<div class="card h-100 border-0" style="float: left;">
 					  	<div class="card-image h-50">
-							<img class="card-img-top" src="${lecture.lectureCoverimg }" width="100%" alt="${lecture.lectureTitle }">
+							<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/${lecture.lectureCoverimg }" width="100%" alt="${lecture.lectureTitle }">
 					  	</div>
 					  	<div class="card-body w-100 overflow-hidden">
 						    <p class="card-title font-weight-bold" style="height:50px;">${lecture.lectureTitle }</a></p>								
@@ -279,12 +286,7 @@
 					<a href="${pageContext.request.contextPath}/roadmap/roadmapDetail.do?rboardNo=${list.rboardNo}">
 						<div class="roadMap">
 						 	<div class="roadMapPicture">
-							  	<c:if test="${not empty list.rboardCoverimg}">
-									<img src="${pageContext.request.contextPath}/filepath/${list.rboardCoverimg }">
-								</c:if>
-								<c:if test="${empty list.rboardCoverimg}">
-									<img src="${pageContext.request.contextPath}/picture/desk.jpg">
-								</c:if>
+								<img src="${pageContext.request.contextPath}/filepath/${list.rboardCoverimg }">
 						 	</div>
 						 	<div class="roadMapExplain" style="font-weight: bold;">
 						 		${list.rboardTitle }

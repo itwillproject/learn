@@ -202,7 +202,7 @@
                             <th style="width: 20%">총수익</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="rtContent">
                         <c:forEach items="${realtimeSales}" var="lec">
                             <tr>
                                 <td>${lec.lectureTitle}</td>
@@ -220,7 +220,7 @@
                                     <a class="page-link disabled">이전</a>
                                 </c:if>
                                 <c:if test="${pvo.beginPage != 1 }">
-                                    <a class="page-link" href="${pageContext.request.contextPath}/Teacher/dashboard.do?cPage=${pvo.beginPage - 1 }">이전</a>
+                                    <a class="page-link" onclick="paging(${pvo.beginPage - 1 })">이전</a>
                                 </c:if>
                             </li>
                             <!-- 페이지 번호 -->
@@ -232,14 +232,14 @@
                                 </c:if>
                                 <c:if test="${pageNo != pvo.nowPage }">
                                     <li class="page-item">
-                                        <a class="page-link" href="${pageContext.request.contextPath}/Teacher/dashboard.do?cPage=${pageNo }">${pageNo }</a>
+                                        <a class="page-link" onclick="paging(${pageNo })">${pageNo }</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
                             <!-- 다음 -->
                             <li class="page-item">
                                 <c:if test="${pvo.endPage < pvo.totalPage }">
-                                    <a class="page-link" href="${pageContext.request.contextPath}/Teacher/dashboard.do?cPage=${pvo.endPage + 1 }">다음</a>
+                                    <a class="page-link" onclick="paging(${pvo.endPage + 1 })">다음</a>
                                 </c:if>
                                 <c:if test="${pvo.endPage >= pvo.totalPage }">
                                     <a class="page-link disabled">다음</a>
@@ -247,6 +247,62 @@
                             </li>
                         </ul>
                     </div>
+                    <script>
+                        function paging(cPage) {
+                          $.ajax({
+                            data : {
+                              cPage : cPage
+                            },
+                            type : "GET",
+                            url : "${pageContext.request.contextPath}/Teacher/getRealtimeSales.do",
+                            dataType: "json",
+                            success : function(data) { // 처리가 성공할 경우
+                              $('#rtContent').html('');
+                              $.each(data.pmap, function() {
+                                let dispHtml = '<tr>';
+                                dispHtml += '<td>' + this.lectureTitle + '</td>';
+                                dispHtml += '<td>' + this.lectureRegdate + '</td>';
+                                dispHtml += '<td>' + this.lecturePrice + '원</td>';
+                                dispHtml += '</tr>';
+                                $('#rtContent').append(dispHtml);
+                              })
+
+                              let pvo = data.pvo;
+                              let pn = $('.pagination');
+                              pn.html('');
+                              let dispHtml = '<li class="page-item">';
+                              if(pvo.beginPage === 1) {
+                                dispHtml += '<a class="page-link disabled">이전</a>';
+                              } else {
+                                dispHtml += '<a class="page-link" onclick="paging(' + (pvo.beginPage - 1) + ')">이전</a>';
+                              }
+                              dispHtml += '</li>';
+                              for(let pageNo = pvo.beginPage; pageNo <= pvo.endPage; pageNo++) {
+                                if(pageNo === pvo.nowPage) {
+                                  dispHtml += '<li class="page-item active">';
+                                  dispHtml += '<a class="page-link">' + pageNo + '</a>';
+                                  dispHtml += '</li>';
+                                } else {
+                                  dispHtml += '<li class="page-item">';
+                                  dispHtml += '<a class="page-link" onclick="paging(' + pageNo + ')">' + pageNo + '</a>';
+                                  dispHtml += '</li>';
+                                }
+                              }
+                              dispHtml += '<li class="page-item">';
+                              if(pvo.endPage < pvo.totalPage) {
+                                dispHtml += '<a class="page-link" onclick="paging(' + (pvo.endPage + 1) + ')">다음</a>';
+                              } else {
+                                dispHtml += '<a class="page-link disabled">다음</a>';
+                              }
+                              dispHtml += '</li>';
+                              pn.append(dispHtml);
+                            },
+                            error: function(){
+                              alert("실패~~");
+                            }
+                          })
+                        }
+                    </script>
                 </div>
             </div>
         </div>

@@ -31,6 +31,20 @@
 		text-decoration: none;
 		background: #d3d3d3;
 	}
+	
+	/* 강의파트 css */
+	.card .info {
+	color: #fff;
+	position: absolute; left: 0; bottom: 0;
+	background: rgba(0,0,0,0.8);
+	width: 100%;
+	height: 100%;
+	padding: 15px;
+	opacity: 0;
+	transition: opacity 0.35s ease-in-out;
+	}
+	.card:hover .info {opacity: 1;}
+	/* ======== */
 </style>
 <script>
 	$(function(){
@@ -133,7 +147,7 @@
 					      <a href="${pageContext.request.contextPath}/member/goToPersonalPage.do?userId=${person.userId}" class="text-dark">홈</a>
 					    </li>
 					    <li class="nav-item d-flex p-2 w-100">
-					      <a href="#" class="text-dark">강의</a>
+    					  <a href="${pageContext.request.contextPath}/member/goToPersonalPage_Lecture.do?userId=${person.userId }" class="text-dark">강의</a>
 					    </li>
    					  	<li class="nav-item d-flex p-2 w-100">
 						  <a href="#" class="text-dark">로드맵</a>
@@ -142,7 +156,7 @@
 					      <a href="#" class="text-dark">수강후기</a>
 					    </li>
 					    <li class="nav-item d-flex p-2 w-100">
-					      <a href="#" class="text-dark">게시글</a>
+					      <a href="userBoardPage.do?userId=${person.userId}" class="text-dark">게시글</a>
 					    </li>
 				  </ul>
 				</nav>
@@ -171,10 +185,84 @@
 					</div>
 				</div>
 				<hr>
-				<div id="lecture"> <!-- 강의 출력 div 시작 -->		
+				<div id="lecture"> 
 					<p class="h4 d-inline font-weight-bold">강의</p>
+					<br><br>
 					<div class="d-flex" style="min-height: 200px;">
-						<p class="align-self-center text-center mx-auto">강의가 없습니다.</p>
+						<c:if test="${not empty lectures }">
+							<c:forEach var="lecture" items="${lectures }">
+								<div class="col-4 card course course_card_item border-0 mb-5" style="height:360px; width: 260px; float: left; text-align: left;">
+									<div class="card h-100 border-0" style="float: left;">
+									  	<div class="card-image h-50">
+											<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/${lecture.lectureCoverimg }" width="100%" alt="${lecture.lectureTitle }">
+									  	</div>
+									  	<div class="card-body w-100 overflow-hidden">
+										    <p class="card-title font-weight-bold" style="height:50px;">${lecture.lectureTitle }</a></p>								
+											<span class="card-user font-weight-bold">${lecture.lectureWriter }</span>
+											<br>
+											<span>
+												<c:forEach var="num" begin="1" end="${Math.round(lecture.lectureRate) }" step="1"> 
+													<i class="fa-solid fa-star" style="color: #fada5e;"></i>
+												</c:forEach>
+												<c:forEach var="num" begin="1" end="${5 - Math.round(lecture.lectureRate) }" step="1">
+													<i class="fa-regular fa-star" style="color: #fada5e;"></i>											
+												</c:forEach>
+												(${lecture.reviewCount })
+											</span>
+											<c:choose>
+												<c:when test="${lecture.lecturePrice != lecture.salePrice}">
+													<p class="card-price">	
+														<del class="text-secondary">&#8361; ${lecture.lecturePrice }</del>
+														<span class="text-primary font-weight-bold h5">&#8361; ${Math.round(lecture.salePrice) }</span>
+													</p>
+												</c:when>
+												<c:otherwise>
+													<p class="card-price">
+														<span class="font-weight-bold h5">&#8361; ${lecture.lecturePrice }</span>
+													</p>										
+												</c:otherwise>
+											</c:choose>
+									      	<a href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo=${lecture.lectureNo }" class="stretched-link"></a>
+									  		<span class="badge badge-success">+${lecture.studentCount }명</span>
+									  	</div>
+									    <div class="info">
+										     <div class="w-100 h-75 overflow-hidden">
+											      <p class="font-weight-bold">${lecture.lectureTitle }</p>
+													<c:choose>
+														<c:when test="${fn:length(lecture.lectureContent) gt 100}">
+															<p>${fn:substring(lecture.lectureContent, 0, 100)}...</p>
+														</c:when>
+														<c:otherwise>
+															<p>${lecture.lectureContent }</p>
+														</c:otherwise>
+													</c:choose>
+										     </div>
+										     <div class="position-absolute bottom-0 w-100 h-15">
+											      <p class="text-info font-weight-bold">${lecture.lectureLevel }</p>
+											      <p class="text-info font-weight-bold">${lecture.categoryName }</p>
+										     </div>
+									    </div>
+									</div>
+								</div>
+							</c:forEach>
+						</c:if>
+						<c:if test="${empty lectures }">
+							<p class="align-self-center text-center mx-auto">강의가 없습니다.</p>
+						</c:if>
+					</div>
+				</div>
+				<c:if test="${not empty lectures }">
+					<c:if test="${lecturesSize > 3}">
+						<p class="align-self-center text-center mx-auto">
+							<button type="submit" class="btn btn-success" onclick="location.href='${pageContext.request.contextPath}/member/goToPersonalPage_Lecture.do?userId=${person.userId }'">더보기</button>
+						</p>
+					</c:if>
+				</c:if>		
+				<hr>
+				<div id="roadmap"> <!-- 로드맵 출력 div 시작 -->
+					<p class="h4 d-inline font-weight-bold">로드맵</p>
+					<div class="d-flex" style="min-height: 200px;">
+						<p class="align-self-center text-center mx-auto">로드맵이 없습니다.</p>
 					</div>
 				</div>
 				<hr>
@@ -195,14 +283,18 @@
 				<div id="board">	
 					<div>
 						<span class="h4 d-inline font-weight-bold">게시글</span>
-						<a class="float-right" href="#">전체 보기 ></a>
+
+						<a class="float-right" href="userBoardPage.do?userId=${person.userId}">전체 보기 ></a>
+
 					</div>
 					<c:if test="${empty boardList }">
 						<div class="d-flex" style="min-height: 200px;">
 							<p class="align-self-center text-center mx-auto">게시글이 없습니다.</p>
 						</div>
 					</c:if>
-					<c:forEach items="${boardList}" var="board" begin="1" end="5">
+
+					<c:forEach items="${boardList}" var="board">
+
 						<div class="pt-3 pb-3 row" style="border-bottom: 1px solid lightgrey">
 							<c:if test="${not empty board.boardAdopt}">
 								<div class="col-4">질문&답변&nbsp;

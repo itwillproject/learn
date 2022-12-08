@@ -47,5 +47,5 @@ public interface RoadmapDAO {
 
 	  int getRoadmapCount(String userId);
 
-
+		String getFileName(String rboardNo);
 }

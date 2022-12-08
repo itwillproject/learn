@@ -1,5 +1,7 @@
 package com.spring.learn.lecture;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class ClassVO {
 	
 	private String classNo;
@@ -11,6 +13,10 @@ public class ClassVO {
 	private String preview;
 	private String filename;
 	private String oriname;
+	private String videoname;
+	private MultipartFile uploadBook;
+	private MultipartFile uploadVideo;
+
 	public String getClassNo() {
 		return classNo;
 	}
@@ -65,9 +71,31 @@ public class ClassVO {
 	public void setOriname(String oriname) {
 		this.oriname = oriname;
 	}
-	
-	
-	
+
+	public String getVideoname() {
+		return videoname;
+	}
+
+	public void setVideoname(String videoname) {
+		this.videoname = videoname;
+	}
+
+	public MultipartFile getUploadBook() {
+		return uploadBook;
+	}
+
+	public void setUploadBook(MultipartFile uploadBook) {
+		this.uploadBook = uploadBook;
+	}
+
+	public MultipartFile getUploadVideo() {
+		return uploadVideo;
+	}
+
+	public void setUploadVideo(MultipartFile uploadVideo) {
+		this.uploadVideo = uploadVideo;
+	}
+
 	@Override
 	public String toString() {
 		return "ClassVO [classNo=" + classNo + ", lectureNo=" + lectureNo + ", categoryName=" + categoryName

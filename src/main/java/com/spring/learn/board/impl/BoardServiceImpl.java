@@ -131,8 +131,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<BoardVO> getMyBoardList(String userId) {
-		return boardDAO.getMyBoardList(userId);
+	public List<BoardVO> getMyBoardList(Map<String, String> map) {
+		return boardDAO.getMyBoardList(map);
+	}
+
+	@Override
+	public int getMyBoardCount(Map<String, String> map) {
+		return boardDAO.getMyBoardCount(map);
 	}
 
   

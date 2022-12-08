@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <meta charset="UTF-8">
@@ -163,7 +164,7 @@
 			        
 		            if (datas.orderList.length == 0) {
 		            	
-		            	dispHTML += '<tr>';
+		            	dispHTML += '<tr style="height:40px;">';
 		            	dispHTML += '<td colspan="8" class="h6 text-center">주문 정보가 없습니다</td>';
 		            	dispHTML += '</tr>';
 		            	
@@ -176,15 +177,15 @@
 		            		
 				            console.log(obj);
 				            
-			            	dispHTML += '<tr>';
-			            	dispHTML += '<td class="h6">'+obj.orderNo+'</td>';
-			            	dispHTML += '<td class="h6">'+obj.buyer+'</td>';
-			            	dispHTML += '<td class="h6">'+obj.lectureTitle+'</td>';
-			            	dispHTML += '<td class="h6">'+obj.teacher+'</td>';
-			            	dispHTML += '<td class="h6">'+obj.lectureOnOff+'</td>';
-			            	dispHTML += '<td class="h6">'+obj.orderRegdate+'</td>';
-			            	dispHTML += '<td class="h6">'+obj.lecturePrice+'</td>';
-			            	dispHTML += '<td class="h6">'+obj.commission+'</td>';
+			            	dispHTML += '<tr style="height:40px;">';
+			            	dispHTML += '<td class="h6 text-center">'+obj.orderNo+'</td>';
+			            	dispHTML += '<td class="h6 text-center">'+obj.buyer.split('@')[0]+'</td>';
+			            	dispHTML += '<td class="h6" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+obj.lectureTitle+'</td>';
+			            	dispHTML += '<td class="h6 text-center">'+ obj.teacher.split('@')[0]+'</td>';
+			            	dispHTML += '<td class="h6 text-center">'+obj.lectureOnOff+'</td>';
+			            	dispHTML += '<td class="h6 text-center">'+obj.orderRegdate+'</td>';
+			            	dispHTML += '<td class="h6 text-center">'+obj.lecturePrice+'</td>';
+			            	dispHTML += '<td class="h6 text-center">'+obj.commission+'</td>';
 			            	dispHTML += '</tr>';
 				           
 	           			});
@@ -272,8 +273,8 @@
 <br><br>
 <div class="container">
 <div>
-	<input type="date" id="startMonth" min="2022-01">
-	<input type="date" id="endMonth">
+	<input type="date" id="startMonth" min="2022-01" class="h6">
+	<input type="date" id="endMonth" class="h6">
 </div>
   <div class="row">
     <div class="col-sm-12">
@@ -293,47 +294,47 @@
       <p><input type="button" id="download" value="다운로드" class="h6 btn btn-ligh"></p>
       <h3>수익 상세 내역</h3>
       <div class="RevenueDetail">
-      	<table class="w-100">
+      	<table class="w-100" style="table-layout: fixed">
 	      	<colgroup>
-	      	    <col width="5%">
-	      	    <col width="15%">
-	      	    <col width="40%">
-	      	    <col width="15%">
-       			<col width="5%">
-       			<col width="10%">
-       			<col width="5%">
-       			<col width="5%">
+	      	    <col width="8%">
+	      	    <col width="13%">
+	      	    <col width="30%">
+	      	    <col width="13%">
+       			<col width="7%">
+       			<col width="15%">
+       			<col width="7%">
+       			<col width="7%">
 	      	</colgroup>
-     		<thead>
+     		<thead class="text-center">
      			<tr>
-     				<th class="h6">주문번호</th>
-     				<th class="h6">주문자</th>
-     				<th class="h6">강의명</th>
-     				<th class="h6">강사</th>
-     				<th class="h6 text-center">온/오프</th>
-     				<th class="h6 text-center">구매일자</th>
-     				<th class="h6 text-center">결제가</th>
-     				<th class="h6 text-center">수수료</th>
+     				<th class="h6 font-weight-bold">주문번호</th>
+     				<th class="h6 font-weight-bold">주문자</th>
+     				<th class="h6 font-weight-bold">강의명</th>
+     				<th class="h6 font-weight-bold">강사</th>
+     				<th class="h6 font-weight-bold">온/오프</th>
+     				<th class="h6 font-weight-bold">구매일자</th>
+     				<th class="h6 font-weight-bold">결제가</th>
+     				<th class="h6 font-weight-bold">수수료</th>
      			</tr>
      		</thead>
      		<tbody id="revenueList">
      			<c:choose>
      				<c:when test="${empty orderList }">
-     					<tr>
+     					<tr style="height:40px;">
      						<td colspan="8" class="h6 text-center">주문 정보가 없습니다</td>
      					</tr>
      				</c:when>
      				<c:otherwise>
      					<c:forEach var="order" items="${orderList }">
-     						<tr>
-     							<td class="h6">${order.orderNo }</td>
-     							<td class="h6">${order.buyer }</td>
-     							<td class="h6">${order.lectureTitle }</td>
-     							<td class="h6">${order.teacher }</td>
-     							<td class="h6">${order.lectureOnOff }</td>
-     							<td class="h6">${order.orderRegdate }</td>
-     							<td class="h6">${order.lecturePrice }</td>
-     							<td class="h6">${order.commission }</td>
+     						<tr style="height:40px;">
+     							<td class="h6 text-center">${order.orderNo }</td>
+     							<td class="h6 text-center">${fn:substringBefore(order.buyer, '@') }</td>
+     							<td class="h6" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${order.lectureTitle }</td>
+     							<td class="h6 text-center">${fn:substringBefore(order.teacher, '@') }</td>
+     							<td class="h6 text-center">${order.lectureOnOff }</td>
+     							<td class="h6 text-center">${order.orderRegdate }</td>
+     							<td class="h6 text-center">${order.lecturePrice }</td>
+     							<td class="h6 text-center">${order.commission }</td>
      						</tr>
      					</c:forEach>
      				</c:otherwise>

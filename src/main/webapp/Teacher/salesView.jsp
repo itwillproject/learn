@@ -97,23 +97,10 @@
                     <td style="text-align: right">${lectureSales} (원)</td>
                 </tr>
             </table>
-                <form id="saveExcel" method="post" action="${pageContext.request.contextPath}/Teacher/saveAllExcel.do">
-                    <input type="hidden" id="numStr" name="numStr">
-                    <input type="hidden" id="titleStr" name="titleStr">
-                    <input type="hidden" id="priceStr" name="priceStr">
-                </form>
             <button class="active-btn float-right mb-3" type="button" onclick="saveExcel()">엑셀파일로 저장</button>
             <script>
-              let num = '';
-              let title = '';
-              let price = '';
-
                 function saveExcel() {
-                  console.log(num + " " + title + " " + price);
-                  $('#numStr').val(num);
-                  $('#titleStr').val(title);
-                  $('#priceStr').val(price);
-                  $('#saveExcel').submit();
+                  location.href = '${pageContext.request.contextPath}/Teacher/saveAllExcel.do';
                 }
             </script>
             <table class="table mt-4">
@@ -137,11 +124,6 @@
                             <button class="active-btn" onclick="location.href='salesLectureView.do?lectureNo=${sales.lectureNo}'">자세히 알아보기</button>
                         </td>
                     </tr>
-                    <script>
-                        num = num + '${sales.lectureNo}' + '/';
-                        title = title + '${sales.lectureTitle}' + '/';
-                        price = price + '${sales.lecturePrice}' + '/';
-                    </script>
                 </c:forEach>
                 </tbody>
             </table>

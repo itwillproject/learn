@@ -183,12 +183,6 @@ public class RoadmapController {
 
 		// 사용자가 해당 로드맵 학습하고 있는지 아닌지 확인
 		UserVO userVO = (UserVO) session.getAttribute("user");
-		String userId = userVO.getUserId();
-
-		Map<String, String> map = new HashMap<>();
-		map.put("rboardNo", rboardNo);
-		map.put("userId", userId);
-		MyroadmapVO myroadmapVO = roadmapService.getMyroadmap(map);
 
 		// lectureList 자르고 각각 강의정보 가져오기
 		String lecNoStr = roadmapVO.getLectureList();
@@ -198,6 +192,14 @@ public class RoadmapController {
 		for(String lecNo : lecNoArr) {
 			lectureList.add(lectureService.getLecture(lecNo));
 		}
+
+		if(userVO != null) {
+			String userId = userVO.getUserId();
+
+			Map<String, String> map = new HashMap<>();
+			map.put("rboardNo", rboardNo);
+			map.put("userId", userId);
+			MyroadmapVO myroadmapVO = roadmapService.getMyroadmap(map);
 
 		int roadmapRate = 0;
 		// lecture가 사용자가 구매한 강의인지 확인
@@ -218,8 +220,10 @@ public class RoadmapController {
 			myroadmapVO.setRoadmapRate(roadmapRate);
 		}
 
+			model.addAttribute("myroadmap", myroadmapVO);
+		}
+
 		model.addAttribute("roadmap", roadmapVO);
-		model.addAttribute("myroadmap", myroadmapVO);
 		model.addAttribute("lectureList", lectureList);
 
 		return "/Lecture/roadmapDetail.jsp";
