@@ -98,12 +98,16 @@
 	    chartGoogle.draw(dataGoogle, optionGoogle);
     }
 	
+    $(document).on("change", "#startMonth", function(){ 	
+		// Load the Visualization API and the corechart package.
+	    google.charts.load('current', {'packages':['corechart']});
+	    google.charts.setOnLoadCallback(changeChart);
+    })
+    
     $(document).on("change", "#endMonth", function(){ 	
 		// Load the Visualization API and the corechart package.
 	    google.charts.load('current', {'packages':['corechart']});
 	    google.charts.setOnLoadCallback(changeChart);
-
-
     })
 
     function changeChart(){

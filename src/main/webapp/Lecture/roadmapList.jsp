@@ -81,7 +81,7 @@
 			            dispHTML += '<div class="col-4 card course course_card_item border-0 mb-5" style="height:350px;">';
 			            dispHTML += '<div class="card h-100 border-0">';
 			            dispHTML += '<div class="card-image h-50">';
-			            dispHTML += '<img class="card-img-top" src="'+this.rboardCoverimg+'" width="100%" alt="'+this.rboardTitle+'">';
+			            dispHTML += '<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/'+this.rboardCoverimg+'" width="100%" alt="'+this.rboardTitle+'">';
 			            dispHTML += '</div>';
 			            dispHTML += '<div class="card-body w-100 overflow-hidden">';
 			            dispHTML += '<p class="card-title font-weight-bold" style="height:50px;">'+this.rboardTitle+'</a></p>';
@@ -227,7 +227,7 @@
 							<div class="col-4 card course course_card_item border-0 mb-5" style="height:350px;">
 								<div class="card h-100 border-0">
 								  	<div class="card-image h-50">
-										<img class="card-img-top" src="${roadmap.rboardCoverimg }" width="100%" alt="${roadmap.rboardTitle }">
+										<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/${roadmap.rboardCoverimg }" width="100%" alt="${roadmap.rboardTitle }">
 								  	</div>
 								  	<div class="card-body w-100 overflow-hidden">
 									    <p class="card-title font-weight-bold" style="height:50px;">${roadmap.rboardTitle }</a></p>								

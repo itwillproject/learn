@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.spring.learn.board.BoardService;
+import com.spring.learn.board.BoardVO;
 import com.spring.learn.lecture.LectureService;
 import com.spring.learn.user.LikeVO;
 import com.spring.learn.user.MailSendService;
@@ -35,6 +37,8 @@ public class UserController {
 	private UserService userService;
     @Autowired
     private LectureService lectureService;
+    @Autowired
+    private BoardService boardService;
 
 	@RequestMapping("/insertUser.do")
 	public String insertUser(@ModelAttribute UserVO vo) {
@@ -384,6 +388,10 @@ public class UserController {
 		model.addAttribute("person", person);
 		
 		System.out.println(person.getGrade());
+		
+		// 게시글 가져오기(지수)
+		List<BoardVO> boardList = boardService.getMyBoardList(vo.getUserId());
+		model.addAttribute("boardList",  boardList);
 		
 		if (person.getGrade().equals("강의자")) {
 	        // 총 수강생 수

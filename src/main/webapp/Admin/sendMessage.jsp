@@ -21,9 +21,9 @@
   <style>
   </style>
   <script>
-
   
 	$(document).ready(function() {
+
 
 		$('#summernote').summernote({
 			  width: 1200,
@@ -55,7 +55,7 @@
 			}
 		});
 		
-		//$('#summernote').summernote('pasteHTML', localStorage.getItem('html'));
+		$('#summernote').summernote('pasteHTML', localStorage.getItem('html'));
 		
 	});
 	
@@ -65,7 +65,7 @@
 	    console.log(data);
 	    
 	    $.ajax({
-	      url: "${pageContext.request.contextPath }/admin/mailImgUpload.do",
+	      url: "${pageContext.request.contextPath }/common/imgUpload.do",
 	      type: "POST",
 	      enctype: 'multipart/form-data',
 	      data: data,
@@ -119,17 +119,15 @@
 	})
 
 	$(document).on("click", "#send", function(){
-		alert("send!");
 		//console.log($('#mailForm [name="receiver"]').val());
 		$('#mailForm').submit();
 	})
-	
 	
 	function selectUsers () {
 		$("#selectArea").modal();
 		findUser(null);
 	}
-	
+
 	function findUser(keyword){
 		
 		var find = {};
@@ -148,15 +146,34 @@
 		console.log(JSON.parse(jsonData).length);
 		
 		var dispHTML = '';
+		dispHTML += '<table class="w-100">';
+		if (JSON.parse(jsonData).length == 0) {
+			dispHTML += '<tr>조회된 사용자가 없습니다</tr>';			
+		}
 		$.each(JSON.parse(jsonData), function(idx, obj){
-			dispHTML += '<p><label><input type="checkbox" name="user" value="'+obj.userId+'">'+obj.userName+' ( '+obj.userId+' ) ['+obj.grade+']</label></p>';
+			dispHTML += '<tr>';
+			dispHTML += '<td><input type="checkbox" name="user" value="'+obj.userId+'"></td>';
+			dispHTML += '<td>'+obj.userName+'</td>';
+			dispHTML += '<td>( '+obj.userId+' )</td>';
+			dispHTML += '<td>['+obj.grade+']</td>';
+			dispHTML += '</tr>';
 		});
+		dispHTML += '</table>';
 		$("#selectBody").html(dispHTML);
 	}
 
 	function deleteUsers(){
 		$("#receiverList").html("");
 	}
+	
+	
+    $(document).on('keyup', '#selectArea', function(e) {    	 
+        if (window.event.keyCode == 13) {
+            e.preventDefault();
+            document.getElementById("findUser").click();      
+        }
+ 
+    });
 	  
 </script>
 </head>
@@ -167,20 +184,20 @@
 	<div id="mailArea" class="w-100">	
 		<form id="mailForm" method="post" action="${pageContext.request.contextPath }/admin/sendMail.do">
 			<p class="row">
-				<span class="col-sm-1">제목: </span>
-				<input type="text" name="title" class="col-sm-11">
+				<span class="col-sm-1 h6">제목: </span>
+				<input type="text" name="title" class="col-sm-11 border">
 			</p>
 			<div class="row">
-				<span class="col-sm-1">대상 선택</span>
+				<span class="col-sm-1 h6">수신인</span>
 				<div id="receiverList" class="border col-sm-10 overflow-auto" style="height:200px;">
 				</div>
 				<span class="col-sm-1">
-					<input type="button" name="selectReceiver" value="추가" onclick="selectUsers()">
-					<input type="button" name="selectReceiver" value="전체삭제" onclick="deleteUsers()">
+					<input type="button" name="selectReceiver" value="추가" onclick="selectUsers()" class="h6 btn btn-outline-dark">
+					<input type="button" name="selectReceiver" value="전체삭제" onclick="deleteUsers()" class="h6 btn btn-outline-dark">
 				</span>
 			</div>
 			<textarea id="summernote" name="editordata" class="mx-auto"></textarea>
-			<input type="button" id="send" value="전송"">
+			<p class="mx-auto text-center"><input type="button" id="send" value="전송" class="h6 btn btn-outline-dark"></p>
 		</form>
 	</div>
 	
@@ -200,6 +217,7 @@
 					<input type="button" id="selectAll" value="전체선택">
 				    <input type="button" id="selectDone" value="선택완료" data-dismiss="modal" aria-label="Close">
 				</p>
+		    	<input type="text" style="width 0px; visibility: hidden;">
 			</form>
 		  </div>
 		</div>

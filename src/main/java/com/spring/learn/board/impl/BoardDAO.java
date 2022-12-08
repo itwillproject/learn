@@ -33,6 +33,7 @@ public interface BoardDAO {
 	void addCocomment(BoardCommentVO cvo);
 	List<BoardCommentVO> getCocoment(BoardVO bvo);
 	void delCocomment(BoardCommentVO ccvo);
+	List<BoardVO> getMyBoardList(String userId);
 }
 
 
