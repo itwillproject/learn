@@ -4,6 +4,7 @@ public class MemberChatRoomListVO {
 
 		private String
 		chatroomNo, senderId, receiverId, senderName, receiverName, chatContents, chatRegdate, lastChater
+		,chatStatus
 		;
 
 		public String getChatroomNo() {
@@ -69,13 +70,21 @@ public class MemberChatRoomListVO {
 		public void setLastChater(String lastChater) {
 			this.lastChater = lastChater;
 		}
+		
+		public String getChatStatus() {
+			return chatStatus;
+		}
+
+		public void setChatStatus(String chatStatus) {
+			this.chatStatus = chatStatus;
+		}
 
 		@Override
 		public String toString() {
 			return "MemberChatRoomListVO [chatroomNo=" + chatroomNo + ", senderId=" + senderId + ", receiverId="
 					+ receiverId + ", senderName=" + senderName + ", receiverName=" + receiverName + ", chatContents="
-					+ chatContents + ", chatRegdate=" + chatRegdate + ", lastChater=" + lastChater + "]";
+					+ chatContents + ", chatRegdate=" + chatRegdate + ", lastChater=" + lastChater + ", chatStatus="
+					+ chatStatus + "]";
 		}
-		
-		
+
 }

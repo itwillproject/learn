@@ -17,5 +17,9 @@ public interface MemberChatService {
 	void updateMemberChatList(MemberChatContentsVO memberChatContents);
 
 	List<MemberChatRoomListVO> getMemberChatList(UserVO uvo);
+
+	MemberChatContentsVO getLastMsg(MemberChatRoomListVO memberChat);
+
+	void seeYourMsg(MemberChatContentsVO memberChatContents);
 	
 }

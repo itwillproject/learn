@@ -84,7 +84,7 @@
 				console.log(msgData.msg);
 				
 				console.log(msgData);
-				
+
 				
 				// 정의된 CMD 코드에 따라서 분기 처리
 				if(msgData.msg == myMsg){
@@ -103,6 +103,7 @@
 						str += "<div>" + msgData.msg + "</div></div></div>";
 						$('#divChatData').append(str);
 					}
+					
 				}
 				
 				
@@ -168,18 +169,43 @@
 			}
 		};
 		
-		
+		function seeYourMsg(){
+			// 룸 번호랑 상대방아이디 받아와야 함			
+			var memberChatRoomNo = '${memberChatRoomList.chatroomNo}';
+			var myId = '${user.userId}';
+			
+			console.log("memberChatRoomNo : " + memberChatRoomNo);
+			console.log("myId : " + myId);
+
+			var gogo = "${pageContext.request.contextPath }/memberChat/seeYourMsg.do";
+			gogo = gogo + "?chatroomNo=" +  memberChatRoomNo;
+			gogo = gogo + "&senderId=" + myId;
+			
+			$.ajax({
+				url : gogo,
+				type : "post",
+				async : false,
+
+				success : function(data) {
+					console.log("업데이트 성공");
+					
+				},
+				error : function() {
+					console.log("실패");
+				}
+			});
+		}
 		
 	</script>	
 	<script type="text/javascript">
-	
 	
         $(window).on('load', function () {
         	
 			webSocket.init({ url: '<c:url value="/memberChat" />' });	
 			
+			seeYourMsg();
+			
 		});
-        
         
         
 	</script>

@@ -91,7 +91,7 @@
 					<th width="20%">방 제목</th>
 					<th width="30%">채팅내용</th>
 					<th width="15%">최근 채팅일</th>
-					<th>마지막 채팅자</th>
+					<th>미응답</th>
 				</tr>
 			</thead>
 			<tbody id="dispBody">
@@ -126,20 +126,11 @@
 							<td>${memberChat.chatRegdate.substring(0,10) }</td>
 							
 							<c:choose>
-								<c:when test="${memberChat.lastChater != null}">
-									<td>
-										<c:choose>
-											<c:when test="${memberChat.lastChater ==  memberChat.senderId}">
-												${memberChat.senderName } 
-											</c:when>
-											<c:otherwise>
-												${memberChat.receiverName }
-											</c:otherwise>
-										</c:choose>
-									</td>	
+								<c:when test="${memberChat.chatStatus == 'FALSE'}">
+									<td><b style="color: red;">미응답</b></td>	
 								</c:when>
 								<c:otherwise>
-									<td>... </td>
+									<td> - </td>
 								</c:otherwise>
 							</c:choose>
 							

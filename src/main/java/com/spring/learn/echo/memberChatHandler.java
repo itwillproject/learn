@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -12,6 +13,9 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spring.learn.user.MemberChatContentsVO;
+import com.spring.learn.user.MemberChatService;
+import com.spring.learn.user.impl.MemberChatDAO;
 
 @Component
 public class memberChatHandler extends TextWebSocketHandler {
@@ -19,10 +23,13 @@ public class memberChatHandler extends TextWebSocketHandler {
 	// (<"bang_id", 방ID>, <"session", 세션>) - (<"bang_id", 방ID>, <"session", 세션>) - (<"bang_id", 방ID>, <"session", 세션>) 형태 
 	private List<Map<String, Object>> sessionList = new ArrayList<Map<String, Object>>();
 	
+	@Autowired
+	private MemberChatService memberChatService;
+	
 	// 클라이언트가 서버로 메세지 전송 처리
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-
+		
 		super.handleTextMessage(session, message);
         
 		// JSON --> Map으로 변환
@@ -65,13 +72,26 @@ public class memberChatHandler extends TextWebSocketHandler {
 		// CLIENT 메세지
 		case "CMD_MSG_SEND":
 			// 같은 채팅방에 메세지 전송
+			
+			// 2명 이상 읽었는지 확인하기 위한 변수
+			
+			int seeCnt = 0;
+			
 			for (int i = 0; i < sessionList.size(); i++) {
 				Map<String, Object> mapSessionList = sessionList.get(i);
 				String bang_id = (String) mapSessionList.get("bang_id");
 				
 				WebSocketSession sess = (WebSocketSession) mapSessionList.get("session");
+				
 
 				if (bang_id.equals(mapReceive.get("bang_id"))) {
+					
+					if (seeCnt == 1) {
+						MemberChatContentsVO memberChatContents = new MemberChatContentsVO();
+						memberChatContents.setChatroomNo(mapReceive.get("bang_id"));
+						memberChatService.seeYourMsg(memberChatContents);
+					}
+					
 					Map<String, String> mapToSend = new HashMap<String, String>();
 					mapToSend.put("bang_id", bang_id);
 					mapToSend.put("cmd", "CMD_MSG_SEND");
@@ -82,6 +102,9 @@ public class memberChatHandler extends TextWebSocketHandler {
 
 					String jsonStr = objectMapper.writeValueAsString(mapToSend);
 					sess.sendMessage(new TextMessage(jsonStr));
+					
+					
+					seeCnt++;
 				}
 			}
 			break;

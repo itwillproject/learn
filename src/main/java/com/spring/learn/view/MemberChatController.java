@@ -1,49 +1,21 @@
 package com.spring.learn.view;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.JsonObject;
-import com.spring.learn.board.BoardCommentVO;
-import com.spring.learn.board.BoardReportVO;
-import com.spring.learn.board.BoardService;
-import com.spring.learn.board.BoardVO;
-import com.spring.learn.board.QnaLikeVO;
-import com.spring.learn.common.Paging;
-import com.spring.learn.memberboard.CallcenterCommentVO;
-import com.spring.learn.memberboard.MemberBoardVO;
-import com.spring.learn.user.ChatVO;
 import com.spring.learn.user.MemberChatContentsVO;
 import com.spring.learn.user.MemberChatRoomListVO;
 import com.spring.learn.user.MemberChatService;
-import com.spring.learn.user.UserService;
 import com.spring.learn.user.UserVO;
 
 @Controller					// 단 현재 위치(클래스)에서만 유효
-//@SessionAttributes({"board", "qnaBoardList"}) // board라는 이름의 Model객체가 있으면 세션에 저장
 @RequestMapping({"/memberChat", "/MemberChat"})
 @SessionAttributes({"memberChatRoomList", "memberChatContents"}) // 같은 이름의 Model객체가 있으면 세션에 저장
 public class MemberChatController {
@@ -119,24 +91,45 @@ public class MemberChatController {
 		return "성공";
 	}	
 	
-	
-	
-	
 	// 채팅방 리스트 - 아이디 클릭햇을 때
 	@RequestMapping("/memberChatListGo.do")
 	public String memberChatListGo(UserVO uvo, Model model) {
 		
-		
 		//리스트 불러오기
 		List<MemberChatRoomListVO> memberChatList = memberChatService.getMemberChatList(uvo); 
 		
+		for (MemberChatRoomListVO memberChat : memberChatList) {
+			
+			// 라스트 채터가 상대방인 경우
+			
+			if (memberChat.getLastChater() != null) {
+				
+				if (!memberChat.getLastChater().equals(uvo.getUserId())){
+					
+					// 내가 미응답한 경우 - 미응답 했다는 내용을 vo에 추가하기
+					String chatStatus =  memberChatService.getLastMsg(memberChat).getChatStatus();
+					memberChat.setChatStatus(chatStatus);
+					
+					System.out.println(">>>>>  memberChat : " + memberChat);
+				}
+				
+			}
+		}
 		model.addAttribute("memberChatList", memberChatList);
-		
-		
 		return "/Member/Detail/memberChatList.jsp";
 	}
 	
-	// 채팅방 리스트에서 채팅방으로 입장
+	
+	// 채팅을 봤다
+	@RequestMapping("/seeYourMsg.do")
+	@ResponseBody
+	public void seeYourMsg(MemberChatContentsVO memberChatContents, Model model) {	
+		
+		System.out.println("]]]]] seeYourMsg 도착 memberChatContents: " + memberChatContents);
+	
+		memberChatService.seeYourMsg(memberChatContents);
+	
+	}
 	
 	
 }	

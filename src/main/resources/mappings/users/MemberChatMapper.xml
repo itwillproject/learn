@@ -68,6 +68,24 @@
 		ORDER BY CHAT_REGDATE DESC
 	</select>
 	
+	<select id="getLastMsg" parameterType="memberChatRoomList" resultType="memberChatContents">
+		SELECT * FROM
+		(SELECT * FROM MEMBER_CHAT_CONTENTS
+		WHERE CHATROOM_NO = #{chatroomNo}
+		ORDER BY CHAT_REGDATE DESC)
+		WHERE ROWNUM = 1		
+	</select>
+	
+	<update id="seeYourMsg" parameterType="memberChatContents">
+		UPDATE MEMBER_CHAT_CONTENTS
+		SET CHAT_STATUS = 'TRUE'
+		WHERE CHATROOM_NO = #{chatroomNo}
+		<if test="senderId != null">
+			AND SENDER_ID != #{senderId}
+		</if>
+	</update>
+	
+	
 </mapper>
 
 

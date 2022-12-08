@@ -276,6 +276,10 @@
                     </ul>
 				</nav>
 				
+				
+				
+				
+				
 				<button class="btn btn-dark ml-auto my-auto h-50"
 				 onclick="location.href='${pageContext.request.contextPath}/memberBoard/qnaWriteForm.do'" style="height: 30px">글쓰기</button>
 				</div>
@@ -287,10 +291,10 @@
 					</form>
 				</div>
 								
-						<c:if test="${pvo.totalRecord == 0 }">
-							<p>검색한 내용이 없습니다.</p>
-						</c:if>
-						
+				<c:if test="${pvo.totalRecord == 0 }">
+					<p>검색한 내용이 없습니다.</p>
+				</c:if>
+					
 				<table class="table table-hover mt-5">
 					<tbody>
 						<c:forEach var="memberBoard" items="${memberBoardList }">							
@@ -308,6 +312,9 @@
 						</c:forEach>
 					</tbody>
 				</table>
+				
+				
+				
 				
 				
 				<!-- 페이지네이션 페이징 paging -->

@@ -31,6 +31,10 @@ public interface MemberChatDAO {
 
 	List<MemberChatRoomListVO> getMemberChatList(UserVO uvo);
 
+	MemberChatContentsVO getLastMsg(MemberChatRoomListVO memberChat);
+
+	void seeYourMsg(MemberChatContentsVO memberChatContents);
+
 }
 
 

@@ -70,5 +70,16 @@ public class MemberChatServiceImpl implements MemberChatService {
 		
 		return memberChatDAO.getMemberChatList(uvo);
 	}
+
+	@Override
+	public MemberChatContentsVO getLastMsg(MemberChatRoomListVO memberChat) {
+		return memberChatDAO.getLastMsg(memberChat);
+	}
+
+	@Override
+	public void seeYourMsg(MemberChatContentsVO memberChatContents) {
+		memberChatDAO.seeYourMsg(memberChatContents);
+		
+	}
 	
 }
