@@ -31,6 +31,20 @@
 		text-decoration: none;
 		background: #d3d3d3;
 	}
+	
+	/* 강의파트 css */
+	.card .info {
+	color: #fff;
+	position: absolute; left: 0; bottom: 0;
+	background: rgba(0,0,0,0.8);
+	width: 100%;
+	height: 100%;
+	padding: 15px;
+	opacity: 0;
+	transition: opacity 0.35s ease-in-out;
+	}
+	.card:hover .info {opacity: 1;}
+	/* ======== */
 </style>
 <script>
 	$(function(){
