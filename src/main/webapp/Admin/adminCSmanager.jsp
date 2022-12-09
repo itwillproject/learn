@@ -65,7 +65,7 @@
 						console.log("data : " + qna.qnaTitle);
 						
 						list += '<tr>';
-						list += '<td>' + qna.qnaTitle + '</td>';
+						list += "<td><a href='${pageContext.request.contextPath }/memberBoard/viewPage.do?qnaNo=" + qna.qnaNo + "'>" + qna.qnaTitle + '</a></td>';
 						list += '</tr>';
 					}
 				} else if (data == null) {
@@ -168,7 +168,7 @@
 					<c:if test="${not empty qnaList }">
 						<c:forEach var="qna" items="${qnaList }">
 								<tr>
-									<td>${qna.qnaTitle }</td>
+									<td><a href='${pageContext.request.contextPath }/memberBoard/viewPage.do?qnaNo=${qna.qnaNo }'>${qna.qnaTitle }</a></td>
 								</tr>
 						</c:forEach>
 					</c:if>
