@@ -36,6 +36,9 @@ public interface BoardDAO {
 	List<BoardVO> getMyBoardList(Map<String, String> map);
 	int getMyBoardCount(Map<String, String> map);
 
+  int getMyQBoardCount(Map<String, String> pmap);
+
+	List<BoardVO> getMyQBoardList(Map<String, String> pmap);
 }
 
 

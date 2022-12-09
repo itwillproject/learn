@@ -457,6 +457,7 @@ public class TeacherController {
         model.addAttribute("salesList", list);
         model.addAttribute("lectureSales", lectureSales);
         model.addAttribute("pvo", p);
+        model.addAttribute("count", lectureService.getOrderLectureCount(userId));
 
         return "/Teacher/salesView.jsp";
     }
@@ -608,6 +609,7 @@ public class TeacherController {
         LectureVO lec = lectureService.getLecture(lectureNo);
 
         model.addAttribute("salesList", salesList);
+        model.addAttribute("count", lectureService.getSalesLectureViewCount(lectureNo));
         model.addAttribute("lectureSales", lectureSales);
         model.addAttribute("lectureTitle", lec.getLectureTitle());
         model.addAttribute("lectureNo", lec.getLectureNo());
@@ -896,9 +898,5 @@ public class TeacherController {
 
         return map;
     }
-
-    /****************************************************
-     * 5. 채팅방 조회
-     ****************************************************/
 
 }

@@ -96,7 +96,7 @@
 
 		<div class="row w-100 pb-4 justify-content-center">
 			<div class="col-2 d-flex justify-content-center">
-				<%@ include file="sideNav.jspf"%>
+				<%@ include file="sidebar.jspf"%>
 			</div>
 			<div class="col-6 pl-3 gray-line">
 				<div class="text-center">

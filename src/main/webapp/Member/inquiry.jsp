@@ -68,11 +68,11 @@
 				<h2>조회</h2>
 				<div class="pb-3">
 					<ul class="border nav p-1">
-						<li class="nav-item"><a class="nav-link" href="#home">질문</a>
+						<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath }/Member/myQuestion.do">질문</a>
 						</li>
-						<li class="nav-item"><a class="nav-link" href="#menu1">자유주제</a>
+						<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath }/Member/myFree.do">자유주제</a>
 						</li>
-						<li class="nav-item"><a class="nav-link active">문의글</a></li>
+						<li class="nav-item"><a class="nav-link active" href="${pageContext.request.contextPath}/memberBoard/callCenterBoardList.do?userId=${user.userId}">문의글</a></li>
 					</ul>
 				</div>
 				<div class="border">
