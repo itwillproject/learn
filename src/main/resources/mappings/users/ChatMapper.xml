@@ -34,10 +34,20 @@
 	</update>
 	
 	<select id="getContentRoomList" resultType="chatVO">
-		SELECT * FROM chatting_list order by chat_no
+		SELECT * FROM chatting_list order by chat_ok, chat_no
 	</select>
 	
+	<select id="getRegRoomList" resultType="chatVO">
+		SELECT * FROM chatting_list order by chat_ok, chat_regdate desc
+	</select>
 	
+	<select id="getReversRoomList" resultType="chatVO">
+		SELECT * FROM chatting_list order by chat_ok desc, chat_no
+	</select>
+	
+	<select id="getReversRegRoomList" resultType="chatVO">
+		SELECT * FROM chatting_list order by chat_ok desc, chat_regdate desc
+	</select>
 	
 	
 </mapper>

@@ -31,6 +31,7 @@
 		<typeAlias alias="boardReport" type="com.spring.learn.board.BoardReportVO"/>
 		<typeAlias alias="OrdersDetail" type="com.spring.learn.memberboard.OrdersDetailVO"/>	
 		<typeAlias alias="chatVO" type="com.spring.learn.user.ChatVO"/>
+		<typeAlias alias="alramVO" type="com.spring.learn.echo.AlramVO"/>
 		<typeAlias alias="likeVO" type="com.spring.learn.user.LikeVO"/>
 		<typeAlias alias="orderCartVO" type="com.spring.learn.order.OrderCartVO"/>
 		<typeAlias alias="orderCheckVO" type="com.spring.learn.order.OrderCheckVO"/>

@@ -46,6 +46,9 @@
 	.addreply{
 		float:right;
 	}
+	.letright{
+		float:right;
+	}
 </style>
 
 </head>
@@ -56,7 +59,7 @@
 
 
 <div class= "container-fluid " style="margin: 0; padding:  0; background-color: #002333">
-<img id="mainimg" src="${lecture.lectureCoverimg}" alt="강의 이미지" width="640px" height="400px">
+<img id="mainimg" src="${pageContext.request.contextPath}/filepath/${lecture.lectureCoverimg}" alt="강의 이미지" width="640px" height="400px">
 <div id="maintext" class='maintext text-white'>
 
 <p>${lecture.categoryName }</p>
@@ -87,7 +90,9 @@ ${lecture.lectureWriter }
 <c:if test="${lecture.lectureOnOff == 1}">오프라인 수업</c:if>
 <c:if test="${lecture.lectureOnOff == 0}">온라인 수업</c:if>
 </span>
-
+<c:if test="${lecture.lectureOnOff == 0}">
+  <button onclick="location.href='${pageContext.request.contextPath}/lecture/realtimeQuestion.do?lectureNo=${lecture.lectureNo}'">실시간 질문</button>
+</c:if>
 </div>
 
 <br><br><br>
@@ -211,6 +216,25 @@ window.onload=function(){
 			<c:set var="countclass" value="${status.index + 1}"/>
 		</c:if>
 </c:forEach>
+
+<!-- 클래스 넘버 최소 최대 구하기 -->
+<c:forEach var="num" items="${classes }" varStatus="status">
+		<c:if test="${status.first}">
+			<c:set var="classNoMin" value="${num.classNo}"/>
+		</c:if>
+		<c:if test="${status.last}">
+			<c:set var="classNoMax" value="${num.classNo}"/>
+		</c:if>
+</c:forEach>
+
+<!-- 프리뷰 할수있는 클래스 넘버 최소 최대 구하기 잘못됨.. -->
+<c:forEach var="num" items="${classes }" varStatus="status">
+	<c:if test="${num.preview eq 0}">	
+			<c:set var="previewclassNoMax" value="${num.classNo}"></c:set> 
+	</c:if>	
+</c:forEach>
+
+
 <section id="curriculum">
 <b style="font-size: 32px;">커리큘럼</b> &nbsp;
 <span class="text-secondary">총 ${countclass} 개</span>
@@ -231,10 +255,14 @@ window.onload=function(){
 			<div id="collapse${so.sectionNo}" class="collapse" >
         		<div class="card-body">
          			${so.className }
-         			<c:if test="${so.preview eq 0}">
-         			<span style="float: right"><button class='btn btn-outline-success'  onclick="location.href='${so.classUrl}'">미리보기</button></span>
-         			</c:if>
          			
+         			<!-- 강의자, 수강생, 관리자가 아닌 경우 미리보기만 가능 -->
+         			<c:if test="${so.preview eq 0 && lecturer != 'student' && lecturer != 'lecturer' && user.grade != '관리자'}">
+         			<span style="float: right"><button class='btn btn-outline-success'  onclick="location.href='previewD.do?classNo=${so.classNo}&min=${classNoMin}&max=${previewclassNoMax}'">미리보기</button></span>
+         			</c:if>
+         			<c:if test="${lecturer == 'student' || lecturer == 'lecturer' || user.grade == '관리자'}">
+         			<span style="float: right"><button class='btn btn-outline-success'  onclick="location.href='previewD.do?classNo=${so.classNo}&min=${classNoMin}&max=${classNoMax}'">영상보기</button></span>
+         			</c:if>
        		 </div>
 	</div>
 		</c:if>
@@ -337,9 +365,9 @@ window.onload=function(){
 
 
 
-	
+		<c:if test="${lecturer ne 'visitor' && lecturer ne 'lecturer'}">
 	<div id="writeComment">
-	<c:if test="${lecturer eq 'student'}">
+
 	<span><b>${user.userId}</b></span><br>
 
 	<button type="button" id="rate1" class="btn btn-default" style="padding: 0;"><i id="star1" class='fas fa-star star' style='font-size:18px;color:#f5f5dc'></i></button>
@@ -357,9 +385,10 @@ window.onload=function(){
 	
 	<textarea id="boardContent" rows="5" cols="70"></textarea>
 	<input type="button" name="boardContent" class="btn btn-default" value="코멘트 쓰기" onclick="submitComment(${lecture.lectureNo})">
-	</c:if>
+	
 	
 </div>
+</c:if>
 </section>
 
 
@@ -385,8 +414,12 @@ window.onload=function(){
 	
 	<br>
 	<div id="buttons">
+	<c:if test="${lecturer eq 'visitor'}">
+	<button class="btn btn-success" style="width: 300px; height: 60px; margin-bottom: 10px;" disabled>수강신청<br>로그인이 필요한 기능입니다</button><br>
+	</c:if>
 	
 	<!--  오프라인 -->
+	<c:if test="${lecturer ne 'visitor'}">
 	<c:if test="${lecture.lectureOnOff == 1}">
 	<button class="btn btn-success" style="width: 300px; height: 60px; margin-bottom: 10px;" onclick="offlineInsertCart()">수강신청 하기</button><br>
 	</c:if>
@@ -394,11 +427,12 @@ window.onload=function(){
 	<!--  온라인 -->
 	<c:if test="${lecture.lectureOnOff == 0}">
 	<button class="btn btn-success" style="width: 300px; height: 60px; margin-bottom: 10px;" onclick="location.href='insertCart.do?lectureNo=${lecture.lectureNo}'">수강신청 하기</button><br>
-	
 	</c:if>
 	
-	<button class="btn" style="width: 300px; height: 60px; border: solid 1px black">바구니에 담기</button>
+	<!-- <button class="btn" style="width: 300px; height: 60px; border: solid 1px black">바구니에 담기</button> -->
+	</c:if>
 	</div>
+	
 	
  	<script>
 	function offlineInsertCart(){
@@ -439,7 +473,14 @@ window.onload=function(){
       </span>
        </c:if>
         
-
+	<c:if test="${checkLike == 2}">
+	<span id="lectureNum">
+	 <button  type="button" class="btn btn-default">
+          <i class="fas fa-heart" style="color: #f5f5dc;" ></i>
+          <span> ${ lectureLike}</span>      
+        </button>
+     </span>
+       </c:if>
         
         
 	&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -729,17 +770,24 @@ window.onload=function(){
 				let dispHtml ="";
 				
 				$.each(data, function(index, obj){
-					dispHtml += "<div id='review_header'>";
+					dispHtml += "<div id='reviewComment" + this.boardNo + "'><div id='review_header'>";
 					
 					for (var i =0; i<this.boardRate; i++){
 						dispHtml += "<i class='fas fa-star' style='font-size:18px;color:orange'></i>"
 					}
 					
-					dispHtml += "&nbsp;<b>" +  this.userId +"</b><br></div>";
+					dispHtml += "&nbsp;<b>" +  this.userId +"</b>";
+					
+					/* 사용자 댓글 삭제 */
+					var lecturer = ${lecturer eq 'lecturer'};
+					if (lecturer){
+						dispHtml += '<button id="deletereply' + this.boardNo +'" class="btn btn-default letright" onclick="deleteComment(' + this.boardNo +')"><i class="fa fa-trash" aria-hidden="true"></i></button><br></div>';
+					}
+					
 					dispHtml += "<div id='review_content'><p>" + this.boardContent + "</p>";
 					dispHtml += "<div id='review_info'><span>" + this.boardRegdate;
 					dispHtml +="<span id='replyfor" + this.boardNo + "' ></span>";	
-					var lecturer = ${lecturer eq 'lecturer'};
+					
 					
 					if (lecturer){
 						dispHtml += '<button id="reply'+ this.boardNo + '" value="'  + this.boardNo + '"class="btn btn-default addreply" onclick="showReply(this)">답글쓰기</button>';
@@ -753,7 +801,7 @@ window.onload=function(){
 					dispHtml +="<span style='position: relative; left: 50px;'><textarea id='replytext" + this.boardNo + "' rows='5' cols='70'></textarea>";
 					dispHtml +="<input type='button' name='boardContent' class='btn btn-default' value='답글 작성하기' onclick='submitReply(" + this.boardNo + ")'>";
 					dispHtml +="</span></div>";
-					dispHtml +="</div>";
+					dispHtml +="</div></div>";
 					
 					
 				})
@@ -777,7 +825,15 @@ window.onload=function(){
 					dispHtml += '<div style="background-color: #f8f9fa;">';
 					dispHtml += '<div id="reply_header">';
 					dispHtml += '<span class="border" >지식공유자</span>';
-					dispHtml += '<span><b>' + this.lectureWriter +  '</b></span></div><br>';
+					dispHtml += '<span><b>' + this.lectureWriter +  '</b>'; 
+					
+					var lecturer = ${lecturer eq 'lecturer'};
+					
+					if (lecturer){
+						dispHtml += '<button id="deletereply' + this.boardNo +'" class="btn btn-default letright" onclick="deletereply(' + this.boardNo +')"><i class="fa fa-trash" aria-hidden="true"></i></button>';
+					}
+					
+					dispHtml +='</span></div><br>';
 					dispHtml += '<div id="reply_content">';
 					dispHtml += '<p>' + this.commentContent +'</p>';
 					dispHtml += '<span>' + this.commentRegdate +'</span></div></div></div>';
@@ -810,17 +866,24 @@ window.onload=function(){
 				let dispHtml ="";
 				
 				$.each(data, function(index, obj){
-					dispHtml += "<div id='review_header'>";
+					dispHtml += "<div id='reviewComment" + this.boardNo + "'><div id='review_header'>";
 					
 					for (var i =0; i<this.boardRate; i++){
 						dispHtml += "<i class='fas fa-star' style='font-size:18px;color:orange'></i>"
 					}
 					
-					dispHtml += "&nbsp;<b>" +  this.userId +"</b><br></div>";
+					dispHtml += "&nbsp;<b>" +  this.userId +"</b>";
+					
+					/* 사용자 댓글 삭제 */
+					var lecturer = ${lecturer eq 'lecturer'};
+					if (lecturer){
+						dispHtml += '<button id="deletereply' + this.boardNo +'" class="btn btn-default letright" onclick="deleteComment(' + this.boardNo +')"><i class="fa fa-trash" aria-hidden="true"></i></button><br></div>';
+					}
+					
 					dispHtml += "<div id='review_content'><p>" + this.boardContent + "</p>";
 					dispHtml += "<div id='review_info'><span>" + this.boardRegdate;
 					dispHtml +="<span id='replyfor" + this.boardNo + "' ></span>";	
-					var lecturer = ${lecturer eq 'lecturer'};
+					
 					
 					if (lecturer){
 						dispHtml += '<button id="reply'+ this.boardNo + '" value="'  + this.boardNo + '"class="btn btn-default addreply" onclick="showReply(this)">답글쓰기</button>';
@@ -834,7 +897,7 @@ window.onload=function(){
 					dispHtml +="<span style='position: relative; left: 50px;'><textarea id='replytext" + this.boardNo + "' rows='5' cols='70'></textarea>";
 					dispHtml +="<input type='button' name='boardContent' class='btn btn-default' value='답글 작성하기' onclick='submitReply(" + this.boardNo + ")'>";
 					dispHtml +="</span></div>";
-					dispHtml +="</div>";
+					dispHtml +="</div></div>";
 					
 					
 				})
@@ -858,7 +921,15 @@ window.onload=function(){
 					dispHtml += '<div style="background-color: #f8f9fa;">';
 					dispHtml += '<div id="reply_header">';
 					dispHtml += '<span class="border" >지식공유자</span>';
-					dispHtml += '<span><b>' + this.lectureWriter +  '</b></span></div><br>';
+					dispHtml += '<span><b>' + this.lectureWriter +  '</b>'; 
+					
+					var lecturer = ${lecturer eq 'lecturer'};
+					
+					if (lecturer){
+						dispHtml += '<button id="deletereply' + this.boardNo +'" class="btn btn-default letright" onclick="deletereply(' + this.boardNo +')"><i class="fa fa-trash" aria-hidden="true"></i></button>';
+					}
+					
+					dispHtml +='</span></div><br>';
 					dispHtml += '<div id="reply_content">';
 					dispHtml += '<p>' + this.commentContent +'</p>';
 					dispHtml += '<span>' + this.commentRegdate +'</span></div></div></div>';
@@ -891,17 +962,24 @@ window.onload=function(){
 				let dispHtml ="";
 				
 				$.each(data, function(index, obj){
-					dispHtml += "<div id='review_header'>";
+					dispHtml += "<div id='reviewComment" + this.boardNo + "'><div id='review_header'>";
 					
 					for (var i =0; i<this.boardRate; i++){
 						dispHtml += "<i class='fas fa-star' style='font-size:18px;color:orange'></i>"
 					}
 					
-					dispHtml += "&nbsp;<b>" +  this.userId +"</b><br></div>";
+					dispHtml += "&nbsp;<b>" +  this.userId +"</b>";
+					
+					/* 사용자 댓글 삭제 */
+					var lecturer = ${lecturer eq 'lecturer'};
+					if (lecturer){
+						dispHtml += '<button id="deletereply' + this.boardNo +'" class="btn btn-default letright" onclick="deleteComment(' + this.boardNo +')"><i class="fa fa-trash" aria-hidden="true"></i></button><br></div>';
+					}
+					
 					dispHtml += "<div id='review_content'><p>" + this.boardContent + "</p>";
 					dispHtml += "<div id='review_info'><span>" + this.boardRegdate;
 					dispHtml +="<span id='replyfor" + this.boardNo + "' ></span>";	
-					var lecturer = ${lecturer eq 'lecturer'};
+					
 					
 					if (lecturer){
 						dispHtml += '<button id="reply'+ this.boardNo + '" value="'  + this.boardNo + '"class="btn btn-default addreply" onclick="showReply(this)">답글쓰기</button>';
@@ -915,7 +993,7 @@ window.onload=function(){
 					dispHtml +="<span style='position: relative; left: 50px;'><textarea id='replytext" + this.boardNo + "' rows='5' cols='70'></textarea>";
 					dispHtml +="<input type='button' name='boardContent' class='btn btn-default' value='답글 작성하기' onclick='submitReply(" + this.boardNo + ")'>";
 					dispHtml +="</span></div>";
-					dispHtml +="</div>";
+					dispHtml +="</div></div>";
 					
 					
 				})
@@ -939,7 +1017,15 @@ window.onload=function(){
 					dispHtml += '<div style="background-color: #f8f9fa;">';
 					dispHtml += '<div id="reply_header">';
 					dispHtml += '<span class="border" >지식공유자</span>';
-					dispHtml += '<span><b>' + this.lectureWriter +  '</b></span></div><br>';
+					dispHtml += '<span><b>' + this.lectureWriter +  '</b>'; 
+					
+					var lecturer = ${lecturer eq 'lecturer'};
+					
+					if (lecturer){
+						dispHtml += '<button id="deletereply' + this.boardNo +'" class="btn btn-default letright" onclick="deletereply(' + this.boardNo +')"><i class="fa fa-trash" aria-hidden="true"></i></button>';
+					}
+					
+					dispHtml +='</span></div><br>';
 					dispHtml += '<div id="reply_content">';
 					dispHtml += '<p>' + this.commentContent +'</p>';
 					dispHtml += '<span>' + this.commentRegdate +'</span></div></div></div>';
@@ -973,17 +1059,26 @@ window.onload=function(){
 				let dispHtml ="";
 				
 				$.each(data, function(index, obj){
-					dispHtml += "<div id='review_header'>";
+					dispHtml += "<div id='reviewComment" + this.boardNo + "'><div id='review_header'>";
 					
 					for (var i =0; i<this.boardRate; i++){
 						dispHtml += "<i class='fas fa-star' style='font-size:18px;color:orange'></i>"
 					}
 					
-					dispHtml += "&nbsp;<b>" +  this.userId +"</b><br></div>";
+					dispHtml += "&nbsp;<b>" +  this.userId +"</b>";
+					
+					/* 사용자 댓글 삭제 */
+					var lecturer = ${lecturer eq 'lecturer'};
+					var board = this.boardNo;
+					
+					if (lecturer){
+						dispHtml += '<button id="deletereply' + this.boardNo +'" class="btn btn-default letright" onclick="deleteComment(' + this.boardNo +')"><i class="fa fa-trash" aria-hidden="true"></i></button><br></div>';
+					}
+					
 					dispHtml += "<div id='review_content'><p>" + this.boardContent + "</p>";
 					dispHtml += "<div id='review_info'><span>" + this.boardRegdate;
 					dispHtml +="<span id='replyfor" + this.boardNo + "' ></span>";	
-					var lecturer = ${lecturer eq 'lecturer'};
+					
 					
 					if (lecturer){
 						dispHtml += '<button id="reply'+ this.boardNo + '" value="'  + this.boardNo + '"class="btn btn-default addreply" onclick="showReply(this)">답글쓰기</button>';
@@ -997,7 +1092,7 @@ window.onload=function(){
 					dispHtml +="<span style='position: relative; left: 50px;'><textarea id='replytext" + this.boardNo + "' rows='5' cols='70'></textarea>";
 					dispHtml +="<input type='button' name='boardContent' class='btn btn-default' value='답글 작성하기' onclick='submitReply(" + this.boardNo + ")'>";
 					dispHtml +="</span></div>";
-					dispHtml +="</div>";
+					dispHtml +="</div></div>";
 					
 					
 				})
@@ -1026,7 +1121,7 @@ window.onload=function(){
 					var lecturer = ${lecturer eq 'lecturer'};
 					
 					if (lecturer){
-						dispHtml += '<button id="deletereply' + this.boardNo +'" class="btn btn-default" onclick="deletereply(' + this.boardNo +')">삭제하기</button>';
+						dispHtml += '<button id="deletereply' + this.boardNo +'" class="btn btn-default letright" onclick="deletereply(' + this.boardNo +')"><i class="fa fa-trash" aria-hidden="true"></i></button>';
 					}
 					
 					dispHtml +='</span></div><br>';
@@ -1050,30 +1145,14 @@ window.onload=function(){
 	};
 /*강의자 답글 삭제*/
 	function deletereply(boardNo){
-		var boardNo;
 		
 		$.ajax({
 			url: "ajaxDeleteCommentReply.do?boardNo=" + boardNo + "&lectureNo=" + ${lecture.lectureNo},
 			type: "post",
 			dataType: "json",
 			success: function(data){
-				alert("delete");
-				let dispHtml="";
-				$.each(data, function(index, obj){
-					dispHtml = "";
-					dispHtml += '<br><i class="fas fa-angle-down" style="font-size:24px"></i><br>';
-					dispHtml += '<div style="background-color: #f8f9fa;">';
-					dispHtml += '<div id="reply_header">';
-					dispHtml += '<span class="border" >지식공유자</span>';
-					dispHtml += '<span><b>' + this.lectureWriter +  '</b></span></div><br>';
-					dispHtml += '<div id="reply_content">';
-					dispHtml += '<p>' + this.commentContent +'</p>';
-					dispHtml += '<span>' + this.commentRegdate +'</span></div></div></div>';
-					
-					$("#replyfor" + this.boardNo).html(dispHtml);
-					
-					
-				})
+				alert("답글 삭제");
+				$("#replyfor" + boardNo).remove();
 									
 			},
 			error: function(){
@@ -1083,6 +1162,23 @@ window.onload=function(){
 		});
 	}
 	
+	//댓글삭제
+	function deleteComment(boardNo){
+		$.ajax({
+			url: "ajaxDeleteComment.do?boardNo=" + boardNo + "&lectureNo=" + ${lecture.lectureNo},
+			type: "post",
+			dataType: "json",
+			success: function(data){
+				alert("댓글 삭제");
+				$("#reviewComment" + boardNo).remove();
+									
+			},
+			error: function(){
+				alert("실패~~");
+			}
+					
+		});
+	}
 	
 	function showReply(num){
 		var findid = "#replyForm"+num.value;
@@ -1090,6 +1186,7 @@ window.onload=function(){
 		
 	}
 	
+	//답글 추가
 	function submitReply(boardNo){
 		
 		var text = document.getElementById("replytext" + boardNo);
@@ -1110,7 +1207,15 @@ window.onload=function(){
 					dispHtml += '<div style="background-color: #f8f9fa;">';
 					dispHtml += '<div id="reply_header">';
 					dispHtml += '<span class="border" >지식공유자</span>';
-					dispHtml += '<span><b>' + this.lectureWriter +  '</b></span></div><br>';
+					dispHtml += '<span><b>' + this.lectureWriter +  '</b>'; 
+					
+					var lecturer = ${lecturer eq 'lecturer'};
+					
+					if (lecturer){
+						dispHtml += '<button id="deletereply' + this.boardNo +'" class="btn btn-default letright" onclick="deletereply(' + this.boardNo +')"><i class="fa fa-trash" aria-hidden="true"></i></button>';
+					}
+					
+					dispHtml +='</span></div><br>';
 					dispHtml += '<div id="reply_content">';
 					dispHtml += '<p>' + this.commentContent +'</p>';
 					dispHtml += '<span>' + this.commentRegdate +'</span></div></div></div>';

@@ -34,6 +34,13 @@
 	color: #fff;
 	background-color: #00C471;
 }
+.active-menu {
+        color: #1dc078;
+        font-weight: bold;
+      }
+      .norm-menu {
+        color: black;
+      }
 </style>
 </head>
 <body>
@@ -49,7 +56,13 @@
 		<div class="row w-100 pb-4 justify-content-center">
 			<!-- 왼쪽 네비 -->
 			<div class="col-2 d-flex justify-content-center">
-				<%@ include file="sideNav.jspf"%>
+				<%@ include file="sidebar.jspf"%>
+				<script>
+					var menu = $('#myboardMenu');
+		            console.log(menu);
+		            menu.removeClass('norm-menu');
+		            menu.addClass('active-menu');
+	            </script>
 			</div>
 			<div class="col-8 pl-3 gray-line">
 				<h2>조회</h2>
@@ -108,8 +121,6 @@
  	<script>
 
 		function cBoardList() {
-			alert("cBoardList() 실행");
-			
 			$.ajax("${pageContext.request.contextPath}/memberBoard/cBoardList.do?userId=${user.userId}", {
 				type : "get",
 				dataType : "json", //서버로부터 응답받는 데이터 형식
@@ -120,8 +131,6 @@
 					$("#solvedBtn").addClass("btn-light");
 					$("#unsolvedBtn").addClass("btn-light");
 				
-					
-					alert("성공~!");
 					console.log("data : " + data);
 					let dispHtml = "";
 					var summary = "";
@@ -132,13 +141,11 @@
 							summary += '...';
 						}				
 						dispHtml += '<div class="pt-1 pl-4 pr-4">';
-						
 						dispHtml += "<h5><a href='${pageContext.request.contextPath }/memberBoard/inquiryDetail.do?qnaNo="+this.qnaNo+"'>";
 						dispHtml += "<b>" + this.qnaTitle + "</b></a></h5>";
 						dispHtml += "<span>" + summary + "</span><br>";
 						dispHtml += '<div class="pt-1"><span>' + this.qnaRegdate + "</span></div><hr></div>";	
 					});
-
 					$("#listDisp").html(dispHtml);
 				},
 				error : function() {
@@ -154,14 +161,10 @@
 				type : "get",
 				dataType : "json", //서버로부터 응답받는 데이터 형식
 				success : function(data) {
-					alert("성공~!");
 					console.log("data : " + data);
-					
 					$("#allBtn").addClass("btn-light");
 					$("#solvedBtn").removeClass("btn-light");
 					$("#unsolvedBtn").addClass("btn-light");
-				
-					
 					let dispHtml = "";
 					var summary = "";
 					$.each(data, function(index, obj){
@@ -176,7 +179,6 @@
 						dispHtml += "<span>" + summary + "</span><br>";
 						dispHtml += '<div class="pt-1"><span>' + this.qnaRegdate + "</span></div><hr></div>";	
 					});
-
 					$("#listDisp").html(dispHtml);
 				},
 				error : function() {
@@ -187,19 +189,14 @@
 		</script>
 		<script>
 		function unResolvedCBoardList() {
-			alert("unResolvedCBoardList() 실행");
-
 			$.ajax("${pageContext.request.contextPath}/memberBoard/unResolvedCBoardList.do?userId=${user.userId}", {
 				type : "get",
 				dataType : "json", //서버로부터 응답받는 데이터 형식
 				success : function(data) {
-					alert("성공~!");
 					console.log("data : " + data);
-					
 					$("#allBtn").addClass("btn-light");
 					$("#solvedBtn").addClass("btn-light");
 					$("#unsolvedBtn").removeClass("btn-light");
-					
 					let dispHtml = "";
 					var summary = "";
 					$.each(data, function(index, obj){
@@ -214,7 +211,6 @@
 						dispHtml += "<span>" + summary + "</span><br>";
 						dispHtml += '<div class="pt-1"><span>' + this.qnaRegdate + "</span></div><hr></div>";	
 					});
-
 					$("#listDisp").html(dispHtml);
 				},
 				error : function() {

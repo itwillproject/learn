@@ -125,7 +125,15 @@ public class UserDAO {
 	public List<PointLogVO> getPointLogList(Map<String, String> map) {
 		return mybatis.selectList("userDAO.getPointLogList", map);
 	}
+	
+	public LikeVO getLectureTeacherId(LikeVO vo) {
+		return mybatis.selectOne("userDAO.getLectureTeacherId", vo);
+	}
 
+	public List<UserVO> getUserList() {
+		return mybatis.selectList("userDAO.getUserList");
+	}
+	
 }
 
 

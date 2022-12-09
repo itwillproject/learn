@@ -539,4 +539,29 @@ public class adminController {
 		
 	}
 	//sk controller 수정 끝
+	
+	//카테 고리별 정령
+	@RequestMapping("/chatSearchAdmin.do")
+	@ResponseBody
+	public List<ChatVO> chatSearchAdmin(ChatVO vo) {
+		System.out.println("카테고리 정렬 요청이 들어옴!");
+		System.out.println("vo : " + vo);
+		List<ChatVO> contentRoomList = new ArrayList<ChatVO>(); 
+		if (vo.getSearchStatus().equals("미응답")) {
+			if(vo.getSearchOrder().equalsIgnoreCase("chat_no")) {
+				contentRoomList = chatService.getContentRoomList(); // 채팅방 조회하기				
+			} else {
+				contentRoomList = chatService.getRegRoomList(); // 채팅방 조회하기 <<<<이부분먼저
+			}
+		} else if(vo.getSearchStatus().equals("응답")){
+			if(vo.getSearchOrder().equalsIgnoreCase("chat_no")) {
+				contentRoomList = chatService.getReversRoomList(); // 채팅방 조회하기				
+			} else {
+				contentRoomList = chatService.getReversRegRoomList(); // 채팅방 조회하기 <<<<이부분먼저
+			}
+		}
+		System.out.println("보내기전 contrntRoomList" + contentRoomList);
+		
+		return contentRoomList;
+	}
 }

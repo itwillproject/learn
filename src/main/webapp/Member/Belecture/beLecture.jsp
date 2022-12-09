@@ -23,6 +23,18 @@
 	b { font-size: 1.2em;}
 	
 	.disable { display: none;}
+	
+	.container { margin: 0 auto; }
+	#set { width:90%;
+        margin:auto;
+        display:block;}
+        
+ 	.container { margin: 0 auto;
+ }
+	#set { width:90%;
+        margin:auto;
+        display:block;}
+        
 </style>
 
 </head>
@@ -44,17 +56,130 @@
 인프런은 지식으로 의미있는 수익과 공유가 가능한 한국 유일한 플랫폼 입니다.<br>
 </p>
 <br>
-	<button class="btn btn-success" onclick="window.open('beLectureform1.jsp', 'form', 'resizable=no, width=800, height=800, location=no, top=100, left=660'); return false">지식공유자 참여하기</button>
-<!--  <a href="#" onclick="window.open('링크할 파일이름.htm','name','resizable=no width=600 height=500');return false">
-<선물보기></a>-->
+ <!-- Button to Open the Modal -->
+ <c:if test="${user eq null}">
+ <button type="button" class="btn btn-primary" style="background-color: green" data-toggle="modal" data-target="#myModal" disabled>
+    지식공유자 참여(로그인이 필요한 과정입니다)
+  </button>
+ </c:if>
+ <c:if test="${user ne null }">
+<button type="button" class="btn btn-primary" style="background-color: green" data-toggle="modal" data-target="#myModal">
+    지식공유자 참여
+  </button>
+  </c:if>
           </div>
+
+
+<!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">${user.userId} 님! 안녕하세요.</h4>
+          
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+         <h4 class="modal-title">지식공유에 동참해 주셔서 감사합니다!</h4>
+          <h4 class="modal-title">인프런의 이야기를 들어주세요!</h4><br>
+          <h3>1. 인프런은 성장기회의 평등을 추구합니다.</h3>
+	<p>우리는 때로 무언가를 배워야만 합니다.
+하지만 여러 이유로 당연하다고 생각되어 지는것들이 누군가에게는 사치가 되기도 합니다.
+인프런은 누구나, 경제적으로 시간적 제약없이 내가 원하는 것을 배우고, 지식을 나눌 수 있는 공간입니다.<br></p>
+	<br>
+	<h3>2. 전문 지식으로 수익이 가능한 유일한 곳.</h3>
+	<p>인프런은 기술 강의, 멘토링으로 의미 있는 보상을 가질 수 있는 유일한 플랫폼 입니다.
+	 99만명의 수강생이 강의를 신청할 때마다 수익을 얻을 수 있어요!
+지속가능한 수익과 명예를 가져가세요 :)<br></p>
+	<br>
+	<h3>3. 인프런은 70% ~ 100% 의 비율의 높은 수익을 제공합니다.</h3>
+	<p>좋은 지식은 합당한 보상에서 나온다고 인프런은 생각합니다.
+	 때문에 인프런은 다른 학습 서비스에 비해 월등히 높은 수익을 드리고 있어요.
+실제로 인프런엔 꾸준히 월 수백 ~ 수천 만원 이상의 수익을 가져가는 많은 지식공유자들이 계셔요. <br></p>
+	<br>
+	<h3>4. 인프런의 강의는 지식공유자가 자유롭게 운영할 수 있습니다.</h3>
+	<p>지식공유자는 학생추가, 새소식 알림, 운영, 쿠폰 발행 등으로 자신의 강의를 자유롭게 운영할 수 있습니다.
+	 학습자들과 소식을 공유하고 자유롭게 운영해 주세요.<br></p>
+	<br>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer justify-content-sm-center">
+         <!--  <button type="button" class="btn btn-success" data-dismiss="modal">지식공유자 참여하기</button> -->
+         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2" data-dismiss="modal" style="background-color: green">지식공유자 참여하기</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+    <!-- The Modal -->
+  <div class="modal" id="myModal2">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+       
+          <h4 class="modal-title">감사합니다, ${user.userId} 님</h4>
+
+          
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body container">
+         	<h4>지식공유자가 되기 위해서</h4>
+	<h4>아래 정보가 필요해요.</h4>
+	<br>
+	<form method="post">
+    <div class="form-group">
+      <label for="email">인프런 계정</label>
+      <input type="text" class="form-control" id="userId"  name="userId" value="${user.userId}" readonly >
+    </div>
+    <div class="form-group">
+      <label for="pwd">이름(실명)</label>
+      <input type="text" class="form-control" id="userName" placeholder="이름을 입력해주세요" name="userName">
+    </div>
+  	 <div class="form-group">
+      <label for="pwd">연락처</label>
+      <input type="text" class="form-control" id="userTel" placeholder="연락처를 입력해주세요" name="userTel">
+    </div>
+       <div class="form-group">
+      <label for="text">희망분야</label>
+      <input type="text" class="form-control" id="categoryName" placeholder="희망분야를 입력해주세요" name="categoryName">
+    </div>
+   
+     <div class="form-group">
+      <label for="text"> 나를 소개하는 글 *</label> 
+      <textarea rows="10" cols="20" class="form-control" name="userIntroduce" id="userIntroduce"></textarea>
+    </div>
+    
+    <div class="form-group modal-footer">
+      <label for="text">나를 표현할 수 있는 링크</label>
+     <input type="text" class="form-control" id="userLink" name="userLink" placeholder="test1234@gmail.com">
+    </div>
+    
+    <button type="submit"  id="set" class="btn btn-success" onclick="submitAndclose(this.form)" disabled>제출</button>
+  </form>
+	
+        </div>
+        
+      </div>
+    </div>
+  
+  
+  
 </div>
-<br>
+
 
 <img src="../../picture/lecturedata1.png" alt="수익 회원수 누적 수강생" width=90%>
 
 <img src="../../picture/lecturedata2.png" alt="수익 회원수 누적 수강생" width=40% style="float: right">
-<div>
+</div>
+<br><div class="container">
 	<h3>지식공유자를 위한<br>
 높은 정산 비율</h3>
 <br>
@@ -68,6 +193,8 @@
 비율로 정산합니다.<br><br></h5>
 인프런은 합리적인 정책으로 지식공유자와<br>
 학습자 모두에게 도움이 되는 선순환을 만들어 갑니다.<br><br>
+
+
 
 </div>
 <br><br>
@@ -343,6 +470,26 @@ $(document).ready(function(){
 		
 	  });   
 });
+
+function submitAndclose(frm){
+		frm.action="insertResume.do";
+	return false;
+
+		}
+
+	$(".form-control").on("keyup", function(){
+		var flag1 = $("#userId").val().length > 0 ? false : true;
+		var flag2 = $("#userName").val().length > 0 ? false : true;
+		var flag3 = $("#userTel").val().length > 0 ? false : true;
+		var flag4 = $("#categoryName").val().length > 0 ? false : true;
+		var flag5 = $("#userIntroduce").val().length > 0 ? false : true;
+		var flag6 = $("#userLink").val().length > 0 ? false : true;
+		
+		if (flag1== false && flag2== false &&flag3== false &&
+				flag4== false &&flag5== false &&flag6== false){
+		$("#set").attr("disabled", false);
+		}
+})
 </script>
 
 

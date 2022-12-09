@@ -68,8 +68,7 @@
 						}
 						
 						inHtml += '<div class="col-4 border">';
-						inHtml += '<p>'+ this.lectureNo +'</p>';
-						inHtml += '<a href="#"><img class="mx-auto" width="220px" alt="lectureImg" src="'+this.lectureCoverimg+'"></a>';
+						inHtml += '<a href="#"><img class="mx-auto" width="220px" alt="lectureImg" src="'+'${pageContext.request.contextPath}/filepath/'+this.lectureCoverimg+'"></a>';
 						inHtml += '<p><a href="#">'+ this.lectureTitle +'</a></p></div>';
 						
 						
@@ -202,8 +201,8 @@
 							
 							<div class="col-4 border">
 							
-							<p>${myOrderDetail.lectureNo } 보낼 강의 번호</p>
-							<a href="#"><img class="mx-auto" width="220px" alt="lectureImg" src="${myOrderDetail.lectureCoverimg }"></a>  <!-- 이미지 파일에서 불러오는 것은 차후에 구현 -->
+							<%-- <p>${myOrderDetail.lectureNo }</p> --%>
+							<a href="#"><img class="mx-auto" width="220px" alt="lectureImg" src="${pageContext.request.contextPath}/filepath/${myOrderDetail.lectureCoverimg }"></a>  <!-- 이미지 파일에서 불러오는 것은 차후에 구현 -->
 							<p><a href="#">${myOrderDetail.lectureTitle }</a></p>
 							
 							</div>

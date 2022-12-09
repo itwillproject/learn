@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>마이페이지</title>
+<title>좋아요</title>
 <style>
 .tape {
 	height: 100px;
@@ -58,6 +58,16 @@
   padding: 0;
 }
 
+.active-menu {
+        color: #1dc078;
+        font-weight: bold;
+      }
+      .norm-menu {
+        color: black;
+      }
+
+
+
 </style>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -82,7 +92,13 @@
 	<div class="container-fluid mt-5 pb-3 d-flex justify-content-center">
 		<div class="row pb-4 justify-content-center" style="width: 80%">
 			<div class="col-2 d-flex justify-content-center">
-				<%@ include file="sideNav.jspf"%>
+				<%@ include file="sidebar.jspf"%>
+				<script>
+	              var menu = $('#mylike');
+	              console.log(menu);
+	              menu.removeClass('norm-menu');
+	              menu.addClass('active-menu');
+	            </script>
 			</div>
 			<div class="col-10 pl-3 gray-line">
 				<div class="row">
@@ -116,7 +132,7 @@
 						<div class="col-4" style="margin-bottom: 20px;">
 							<div class="card" style="width: 100%; height: 500px;">
 								<img class="card-img-top"
-									src="${likeList.lectureCoverimg }"
+									src="${pageContext.request.contextPath}/filepath/${likeList.lectureCoverimg }"
 									alt="Card image"
 									style="width: 100%; height: auto; object-fit: cover;">
 								<div class="card-body" style="overflow: hidden; padding: 10px;">
@@ -159,9 +175,12 @@
 									<p>${likeList.lectureLevel }</p>
 									<p>${likeList.categoryName }</p>
 									<div id="menu">
+									
 									<a href="javascript:likeCancel(${likeList.lectureNo });" id="${likeList.lectureNo }"
-									style="position: absolute; right: 15px; bottom: 10px; z-index: 2"><i id="like${likeList.lectureNo }"
-									class="fas fa-heart" style="color: red"></i></a>
+									data-toggle="tooltip" data-placement="left" title="좋아요 취소" class="likeCheck"
+									style="position: absolute; right: 15px; bottom: 10px; z-index: 2;">
+									<i id="like${likeList.lectureNo }" class="fas fa-heart" style="color: red"></i></a>
+									
 									</div>
 								</div>
 								
@@ -180,6 +199,12 @@
 	
 
 	<script>
+	$(document).ready(function(){
+		  $('[data-toggle="tooltip"]').tooltip(
+				{trigger:"hover"}	  
+		  );
+		  
+		});
 	
 	//검색 카테고리 정렬
 		$("select[name=status]").change(function(){
@@ -187,13 +212,11 @@
 			var userId2 = "${user.userId}";
 		  	var order = $('#order').val();
 		  	var selectetext = $('#status').val();
-		  	
 		  	typeVl = {
 					userId : userId2,
 					searchOrder : order,
 					searchStatus : selectetext
 				};
-		  	
 		  	$.ajax({
 				url : "${pageContext.request.contextPath }/member/searchLike.do",
 				data : typeVl,
@@ -203,69 +226,24 @@
 				success : function(data) {
 					///////////////
 					console.log(data);
-					let dispHtml = "";
-					$.each(data, function(index, obj){
-						dispHtml +=	'<div class="col-4" style="margin-bottom: 20px;">';
-						dispHtml +=	'<div class="card" style="width: 100%; height: 500px;">';
-						dispHtml +=	'<img class="card-img-top"';
-						dispHtml +=	'src="'+this.lectureCoverimg+'"';
-						dispHtml +=	'alt="Card image"';
-						dispHtml +=	'style="width: 100%; height: 200px; object-fit: cover;">';
-						dispHtml +=	'<div class="card-body" style="overflow: hidden; padding: 10px;">';
-						if(this.lectureTitle.length > 20){
-							var title = this.lectureTitle.substr(0, 20);
-							dispHtml += '<h4 class="card-title">'+title+'...</h4>';
-						} else {
-							dispHtml += '<h4 class="card-title">'+this.lectureTitle+'...</h4>';
-						}		
-						dispHtml += '<p class="card-text" style="color: gray;">'+this.lectureWriter+'</p>';
-						dispHtml += '<div class="star-ratings">';
-						dispHtml += '<div class="star-ratings-fill space-x-2 text-lg" style="width:'+ this.reviewAverage*10*2+'%">';
-						dispHtml += '<span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>';
-						dispHtml += '</div><div class="star-ratings-base space-x-2 text-lg">';
-						dispHtml += '<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>';
-						dispHtml += '<span><small>('+this.reviewCnt+')</small></span>';
-						dispHtml += '</div></div><p></p>';
-						if(this.orderCh == 0){
-							if(this.lectureSalePrice == 0){
-								dispHtml += '<p class="card-text" style="color: blue"> &#8361;'+this.lecturePrice+'</p>';
-							} else if(this.lectureSalePrice > 0){
-								dispHtml += '<p class="card-text" style="color: blue"> &#8361;'+this.lectureSalePrice+'</p>';
-							}
-						} else if(this.orderCh == 1){
-							dispHtml += '<p class="card-text" style="color: green"><B>학습중</B></p>';
-						}		
-						dispHtml += '<a href="#" class="stretched-link"></a></div>';	
-						dispHtml += '<div class="info">'; 
-						dispHtml += '<h3>'+this.lectureTitle+'</h3>'
-						dispHtml += '<p>'+this.lectureSummary+'</p>'; 
-						dispHtml += '<p>'+this.lectureLevel+'</p>';
-						dispHtml += '<p>'+this.categoryName+'</p>'; 
-						dispHtml += '<a href="javascript:likeCancel('+this.lectureNo+');" id="'+this.lectureNo+'"'; 	
-						dispHtml += 'style="position: absolute; right: 15px; bottom: 10px; z-index: 1"><i id="like'+this.lectureNo+'"'; 
-						dispHtml += 'class="fas fa-heart" style="color: red"></i></a></div></div><br></div>'; 		
-					});
-					$("#listDisp").html(dispHtml);
+					
+					$("#listDisp").html(data);
 				},
 				error : function() {
 					console.log("실패");
 				}
 			});
-		  	
 		});
-		
 		$("select[name=order]").change(function(){
 			var typeVl = null;
 			var userId2 = "${user.userId}";
 		  	var order = $('#order').val();
 		  	var selectetext = $('#status').val();
-		  	
 		  	typeVl = {
 					userId : userId2,
 					searchOrder : order,
 					searchStatus : selectetext
 				};
-		  	
 		  	$.ajax({
 				url : "${pageContext.request.contextPath }/member/searchLike.do",
 				data : typeVl,
@@ -275,49 +253,8 @@
 				success : function(data) {
 					///////////////
 					console.log(data);
-					let dispHtml = "";
-					$.each(data, function(index, obj){
-						dispHtml +=	'<div class="col-4" style="margin-bottom: 20px;">';
-						dispHtml +=	'<div class="card" style="width: 100%; height: 500px;">';
-						dispHtml +=	'<img class="card-img-top"';
-						dispHtml +=	'src="'+this.lectureCoverimg+'"';
-						dispHtml +=	'alt="Card image"';
-						dispHtml +=	'style="width: 100%; height: 200px; object-fit: cover;">';
-						dispHtml +=	'<div class="card-body" style="overflow: hidden; padding: 10px;">';
-						if(this.lectureTitle.length > 20){
-							var title = this.lectureTitle.substr(0, 20);
-							dispHtml += '<h4 class="card-title">'+title+'...</h4>';
-						} else {
-							dispHtml += '<h4 class="card-title">'+this.lectureTitle+'...</h4>';
-						}		
-						dispHtml += '<p class="card-text" style="color: gray;">'+this.lectureWriter+'</p>';
-						dispHtml += '<div class="star-ratings">';
-						dispHtml += '<div class="star-ratings-fill space-x-2 text-lg" style="width:'+ this.reviewAverage*10*2+'%">';
-						dispHtml += '<span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>';
-						dispHtml += '</div><div class="star-ratings-base space-x-2 text-lg">';
-						dispHtml += '<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>';
-						dispHtml += '<span><small>('+this.reviewCnt+')</small></span>';
-						dispHtml += '</div></div><p></p>';
-						if(this.orderCh == 0){
-							if(this.lectureSalePrice == 0){
-								dispHtml += '<p class="card-text" style="color: blue"> &#8361;'+this.lecturePrice+'</p>';
-							} else if(this.lectureSalePrice > 0){
-								dispHtml += '<p class="card-text" style="color: blue"> &#8361;'+this.lectureSalePrice+'</p>';
-							}
-						} else if(this.orderCh == 1){
-							dispHtml += '<p class="card-text" style="color: green"><B>학습중</B></p>';
-						}		
-						dispHtml += '<a href="#" class="stretched-link"></a></div>';	
-						dispHtml += '<div class="info">'; 
-						dispHtml += '<h3>'+this.lectureTitle+'</h3>'
-						dispHtml += '<p>'+this.lectureSummary+'</p>'; 
-						dispHtml += '<p>'+this.lectureLevel+'</p>';
-						dispHtml += '<p>'+this.categoryName+'</p>'; 
-						dispHtml += '<a href="javascript:likeCancel('+this.lectureNo+');" id="'+this.lectureNo+'"'; 	
-						dispHtml += 'style="position: absolute; right: 15px; bottom: 10px; z-index: 1"><i id="like'+this.lectureNo+'"'; 
-						dispHtml += 'class="fas fa-heart" style="color: red"></i></a></div></div><br></div>'; 		
-					});
-					$("#listDisp").html(dispHtml);
+					
+					$("#listDisp").html(data);
 				},
 				error : function() {
 					console.log("실패");
@@ -343,15 +280,21 @@
 				data : typeVl,
 				type : "post",
 				async : false,
-
 				success : function(data) {
 					console.log(data);
+        			
+					if(socket){
+	        			let socketMsg = "lectureLike,"+"${user.userId}"+","+data.userId+","+data.lectureNo+","+"좋아요 등록했다"+","+"했다";
+	        			console.log(socketMsg);
+	        			socket.send(socketMsg);
+	           		}
 				},
 				error : function() {
 					console.log("실패");
 				}
 			});
 			alert("좋아요 등록");
+			$("#"+a+"").attr('data-original-title','좋아요 취소');
 			document.getElementById("like"+a).className = "fas fa-heart"
 		}else{
 			$.ajax({
@@ -359,31 +302,25 @@
 				data : typeVl,
 				type : "post",
 				async : false,
-
 				success : function(data) {
 					console.log(data);
+					
+					if(socket){
+	        			let socketMsg = "lectureLikeCancle,"+"${user.userId}"+","+data.userId+","+data.lectureNo+","+"좋아요를취소"+","+"했다";
+	        			console.log(socketMsg);
+	        			socket.send(socketMsg);
+	           		}
 				},
 				error : function() {
 					console.log("실패");
 				}
 			});
 			alert("좋아요 취소");
+			$("#"+a+"").attr('data-original-title','좋아요 등록');
 			document.getElementById("like"+a).className = "far fa-heart";	
 		}
 	}
-		/* $("#like").click(function() {
-			if(document.getElementById("like").className == "far fa-heart"){
-				alert("좋아요 등록");
-				document.getElementById("like").className = "fas fa-heart"
-			}else{
-				alert("좋아요 취소");
-				document.getElementById("like").className = "far fa-heart";	
-			}
-			
-		}); */
 	</script>
-
-
 
 	<footer>
 		<%@ include file="../Common/footer.jsp"%>

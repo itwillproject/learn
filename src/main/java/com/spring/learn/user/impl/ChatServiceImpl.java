@@ -51,6 +51,21 @@ public class ChatServiceImpl implements ChatService {
 		return chatDAO.getContentRoomList();
 	}
 
+	@Override
+	public List<ChatVO> getRegRoomList() {
+		return chatDAO.getRegRoomList();
+	}
+
+	@Override
+	public List<ChatVO> getReversRoomList() {
+		return chatDAO.getReversRoomList();
+	}
+
+	@Override
+	public List<ChatVO> getReversRegRoomList() {
+		return chatDAO.getReversRegRoomList();
+	}
+
 	
 	
 	

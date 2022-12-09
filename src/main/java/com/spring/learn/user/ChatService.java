@@ -18,7 +18,11 @@ public interface ChatService {
 
 	List<ChatVO> getContentRoomList();
 	
-	
+	List<ChatVO> getRegRoomList();
+
+	List<ChatVO> getReversRoomList();
+
+	List<ChatVO> getReversRegRoomList();
 	
 	
 	

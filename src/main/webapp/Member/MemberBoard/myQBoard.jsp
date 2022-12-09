@@ -123,8 +123,8 @@
 
 		<!-- 여기서부터 입력부분은 질문게시판(관리) 쪽은 관리자만 답변 할 수 있도록 해야 한다 -->
 		
-		<c:if test="${user.grade == '관리자'}">
-		<div> 문의게시판에는 답글을 하나만 달 수 있습니다 </div>
+		
+<!-- 		<div> 문의게시판에는 답글을 하나만 달 수 있습니다 </div> -->
 		<c:if test=" ${cvoCnt < 1 } ">
 		<div class="row w-50 border mx-auto rounded bg-white px-3 py-5" >
 			<div class="w-100 mb-3 ml-3 text-editor-block d-flex align-items-center">
@@ -153,7 +153,7 @@
 			</div>
 		</div>
 		</c:if>
-		</c:if>
+		
 		
 
 		<!-- 답변 몇개인, 글 정렬 옵션-->

@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>CS관리  - 공지사항관리</title>
+<title>CS관리  - QnA</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -101,15 +101,15 @@
 <div class="menu">
 	<ul class="ul" style="text-align: center;">
 <!-- 	  <li class="li"><a style="background: #00C471; color: white; font-size: 1.5em">CS관리</a></li> -->
-	  <li class="li"><a style="color: #00C471;" href="${pageContext.request.contextPath }/getNoticeAdminList.do">공지사항</a></li>
-	  <li class="li"><a href="${pageContext.request.contextPath }/getAdminFaqList.do">자주묻는질문</a></li>
-	  <li class="li"><a href="getMyQBoardListM.do">Q & A</a></li>
+	  <li class="li"><a  href="${pageContext.request.contextPath }/getNoticeAdminList.do">공지사항</a></li>
+	  <li class="li"><a  href="${pageContext.request.contextPath }/getAdminFaqList.do">자주묻는질문</a></li>
+	   <li class="li"><a style="color: #00C471;" href="getMyQBoardListM.do">Q & A</a></li>
 	</ul>
 </div>
 <br><br>
 
-<!-- 검색창 -->
-<form action="getNoticeAdminList.do" method="post">
+<!-- 검색창 QnA로 검색으로 바꾸기 -->
+<form action="${pageContext.request.contextPath}/memberBoard/getMyQBoardListM.do" method="post">
 	<div class="outer">
 		<div class="search">
 		  <div class="input-group mb-3">
@@ -123,6 +123,21 @@
 </form>
 <br>
 
+<div class="d-flex">
+				<nav class="navbar navbar-expand-sm navbar-light p-3"  style="margin-left: 450px;">
+                    <ul class="navbar-nav gray-botton w-100" style="border-bottom: 1px solid gray">
+                        <li class="nav-item active black-line">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardListM.do">전체</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardListM.do?qnaAdopt=FALSE">미답변</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardListM.do?qnaAdopt=TRUE">답변완료</a>
+                        </li>
+                    </ul>
+				</nav>
+</div>
 <!-- 본문 -->
 <table class="center">
 	<thead>
@@ -130,19 +145,34 @@
 		    <th width="25%">작성자</th>
 		    <th>제목</th>
 		    <th width="20%">등록일</th>
+		    <th width="10%">답변여부</th>
 		</tr>
 	</thead>
 	<tbody>
-		<c:if test="${not empty list }">
-			<c:forEach var="notice" items="${list }">
+		<c:if test="${not empty memberBoardList}">
+	<c:forEach var="qna" items="${memberBoardList}">
 				<tr>
-				    <td>${notice.userId }</td>
-				    <td class="title"><a href="getAdminNotice.do?boardNo=${notice.boardNo }">${notice.boardTitle }</a></td>
-				    <td>${notice.boardRegdate.substring(0,10) }</td>
+				    <td>${qna.userId }</td>
+				    <!-- 게시글 상세링크 가져와서 걸어주기 재영씨 링크로 갈예정 -->
+				    <c:if test="${qna.qnaTitle eq null}">
+				    <td class="title"><a class='text-secondary' href="${pageContext.request.contextPath}/memberBoard/viewPage.do?qnaNo=${qna.qnaNo }">제목없음</a></td>
+				    </c:if>
+				     <c:if test="${qna.qnaTitle ne null}">
+				    <td class="title"><a href="${pageContext.request.contextPath}/memberBoard/viewPage.do?qnaNo=${qna.qnaNo }">${qna.qnaTitle }</a></td>
+				    </c:if>
+				    <!-- 제목길경우를 대비해 10자리까만 표시 -->
+				    <td>${qna.qnaRegdate.substring(0,10) }</td>
+				    <c:if test="${qna.qnaAdopt eq 'FALSE'}">
+				    <td>미답변</td>
+				    </c:if>
+				    <c:if test="${qna.qnaAdopt eq 'TRUE'}">
+				    <td>답변완료</td>
+				    </c:if>
 				</tr>
 			</c:forEach>
 		</c:if>
-		<c:if test="${empty list }">
+		<!-- 게시글 없을 경우 표시할 내용 -->
+		<c:if test="${empty memberBoardList}">
 			<tr>
 				<td colspan="3">
 					<span style="text-align: center;">데이터가 없습니다.</span>
@@ -153,13 +183,13 @@
 </table>
 <br>
 
-<div class="outer2">
+<%-- <div class="outer2">
 	<div class="inner4">
 		<div class="container">
 	 		<button type="submit" class="btn btn-success" onclick="location.href='${pageContext.request.contextPath}/Admin/adminNoticeWrite.jsp'">글쓰기</button>
 		</div>
 	</div>
-</div>
+</div> --%>
 <br>
 	
 <!-- 페이징처리-->
