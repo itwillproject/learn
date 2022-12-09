@@ -158,6 +158,11 @@
 					    <li class="nav-item d-flex p-2 w-100">
 					      <a href="userBoardPage.do?userId=${person.userId}" class="text-dark">게시글</a>
 					    </li>
+					    <c:if test="${user.userId != person.userId}">
+   					    <li class="nav-item d-flex p-2 w-100">
+					      <a href="${pageContext.request.contextPath}/memberChat/memberChatRoom.do?senderId=${user.userId }&receiverId=${person.userId }" class="text-dark">채팅하기</a>
+					    </li>
+					    </c:if>
 				  </ul>
 				</nav>
 			</div>
