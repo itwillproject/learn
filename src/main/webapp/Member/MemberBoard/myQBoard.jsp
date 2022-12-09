@@ -82,14 +82,30 @@
 
 </head>
 <body>
+	<c:if test="${user.grade != '관리자' }">
 	<%@include file="/Common/header.jsp" %>
+	</c:if>
+	<c:if test="${user.grade == '관리자' }">
+	<%@include file="/Admin/common/adminHeader.jspf" %>
+	</c:if>
+	
+	
 
 	<div class="container-fluid mt-5 pb-3 d-flex justify-content-center">
 		<div class="row w-100 pb-4 justify-content-center">
 			
 			<!-- 왼쪽 네비 -->
 			<div class="col-2 d-flex justify-content-center">
-				<a href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
+				<c:if test="${user.grade != '관리자' }">
+<%-- 					<a href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a> --%>
+					<a href="javascript:history.back()" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
+				</c:if>
+				<c:if test="${user.grade == '관리자' }">
+<%-- 					<a href="${pageContext.request.contextPath}/memberBoard/getMyQBoardListM.do" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a> --%>
+					<a href="javascript:history.back()" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
+				</c:if>
+				
+				
 			</div>
 
 			<!-- 중앙 위 내용 - 글내용 -->

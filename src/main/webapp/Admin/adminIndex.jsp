@@ -353,7 +353,7 @@
       <h3 class="text-center">미답변 문의</h3>
       <div class="callcenter" style="height:150px;">
      	<c:forEach var="call" items="${callcenters }">
-			<p class="h6" onclick="location.href='${pageContext.request.contextPath}/Member/getLecture.do?qnaNo=${call.qnaNo }';">${call.qnaTitle }</p>
+			<p class="h6" onclick="location.href='${pageContext.request.contextPath}/memberBoard/viewPage.do?qnaNo=${call.qnaNo }';">${call.qnaTitle }</p>
 		</c:forEach>
       </div>
       <div class="pagingAreaCallcenter mx-auto">

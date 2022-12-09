@@ -151,18 +151,7 @@ padding:10px;
     </div>
     </div>
 </li>
-    <li class="nav-item">
-    <div class="dropdown">
-    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-     인프런
-    </button>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="#">수강평</a>
-      <a class="dropdown-item" href="#">인프런 피드</a>
-      <a class="dropdown-item" href="#">강의 기능요청</a>
-    </div>
-    </div>
-    </li>
+
  <li>
 <button type="button" class="btn" >
       <input type="text" id="search">
@@ -230,8 +219,9 @@ padding:10px;
 </li>
 				
 <li>
-	<button class="btn" style="width: 40px; padding: 6px 12px" type="button" onclick="location.href='${pageContext.request.contextPath}/memberChat/memberChatListGo.do?userId=${user.userId }'">
-		<img alt="채팅리스트" src="${pageContext.request.contextPath}/picture/chat/chatOff.png">
+	<button class="btn" type="button" onclick="location.href='${pageContext.request.contextPath}/memberChat/memberChatListGo.do?userId=${user.userId }'">
+		<i class='fab fa-rocketchat' style='font-size:24px'></i>
+<%-- 		<img alt="채팅리스트" src="${pageContext.request.contextPath}/picture/chat/chatOff.png"> --%>
 	</button>
 </li>					
 <li>
