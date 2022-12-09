@@ -102,10 +102,10 @@
 										<span class="card-user font-weight-bold">${lecture.lectureWriter }</span>
 										<br>
 										<span>
-											<c:forEach var="num" begin="1" end="${Math.round(lecture.lectureRate) }" step="1"> 
+											<c:forEach var="num" begin="1" end="${lecture.lectureRate }" step="1"> 
 												<i class="fa-solid fa-star" style="color: #fada5e;"></i>
 											</c:forEach>
-											<c:forEach var="num" begin="1" end="${5 - Math.round(lecture.lectureRate) }" step="1">
+											<c:forEach var="num" begin="1" end="${5 - lecture.lectureRate }" step="1">
 												<i class="fa-regular fa-star" style="color: #fada5e;"></i>											
 											</c:forEach>
 											(${lecture.reviewCount })
@@ -117,7 +117,7 @@
 														<fmt:formatNumber type="number" maxFractionDigits="3" value="${lecture.lecturePrice }" />
 													</del>
 													<span class="text-primary font-weight-bold h5">&#8361;
-														<fmt:formatNumber type="number" maxFractionDigits="3" value="${Math.round(lecture.salePrice) }" />
+														<fmt:formatNumber type="number" maxFractionDigits="3" value="${lecture.salePrice }" />
 													</span>
 												</p>
 											</c:when>
