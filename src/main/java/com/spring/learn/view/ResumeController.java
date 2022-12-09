@@ -42,7 +42,7 @@ public class ResumeController {
 		
 		resumeService.insertResume(vo);
 	
-		return "close.jsp";
+		return "/Member/myPage.jsp";
 	}
 	
 	@RequestMapping("/updateResume.do") 
@@ -223,6 +223,7 @@ public class ResumeController {
 	}
 
 	//===================================
+	
 	
 	
 	

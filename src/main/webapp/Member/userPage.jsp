@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>사용자 조회</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -191,13 +191,14 @@
 					<div class="d-flex" style="min-height: 200px;">
 						<c:if test="${not empty lectures }">
 							<c:forEach var="lecture" items="${lectures }">
-								<div class="col-4 card course course_card_item border-0 mb-5" style="height:360px; width: 260px; float: left; text-align: left;">
+								<div class="col-4 card course course_card_item border-0 mb-5" style="height:400px; width: 260px; float: left; text-align: left;">
 									<div class="card h-100 border-0" style="float: left;">
 									  	<div class="card-image h-50">
 											<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/${lecture.lectureCoverimg }" width="100%" alt="${lecture.lectureTitle }">
 									  	</div>
 									  	<div class="card-body w-100 overflow-hidden">
-										    <p class="card-title font-weight-bold" style="height:50px;">${lecture.lectureTitle }</a></p>								
+										    <p class="card-title font-weight-bold" style="height:50px;">${lecture.lectureTitle }</a></p>
+										    <br>								
 											<span class="card-user font-weight-bold">${lecture.lectureWriter }</span>
 											<br>
 											<span>
@@ -258,13 +259,6 @@
 						</p>
 					</c:if>
 				</c:if>		
-				<hr>
-				<div id="roadmap"> <!-- 로드맵 출력 div 시작 -->
-					<p class="h4 d-inline font-weight-bold">로드맵</p>
-					<div class="d-flex" style="min-height: 200px;">
-						<p class="align-self-center text-center mx-auto">로드맵이 없습니다.</p>
-					</div>
-				</div>
 				<hr>
 				<div id="roadmap"> <!-- 로드맵 출력 div 시작 -->
 					<p class="h4 d-inline font-weight-bold">로드맵</p>

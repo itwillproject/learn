@@ -30,12 +30,18 @@ public interface LectureDetailDAO {
 	LectureCommentVO getCounts(LectureCommentVO vo); 
 	
 	List<ClassVO> getClasses(String lectureNo);
+	ClassVO getClassDetail(String classNo);
 	List<OfftimetableVO> getTimetables(String lectureNo);
 	
 	void insertReply(LectureReviewCommentVO vo);
 	void deleteReply(LectureReviewCommentVO vo);
+	void deleteComment(LectureCommentVO vo);
+	
 	List<LectureReviewCommentVO> getReplyList(String lectureNo);
 	
 	void insertCart(HashMap<String, String> map);
-
+	int checkpurchase(HashMap<String, String> map);
+	int checkCart(HashMap<String, String> map);
+	
+	int[] getMyBoardNo(HashMap<String, String> map);
 }

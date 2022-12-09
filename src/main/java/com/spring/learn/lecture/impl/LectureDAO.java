@@ -78,6 +78,8 @@ public interface LectureDAO {
 	  List<LectureVO> getLectureProfileAll(UserVO vo); 
 	  List<LectureVO> getLectureProfilePage(Map<String, Object> map); 
 	  int countLectureProfilePage(UserVO vo);
+	  List<LectureVO> getLectureProfilePage_old(Map<String, Object> map); 
+	  
 
 	List<UserVO> getLectureStudentList(Map<String, String> map);
 

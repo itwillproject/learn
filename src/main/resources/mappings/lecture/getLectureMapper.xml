@@ -30,6 +30,10 @@
 				#{lectureNo}, #{userId},
 				#{boardRate}, #{boardContent}, SYSDATE)
 		</insert>
+		<delete id="deleteComment"  parameterType="lectureComment" >
+				DELETE FROM LECTURE_REVIEW
+				WHERE LECTURE_NO = #{lectureNo} AND BOARD_NO = #{boardNo}
+		</delete>
 		<select id="getLectureReviewList" parameterType="lectureComment" resultType="lectureComment">
 				SELECT * FROM LECTURE_REVIEW
 				WHERE LECTURE_NO = #{lectureNo} ORDER BY BOARD_REGDATE DESC
@@ -54,6 +58,9 @@
 		</select>
 		<select id="getClasses" parameterType="String" resultType="class">
 				SELECT * FROM CLASS WHERE LECTURE_NO = #{lectureNo}	 ORDER BY CLASS_NO			
+		</select>
+		<select id="getClassDetail" parameterType="String" resultType="class">
+				SELECT * FROM CLASS WHERE CLASS_NO = #{lectureNo}			
 		</select>
 		<select id="getTimetables" parameterType="String" resultType="offtimetable">
 				SELECT * FROM OFF_TIMETABLE 
@@ -80,9 +87,21 @@
 				LECTURE_NO)
 				VALUES((SELECT MAX(CART_NO) + 1 FROM CART), #{userId}, #{timetableNo}, #{lectureNo})
 		</insert>
-		
+		<select id="checkpurchase" parameterType="Map" resultType="int">
+				SELECT COUNT(*) FROM ORDER_DETAIL WHERE USER_ID=#{userId}
+				AND LECTURE_NO = #{lectureNo} 
+				<if test="timetableNo != null">
+				AND TIMETABLE_NO = #{timetableNo}
+				</if>
+		</select>
+		<select id="checkCart" parameterType="Map" resultType="int">
+				SELECT COUNT(*) FROM CART WHERE USER_ID=#{userId}
+				AND LECTURE_NO = #{lectureNo} 
+				<if test="timetableNo != null">
+				AND TIMETABLE_NO = #{timetableNo}
+				</if>
+		</select>
 </mapper>
-
 
 
 

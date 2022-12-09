@@ -219,7 +219,15 @@ public class LectureServiceImpl implements LectureService {
 	public int countLectureProfilePage(UserVO vo) {
 		return lectureDAO.countLectureProfilePage(vo);
 	}
+
+	@Override
+	public List<LectureVO> getLectureProfilePage_old(Map<String, Object> map) {
+		return lectureDAO.getLectureProfilePage_old(map);
+	}
+
 	//==================================
+
+
 	
 	
 }
