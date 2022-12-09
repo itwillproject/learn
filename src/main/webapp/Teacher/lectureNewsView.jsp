@@ -48,13 +48,13 @@
         <!-- 왼쪽 네비 -->
         <div class="col-2 d-flex justify-content-center">
             <%@ include file="sidebar.jspf"%>
+            <script>
+              var menu = $('#lectureManager');
+              console.log(menu);
+              menu.removeClass('norm-menu');
+              menu.addClass('active-menu');
+            </script>
         </div>
-        <script>
-          var menu = $('#lectureManager');
-          console.log(menu);
-          menu.removeClass('norm-menu');
-          menu.addClass('active-menu');
-        </script>
 
         <!-- 중앙 위 내용 - 글내용 -->
         <div class="col-8 pl-3 gray-line">

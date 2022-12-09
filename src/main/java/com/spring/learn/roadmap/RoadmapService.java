@@ -1,5 +1,7 @@
 package com.spring.learn.roadmap;
 
+import com.spring.learn.roadmap.MyroadmapVO;
+import com.spring.learn.roadmap.RoadmapVO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,4 +40,6 @@ public interface RoadmapService {
 	  void editRoadmap(RoadmapVO roadmapVO);
 
 	  int getRoadmapCount(String userId);
+
+  String getFileName(String rboardNo);
 }

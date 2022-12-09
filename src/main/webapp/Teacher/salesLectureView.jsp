@@ -97,30 +97,11 @@
                     <td style="text-align: right">${lectureSales} (원)</td>
                 </tr>
             </table>
-            <form id="saveExcel" method="post" action="${pageContext.request.contextPath}/Teacher/saveDetailExcel.do">
-                <input type="hidden" id="numStr" name="numStr">
-                <input type="hidden" id="nameStr" name="nameStr">
-                <input type="hidden" id="idStr" name="idStr">
-                <input type="hidden" id="dateStr" name="dateStr">
-                <input type="hidden" id="priceStr" name="priceStr">
-                <input type="hidden" name="lectureTitle" value="${lectureTitle}">
-            </form>
             <button class="active-btn float-right mb-3" type="button" onclick="saveExcel()">엑셀파일로 저장</button>
             <script>
-              let num = '';
-              let name = '';
-              let id = '';
-              let date = '';
-              let price = '';
-
-              function saveExcel() {
-                $('#numStr').val(num);
-                $('#nameStr').val(name);
-                $('#idStr').val(id);
-                $('#dateStr').val(date);
-                $('#priceStr').val(price);
-                $('#saveExcel').submit();
-              }
+                function saveExcel() {
+                  location.href = '${pageContext.request.contextPath}/Teacher/saveDetailExcel.do?lectureNo=${lectureNo}';
+                }
             </script>
             <button onclick="history.back(-1)" class="active-btn float-right mb-3" style="background-color: #6c757d">뒤로가기</button>
             <table class="table mt-4">
@@ -142,13 +123,6 @@
                         <td>${fn:substring(lec.lectureRegdate, 0, 10)}</td>
                         <td style="text-align: right">${lec.lecturePrice}원</td>
                     </tr>
-                    <script>
-                      num = num + '${lec.lectureNo}' + '/';
-                      name = name + '${lec.lectureWriter}' + '/';
-                      id = id + '${lec.userId}' + '/';
-                      date = date + '${fn:substring(lec.lectureRegdate, 0, 10)}' + '/';
-                      price = price + '${lec.lecturePrice}' + '/';
-                    </script>
                 </c:forEach>
                 </tbody>
             </table>
@@ -160,7 +134,7 @@
                             <a class="page-link disabled">이전</a>
                         </c:if>
                         <c:if test="${pvo.beginPage != 1 }">
-                            <a class="page-link" href="${pageContext.request.contextPath}/Teacher/salesLectureView.do?cPage=${pvo.beginPage - 1 }">이전</a>
+                            <a class="page-link" href="${pageContext.request.contextPath}/Teacher/salesLectureView.do?lectureNo=${lectureNo}&cPage=${pvo.beginPage - 1 }">이전</a>
                         </c:if>
                     </li>
                     <!-- 페이지 번호 -->
@@ -172,14 +146,14 @@
                         </c:if>
                         <c:if test="${pageNo != pvo.nowPage }">
                             <li class="page-item">
-                                <a class="page-link" href="${pageContext.request.contextPath}/Teacher/salesLectureView.do?cPage=${pageNo }">${pageNo }</a>
+                                <a class="page-link" href="${pageContext.request.contextPath}/Teacher/salesLectureView.do?lectureNo=${lectureNo}&cPage=${pageNo }">${pageNo }</a>
                             </li>
                         </c:if>
                     </c:forEach>
                     <!-- 다음 -->
                     <li class="page-item">
                         <c:if test="${pvo.endPage < pvo.totalPage }">
-                            <a class="page-link" href="${pageContext.request.contextPath}/Teacher/salesLectureView.do?cPage=${pvo.endPage + 1 }">다음</a>
+                            <a class="page-link" href="${pageContext.request.contextPath}/Teacher/salesLectureView.do?lectureNo=${salesList[0].lectureNo}&cPage=${pvo.endPage + 1 }">다음</a>
                         </c:if>
                         <c:if test="${pvo.endPage >= pvo.totalPage }">
                             <a class="page-link disabled">다음</a>

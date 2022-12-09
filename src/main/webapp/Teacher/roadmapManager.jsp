@@ -87,7 +87,7 @@
         <!-- 중앙 위 내용 - 글내용 -->
         <div class="col-8 pl-3 gray-line">
             <button class="active-btn" onclick="location.href='${pageContext.request.contextPath}/Teacher/roadmapWrite.do'">로드맵 작성</button>
-            <table class="table mt-4">
+            <table class="table mt-4" style="table-layout: fixed">
                 <thead>
                 <tr>
                     <th style="width: 15%">로드맵 ID</th>
@@ -95,18 +95,18 @@
                     <th style="width: 15%" colspan="2"></th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="rtContent">
                 <c:forEach items="${roadmapList}" var="roadmap">
                     <tr>
                         <td>${roadmap.rboardNo}</td>
-                        <td>
+                        <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                             <a href="${pageContext.request.contextPath}/Lecture/roadmapDetail.do?rboardNo=${roadmap.rboardNo}">
                                     ${roadmap.rboardTitle}
                             </a>
                         </td>
                         <td colspan="2">
                             <button class="active-btn" onclick="location.href='${pageContext.request.contextPath}/Teacher/roadmapWrite.do?rboardNo=${roadmap.rboardNo}'">수정</button>
-                            <button class="active-btn" onclick="location.href='${pageContext.request.contextPath}/Lecture/removeRoadmap.do?rboardNo=${roadmap.rboardNo}'">삭제</button>
+                            <button class="active-btn" onclick="location.href='${pageContext.request.contextPath}/Teacher/removeRoadmap.do?rboardNo=${roadmap.rboardNo}'">삭제</button>
                         </td>
                     </tr>
                 </c:forEach>
@@ -120,7 +120,7 @@
                             <a class="page-link disabled">이전</a>
                         </c:if>
                         <c:if test="${pvo.beginPage != 1 }">
-                            <a class="page-link" href="${pageContext.request.contextPath}/Teacher/roadmapManager.do?cPage=${pvo.beginPage - 1 }">이전</a>
+                            <a class="page-link" onclick="paging(${pvo.beginPage - 1 })">이전</a>
                         </c:if>
                     </li>
                     <!-- 페이지 번호 -->
@@ -132,14 +132,14 @@
                         </c:if>
                         <c:if test="${pageNo != pvo.nowPage }">
                             <li class="page-item">
-                                <a class="page-link" href="${pageContext.request.contextPath}/Teacher/roadmapManager.do?cPage=${pageNo }">${pageNo }</a>
+                                <a class="page-link" onclick="paging(${pageNo })">${pageNo }</a>
                             </li>
                         </c:if>
                     </c:forEach>
                     <!-- 다음 -->
                     <li class="page-item">
                         <c:if test="${pvo.endPage < pvo.totalPage }">
-                            <a class="page-link" href="${pageContext.request.contextPath}/Teacher/roadmapManager.do?cPage=${pvo.endPage + 1 }">다음</a>
+                            <a class="page-link" onclick="paging(${pvo.endPage + 1 })">다음</a>
                         </c:if>
                         <c:if test="${pvo.endPage >= pvo.totalPage }">
                             <a class="page-link disabled">다음</a>
@@ -147,6 +147,67 @@
                     </li>
                 </ul>
             </div>
+            <script>
+              function paging(cPage) {
+                $.ajax({
+                  data : {
+                    cPage : cPage
+                  },
+                  type : "GET",
+                  url : "${pageContext.request.contextPath}/Teacher/getRoadmapPaging.do",
+                  dataType: "json",
+                  success : function(data) { // 처리가 성공할 경우
+                    $('#rtContent').html('');
+                    $.each(data.pmap, function() {
+                      let dispHtml = '<tr>';
+                      dispHtml += '<td>' + this.rboardNo + '</td>';
+                      dispHtml += '<td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">';
+                      dispHtml += '<a href="/learn/Lecture/roadmapDetail.do?rboardNo=' + this.rboardNo + '">' + this.rboardTitle + '</a>'
+                      dispHtml += '</td>';
+                      dispHtml += '<td colspan="2">'
+                      dispHtml += '<a class="active-btn" href="/learn/Teacher/roadmapWrite.do?rboardNo=' + this.rboardNo + '">수정</button>';
+                      dispHtml += '<a class="active-btn" href="/learn/Teacher/removeRoadmap.do?rboardNo=' + this.rboardNo +'">삭제</button>';
+                      dispHtml += '</td>';
+                      dispHtml += '</tr>';
+                      $('#rtContent').append(dispHtml);
+                    })
+
+                    let pvo = data.pvo;
+                    let pn = $('.pagination');
+                    pn.html('');
+                    let dispHtml = '<li class="page-item">';
+                    if(pvo.beginPage === 1) {
+                      dispHtml += '<a class="page-link disabled">이전</a>';
+                    } else {
+                      dispHtml += '<a class="page-link" onclick="paging(' + (pvo.beginPage - 1) + ')">이전</a>';
+                    }
+                    dispHtml += '</li>';
+                    for(let pageNo = pvo.beginPage; pageNo <= pvo.endPage; pageNo++) {
+                      if(pageNo === pvo.nowPage) {
+                        dispHtml += '<li class="page-item active">';
+                        dispHtml += '<a class="page-link">' + pageNo + '</a>';
+                        dispHtml += '</li>';
+                      } else {
+                        dispHtml += '<li class="page-item">';
+                        dispHtml += '<a class="page-link" onclick="paging(' + pageNo + ')">' + pageNo + '</a>';
+                        dispHtml += '</li>';
+                      }
+                    }
+                    dispHtml += '<li class="page-item">';
+                    if(pvo.endPage < pvo.totalPage) {
+                      dispHtml += '<a class="page-link" onclick="paging(' + (pvo.endPage + 1) + ')">다음</a>';
+                    } else {
+                      dispHtml += '<a class="page-link disabled">다음</a>';
+                    }
+                    dispHtml += '</li>';
+                    pn.append(dispHtml);
+                  },
+                  error: function(){
+                    alert("실패~~");
+                  }
+                })
+              }
+            </script>
         </div>
         <div class="col-2 d-flex justify-content-center">
         </div>

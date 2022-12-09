@@ -156,7 +156,7 @@
 					      <a href="#" class="text-dark">수강후기</a>
 					    </li>
 					    <li class="nav-item d-flex p-2 w-100">
-					      <a href="#" class="text-dark">게시글</a>
+					      <a href="userBoardPage.do?userId=${person.userId}" class="text-dark">게시글</a>
 					    </li>
 				  </ul>
 				</nav>
@@ -191,13 +191,14 @@
 					<div class="d-flex" style="min-height: 200px;">
 						<c:if test="${not empty lectures }">
 							<c:forEach var="lecture" items="${lectures }">
-								<div class="col-4 card course course_card_item border-0 mb-5" style="height:360px; width: 260px; float: left; text-align: left;">
+								<div class="col-4 card course course_card_item border-0 mb-5" style="height:400px; width: 260px; float: left; text-align: left;">
 									<div class="card h-100 border-0" style="float: left;">
 									  	<div class="card-image h-50">
 											<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/${lecture.lectureCoverimg }" width="100%" alt="${lecture.lectureTitle }">
 									  	</div>
 									  	<div class="card-body w-100 overflow-hidden">
-										    <p class="card-title font-weight-bold" style="height:50px;">${lecture.lectureTitle }</a></p>								
+										    <p class="card-title font-weight-bold" style="height:50px;">${lecture.lectureTitle }</a></p>
+										    <br>								
 											<span class="card-user font-weight-bold">${lecture.lectureWriter }</span>
 											<br>
 											<span>
@@ -276,14 +277,18 @@
 				<div id="board">	
 					<div>
 						<span class="h4 d-inline font-weight-bold">게시글</span>
-						<a class="float-right" href="#">전체 보기 ></a>
+
+						<a class="float-right" href="userBoardPage.do?userId=${person.userId}">전체 보기 ></a>
+
 					</div>
 					<c:if test="${empty boardList }">
 						<div class="d-flex" style="min-height: 200px;">
 							<p class="align-self-center text-center mx-auto">게시글이 없습니다.</p>
 						</div>
 					</c:if>
-					<c:forEach items="${boardList}" var="board" begin="1" end="5">
+
+					<c:forEach items="${boardList}" var="board">
+
 						<div class="pt-3 pb-3 row" style="border-bottom: 1px solid lightgrey">
 							<c:if test="${not empty board.boardAdopt}">
 								<div class="col-4">질문&답변&nbsp;

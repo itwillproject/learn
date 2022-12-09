@@ -82,8 +82,8 @@
 	      //legend: { position: 'bottom'}
 	    };
 	    
-	    var optionGeneral = {colors: ['#e0440e']};
-	    var optionNaver = {colors: ['#0000FF']};
+	    var optionGeneral = {colors: ['#0000FF']};
+	    var optionNaver = {colors: ['#e0440e']};
 	    var optionGoogle = {colors: ['#FFA500']};
 	
 	    // Instantiate and draw our chart, passing in some options.
@@ -185,8 +185,8 @@
 <br><br>
 <div class="container">
 	<div>
-		<input type="date" id="startMonth" min="2022-01">
-		<input type="date" id="endMonth">
+		<input type="date" id="startMonth" min="2022-01" class="h6">
+		<input type="date" id="endMonth" class="h6">
 	</div>
 	  <div class="row">
 	    <div class="col-sm-12">

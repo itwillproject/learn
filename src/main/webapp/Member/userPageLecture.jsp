@@ -14,7 +14,27 @@
 <script src="https://kit.fontawesome.com/80bed6a544.js" crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-
+<script>
+	function chageSelect(userId){
+		var userId = userId;
+		console.log("userId : " + userId);
+		
+		var select = document.getElementById("filter");  
+		console.log(select);
+		  
+		var selectValue = filter.options[filter.selectedIndex].value;  
+		console.log("selectValue : " + selectValue);
+		
+		var selectText = filter.options[filter.selectedIndex].text;  
+		console.log("selectText : " + selectText);
+		
+		if (selectValue == 'new') {
+			location.href="${pageContext.request.contextPath}/member/goToPersonalPage_Lecture.do?userId=" + userId;
+		} else if (selectValue == 'old') {
+			location.href="${pageContext.request.contextPath}/member/goToPersonalPage_Lecture_old.do?userId=" + userId;
+		} 
+	}  
+</script>
 
 <style>
 	html, body {
@@ -142,10 +162,15 @@
 				<c:if test="${not empty lecturesSize}">
 				<div>
 					<div class="col-2 form-group pr-0" style="float: right;">
-						<select id="filter"  name="filter" class="form-control w-100 float-right pr-0">
-							<option value="student">학생수순</option>
-							<option value="new" selected="selected">최신순</option>
-							<option value="old">오래된순</option>
+						<select id="filter" name="filter" onchange="chageSelect('${person.userId }')"> 
+							<c:if test="${listUp eq 'new'}">
+								<option value="new" selected="selected">최신순</option>
+								<option value="old">오래된순</option>
+							</c:if>
+							<c:if test="${listUp eq 'old'}">
+								<option value="new">최신순</option>
+								<option value="old" selected="selected">오래된순</option>
+							</c:if>
 						</select>	
 					</div>
 				</div>
@@ -157,13 +182,14 @@
 						<c:choose>
 							<c:when test="${not empty lectures }">
 								<c:forEach var="lecture" items="${lectures }">
-								<div class="col-4 card course course_card_item border-0 mb-5" style="height:380px;">
+								<div class="col-4 card course course_card_item border-0 mb-5" style="height:400px;">
 									<div class="card h-100 border-0">
 									  	<div class="card-image h-50">
 											<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/${lecture.lectureCoverimg }" width="100%" alt="${lecture.lectureTitle }">
 									  	</div>
 									  	<div class="card-body w-100 overflow-hidden">
-										    <p class="card-title font-weight-bold" style="height:50px;">${lecture.lectureTitle }</a></p>								
+										    <p class="card-title font-weight-bold" style="height:50px;">${lecture.lectureTitle }</a></p>	
+										    <br>							
 											<span class="card-user font-weight-bold">${lecture.lectureWriter }</span>
 											<br>
 											<span>
@@ -218,6 +244,7 @@
 					</c:choose>
 				</div> 
 			 		<!-- 페이징처리-->
+			 		<c:if test="${listUp eq 'new'}">
 					<div id="dispBody2">
 						<div class="page_wrap">
 						   <div class="page_nation">
@@ -240,6 +267,33 @@
 						   </div>
 						</div> 		
 					</div>
+					</c:if>
+					
+			 		<c:if test="${listUp eq 'old'}">
+					<div id="dispBody2">
+						<div class="page_wrap">
+						   <div class="page_nation">
+							<c:if test="${pvo.beginPage != 1}">	
+								<a class="arrow prev" href="${pageContext.request.contextPath}/member/goToPersonalPage_Lecture_old.do?userId=${person.userId }&cPage=${pvo.beginPage - 1 }">&lt</a>
+							</c:if>
+							
+							<c:forEach var="pageNo" begin="${pvo.beginPage }" end="${pvo.endPage }">
+								<c:if test="${pageNo == pvo.nowPage }">
+									<a class="active">${pageNo}</a>
+								</c:if>
+								<c:if test="${pageNo != pvo.nowPage }">
+									<a href="${pageContext.request.contextPath}/member/goToPersonalPage_Lecture_old.do?userId=${person.userId }&cPage=${pageNo }">${pageNo}</a>
+								</c:if>
+							</c:forEach>	
+							
+							<c:if test="${pvo.endPage < pvo.totalPage}">
+								<a class="arrow next" href="${pageContext.request.contextPath}/member/goToPersonalPage_Lecture_old.do?userId=${person.userId }&cPage=${pvo.endPage + 1 }">&gt</a>
+							</c:if>
+						   </div>
+						</div> 		
+					</div>
+					</c:if>
+					
 				</div>		
 			</div>
 		</div>

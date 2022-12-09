@@ -86,6 +86,20 @@ public class LectureServiceImpl implements LectureService {
 		return lectureDAO.lectureLocationAll();
 	}
 
+	@Override
+	public List<UserVO> getLectureStudentList(Map<String, String> map) {
+		return lectureDAO.getLectureStudentList(map);
+	}
+
+	@Override
+	public void addLectureCoverimg(LectureVO lecture) {
+		lectureDAO.addLectureCoverimg(lecture);
+	}
+
+	@Override
+	public void editLecture(LectureVO lecture) {
+		lectureDAO.editLecture(lecture);
+	}
 
 	@Override
 	public List<LectureVO> getOnLecturesFiltering(Map<String, String> map) {
@@ -118,8 +132,8 @@ public class LectureServiceImpl implements LectureService {
 	}
 
 	@Override
-	public Double getLectureAvgRate(String userName) {
-		return lectureDAO.getLectureAvgRate(userName);
+	public Double getLectureAvgRate(String userId) {
+		return lectureDAO.getLectureAvgRate(userId);
 	}
 
 	@Override
@@ -128,8 +142,8 @@ public class LectureServiceImpl implements LectureService {
 	}
 
 	@Override
-	public Integer getStudentCount(String userName) {
-		return lectureDAO.getStudentCount(userName);
+	public Integer getStudentCount(String userId) {
+		return lectureDAO.getStudentCount(userId);
 	}
 
 	@Override
@@ -205,7 +219,15 @@ public class LectureServiceImpl implements LectureService {
 	public int countLectureProfilePage(UserVO vo) {
 		return lectureDAO.countLectureProfilePage(vo);
 	}
+
+	@Override
+	public List<LectureVO> getLectureProfilePage_old(Map<String, Object> map) {
+		return lectureDAO.getLectureProfilePage_old(map);
+	}
+
 	//==================================
+
+
 	
 	
 }

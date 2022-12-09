@@ -34,6 +34,7 @@
 		        FROM (SELECT * FROM LECTURE
 				        WHERE LECTURE_ON_OFF = 1
 				        AND NOT USER_ID IN (SELECT USER_ID FROM USERS WHERE GRADE = '탈퇴')
+				        AND LECTURE_NO IN (SELECT LECTURE_NO FROM OFF_TIMETABLE)
 				        <if test="categoryName != null and categoryName != ''">
 				            AND CATEGORY_NAME = #{categoryName}
 				        </if>
@@ -229,19 +230,19 @@
   </select>
 
   <select id="getLectureAvgRate" parameterType="String" resultType="double">
-    SELECT AVG(BOARD_RATE)
+    SELECT NVL(AVG(BOARD_RATE), 0)
     FROM LECTURE_REVIEW
     WHERE LECTURE_NO IN (
     SELECT LECTURE_NO
     FROM LECTURE
-    WHERE LECTURE_WRITER = #{userName})
+    WHERE USER_ID = #{userId})
   </select>
 
   <select id="getLectureSales" parameterType="String" resultType="int">
     SELECT SUM(l.LECTURE_PRICE)
     FROM ORDER_DETAIL d, LECTURE l
     WHERE d.LECTURE_NO = l.LECTURE_NO
-    AND l.LECTURE_WRITER = #{userName}
+    AND l.USER_ID = #{userId}
   </select>
 
   <select id="getStudentCount" parameterType="String" resultType="int">
@@ -250,7 +251,7 @@
     WHERE LECTURE_NO IN (
     SELECT LECTURE_NO
     FROM LECTURE
-    WHERE LECTURE_WRITER = #{userName})
+    WHERE USER_ID = #{userId})
   </select>
 
   <select id="getRealtimeSales" parameterType="String" resultType="lecture">
@@ -259,7 +260,7 @@
     MAX(o.ORDER_REGDATE) AS LECTURE_REGDATE FROM LECTURE l
     INNER JOIN ORDER_DETAIL d ON d.LECTURE_NO = l.LECTURE_NO
     INNER JOIN ORDERS o on d.ORDER_NO = o.ORDER_NO
-    WHERE l.LECTURE_WRITER = #{userName}
+    WHERE l.USER_ID = #{userId}
     GROUP BY l.LECTURE_NO, l.LECTURE_PRICE, l.LECTURE_TITLE
     ORDER BY l.LECTURE_NO) K
     ) WHERE R_NUM BETWEEN #{begin} AND #{end}
@@ -271,7 +272,7 @@
     INNER JOIN ORDER_DETAIL d
     ON d.LECTURE_NO = l.LECTURE_NO
     INNER JOIN ORDERS O on d.ORDER_NO = O.ORDER_NO
-    WHERE l.LECTURE_WRITER = #{userName}
+    WHERE l.USER_ID = #{userId}
     AND o.ORDER_REGDATE > add_months(sysdate, -1)
     GROUP BY l.LECTURE_NO, l.LECTURE_PRICE, l.LECTURE_TITLE
     ORDER BY l.LECTURE_NO
@@ -282,7 +283,7 @@
     FROM LECTURE l
     INNER JOIN ORDER_DETAIL d
     ON d.LECTURE_NO = l.LECTURE_NO
-    WHERE l.LECTURE_WRITER = #{userName}
+    WHERE l.USER_ID = #{userId}
     GROUP BY l.LECTURE_NO, l.LECTURE_PRICE, l.LECTURE_TITLE
     ORDER BY l.LECTURE_NO
   </select>
@@ -291,7 +292,7 @@
     SELECT l.LECTURE_ON_OFF AS LECTURE_NO, SUM(l.LECTURE_PRICE) AS LECTURE_PRICE
     FROM ORDER_DETAIL d, LECTURE l
     WHERE d.LECTURE_NO = l.LECTURE_NO
-    AND l.LECTURE_WRITER = #{userName}
+    AND l.USER_ID = #{userId}
     GROUP BY l.LECTURE_ON_OFF
   </select>
 
@@ -303,7 +304,8 @@
     WHERE d.LECTURE_NO = #{lectureNo}
     AND o.ORDER_NO = d.ORDER_NO
     AND d.USER_ID = u.USER_ID
-    AND d.LECTURE_NO = l.LECTURE_NO) K
+    AND d.LECTURE_NO = l.LECTURE_NO
+		ORDER BY d.ORDER_DETAIL_NO) K
     ) WHERE R_NUM BETWEEN #{begin} AND #{end}
   </select>
 
@@ -327,10 +329,12 @@
     INSERT INTO LECTURE
     (LECTURE_NO, USER_ID, CATEGORY_NAME, LECTURE_TITLE,
     LECTURE_WRITER, LECTURE_DUE, LECTURE_LEVEL, LECTURE_CONTENT, LECTURE_SUMMARY,
-    LECTURE_SALERATE, LECTURE_SALEDUE, LECTURE_PRICE, LECTURE_SECTION, LECTURE_ON_OFF) VALUES
+    LECTURE_SALERATE, LECTURE_SALEDUE, LECTURE_PRICE, LECTURE_SECTION, LECTURE_ON_OFF,
+		QS_WEEKDAYS, QS_START, QS_END, LECTURE_COVERIMG) VALUES
     ((SELECT MAX(LECTURE_NO) + 1 FROM LECTURE), #{userId}, #{categoryName}, #{lectureTitle},
     #{lectureWriter}, #{lectureDue}, #{lectureLevel}, #{lectureContent}, #{lectureSummary},
-    #{lectureSalerate}, #{lectureSaledue}, #{lecturePrice}, #{lectureSection}, #{lectureOnOff})
+    #{lectureSalerate}, #{lectureSaledue}, #{lecturePrice}, #{lectureSection}, #{lectureOnOff},
+		#{qsWeekdays}, #{qsStart}, #{qsEnd}, #{lectureCoverimg})
   </insert>
 
   <select id="getLectureNo" resultType="int">
@@ -368,10 +372,45 @@
   		SELECT COUNT(*) FROM LECTURE
 		WHERE USER_ID = #{userId}
   </select>
+  
+    <select id="getLectureProfilePage_old" parameterType="map" resultType="lecture">
+		SELECT *
+		FROM (SELECT ROWNUM R_NUM, B.*
+	        FROM (	SELECT *
+	                FROM LECTURE
+		                WHERE USER_ID = #{userId}
+	                 	ORDER BY LECTURE_NO
+	             ) B 
+	         )
+		WHERE R_NUM BETWEEN #{begin} AND #{end}
+  </select>
+  
    <!-- ===================== -->
-  
-  
-  
+
+
+	<select id="getLectureStudentList" parameterType="hashMap" resultType="userVO">
+		SELECT * FROM (SELECT ROWNUM R_NUM, K.* FROM (
+		SELECT u.USER_NAME, d.USER_ID, o.ORDER_REGDATE AS USER_REGDATE, d.LECTURE_RATE AS POINTS
+		FROM ORDER_DETAIL d, ORDERS o, USERS u
+		WHERE d.LECTURE_NO = #{lectureNo}
+		AND d.ORDER_NO = o.ORDER_NO
+		AND d.USER_ID = u.USER_ID
+		ORDER BY o.ORDER_REGDATE) K
+		) WHERE R_NUM BETWEEN #{begin} AND #{end}
+	</select>
+
+	<select id="editLecture" parameterType="lecture">
+		UPDATE LECTURE SET
+		LECTURE_SALEDUE = #{lectureSaledue},
+		LECTURE_SUMMARY = #{lectureSummary},
+		LECTURE_COVERIMG = #{lectureCoverimg},
+		LECTURE_CONTENT = #{lectureContent},
+		LECTURE_SALERATE = #{lectureSalerate},
+		QS_WEEKDAYS = #{qsWeekdays},
+		QS_START = #{qsStart},
+		QS_END = #{qsEnd}
+		WHERE LECTURE_NO = #{lectureNo}
+	</select>
   
 </mapper>
 

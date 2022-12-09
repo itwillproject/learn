@@ -133,6 +133,7 @@
                 $('#summernote').summernote({
                   tabsize: 2,
                   height: 400,
+                  width: 1100,
                   callbacks: { // 콜백을 사용
                     // 이미지를 업로드할 경우 이벤트를 발생
                     onImageUpload: function(files, editor, welEditable) {
@@ -167,6 +168,7 @@
           </tr>
 
           <input type="hidden" name="userId" value="${user.userId }"/>
+          <input type="hidden" name="userName" value="${user.userName }"/>
           <input type="hidden" name="rboardNo" value="${roadmap.rboardNo }"/>
           <input type="hidden" id="lectureList" name="lectureList" value=""/>
           <tr>

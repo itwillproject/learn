@@ -6,12 +6,22 @@ import com.spring.learn.lecture.ClassService;
 import com.spring.learn.lecture.ClassVO;
 import com.spring.learn.lecture.LectureService;
 import com.spring.learn.lecture.LectureVO;
+import com.spring.learn.lecture.OfftimetableService;
+import com.spring.learn.lecture.OfftimetableVO;
 import com.spring.learn.roadmap.RoadmapService;
 import com.spring.learn.roadmap.RoadmapVO;
 import com.spring.learn.user.UserVO;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -31,14 +41,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 @Controller
 @RequestMapping("/Teacher")
 public class TeacherController {
@@ -52,56 +54,10 @@ public class TeacherController {
     @Autowired
     private ClassService classService;
 
-    // 대시보드 화면 이동
-    @RequestMapping("/dashboard.do")
-    public String dashboard(HttpSession session, Model model,
-        @RequestParam(value = "cPage", required = false) String cPage) {
-        UserVO user = (UserVO) session.getAttribute("user");
-        String userId = user.getUserId();
-        String userName = user.getUserName();
+    @Autowired
+    private OfftimetableService offtimetableService;
 
-        // 총 수강생 수
-        Integer studentCnt = lectureService.getStudentCount(userName);
-        
-        // 총 강의 수
-        Integer lectureCnt = lectureService.getTeacherLectureCount(userId);
-
-        // 평균 평점
-        String lectureRate = String.format("%.2f", lectureService.getLectureAvgRate(userName));
-
-        // 총 수익
-        Integer lectureSales = lectureService.getLectureSales(userName);
-
-        // 실시간 수익 현황
-        PagingJS p = makePaging(cPage, lectureService.getOrderLectureCount(userId));
-        Map<String, String> pmap = new HashMap<>();
-        pmap.put("userName", userName);
-        pmap.put("begin", Integer.toString(p.getBegin()));
-        pmap.put("end", Integer.toString(p.getEnd()));
-        List<LectureVO> realtimeSales = lectureService.getRealtimeSales(pmap);
-
-        // 이번달 현황
-        model.addAttribute("salesByMonth", lectureService.salesByMonth(userName));
-
-        // 강의별 수익 분포
-        model.addAttribute("salesByLecture", lectureService.salesByLecture(userName));
-
-        // 온/오프라인 수익 분포
-        model.addAttribute("salesByLine", lectureService.salesByLine(userName));
-
-        Map<String, Integer> map = new HashMap<>();
-        map.put("lectureCnt", lectureCnt);
-        map.put("studentCnt", studentCnt);
-        map.put("lectureSales", lectureSales);
-        model.addAttribute("map", map);
-        model.addAttribute("lectureRate", lectureRate);
-        model.addAttribute("realtimeSales", realtimeSales);
-        model.addAttribute("pvo", p);
-
-        return "/Teacher/dashboard.jsp";
-    }
-
-    // 페이징 처리
+    // 공통: 페이징 처리
     private PagingJS makePaging(String cPage, int totalRecord) {
 
         PagingJS p = new PagingJS();
@@ -139,9 +95,107 @@ public class TeacherController {
         return p;
     }
 
+    // 공통: 이미지 업로드
+    @RequestMapping("/uploadImage.do")
+    @ResponseBody
+    public String uploadImage(@RequestParam("file") MultipartFile uploadFile) throws IOException {
+
+        System.out.println("uploadFile.isEmpty() : " + uploadFile.isEmpty());
+        String fileName = uploadFile.getOriginalFilename(); //원본파일명
+        System.out.println("::: 원본파일명 : " + fileName);
+
+        String savedFileName = UUID.randomUUID().toString();
+        System.out.println("::: 저장파일명 : " + savedFileName);
+
+        //물리적 파일 복사
+        String url = "\\\\192.168.18.11\\temp\\" + savedFileName;
+        uploadFile.transferTo(new File(url));
+
+        return savedFileName;
+    }
+
+    /****************************************************
+    * 1. 대시보드
+    ****************************************************/
+
+    // 대시보드 화면 이동
+    @RequestMapping("/dashboard.do")
+    public String dashboard(HttpSession session, Model model,
+        @RequestParam(value = "cPage", required = false) String cPage) {
+        UserVO user = (UserVO) session.getAttribute("user");
+        String userId = user.getUserId();
+
+        // 총 수강생 수
+        Integer studentCnt = lectureService.getStudentCount(userId);
+        
+        // 총 강의 수
+        Integer lectureCnt = lectureService.getTeacherLectureCount(userId);
+
+        // 평균 평점
+        String lectureRate = String.format("%.2f", lectureService.getLectureAvgRate(userId));
+
+        // 총 수익
+        Integer lectureSales = lectureService.getLectureSales(userId);
+
+        // 실시간 수익 현황
+        PagingJS p = makePaging(cPage, lectureService.getOrderLectureCount(userId));
+        Map<String, String> pmap = new HashMap<>();
+        pmap.put("userId", userId);
+        pmap.put("begin", Integer.toString(p.getBegin()));
+        pmap.put("end", Integer.toString(p.getEnd()));
+        List<LectureVO> realtimeSales = lectureService.getRealtimeSales(pmap);
+
+        // 이번달 현황
+        model.addAttribute("salesByMonth", lectureService.salesByMonth(userId));
+
+        // 강의별 수익 분포
+        model.addAttribute("salesByLecture", lectureService.salesByLecture(userId));
+
+        // 온/오프라인 수익 분포
+        model.addAttribute("salesByLine", lectureService.salesByLine(userId));
+
+        Map<String, Integer> map = new HashMap<>();
+        map.put("lectureCnt", lectureCnt);
+        map.put("studentCnt", studentCnt);
+        map.put("lectureSales", lectureSales);
+        model.addAttribute("map", map);
+        model.addAttribute("lectureRate", lectureRate);
+        model.addAttribute("realtimeSales", realtimeSales);
+        model.addAttribute("pvo", p);
+
+        return "/Teacher/dashboard.jsp";
+    }
+
+    // 실시간 수익 현황 ajax 처리
+    @RequestMapping("/getRealtimeSales.do")
+    @ResponseBody
+    public Map<Object, Object> getRealtimeSales(@RequestParam String cPage, HttpSession session) {
+
+        Map<Object, Object> map = new HashMap<>();
+
+        UserVO user = (UserVO) session.getAttribute("user");
+        String userId = user.getUserId();
+
+        PagingJS p = makePaging(cPage, lectureService.getOrderLectureCount(userId));
+        Map<String, String> pmap = new HashMap<>();
+        pmap.put("userId", userId);
+        pmap.put("begin", Integer.toString(p.getBegin()));
+        pmap.put("end", Integer.toString(p.getEnd()));
+
+        map.put("pmap", lectureService.getRealtimeSales(pmap));
+        map.put("pvo", p);
+
+        return map;
+    }
+
+    /****************************************************
+     * 2. 강의관리
+     ****************************************************/
+
     // 강의 관리 화면 이동
     @RequestMapping("/lectureManager.do")
-    public String lectureManager(@RequestParam(value = "cPage", required = false) String cPage, HttpSession session, Model model) {
+    public String lectureManager(@RequestParam(value = "cPage", required = false) String cPage,
+        HttpSession session, Model model) {
 
         UserVO user = (UserVO) session.getAttribute("user");
         String userId = user.getUserId();
@@ -160,10 +214,23 @@ public class TeacherController {
         return "/Teacher/lectureManager.jsp";
     }
 
-    // 강의 작성 화면 이동
+    // 강의 추가 화면 이동
     @RequestMapping("/lectureWrite.do")
-    public String lectureWrite(Model model,
-        @RequestParam(value = "lectureNo", required = false) String lectureNo ) {
+    public String lectureWrite(Model model) {
+
+        // 카테고리 불러오기
+        List<CategoryVO> categories = lectureService.getCategories();
+        model.addAttribute("categories", categories);
+
+        return "/Teacher/lectureWrite.jsp";
+    }
+
+    // 강의 수정 화면 이동
+    @RequestMapping("/lectureEdit.do")
+    public String lectureEdit(Model model,
+        @RequestParam(value = "lectureNo", required = false) String lectureNo) {
+
+        // 카테고리 불러오기
         List<CategoryVO> categories = lectureService.getCategories();
         model.addAttribute("categories", categories);
 
@@ -174,71 +241,55 @@ public class TeacherController {
         // 클래스 리스트 불러오기
         List<ClassVO> classList = classService.getClassList(lectureNo);
         model.addAttribute("classList", classList);
-        
-        return "/Teacher/lectureWrite.jsp";
+
+        return "/Teacher/lectureEdit.jsp";
     }
 
-    // 강의 생성
-    @RequestMapping("/addLecture.do")
+    // 강의(Lecture) 수정
+    @RequestMapping(value = "/editLecture.do", method = RequestMethod.POST)
     @ResponseBody
-    public int addLecture(@ModelAttribute LectureVO lecture, HttpSession session) {
+    public int editLecture(@ModelAttribute LectureVO lecture) throws IOException, ParseException {
 
-        System.out.println(lecture.getLectureSaledue());
+        MultipartFile uploadFile = lecture.getUploadFile();
 
-        UserVO user = (UserVO) session.getAttribute("user");
-        lecture.setUserId(user.getUserId());
-        lecture.setLectureWriter(user.getUserName());
+        if (uploadFile == null) {
+            System.out.println("::: uploadFile 파라미터가 전달되지 않았을때~");
+        } else if (uploadFile.isEmpty()) {
+            System.out.println("::: 전달받은 파일 데이터가 없을 경우");
+            String img = lectureService.getLecture(lecture.getLectureNo()).getLectureCoverimg();
+            lecture.setLectureCoverimg(img);
+        } else {
+            System.out.println("uploadFile.isEmpty() : " + uploadFile.isEmpty());
+            String fileName = uploadFile.getOriginalFilename(); //원본파일명
+            System.out.println("::: 원본파일명 : " + fileName);
 
-        lectureService.addLecture(lecture);
-        return lectureService.getLectureNo();
-    }
+            String savedFileName = UUID.randomUUID().toString();
+            System.out.println("::: 저장파일명 : " + savedFileName);
 
-    // 수업 생성
-    @RequestMapping("/addClass.do")
-    @ResponseBody
-    public void addClass(@ModelAttribute ClassVO classVO) {
-        classService.addClass(classVO);
-    }
-
-    // 로드맵 작성 화면 이동
-    @RequestMapping("/roadmapWrite.do")
-    public String roadmapWrite(@RequestParam(value = "rboardNo", required = false) String rboardNo, HttpSession session, Model model) {
-        // 수정인지 작성인지 확인
-        if(rboardNo != null) { // 수정
-            model.addAttribute("roadmap", roadmapService.getRoadmapDetail(rboardNo));
+            //물리적 파일 복사
+            uploadFile.transferTo(new File("\\\\192.168.18.11\\temp\\" + savedFileName));
+            lecture.setLectureCoverimg(savedFileName);
         }
 
-        //카테고리 가져오기
-        List<CategoryVO> categories = lectureService.getCategories();
-        System.out.println(categories);
-        model.addAttribute("categories", categories);
+        if(!lecture.getQsStartStr().equals("")) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            lecture.setQsStart(format.parse(lecture.getQsStartStr()));
+            lecture.setQsEnd(format.parse(lecture.getQsEndStr()));
+        }
 
-        // 강의 목록 가져오기
-        UserVO userVO = (UserVO) session.getAttribute("user");
+        System.out.println(lecture);
 
-        List<LectureVO> lectureList = lectureService.getOnlineLecturebyUserId(userVO.getUserId());
-        model.addAttribute("lectureList", lectureList);
+        lectureService.editLecture(lecture);
 
-        return "/Teacher/roadmapWrite.jsp";
+        return 1;
     }
 
-    // 로드맵 작성
-    @RequestMapping("/goRoadmapWrite.do")
-    public String goRoadmapWrite(@ModelAttribute RoadmapVO roadmapVO) throws IllegalStateException, IOException {
-        System.out.println("작성: " + roadmapVO);
+    // 강의(Lecture) 추가
+    @RequestMapping(value="/addLecture.do", method = RequestMethod.POST)
+    @ResponseBody
+    public int addLecture(@ModelAttribute LectureVO lecture) throws ParseException, IOException {
 
-        uploadFile(roadmapVO);
-
-        roadmapService.insertRoadmap(roadmapVO);
-
-        return "redirect:/Teacher/roadmapManager.do";
-    }
-
-    // 파일 업로드 공통 부분
-    private void uploadFile(
-        @ModelAttribute RoadmapVO roadmapVO)
-        throws IOException {
-        MultipartFile uploadFile = roadmapVO.getUploadFile();
+        MultipartFile uploadFile = lecture.getUploadFile();
 
         if (uploadFile == null) {
             System.out.println("::: uploadFile 파라미터가 전달되지 않았을때~");
@@ -253,83 +304,137 @@ public class TeacherController {
             System.out.println("::: 저장파일명 : " + savedFileName);
 
             //물리적 파일 복사
-            uploadFile.transferTo(new File("c:/MyStudy/temp/" + savedFileName));
-            roadmapVO.setRboardCoverimg(savedFileName);
+            uploadFile.transferTo(new File("\\\\192.168.18.11\\temp\\" + savedFileName));
+            lecture.setLectureCoverimg(savedFileName);
         }
+
+        if(!lecture.getQsStartStr().equals("")) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            lecture.setQsStart(format.parse(lecture.getQsStartStr()));
+            lecture.setQsEnd(format.parse(lecture.getQsEndStr()));
+        }
+
+        System.out.println(lecture);
+
+        lectureService.addLecture(lecture);
+        return lectureService.getLectureNo();
     }
 
-    // 로드맵 수정
-    @RequestMapping("/goRoadmapEdit.do")
-    public String goRoadmapEdit(@ModelAttribute RoadmapVO roadmapVO) throws IllegalStateException, IOException {
-        System.out.println("수정: " + roadmapVO);
-
-        uploadFile(roadmapVO);
-
-        roadmapService.editRoadmap(roadmapVO);
-        return "redirect:/Teacher/roadmapManager.do";
-    }
-
-    // 이미지 업로드
-    @RequestMapping("/uploadImage.do")
+    // 수업(Class) 추가
+    @RequestMapping(value="/addClass.do", method = RequestMethod.POST)
     @ResponseBody
-    public String uploadImage(@RequestParam("file") MultipartFile uploadFile) throws IOException {
+    public int addLecture(@ModelAttribute ClassVO classVO) throws IOException {
 
-        System.out.println("uploadFile.isEmpty() : " + uploadFile.isEmpty());
-        String fileName = uploadFile.getOriginalFilename(); //원본파일명
-        System.out.println("::: 원본파일명 : " + fileName);
+        System.out.println("classVO: " + classVO);
 
-        String savedFileName = UUID.randomUUID().toString();
-        System.out.println("::: 저장파일명 : " + savedFileName);
+        MultipartFile uploadBook = classVO.getUploadBook();
+        MultipartFile uploadVideo = classVO.getUploadVideo();
 
-        //물리적 파일 복사
-        String url = "c:/MyStudy/temp/" + savedFileName;
-        uploadFile.transferTo(new File(url));
+        if(uploadBook == null) {
+            System.out.println("::: uploadBook 파라미터가 전달되지 않았을때~");
+        } else if(uploadBook.isEmpty()) {
+            System.out.println("::: 전달받은 uploadBook 파일 데이터가 없을 경우");
+        } else {
+            String oriname = uploadBook.getOriginalFilename();
+            String filename = UUID.randomUUID().toString();
+            uploadBook.transferTo(new File("\\\\192.168.18.11\\temp\\" + filename));
+            classVO.setOriname(oriname);
+            classVO.setFilename(filename);
+        }
 
-        return savedFileName;
+        if(uploadVideo == null) {
+            System.out.println("::: uploadVideo 파라미터가 전달되지 않았을때~");
+        } else if(uploadVideo.isEmpty()) {
+            System.out.println("::: 전달받은 uploadVideo 파일 데이터가 없을 경우");
+        } else {
+            String videoname = UUID.randomUUID().toString();
+            uploadVideo.transferTo(new File("\\\\192.168.18.11\\temp\\" + videoname));
+            classVO.setVideoname(videoname);
+        }
+
+        classService.addClass(classVO);
+
+        return 0;
     }
 
-    // 강의 이름 불러오기
-    @RequestMapping(value="/getLecture.do", produces="application/text; charset=utf8")
-    @ResponseBody
-    public String getLecture(String lectureNo) {
-        LectureVO lectureVO = lectureService.getLecture(lectureNo);
-        return lectureVO.getLectureTitle();
-    }
-
-    // 내가 작성한 로드맵 조회
-    @RequestMapping("/roadmapManager.do")
-    public String roadmapManager(@RequestParam(value = "cPage", required = false) String cPage, HttpSession session, Model model) {
-
-        UserVO user = (UserVO) session.getAttribute("user");
-        String userId = user.getUserId();
-
-        PagingJS p = makePaging(cPage, roadmapService.getRoadmapCount(userId));
+    // 시간표 관리 화면 이동
+    @RequestMapping("/timetableManager.do")
+    public String timetableManager(@RequestParam(value = "cPage", required = false) String cPage,
+        @RequestParam String lectureNo, Model model) {
+        PagingJS p = makePaging(cPage, offtimetableService.getOfftimetableCount(lectureNo));
 
         Map<String, String> map = new HashMap<>();
-        map.put("userId", userId);
+        map.put("lectureNo", lectureNo);
         map.put("begin", Integer.toString(p.getBegin()));
         map.put("end", Integer.toString(p.getEnd()));
 
-        List<RoadmapVO> list = roadmapService.getRoadmapManager(map);
-        model.addAttribute("roadmapList", list);
+        List<OfftimetableVO> ttList = offtimetableService.getOfftimetableList(map);
+        model.addAttribute("ttList", ttList);
+        model.addAttribute("pvo", p);
+        model.addAttribute("lectureNo", lectureNo);
+
+        return "/Teacher/timetableManager.jsp";
+    }
+
+    // 수강생 관리 화면 이동
+    @RequestMapping("/studentManager.do")
+    public String studentManager(@RequestParam(value = "cPage", required = false) String cPage,
+        @RequestParam(value = "lectureNo", required = false) String lectureNo,
+        @RequestParam(value = "timetableNo", required = false) String timetableNo, Model model) {
+        Map<String, String> map = new HashMap<>();
+        PagingJS p;
+        List<UserVO> studentList;
+
+        if(lectureNo == null) { // 오프라인 시간표
+            p = makePaging(cPage, offtimetableService.getStudentCount(timetableNo));
+            map.put("timetableNo", timetableNo);
+            map.put("begin", Integer.toString(p.getBegin()));
+            map.put("end", Integer.toString(p.getEnd()));
+            studentList = offtimetableService.getStudentList(map);
+            model.addAttribute("timetableNo", timetableNo);
+        } else { // 온라인 강의
+            p = makePaging(cPage, lectureService.getLecture(lectureNo).getStudentCount());
+            map.put("lectureNo", lectureNo);
+            map.put("begin", Integer.toString(p.getBegin()));
+            map.put("end", Integer.toString(p.getEnd()));
+            studentList = lectureService.getLectureStudentList(map);
+            model.addAttribute("lectureNo", lectureNo);
+        }
+
+        model.addAttribute("studentList", studentList);
         model.addAttribute("pvo", p);
 
-        return "/Teacher/roadmapManager.jsp";
+        return "/Teacher/studentManager.jsp";
+
     }
 
-    // 내가 작성한 로드맵 삭제
-    @RequestMapping("/removeRoadmap.do")
-    public String removeRoadmap(@RequestParam String rboardNo, HttpSession session) {
+    // 시간표 추가
+    @RequestMapping("/addTimetable.do")
+    public String studentManager(@ModelAttribute OfftimetableVO tt) {
+        System.out.println(tt);
 
-        UserVO userVO = (UserVO) session.getAttribute("user");
-        Map<String, String> map = new HashMap<>();
-        map.put("rboardNo", rboardNo);
-        map.put("userId", userVO.getUserId());
+        String ttStart = tt.getTtStart().substring(0, 10) + " " + tt.getTtStart().substring(11, 16) + ":00";
+        String ttEnd = tt.getTtEnd().substring(0, 10) + " " + tt.getTtEnd().substring(11, 16) + ":00";
 
-        roadmapService.removeRoadmap(map);
+        tt.setTimetableStart(Timestamp.valueOf(ttStart));
+        tt.setTimetableEnd(Timestamp.valueOf(ttEnd));
 
-        return "redirect:/Teacher/roadmapManager.do";
+        offtimetableService.insertTimetable(tt);
+
+        return "redirect:/Teacher/timetableManager.do?lectureNo=" + tt.getLectureNo();
     }
+
+    // 실시간 질문
+    @RequestMapping("/realtimeQuestion.do")
+    public String realtimeQuestion(@RequestParam String lectureNo, Model model) {
+        LectureVO lecture = lectureService.getLecture(lectureNo);
+        model.addAttribute("lecture", lecture);
+        return "/Teacher/realtimeQuestion.jsp";
+    }
+
+    /****************************************************
+     * 3. 매출 조회
+     ****************************************************/
 
     // 매출 조회 화면 이동
     @RequestMapping("/salesView.do")
@@ -337,17 +442,17 @@ public class TeacherController {
         HttpSession session, Model model) {
 
         UserVO user = (UserVO) session.getAttribute("user");
-        String userName = user.getUserName();
+        String userId = user.getUserId();
 
         PagingJS p = makePaging(cPage, lectureService.getOrderLectureCount(user.getUserId()));
 
         Map<String, String> map = new HashMap<>();
-        map.put("userName", userName);
+        map.put("userId", userId);
         map.put("begin", Integer.toString(p.getBegin()));
         map.put("end", Integer.toString(p.getEnd()));
 
         List<LectureVO> list = lectureService.getRealtimeSales(map);
-        int lectureSales = lectureService.getLectureSales(userName);
+        Integer lectureSales = lectureService.getLectureSales(userId);
 
         model.addAttribute("salesList", list);
         model.addAttribute("lectureSales", lectureSales);
@@ -357,14 +462,19 @@ public class TeacherController {
     }
 
     // 매출 조회 엑셀 파일 저장
-    @RequestMapping(value="/saveAllExcel.do", method = RequestMethod.POST)
+    @RequestMapping("/saveAllExcel.do")
     @ResponseBody
-    public void saveExcel(@RequestParam String numStr, @RequestParam String titleStr,
-        @RequestParam String priceStr, HttpServletResponse response) throws IOException {
+    public void saveExcel(HttpSession session, HttpServletResponse response) throws IOException {
 
-        List<String> numList = makeList(numStr);
-        List<String> titleList = makeList(titleStr);
-        List<String> priceList = makeList(priceStr);
+        UserVO user = (UserVO) session.getAttribute("user");
+        String userId = user.getUserId();
+
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("begin", "1");
+        map.put("end", Integer.toString(lectureService.getOrderLectureCount(user.getUserId())));
+
+        List<LectureVO> list = lectureService.getRealtimeSales(map);
 
         Workbook wb = new HSSFWorkbook(); // 엑셀파일 객체 생성
         Sheet sheet = wb.createSheet("테스트 시트"); //시트 생성 ( 첫번째 시트이며, 시트명은 테스트 시트 )
@@ -383,7 +493,7 @@ public class TeacherController {
         titleCell.setCellValue("강의별 \n 매출 조회"); // setCellValue 셀에 값넣기.
         titleRow.setHeight((short)1100); // Row에서 setHeight를 하면 행 높이가 조정된다.
         sheet.addMergedRegion(new CellRangeAddress(0,0,0,5)); // 셀 병합  첫번째줄~아홉번째 열까지 병합
-        for(int i = 3; i < 4 + numList.size(); i++) {
+        for(int i = 3; i < 4 + list.size(); i++) {
             sheet.addMergedRegion(new CellRangeAddress(i,i,1,4));
         }
 
@@ -417,7 +527,7 @@ public class TeacherController {
         dayCell.setCellValue("총 강의 수"); // 두번째 행은 입력받은 날짜를 출력
         dayCell.setCellStyle(bdataStyle);
         dayCell = dayRow.createCell(dayCol); // 두번째줄의 첫번째열을 셀로 지정. 즉 두번째줄 첫째칸
-        dayCell.setCellValue(numList.size()); // 두번째 행은 입력받은 날짜를 출력
+        dayCell.setCellValue(list.size()); // 두번째 행은 입력받은 날짜를 출력
         dayCell.setCellStyle(dataStyle);
 
         //헤더 만들기
@@ -442,23 +552,23 @@ public class TeacherController {
         Row dataRow; // for문을 돌려주기위해.
         Cell dataCell = null;
 
-        for(int i = 0; i<numList.size(); i++) {
+        for(int i = 0; i<list.size(); i++) {
             cellNum = 0;
             dataRow = sheet.createRow(rowNum++); // for문 돌면서 행 1줄씩 추가
 
             dataCell = dataRow.createCell(cellNum++); //열 한줄씩 추가
-            dataCell.setCellValue(numList.get(i)); // 첫번째칸은 순번이기때문에
+            dataCell.setCellValue(list.get(i).getLectureNo()); // 첫번째칸은 순번이기때문에
             dataCell.setCellStyle(dataStyle); // 테두리 스타일 적용
 
             dataCell = dataRow.createCell(cellNum++); // 두번째 열은 이름이니까
-            dataCell.setCellValue(titleList.get(i)); // list에 저장된 이름 출력
+            dataCell.setCellValue(list.get(i).getLectureTitle()); // list에 저장된 이름 출력
             dataCell.setCellStyle(dataStyle); // 테두리 스타일 적용
 
             cellNum++;
             cellNum++;
             cellNum++;
             dataCell = dataRow.createCell(cellNum); // 두번째 열은 이름이니까
-            dataCell.setCellValue(Integer.parseInt(priceList.get(i))); // list에 저장된 이름 출력
+            dataCell.setCellValue(Integer.parseInt(list.get(i).getLecturePrice())); // list에 저장된 이름 출력
             dataCell.setCellStyle(dataStyle);
         }
         if (dataCell != null) {
@@ -470,7 +580,7 @@ public class TeacherController {
         dataCell.setCellValue("수익합");
         dataCell.setCellStyle(bdataStyle);
         dataCell = dataRow.createCell(5); // 두번쨰칸
-        int num = 4 + numList.size();
+        int num = 4 + list.size();
         dataCell.setCellFormula("SUM(F5:F" + num + ")"); // 함수식을 입력할 수 있는 기능
         dataCell.setCellStyle(dataStyle);
 
@@ -496,37 +606,29 @@ public class TeacherController {
         List<LectureVO> salesList = lectureService.getSalesByLecture(map);
         int lectureSales = lectureService.getSalesSumByLecture(lectureNo);
         LectureVO lec = lectureService.getLecture(lectureNo);
-        String lectureTitle = lec.getLectureTitle();
 
         model.addAttribute("salesList", salesList);
         model.addAttribute("lectureSales", lectureSales);
-        model.addAttribute("lectureTitle", lectureTitle);
+        model.addAttribute("lectureTitle", lec.getLectureTitle());
+        model.addAttribute("lectureNo", lec.getLectureNo());
         model.addAttribute("pvo", p);
 
         return "/Teacher/salesLectureView.jsp";
     }
 
-    // 문자열 리스트로 변환
-    private List<String> makeList(String str) {
-        String[] arr = str.split("/");
-        List<String> list = new ArrayList<>();
-        Collections.addAll(list, arr);
-        list.remove("");
-        return list;
-    }
-
     // 강의별 매출 조회 엑셀 파일 저장
-    @RequestMapping(value="/saveDetailExcel.do", method = RequestMethod.POST)
+    @RequestMapping("/saveDetailExcel.do")
     @ResponseBody
-    public void saveDetailExcel(@RequestParam String numStr, @RequestParam String nameStr,
-        @RequestParam String idStr, @RequestParam String dateStr, @RequestParam String priceStr,
-        @RequestParam String lectureTitle, HttpServletResponse response) throws IOException {
+    public void saveDetailExcel(@RequestParam String lectureNo, HttpServletResponse response)
+        throws IOException {
 
-        List<String> numList = makeList(numStr);
-        List<String> nameList = makeList(nameStr);
-        List<String> idList = makeList(idStr);
-        List<String> dateList = makeList(dateStr);
-        List<String> priceList = makeList(priceStr);
+        Map<String, String> map = new HashMap<>();
+        map.put("lectureNo", lectureNo);
+        map.put("begin", "1");
+        map.put("end", Integer.toString(lectureService.getSalesLectureViewCount(lectureNo)));
+
+        List<LectureVO> salesList = lectureService.getSalesByLecture(map);
+        String lectureTitle = lectureService.getLecture(lectureNo).getLectureTitle();
 
         Workbook wb = new HSSFWorkbook(); // 엑셀파일 객체 생성
         Sheet sheet = wb.createSheet("테스트 시트"); //시트 생성 ( 첫번째 시트이며, 시트명은 테스트 시트 )
@@ -605,28 +707,28 @@ public class TeacherController {
         Row dataRow; // for문을 돌려주기위해.
         Cell dataCell = null;
 
-        for(int i = 0; i<numList.size(); i++) {
+        for(int i = 0; i<salesList.size(); i++) {
             cellNum = 0;
             dataRow = sheet.createRow(rowNum++); // for문 돌면서 행 1줄씩 추가
 
             dataCell = dataRow.createCell(cellNum++); //열 한줄씩 추가
-            dataCell.setCellValue(numList.get(i)); // 첫번째칸은 순번이기때문에
+            dataCell.setCellValue(salesList.get(i).getLectureNo()); // 첫번째칸은 순번이기때문에
             dataCell.setCellStyle(dataStyle); // 테두리 스타일 적용
 
             dataCell = dataRow.createCell(cellNum++); // 두번째 열은 이름이니까
-            dataCell.setCellValue(nameList.get(i)); // list에 저장된 이름 출력
+            dataCell.setCellValue(salesList.get(i).getLectureWriter()); // list에 저장된 이름 출력
             dataCell.setCellStyle(dataStyle); // 테두리 스타일 적용
 
             dataCell = dataRow.createCell(cellNum++); // 두번째 열은 이름이니까
-            dataCell.setCellValue(idList.get(i)); // list에 저장된 이름 출력
+            dataCell.setCellValue(salesList.get(i).getUserId()); // list에 저장된 이름 출력
             dataCell.setCellStyle(dataStyle); // 테두리 스타일 적용
 
             dataCell = dataRow.createCell(cellNum++); // 두번째 열은 이름이니까
-            dataCell.setCellValue(dateList.get(i)); // list에 저장된 이름 출력
+            dataCell.setCellValue(salesList.get(i).getLectureRegdate().substring(0, 10)); // list에 저장된 이름 출력
             dataCell.setCellStyle(dataStyle); // 테두리 스타일 적용
 
             dataCell = dataRow.createCell(cellNum); // 두번째 열은 이름이니까
-            dataCell.setCellValue(Integer.parseInt(priceList.get(i))); // list에 저장된 이름 출력
+            dataCell.setCellValue(Integer.parseInt(salesList.get(i).getLecturePrice())); // list에 저장된 이름 출력
             dataCell.setCellStyle(dataStyle); // 테두리 스타일 적용
 
         }
@@ -639,7 +741,7 @@ public class TeacherController {
         dataCell.setCellValue("수익합");
         dataCell.setCellStyle(bdataStyle);
         dataCell = dataRow.createCell(4); // 두번쨰칸
-        int num = 4 + numList.size();
+        int num = 4 + salesList.size();
         dataCell.setCellFormula("SUM(E5:E" + num + ")"); // 함수식을 입력할 수 있는 기능
         dataCell.setCellStyle(dataStyle);
 
@@ -649,5 +751,154 @@ public class TeacherController {
         wb.write(response.getOutputStream());
 
     }
+
+    /****************************************************
+     * 4. 로드맵 관리
+     ****************************************************/
+
+    // 로드맵 작성 화면 이동
+    @RequestMapping("/roadmapWrite.do")
+    public String roadmapWrite(@RequestParam(value = "rboardNo", required = false) String rboardNo,
+        HttpSession session, Model model) {
+        // 수정인지 작성인지 확인
+        if(rboardNo != null) { // 수정
+            model.addAttribute("roadmap", roadmapService.getRoadmapDetail(rboardNo));
+        }
+
+        //카테고리 가져오기
+        List<CategoryVO> categories = lectureService.getCategories();
+        System.out.println(categories);
+        model.addAttribute("categories", categories);
+
+        // 강의 목록 가져오기
+        UserVO userVO = (UserVO) session.getAttribute("user");
+
+        List<LectureVO> lectureList = lectureService.getOnlineLecturebyUserId(userVO.getUserId());
+        model.addAttribute("lectureList", lectureList);
+
+        return "/Teacher/roadmapWrite.jsp";
+    }
+
+    // 로드맵 작성
+    @RequestMapping("/goRoadmapWrite.do")
+    public String goRoadmapWrite(@ModelAttribute RoadmapVO roadmapVO) throws IllegalStateException,
+        IOException {
+        System.out.println("작성: " + roadmapVO);
+
+        uploadRoadmapFile(roadmapVO);
+
+        roadmapService.insertRoadmap(roadmapVO);
+
+        return "redirect:/Teacher/roadmapManager.do";
+    }
+
+    // 로드맵 파일 업로드 공통 부분
+    private void uploadRoadmapFile(
+        @ModelAttribute RoadmapVO roadmapVO)
+        throws IOException {
+        MultipartFile uploadFile = roadmapVO.getUploadFile();
+
+        if (uploadFile == null) {
+            System.out.println("::: uploadFile 파라미터가 전달되지 않았을때~");
+        } else if (uploadFile.isEmpty()) {
+            System.out.println("::: 전달받은 파일 데이터가 없을 경우");
+            roadmapVO.setRboardCoverimg(roadmapService.getFileName(roadmapVO.getRboardNo()));
+        } else {
+            System.out.println("uploadFile.isEmpty() : " + uploadFile.isEmpty());
+            String fileName = uploadFile.getOriginalFilename(); //원본파일명
+            System.out.println("::: 원본파일명 : " + fileName);
+
+            String savedFileName = UUID.randomUUID().toString();
+            System.out.println("::: 저장파일명 : " + savedFileName);
+
+            //물리적 파일 복사
+            uploadFile.transferTo(new File("\\\\192.168.18.11\\temp\\" + savedFileName));
+            roadmapVO.setRboardCoverimg(savedFileName);
+        }
+    }
+
+    // 로드맵 수정
+    @RequestMapping("/goRoadmapEdit.do")
+    public String goRoadmapEdit(@ModelAttribute RoadmapVO roadmapVO) throws IllegalStateException,
+        IOException {
+        System.out.println("수정: " + roadmapVO);
+
+        uploadRoadmapFile(roadmapVO);
+
+        roadmapService.editRoadmap(roadmapVO);
+        return "redirect:/Teacher/roadmapManager.do";
+    }
+
+    // 강의 이름 불러오기
+    @RequestMapping(value="/getLecture.do", produces="application/text; charset=utf8")
+    @ResponseBody
+    public String getLecture(String lectureNo) {
+        LectureVO lectureVO = lectureService.getLecture(lectureNo);
+        return lectureVO.getLectureTitle();
+    }
+
+    // 내가 작성한 로드맵 조회
+    @RequestMapping("/roadmapManager.do")
+    public String roadmapManager(@RequestParam(value = "cPage", required = false) String cPage,
+        HttpSession session, Model model) {
+
+        UserVO user = (UserVO) session.getAttribute("user");
+        String userId = user.getUserId();
+
+        PagingJS p = makePaging(cPage, roadmapService.getRoadmapCount(userId));
+
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("begin", Integer.toString(p.getBegin()));
+        map.put("end", Integer.toString(p.getEnd()));
+
+        List<RoadmapVO> list = roadmapService.getRoadmapManager(map);
+        model.addAttribute("roadmapList", list);
+        model.addAttribute("pvo", p);
+
+        return "/Teacher/roadmapManager.jsp";
+    }
+
+    // 내가 작성한 로드맵 삭제
+    @RequestMapping("/removeRoadmap.do")
+    public String removeRoadmap(@RequestParam String rboardNo, HttpSession session) {
+
+        UserVO userVO = (UserVO) session.getAttribute("user");
+        Map<String, String> map = new HashMap<>();
+        map.put("rboardNo", rboardNo);
+        map.put("userId", userVO.getUserId());
+
+        roadmapService.removeRoadmap(map);
+
+        return "redirect:/Teacher/roadmapManager.do";
+    }
+
+    // 로드맵 페이징 ajax 처리
+    @RequestMapping("/getRoadmapPaging.do")
+    @ResponseBody
+    public Map<Object, Object> getRoadmapPaging(@RequestParam String cPage, HttpSession session) {
+
+        Map<Object, Object> map = new HashMap<>();
+
+        UserVO user = (UserVO) session.getAttribute("user");
+        String userId = user.getUserId();
+
+
+        PagingJS p = makePaging(cPage, roadmapService.getRoadmapCount(userId));
+
+        Map<String, String> pmap = new HashMap<>();
+        pmap.put("userId", userId);
+        pmap.put("begin", Integer.toString(p.getBegin()));
+        pmap.put("end", Integer.toString(p.getEnd()));
+
+        map.put("pmap", roadmapService.getRoadmapManager(pmap));
+        map.put("pvo", p);
+
+        return map;
+    }
+
+    /****************************************************
+     * 5. 채팅방 조회
+     ****************************************************/
 
 }

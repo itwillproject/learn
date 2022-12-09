@@ -127,7 +127,7 @@
 					      <a href="${pageContext.request.contextPath}/member/goToPersonalPage.do?userId=${person.userId}" class="text-dark">홈</a>
 					    </li>
 					    <li class="nav-item d-flex p-2 w-100">
-					      <a href="#" class="text-dark">게시글</a>
+					      <a href="userBoardPage.do?userId=${person.userId}" class="text-dark">게시글</a>
 					    </li>
 				  </ul>
 				</nav>
@@ -159,14 +159,17 @@
 				<div id="board">	
 					<div>
 						<span class="h4 d-inline font-weight-bold">게시글</span>
-						<a class="float-right" href="#">전체 보기 ></a>
+						<a class="float-right" href="userBoardPage.do?userId=${person.userId}">전체 보기 ></a>
+
 					</div>
 					<c:if test="${empty boardList }">
 						<div class="d-flex" style="min-height: 200px;">
 							<p class="align-self-center text-center mx-auto">게시글이 없습니다.</p>
 						</div>
 					</c:if>
-					<c:forEach items="${boardList}" var="board" begin="1" end="5">
+
+					<c:forEach items="${boardList}" var="board">
+
 						<div class="pt-3 pb-3 row" style="border-bottom: 1px solid lightgrey">
 							<c:if test="${not empty board.boardAdopt}">
 								<div class="col-4">질문&답변&nbsp;

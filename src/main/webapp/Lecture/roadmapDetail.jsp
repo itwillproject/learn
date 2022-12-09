@@ -2,7 +2,6 @@
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,6 +15,7 @@
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
           crossorigin="anonymous">
     <title>로드맵 페이지 - 로드맵 상세 조회</title>
+    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@10'></script>
 </head>
 <style>
   .active-btn {
@@ -76,7 +76,7 @@
         <!-- 중앙 위 내용 - 글내용 -->
         <div class="col-7 pl-3 gray-line">
             <div class="tab-content">
-                <div class="tab-pane container active" id="home">${roadmap.rboardContent}</div>
+                <div class="tab-pane container active" id="home" style="word-break:break-all">${roadmap.rboardContent}</div>
                 <div class="tab-pane container fade" id="menu1">
                     <table class="table">
                         <c:forEach items="${lectureList}" var="lec" varStatus="status">
@@ -109,10 +109,10 @@
                             </div>
                             <div class="pt-2">
                                 <div class="pb-1" style="color: #fff">
-                                    <fmt:formatNumber value="${myroadmap.roadmapRate * (100 / fn:length(lectureList))}" pattern="0.0"/>%
+                                    <fmt:formatNumber value="${myroadmap.roadmapRate * (100 / lectureList.size())}" pattern="0.0"/>%
                                 </div>
                                 <div class="progress">
-                                    <div class="progress-bar" style="background-color:#fff; width:${myroadmap.roadmapRate * (100 / fn:length(lectureList))}%"></div>
+                                    <div class="progress-bar" style="background-color:#fff; width:${myroadmap.roadmapRate * (100 / lectureList.size())}%"></div>
                                 </div>
                             </div>
                         </li>
@@ -141,7 +141,20 @@
                     </li>
                     <c:if test="${empty myroadmap}">
                         <li class="list-group-item">
-                            <button onclick="location.href='${pageContext.request.contextPath}/Lecture/addMyroadmap.do?rboardNo=${roadmap.rboardNo}'" class="active-btn w-100">무료로 로드맵 시작하기</button>
+                            <button onclick="startRoadmap()" class="active-btn w-100">무료로 로드맵 시작하기</button>
+                            <script>
+                                function startRoadmap() {
+                                  if('${empty user}' === 'true') {
+                                    Swal.fire({
+                                      icon: 'error',
+                                      title: '로드맵 시작 실패',
+                                      text: '로그인이 필요합니다!'
+                                    });
+                                  } else {
+                                    location.href='${pageContext.request.contextPath}/Lecture/addMyroadmap.do?rboardNo=${roadmap.rboardNo}';
+                                  }
+                                }
+                            </script>
                         </li>
                     </c:if>
                 </ul>

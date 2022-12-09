@@ -15,11 +15,11 @@ public interface LectureService {
 	
 	  List<LectureVO> getTeacherLectureList(Map<String, String> map);
 	
-	  Double getLectureAvgRate(String userName);
+	  Double getLectureAvgRate(String userId);
 	
 	  Integer getLectureSales(String userName);
 	
-	  Integer getStudentCount(String userName);
+	  Integer getStudentCount(String userId);
 	
 	  List<LectureVO> getRealtimeSales(Map<String, String> map);
 	
@@ -79,6 +79,12 @@ public interface LectureService {
 	List<LectureVO> getLectureProfileAll(UserVO vo); 
     List<LectureVO> getLectureProfilePage(Map<String, Object> map); 
     int countLectureProfilePage(UserVO vo);
+	List<LectureVO> getLectureProfilePage_old(Map<String, Object> map); 
 
+	List<UserVO> getLectureStudentList(Map<String, String> map);
+
+	void addLectureCoverimg(LectureVO lecture);
+
+	void editLecture(LectureVO lecture);
     
 }

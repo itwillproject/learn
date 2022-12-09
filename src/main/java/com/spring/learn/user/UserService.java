@@ -1,6 +1,7 @@
 package com.spring.learn.user;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -41,6 +42,12 @@ public interface UserService {
 	//강의자 신청 승인을 위한 기능
 	void updateUserLecture(UserVO vo);
 
+  int getPointLogCount(String userId);
+
+	List<PointLogVO> getPointLogList(Map<String, String> map);
+
 	void updateUserIntro(UserVO vo);
-	
+
+
+
 }

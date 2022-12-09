@@ -1,7 +1,9 @@
 package com.spring.learn.user.impl;
 
+import com.spring.learn.user.PointLogVO;
 import java.util.List;
 
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -128,6 +130,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateUserIntro(UserVO vo) {
 		userDAO.updateUserIntro(vo);
+	}
+
+	@Override
+	public int getPointLogCount(String userId) {
+		return userDAO.getPointLogCount(userId);
+	}
+
+	@Override
+	public List<PointLogVO> getPointLogList(Map<String, String> map) {
+		return userDAO.getPointLogList(map);
 	}
 
 }
