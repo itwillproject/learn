@@ -446,9 +446,10 @@
 					          	<p><input type="radio" name="reason" value="성(姓)관련순환주제"><strong> 성(姓)관련 순환 주제</strong> (양성평등, 군대, 혼전순결, 된장녀, 외모/몸매 등)</p>
 					          	<p><input type="radio" name="reason" value="욕설,비속어,인신공격"><strong> 욕설, 비속어, 인신공격</strong> (심한 불쾌감 유발)</p>
 					          	<p><input type="radio" name="reason" value="선정적,음란성"><strong> 선정적, 음란성</strong> (신고자가 선정적이라고 판단)</p>
-					          	<p><input type="radio" name="reason" value="낚시성,도배,무의미"><strong> 낚시성, 도배, 무의미</strong> (무의미한 짧을 글 포함)</p>
+					          	<p><input type="radio" name="reason" value="낚시성,도배,무의미"><strong> 낚시성, 도배, 무의미</strong> (무의미한 짧은 글 포함)</p>
 					          	<p><input type="radio" name="reason" value="기타"><strong> 기타</strong> (신고자가 선정적이라고 판단)</p>
 					          	<textarea id="reasonEtc" rows="3" cols="90" placeholder="기타 선택시 사유 입력해주세요"></textarea>
+					          	
 					          </div>
 					        </div>
 					        

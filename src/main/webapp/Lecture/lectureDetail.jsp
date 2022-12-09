@@ -84,7 +84,7 @@ ${count.totalComment}
 <c:if test="${lecture.studentCount ne null}">${lecture.studentCount}</c:if>
 명의 수강생</p>
 <span><i style='font-size:24px' class='fas'>&#xf521;</i>
-${lecture.lectureWriter } 
+<a href="${pageContext.request.contextPath}/member/goToPersonalPage.do?userId=${lecture.userId }">${lecture.lectureWriter }</a> 
 &nbsp;|&nbsp;
 
 <c:if test="${lecture.lectureOnOff == 1}">오프라인 수업</c:if>
@@ -528,7 +528,7 @@ window.onload=function(){
   <div class="border rounded-lg container" style="height: 50px;">
   			
   			<span><b>수강전 궁금한 점이 있나요?</b></span>
-  			<a href="#" style="margin-left: 54px; color: black; text-decoration: underline;" >문의하기</a>
+  			<a href="${pageContext.request.contextPath}/board/qnaWriteForm.do?lectureNo=${lecture.lectureNo}" style="margin-left: 54px; color: black; text-decoration: underline;" >문의하기</a>
   
   </div>
   </div>

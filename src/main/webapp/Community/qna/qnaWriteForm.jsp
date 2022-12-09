@@ -148,6 +148,7 @@
                                 <td class="d-flex flex-row justify-content-end">
                                     <input type="button" id="submitBoard" class="btn btn-success mr-3" value="등록"/>
                                     <input type="button" id="cancelWrite" class="btn btn-light mr-3" value="취소"/>
+                                    <input type="hidden" name="lectureNo" value="${board.lectureNo }">
                                 </td>
                             </tr>
                         </tbody>
