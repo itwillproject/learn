@@ -47,25 +47,6 @@
 		WHERE R_NUM BETWEEN #{begin} AND #{end}
 	</select>
 	
-	<!-- 기존에 있던 것 문제 되면 이야기해서 수정하기 -->
-<!-- 	<select id="getBoardListMap" parameterType="map" resultType="memberBoard"> -->
-<!-- 		SELECT * FROM  -->
-<!-- 			(SELECT ROWNUM R_NUM, B.* from  -->
-<!-- 				(SELECT * FROM CALL_CENTER -->
-<!-- 					WHERE 1 = 1 -->
-<!-- 					AND USER_ID = #{userId} -->
-<!-- 					<if test="searchKeyword != null"> -->
-<!-- 					AND ( QNA_TITLE LIKE '%'|| #{searchKeyword} ||'%' -->
-<!-- 					OR QNA_CONTENT LIKE '%'|| #{searchKeyword} ||'%')		 -->
-<!-- 					</if>		 -->
-<!-- 					ORDER BY QNA_REGDATE DESC) B) -->
-<!-- 		WHERE R_NUM BETWEEN #{begin} AND #{end} -->
-<!-- 	</select>	 -->
-
-
-
-	
-	
 	<select id="countBoard" parameterType="memberBoard" resultType="int">
 		SELECT COUNT(QNA_NO) FROM CALL_CENTER
 		WHERE 1 = 1
