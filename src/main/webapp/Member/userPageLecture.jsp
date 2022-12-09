@@ -139,6 +139,9 @@
 					    <li class="nav-item d-flex p-2 w-100">
     					  <a href="${pageContext.request.contextPath}/member/goToPersonalPage_Lecture.do?userId=${person.userId }" class="text-dark">강의</a>
 					    </li>
+     					<li class="nav-item d-flex p-2 w-100">
+						  <a href="${pageContext.request.contextPath}/member/getGoToPersonalRoadPage.do?userId=${person.userId}" class="text-dark">로드맵</a>
+					  	</li>
 					    <li class="nav-item d-flex p-2 w-100">
 					      <a href="#" class="text-dark">수강후기</a>
 					    </li>

@@ -141,5 +141,16 @@ public class UserServiceImpl implements UserService {
 	public List<PointLogVO> getPointLogList(Map<String, String> map) {
 		return userDAO.getPointLogList(map);
 	}
+	
+	@Override
+	public LikeVO getLectureTeacherId(LikeVO vo) {
+		return userDAO.getLectureTeacherId(vo);
+	}
 
+	@Override
+	public List<UserVO> getUserList() {
+		return userDAO.getUserList();
+	}
+	
+	
 }

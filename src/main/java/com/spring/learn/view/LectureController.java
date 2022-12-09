@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.spring.learn.common.PagingSK;
@@ -172,5 +173,12 @@ public class LectureController {
 
 	}
 	
+	@RequestMapping("/realtimeQuestion.do")
+	public String realtimeQuestion(@RequestParam String lectureNo, Model model) {
+	LectureVO lecture = lectureService.getLecture(lectureNo);
+	model.addAttribute("lecture", lecture);
+	return "/Lecture/realtimeQuestion.jsp";
+	}
+
 	
 }

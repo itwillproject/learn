@@ -3,7 +3,7 @@ package com.spring.learn.user;
 import java.sql.Date;
 
 public class ChatVO {
-	private String userId, sendId, content, chatContents;
+	private String userId, sendId, content, chatContents, searchOrder, searchStatus;
 	private int chatNo, chatOk, contentNo;
 	private Date regdate, chatRegdate;
 	
@@ -61,11 +61,24 @@ public class ChatVO {
 	public void setChatRegdate(Date chatRegdate) {
 		this.chatRegdate = chatRegdate;
 	}
+	public String getSearchOrder() {
+		return searchOrder;
+	}
+	public void setSearchOrder(String searchOrder) {
+		this.searchOrder = searchOrder;
+	}
+	public String getSearchStatus() {
+		return searchStatus;
+	}
+	public void setSearchStatus(String searchStatus) {
+		this.searchStatus = searchStatus;
+	}
 	@Override
 	public String toString() {
 		return "ChatVO [userId=" + userId + ", sendId=" + sendId + ", content=" + content + ", chatContents="
-				+ chatContents + ", chatNo=" + chatNo + ", chatOk=" + chatOk + ", contentNo=" + contentNo + ", regdate="
-				+ regdate + ", chatRegdate=" + chatRegdate + "]";
+				+ chatContents + ", searchOrder=" + searchOrder + ", searchStatus=" + searchStatus + ", chatNo="
+				+ chatNo + ", chatOk=" + chatOk + ", contentNo=" + contentNo + ", regdate=" + regdate + ", chatRegdate="
+				+ chatRegdate + "]";
 	}
 	
 	

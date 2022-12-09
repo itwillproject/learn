@@ -36,7 +36,7 @@ th, td {
 						</thead>
 						<c:if test="${empty orderList }">
 							<tr>
-								<td colspan="5">장바구니가 비어 있습니다</td>
+								<td colspan="5">구매내역이 비어 있습니다</td>
 							</tr>
 						</c:if>
 						<c:if test="${not empty orderList}">

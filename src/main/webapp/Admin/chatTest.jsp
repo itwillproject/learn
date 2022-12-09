@@ -45,13 +45,14 @@
 						<div class="col-11">
 							<input type="text" id="msg" class="form-control" style="width: 100%;"
 								aria-label="Recipient's username"
-								aria-describedby="button-addon2">
+								aria-describedby="button-addon2"
+								onkeypress="if(event.keyCode==13){enterKey();}" placeholder="내용을 입력해주세요.">
 						</div>
-						<div class="col-1">
+<!-- 						<div class="col-1">
 							<button class="btn btn-outline-secondary" type="button" id="button-send">
 								전송
 							</button>
-						</div>
+						</div> -->
 					</div>
 			</div>
 			<div class="col-6"></div>
@@ -59,35 +60,11 @@
 	</div>
 
 </body>
-<script type="text/javascript">
-	$("#sendBtn").click(function() {
-		sendMessage();
-		$('#message').val('')
-	});
 
-	var sock = new SockJS("http://localhost:8080/learn/echo");
-	sock.onmessage = onMessage;
-	sock.onclose = onClose;
-	// 메시지 전송
-	function sendMessage() {
-		sock.send($("#message").val());
-	}
-	// 서버로부터 메시지를 받았을 때
-	function onMessage(msg) {
-		var data = msg.data;
-		$("#messageArea").append(data + "<br/>");
-		$("#mydiv").scrollTop($("#mydiv")[0].scrollHeight);
-	}
-	// 서버와 연결을 끊었을 때
-	function onClose(evt) {
-		$("#messageArea").append("연결 끊김");
-
-	}
-</script>
 <script>
 	//전송 버튼 누르는 이벤트
 	var myMsg = '';
-	$("#button-send").on("click", function(e) {
+	function enterKey(){
 		myMsg = '';
 		myMsg = $('#msg').val();
 		if(myMsg == ''){
@@ -97,9 +74,21 @@
 		sendMessage();
 		console.log(myMsg);
 		$('#msg').val('')
-	});
+	}
+	/* $("#button-send").on("click", function(e) {
+		myMsg = '';
+		myMsg = $('#msg').val();
+		if(myMsg == ''){
+			alert("내용이 없습니다.");
+			return false;
+		}
+		sendMessage();
+		console.log(myMsg);
+		$('#msg').val('')
+	}); */
 
-	var sock2 = new SockJS("http://localhost:8080/learn/echo?userId=${userId}");
+	var sock2 = new SockJS("http://192.168.18.10:8080/learn/echo?userId=${userId}");
+	/*var sock2 = new SockJS("http://192.168.18.10:8080/learn/echo?userId=${userId}");*/
 	sock2.onmessage = onMessage;
 	sock2.onclose = onClose;
 	sock2.onopen = onOpen;

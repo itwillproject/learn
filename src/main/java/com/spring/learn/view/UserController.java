@@ -370,34 +370,30 @@ public String login(HttpServletRequest request, UserVO vo, Model model){
 		return "/Member/myLike.jsp";
 	}
 	//좋아요 추가
-	@RequestMapping("/insertLike.do")
-	@ResponseBody
-	public int insertLike(LikeVO vo) {
-		System.out.println("insertLike 좋아요 추가!");
-		System.out.println("vo : " + vo);
-		int cnt = 1;
-		userService.insertLike(vo);
-		System.out.println("cnt : " + cnt);
-		
-		return cnt;
-	}
+		@RequestMapping("/insertLike.do")
+		@ResponseBody
+		public LikeVO insertLike(LikeVO vo) {
+			System.out.println("insertLike 좋아요 추가!");
+			System.out.println("vo : " + vo);
+			LikeVO Lvo = userService.getLectureTeacherId(vo);
+			userService.insertLike(vo);
+			
+			return Lvo;
+		}
 	//좋아요 삭제
 	@RequestMapping("/deleteLike.do")
 	@ResponseBody
-	public int deleteLike(LikeVO vo) {
+	public LikeVO deleteLike(LikeVO vo) {
 		System.out.println("deleteLike 좋아요 삭제!");
 		System.out.println("vo : " + vo);
-		int cnt = 1;
+		LikeVO Lvo = userService.getLectureTeacherId(vo);
 		userService.deleteLike(vo);
-		System.out.println("cnt : " + cnt);
 		
-		return cnt;
+		return Lvo;
 	}
-	
-	//좋아요 삭제
+	//카테고리 정렬
 	@RequestMapping("/searchLike.do")
-	@ResponseBody
-	public List<LikeVO> searchLike(LikeVO vo) {
+	public String searchLike2(LikeVO vo, Model model) {
 		System.out.println("searchLike 검색요청이 들어왔어요~!");
 		System.out.println("vo : " + vo);
 		//System.out.println("list : " + list);
@@ -438,21 +434,24 @@ public String login(HttpServletRequest request, UserVO vo, Model model){
 			System.out.println(">>>이게 진짜 된다고? likeList!!!!"+likeList);
 			if(searchStatus.equals("전체")) {
 				System.out.println("전체 검색");
-				return likeList;
+				model.addAttribute("likeList2",  likeList);
+				return "/Member/myLikeAjaxList.jsp";
 			} else if(searchStatus.equals("유료")) {
 				for (int i = 0; i < likeList.size(); i++) {
 					if(likeList.get(i).getLecturePrice() > 0) {
 						list.add(likeList.get(i));
 					}
 				}
-				return list;
+				model.addAttribute("likeList2",  list);
+				return "/Member/myLikeAjaxList.jsp";
 			} else if(searchStatus.equals("무료")) {
 				for (int i = 0; i < likeList.size(); i++) {
 					if(likeList.get(i).getLecturePrice() == 0) {
 						list.add(likeList.get(i));
 					}
 				}
-				return list;
+				model.addAttribute("likeList2",  list);
+				return "/Member/myLikeAjaxList.jsp";
 			}
 			
 		}else {
@@ -489,9 +488,10 @@ public String login(HttpServletRequest request, UserVO vo, Model model){
 		
 		System.out.println("리턴 전 list : " + list);
 		
-		
-		return list;
+		model.addAttribute("likeList2",  list);
+		return "/Member/myLikeAjaxList.jsp";
 	}
+	//==============================================================================
 	
 	//관리자페이지를 위한 추가 기능=========================
 	@RequestMapping("/rejectResumeMail.do")

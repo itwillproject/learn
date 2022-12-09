@@ -13,6 +13,7 @@
 		var webSocket = {
 			init: function(param) {
 				this._url = param.url;
+				console.log("당신의 주소값은?" + param.url);
 				this._initSocket();
 			},
 			sendChat: function() {
@@ -24,6 +25,7 @@
 				var userId2 = "${user.userId}";
 				var typeVl = null;
 				var bang_id2 = "${param.bang_id}";
+				
 				typeVl = {
 						userId : bang_id2,
 						content : content2,
@@ -57,14 +59,14 @@
 				// 정의된 CMD 코드에 따라서 분기 처리
 				if(msgData.msg == myMsg){
 					if(msgData.cmd == 'CMD_MSG_SEND') {		
-						var str = "<div class='col-10' style='text-align: right;'>";
+						var str = "<div class='col-12' style='text-align: right;'>";
 						str += "<div class='alert alert-success'>";
 						str += "<div>" + msgData.msg + "</div></div></div>";
 						$('#divChatData').append(str);
 					}
 				}else {
 					if(msgData.cmd == 'CMD_MSG_SEND') {		
-						var str = "<div class='col-10' style='text-align: left;'>";
+						var str = "<div class='col-12' style='text-align: left;'>";
 						str += "<div class='alert alert-warning'>";
 						str += "<div>" + msgData.msg + "</div></div></div>";
 						$('#divChatData').append(str);
@@ -134,20 +136,26 @@
 				<div style="color: gray;"></div>
 				<p>성장 기회의 평등</p>
 				<p>궁금한 점은 언제든지 문의해주세요.</p>
+				<c:if test="${user.grade == '관리자'}">
+					<button class="btn" style="float: left;" 
+					onclick="location.href='${pageContext.request.contextPath}/Admin/chatGoAdmin.do'">나가기</button>
+					<br>
+				</c:if>
 			</div>
+			<br>
 			<div class="col-12 justify-content-center" id="mydiv" style="overflow-y: scroll; height:600px; overflow: auto;">
 				<div id="divChatData" class="">
 					<c:if test="${not empty contentList}">
 						<c:forEach var="contentList" items="${contentList }">
 							<c:if test="${contentList.sendId == user.userId}">
-								<div class='col-10' style='text-align: right;'>
+								<div class='col-12' style='text-align: right;'>
 									<div class='alert alert-success'>
 										<div>${contentList.content }</div>
 									</div>
 								</div>
 							</c:if>
 							<c:if test="${contentList.sendId != user.userId}">
-								<div class='col-10' style='text-align: left;'>
+								<div class='col-12' style='text-align: left;'>
 									<div class='alert alert-warning'>
 										<div>${contentList.content }</div>
 									</div>

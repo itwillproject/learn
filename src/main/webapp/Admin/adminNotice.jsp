@@ -100,10 +100,9 @@
 <!-- 사이드 -->
 <div class="menu">
 	<ul class="ul" style="text-align: center;">
-<!-- 	  <li class="li"><a style="background: #00C471; color: white; font-size: 1.5em">CS관리</a></li> -->
 	  <li class="li"><a style="color: #00C471;" href="${pageContext.request.contextPath }/getNoticeAdminList.do">공지사항</a></li>
 	  <li class="li"><a href="${pageContext.request.contextPath }/getAdminFaqList.do">자주묻는질문</a></li>
-	  <li class="li"><a href="getMyQBoardListM.do">Q & A</a></li>
+	  <li class="li"><a href="${pageContext.request.contextPath }/memberBoard/getMyQBoardListM.do">Q & A</a></li>
 	</ul>
 </div>
 <br><br>

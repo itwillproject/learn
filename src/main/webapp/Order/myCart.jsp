@@ -19,6 +19,14 @@ input::placeholder {
 	padding-top: 15px;
 	color: white;
 }
+
+.active-menu {
+        color: #1dc078;
+        font-weight: bold;
+      }
+      .norm-menu {
+        color: black;
+      }
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
@@ -43,7 +51,16 @@ input::placeholder {
 	</div>
 	<div class="container">
 		<div id="reload" class="row">
-			<div class="col-9" style="padding: 0px;">
+		<div class="col-2 d-flex justify-content-center">
+				<%@ include file="../Member/sidebar.jspf"%>
+				<script>
+	              var menu = $('#cart');
+	              console.log(menu);
+	              menu.removeClass('norm-menu');
+	              menu.addClass('active-menu');
+	            </script>
+			</div>
+			<div class="col-7" style="padding: 0px;">
 				<h3 class="" style="height: 50px;">수강장바구니</h3>
 				<div class=""
 					style="height: 40px; border-bottom: 2px solid black; padding: 0px;">
@@ -63,7 +80,7 @@ input::placeholder {
 							<div class="col-3" style="padding: 0px;">
 								<input class="blankCheckbox" type="checkbox" id="${cartList.cartNo }" style="float: top;"
 									name="zzim" value="${cartList.cartNo }" checked="checked"> <img
-									src="${cartList.lectureCoverimg }"
+									src="${pageContext.request.contextPath}/filepath/${cartList.lectureCoverimg }"
 									style="width: 70%; height: 50%">
 							</div>
 
@@ -131,7 +148,7 @@ input::placeholder {
 					<div class="row">
 						<div class="col-7" style="color: gray; padding: 0px;">
 							<input type="text" id="usePoint" name="points" class="w-100"
-								placeholder="1000잎 부터 사용 가능">
+								placeholder="포인트를 입력해 주세요.">
 						</div>
 						<div class="col-5"
 							style="color: gray; padding: 0px 5px; text-align: center;">
@@ -256,6 +273,11 @@ $(document).on("keyup", "#usePoint", function () {
 			$('#realUsePoint2').text('');
 			$('#my_div').text(totalPrice+'원');
 		}
+		if(usePoint == 0){
+			$('#checkPoint').text('');
+			$('#realUsePoint').text('');
+			$('#realUsePoint2').text('');
+		}
 		
 	});
 
@@ -348,7 +370,6 @@ $(document).on("keyup", "#usePoint", function () {
 			$("input[name='zzim']:checked").each(function() {
 				  checkBoxArr.push($(this).val());
 			var cartNo2 = $("input[name='zzim']:checked").val();
-			alert(cartNo2);
 			var userId2 = "${user.userId}";
 			typeVl = {
 					checkBoxArr : checkBoxArr,
@@ -364,15 +385,9 @@ $(document).on("keyup", "#usePoint", function () {
 						async : false,
 
 						success : function(data) {
-							console.log("1 = 일치o / 0 = 불일치x : " + data);
-							if (data == 1) {
-								alert("정상적으로 삭제되었습니다.");
-								console.log("성공");
-								$("#reload").load(window.location.href + " #reload");
-//								$("#reload").load("${pageContext.request.contextPath }/Order/myCart.jsp #reload");
-							} else {
-								console.log("실패");
-							}
+							console.log(data);
+							$("#reload").html(data);
+							
 						},
 						error : function() {
 							console.log("실패");
@@ -519,6 +534,7 @@ $(document).on("keyup", "#usePoint", function () {
 	<script>
 		//카드로 계산하기
 		$(document).on("click", "#requestPay", function () {
+			var ch = "ok";
 			var orderPrice = 0;
 			// getter
 			var IMP = window.IMP;
@@ -595,17 +611,23 @@ $(document).on("keyup", "#usePoint", function () {
 					});
 					
 				} else {
+					ch = "no";
 					var msg = '결제에 실패하였습니다.';
 					msg += '에러내용 : ' + rsp.error_msg;
 					
 				}
 				alert(msg);
-				location.href="${pageContext.request.contextPath }/order/orderDetailGo.do?userId=${user.userId}";
+				if(ch == "no"){
+					location.href="${pageContext.request.contextPath }/order/myCartGo.do?userId=${user.userId}";
+				}else {					
+					location.href="${pageContext.request.contextPath }/order/orderDetailGo.do?userId=${user.userId}";
+				}
 			});
 			
 		});
 		//카카오로 결재하기
 		$(document).on("click", "#charge_kakao", function () {
+			var ch = "ok";
 			var orderPrice = 0;
 			var IMP = window.IMP;
 			IMP.init('imp55622653');//자신의 가맹점  식별 코드
@@ -675,11 +697,16 @@ $(document).on("keyup", "#usePoint", function () {
 					
 					
 				} else {
+					ch = "no";
 					var msg = '결제에 실패하였습니다.';
 					msg += '에러내용 : ' + rsp.error_msg;
 				}
 				alert(msg);
-				location.href="${pageContext.request.contextPath }/order/orderDetailGo.do?userId=${user.userId}";
+				if(ch == "no"){
+					location.href="${pageContext.request.contextPath }/order/myCartGo.do?userId=${user.userId}";
+				}else {					
+					location.href="${pageContext.request.contextPath }/order/orderDetailGo.do?userId=${user.userId}";
+				}
 			});
 		});
 	</script>

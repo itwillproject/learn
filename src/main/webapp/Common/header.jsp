@@ -7,12 +7,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
    <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script> -->
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
    <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
    <script src="https://accounts.google.com/gsi/client" async defer></script>
    <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+   <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script> <!-- 추가한 부분 -->
     <link rel="stylesheet"
           href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
@@ -32,8 +34,46 @@ width:350px;
 height:150px;
 padding:10px;
 }
-  
-   </style>
+body {
+  margin: 25px;
+}
+
+.icon-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  color: #333333;
+  background: white;
+  border: none;
+  outline: none;
+  border-radius: 50%;
+}
+
+.icon-button:hover {
+  cursor: pointer;
+}
+
+.icon-button:active {
+  background: #cccccc;
+}
+
+.icon-button__badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 25px;
+  height: 25px;
+  background: red;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+</style>
     <script>
       function onSignIn() {
         google.accounts.id.initialize({
@@ -151,18 +191,7 @@ padding:10px;
     </div>
     </div>
 </li>
-    <li class="nav-item">
-    <div class="dropdown">
-    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-     인프런
-    </button>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="#">수강평</a>
-      <a class="dropdown-item" href="#">인프런 피드</a>
-      <a class="dropdown-item" href="#">강의 기능요청</a>
-    </div>
-    </div>
-    </li>
+
  <li>
 <button type="button" class="btn" >
       <input type="text" id="search">
@@ -230,13 +259,14 @@ padding:10px;
 </li>
 				
 <li>
-	<button class="btn" style="width: 40px; padding: 6px 12px" type="button" onclick="location.href='${pageContext.request.contextPath}/memberChat/memberChatListGo.do?userId=${user.userId }'">
-		<img alt="채팅리스트" src="${pageContext.request.contextPath}/picture/chat/chatOff.png">
+	<button class="btn" type="button" onclick="location.href='${pageContext.request.contextPath}/memberChat/memberChatListGo.do?userId=${user.userId }'">
+		<i class='fab fa-rocketchat' style='font-size:24px'></i>
 	</button>
 </li>					
 <li>
     <div class="dropdown">
         <button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/Member/myPage.jsp'"><i class="far fa-user fa-lg"></i></button>
+        <div id="socketAlert"></div>
         <div class="dropdown-menu">
             <a class="dropdown-item">${user.userName }</a>
             <a class="dropdown-item"><small>${user.grade }</small></a>
@@ -246,13 +276,13 @@ padding:10px;
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/inquiry.jsp">작성한 게시글</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/likeGo.do?userId=${user.userId }">좋아요</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Order/orderDetailGo.do?userId=${user.userId }">구매내역</a>
-            <a class="dropdown-item" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터</a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터<hr></a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatTest.jsp">실시간 접속자와 채팅</a>
 			<a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatTest2.do?bang_id=${user.userId}&userId=${user.userId}">실시간 상담2(09:00 ~ 18:00)</a>
 			<c:if test="${user.grade == '관리자' }">
 				<a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatGoAdmin.do">관리자 상담 확인하기</a>
 			</c:if>
-            <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/logout.do">로그아웃</a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/logout.do"><hr>로그아웃</a>
         </div>
     </div>
     </li>
@@ -280,17 +310,230 @@ padding:10px;
     </header>
     
     	<div class="fixed box" id="inquiry"
-		style="position: fixed; right: 50px; bottom: 30px;">
-		<div class="dropup">
-			<button type="button" class="btn"
-				data-toggle="dropdown">
-				<img style="width: 200px; height: auto;" src="https://cf.channel.io/file/4627/5e6a5d75a92dc24b92e4/deskimage-d800cd849d6339739fcda00ca21eadb9" alt="메롱">
-				</button>
-			<div class="dropdown-menu">
-				<a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatTest.jsp">실시간 상담(09:00 ~ 18:00)</a> 
-				<a class="dropdown-item" href="#">24시 질문 게시판</a>
-			</div>
+	style="position: fixed; right: 50px; bottom: 30px; z-index: 100;">
+		<!--  #FBF4FA    #1dc078 #D9F2D9-->
+		<div id="alramList" class="" 
+		style="background-color: #D9F2D9; display: none; z-index: 90; border: 1px solid gold; border-radius: 20px;
+		width: 250px; position: fixed; right: 50px; bottom: 80px; text-align : center;">
 		</div>
-		<!-- <button type="button" class="btn" onclick=""><i class="fas fa-cart-plus fa-lg"></i></button> -->
-		<%-- <a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatTest.jsp">1:1채팅하러 가기</a> --%>
-	</div>
+		<button id="jong" type="button" class="icon-button" onclick="alramList()" style="position: fixed; right: 50px; bottom: 30px; z-index: 95;">
+		    <span class="material-icons">notifications</span>
+		    <span id="alramCount" class="icon-button__badge" style="display: none;">0</span>
+		</button>
+		
+
+	<!-- <button type="button" class="btn" onclick=""><i class="fas fa-cart-plus fa-lg"></i></button> -->
+	<%-- <a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatTest.jsp">1:1채팅하러 가기</a> --%>
+</div>
+<script type="text/javascript">
+var socket = null;
+	$(document).ready(function(){
+		if("${user.userId}" != null){
+		connectWs();
+	}
+})
+
+
+//소켓
+
+
+function connectWs(){
+	console.log("tttttt")
+	var ws = new SockJS("http://192.168.18.10:8080/learn/alram");
+	socket = ws;
+	
+	ws.onopen = function() {
+		console.log('open');
+	 
+	};
+	
+	ws.onmessage = function(event) {
+		console.log("onmessage"+event.data);
+		let $socketAlert = $('div#socketAlert');
+		alramCount();
+/* 		$socketAlert.html(event.data)
+		$socketAlert.css('display', 'block'); */
+		
+		setTimeout(function(){
+			$socketAlert.css('display','none');
+			
+		}, 5000);
+	};
+	
+		ws.onclose = function() {
+		    console.log('close');
+	 };
+ 
+ 
+ 
+
+};
+
+//소켓끝
+</script>
+<script>
+var userId = "${user.userId}";
+
+//알람목록
+function alramList(){
+	console.log("alramList")
+	var userId = "${user.userId}";
+	var a = document.getElementById("alramList");
+	if(a.style.display == 'none')  {
+	   a.style.display = 'block';
+	}else {
+	   a.style.display = 'none';
+	}
+	
+		$.ajax({
+	        url : '${pageContext.request.contextPath }/alram/getAlramList.do',
+	        type : 'get',
+	        data : {'toId' : userId },
+	        
+	        success : function(data){
+	        	console.log(data);
+	         	var a='';
+	         	if(data.length == 0){
+	         		a += '<br><div class="small" style="">새로운 알림이 없습니다.</div><br>';
+	         	}else{
+					a += '<br><div class="small" style="">새로운 알림</div><br>';
+	         	}
+	         	$.each(data, function(key, value){ 
+	         	var categori = value.categori;
+	         	a += '<div class="small">';
+				if(categori == "lectureLike"){
+					/* a += '<div style="float: right;"></div>'; */
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 강의에 좋아요가 추가됬습니다.</a>';
+					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
+				}else if(categori == "Notice"){
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 새로운 공지글이 달렸습니다.</a>';
+					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
+				}else if(categori == "lectureLikeCancle"){
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 강의에 좋아요가 취소됬습니다.</a>';
+					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
+				}
+				a += '</div><hr>';	
+				        		 
+	         	});
+	         	
+	         	$("#alramList").html(a);
+	         	$('#alramCount').text(0);
+	         	$('#alramCount').css('display', 'none');
+	        }
+	        
+	    });	
+		
+	}
+//목록끝
+
+//알람목록
+function alramList2(){
+	console.log("alramList2")
+	var userId = "${user.userId}";
+	var a = document.getElementById("alramList");
+		$.ajax({
+	        url : '${pageContext.request.contextPath }/alram/getAlramList.do',
+	        type : 'get',
+	        data : {'toId' : userId },
+	        
+	        success : function(data){
+	        	console.log(data);
+	         	var a='';
+	         	if(data.length == 0){
+	         		a += '<br><div class="small" style="">새로운 알림이 없습니다.</div><br>';
+	         	}else{
+					a += '<br><div class="small" style="">새로운 알림</div><br>';
+	         	}
+	         	$.each(data, function(key, value){ 
+	         	var categori = value.categori;
+	         	a += '<div class="small">';
+				if(categori == "lectureLike"){
+					/* a += '<div style="float: right;"></div>'; */
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 강의에 좋아요가 추가됬습니다.</a>';
+					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
+				}else if(categori == "Notice"){
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 새로운 공지글이 달렸습니다.</a>';
+					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
+				}else if(categori == "lectureLikeCancle"){
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 강의에 좋아요가 취소됬습니다.</a>';
+					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
+				}
+				a += '</div><hr>';	
+				        		 
+	         	});
+	         	
+	         	$("#alramList").html(a);
+	         	$('#alramCount').text(0);
+	         	$('#alramCount').css('display', 'none');
+	        }
+	        
+	    });	
+		
+	}
+
+//목록클릭
+function alramClick(bNo,categori,aNo,toId){
+	console.log("alramClick")
+	 $.ajax({
+	        url : '${pageContext.request.contextPath }/alram/alramDelete.do',
+	        type : 'post',
+	        async : false,
+	        data : {'toId' : toId , 'aNo':aNo},
+	        success : function(){
+	        	console.log("삭제완료");
+				if(categori == 'lectureLike' || categori == 'lectureLikeCancle'){
+					location.href="${pageContext.request.contextPath }/Common/getLecture.do?lectureNo="+bNo;	
+				} else if(categori == 'Notice'){
+					location.href="${pageContext.request.contextPath }/getAdminNotice.do?boardNo="+bNo;
+				}
+	        }
+	        
+	    
+	    });
+	
+}
+
+function alramListDelete(aNo,toId){
+	console.log("alramListDelete")
+	 $.ajax({
+	        url : '${pageContext.request.contextPath }/alram/alramDelete.do',
+	        type : 'post',
+	        async : false,
+	        data : {'toId' : toId , 'aNo':aNo},
+	        success : function(){
+	        	console.log("삭제완료");
+	        	alramList2();
+	        }
+	        
+	    
+	    });
+	
+}
+
+//알람
+$(window).on('load',function() {
+	alramCount()
+});
+function alramCount(){
+	console.log("alram")
+	var userId = "${user.userId}";
+	 $.ajax({
+	        url : '${pageContext.request.contextPath }/alram/alramCount.do',
+	        type : 'get',
+	        data : {'toId' : userId },
+	        
+	        success : function(alram){
+	         	console.log(alram);
+	         	console.log("알람성공");
+ 		        $('#alramCount').text(alram);//빨간표시등이 뜨면서 숫자값을 입력해야한다
+ 		        let $socketAlert = $('#alramCount');
+ 		        if(alram > 0){
+					$socketAlert.css('display', 'block');
+ 		        } else {
+ 		        	$socketAlert.css('display', 'none');
+ 		        }
+	        }
+	    
+	    });
+}
+</script>

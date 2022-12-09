@@ -90,7 +90,9 @@ ${lecture.lectureWriter }
 <c:if test="${lecture.lectureOnOff == 1}">오프라인 수업</c:if>
 <c:if test="${lecture.lectureOnOff == 0}">온라인 수업</c:if>
 </span>
-
+<c:if test="${lecture.lectureOnOff == 0}">
+  <button onclick="location.href='${pageContext.request.contextPath}/lecture/realtimeQuestion.do?lectureNo=${lecture.lectureNo}'">실시간 질문</button>
+</c:if>
 </div>
 
 <br><br><br>

@@ -9,6 +9,10 @@
 		SELECT * FROM USERS WHERE USER_ID = #{userId} AND USER_PWD = #{userPwd}
 	</select>
 	
+	<select id="getUserList" parameterType="userVO" resultType="userVO">
+		SELECT * FROM USERS WHERE GRADE != '관리자'
+	</select>
+	
 	<select id="getUserId" parameterType="userVO" resultType="int">
 		SELECT count(*) FROM USERS WHERE USER_ID = #{userId}
 	</select>
@@ -132,6 +136,9 @@
 		) WHERE R_NUM BETWEEN #{begin} AND #{end}
 	</select>	
 	
+	<select id="getLectureTeacherId" parameterType="likeVO" resultType="likeVO">
+		select * from lecture where lecture_no = #{lectureNo}
+	</select>
 	
 </mapper>
 

@@ -150,7 +150,7 @@
     					  <a href="${pageContext.request.contextPath}/member/goToPersonalPage_Lecture.do?userId=${person.userId }" class="text-dark">강의</a>
 					    </li>
    					  	<li class="nav-item d-flex p-2 w-100">
-						  <a href="#" class="text-dark">로드맵</a>
+						  <a href="${pageContext.request.contextPath}/member/getGoToPersonalRoadPage.do?userId=${person.userId}" class="text-dark">로드맵</a>
 					  	</li>
 					    <li class="nav-item d-flex p-2 w-100">
 					      <a href="#" class="text-dark">수강후기</a>
@@ -262,9 +262,41 @@
 				<hr>
 				<div id="roadmap"> <!-- 로드맵 출력 div 시작 -->
 					<p class="h4 d-inline font-weight-bold">로드맵</p>
-					<div class="d-flex" style="min-height: 200px;">
-						<p class="align-self-center text-center mx-auto">로드맵이 없습니다.</p>
-					</div>
+					
+					<div id="roadmapDefault" class="row"> <!-- 로드맵 출력 div 시작 -->		
+						<c:choose>
+							<c:when test="${not empty get3rovo }">
+								<c:forEach var="get3rovo" items="${get3rovo }">
+								<div class="col-4 card course course_card_item border-0 mb-5" style="height:350px;">
+									<div class="card h-100 border-0">
+									  	<div class="card-image h-50">
+											<img class="card-img-top" src="${get3rovo.rboardCoverimg }" width="100%" alt="${get3rovo.rboardTitle }">
+									  	</div>
+									  	<div class="card-body w-100 overflow-hidden">
+										    <p class="card-title font-weight-bold" style="height:50px;">${get3rovo.rboardTitle }</p>								
+											<span class="card-user font-weight-bold">${get3rovo.userName }</span>
+									      		<a href="${pageContext.request.contextPath}/roadmap/roadmapDetail.do?rboardNo=${get3rovo.rboardNo }" class="stretched-link"></a>
+									  		<p>
+									  			<span class="badge badge-success">+${get3rovo.userCount }명</span>
+									  			<span class="badge badge-success">${get3rovo.lectureCount }개 강의</span>
+									  		</p>
+									  	</div>
+									</div>
+								</div>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<div class="d-flex" style="min-height: 200px;">
+									<p class="align-self-center text-center mx-auto">로드맵이 없습니다.</p>
+								</div>
+							</c:otherwise>
+						</c:choose>
+					</div> <!-- 로드맵 출력 div 끝 -->
+					<c:if test="${not empty get3rovo }">
+						<p style="text-align: center;">
+							<button class="btn btn-success" type="button" value="더보기+" onclick="location.href='${pageContext.request.contextPath}/member/getGoToPersonalRoadPage.do?userId=${person.userId}'">더보기</button>
+						</p>
+					</c:if>
 				</div>
 				<hr>
 				<div id="review">	

@@ -49,6 +49,18 @@ public class ChatDAO {
 	public List<ChatVO> getContentRoomList() {
 		return mybatis.selectList("chatDAO.getContentRoomList");
 	}
+
+	public List<ChatVO> getRegRoomList() {
+		return mybatis.selectList("chatDAO.getRegRoomList");
+	}
+
+	public List<ChatVO> getReversRoomList() {
+		return mybatis.selectList("chatDAO.getReversRoomList");
+	}
+
+	public List<ChatVO> getReversRegRoomList() {
+		return mybatis.selectList("chatDAO.getReversRegRoomList");
+	}
 	
 	
 	

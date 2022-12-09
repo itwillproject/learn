@@ -86,18 +86,33 @@ public class OrderController {
 	}
 	
 	@RequestMapping("/cartDeleteGo.do")
-	@ResponseBody
-	public int cartDeleteGo(OrderCartVO vo, Model model, HttpSession req, @RequestParam(value="checkBoxArr[]") List<Integer> checkBoxArr) {
+	public String cartDeleteGo(OrderCartVO vo, Model model, HttpSession req, @RequestParam(value="checkBoxArr[]") List<Integer> checkBoxArr) {
 		System.out.println(">>>cartDelete_go() 실행");
 		System.out.println("vo : " + vo);
 		System.out.println("list : " + checkBoxArr);
-		int c = 0;
 		for(int checkbox : checkBoxArr) {
 			vo.setCartNo(checkbox);
-			c = orderService.deleteCart(vo);
+			orderService.deleteCart(vo);
 		}
 		
-		return c;
+		List<OrderCartVO> cartList2 = orderService.getCartList(vo);
+		int sum = 0;
+		for(OrderCartVO cvo : cartList2) {
+			cvo.setLectureSalePrice();
+			cvo.setRealSalePrice();
+			sum += cvo.getLecturePrice();
+		}
+		for(OrderCartVO cvo : cartList2) {
+			cvo.setRealPrice(sum);
+		}
+		
+		model.addAttribute("cartList2", cartList2);
+		
+		
+		System.out.println(cartList2);
+		
+		
+		return "/Order/myCartAjaxList.jsp";
 	}
 	
 	@RequestMapping("/pointCheck.do")

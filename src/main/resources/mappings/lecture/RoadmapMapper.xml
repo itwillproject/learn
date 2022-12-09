@@ -141,4 +141,15 @@
 	WHERE ROW_NUM BETWEEN #{begin} AND #{end}
 	</select>
 	
+	<!-- 유저페이지 로드맵을 위한거 -->
+	<select id="get3Roadmap" parameterType="String" resultType="roadmap">
+    	select * from (select * from ROADMAP where user_id = #{userId} ) where rowNUM <![CDATA[ < ]]>= 3 order by rboard_no DESC
+  	</select>
+	
+	<!-- 유저페이지 로드맵을 위한거 -->
+	<select id="getRoadmap" parameterType="String" resultType="roadmap">
+		select * from ROADMAP where user_id = #{userId}
+  	</select>
+  	
+  	
 </mapper>

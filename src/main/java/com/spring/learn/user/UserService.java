@@ -48,6 +48,9 @@ public interface UserService {
 
 	void updateUserIntro(UserVO vo);
 
+		//JM
+	LikeVO getLectureTeacherId(LikeVO vo);
+	List<UserVO> getUserList();
 
 
 }
