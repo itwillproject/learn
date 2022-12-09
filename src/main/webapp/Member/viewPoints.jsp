@@ -2,6 +2,7 @@
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,6 +62,7 @@
             src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+<fmt:requestEncoding value="utf-8"/>
 <%@ include file="../Common/header.jsp"%>
 <div class="container-fluid bg-dark">
     <div class="container tape">
@@ -83,7 +85,9 @@
         <div class="col-8 pl-3 gray-line">
             <div class="pb-3">
                 <h4>현재 사용가능 포인트:
-                    <span style="font-weight: bold; color: #00C471;">${user.points}</span> P</h4>
+                    <span style="font-weight: bold; color: #00C471;">
+                        <fmt:formatNumber type="number" maxFractionDigits="3" value="${user.points}" />
+                    </span> P</h4>
             </div>
             <table class="table">
                 <thead>
@@ -100,18 +104,22 @@
                         <td>${p.orderNo}</td>
                         <td>
                             <c:if test="${p.usepointLog != 0}">
-                                <span style="color: blue">- ${p.usepointLog}</span>
+                                <span style="color: blue">-
+                                    <fmt:formatNumber type="number" maxFractionDigits="3" value="${p.usepointLog}" />
+                                </span>
                             </c:if>
                             <c:if test="${p.usepointLog == 0}">
-                                ${p.usepointLog}
+                                0
                             </c:if>
                         </td>
                         <td>
                             <c:if test="${p.earnPoint != 0}">
-                                <span style="color: red">+ ${p.earnPoint}</span>
+                                <span style="color: red">+
+                                    <fmt:formatNumber type="number" maxFractionDigits="3" value="${p.earnPoint}" />
+                                </span>
                             </c:if>
                             <c:if test="${p.earnPoint == 0}">
-                                ${p.earnPoint}
+                                0
                             </c:if>
                         </td>
                         <td>${fn:substring(p.pointDate, 0, 16)}</td>
@@ -181,14 +189,14 @@
                       dispHtml += '<td>' + this.orderNo + '</td>';
                       dispHtml += '<td>';
                       if(usepoint !== 0) {
-                        dispHtml += '<span style="color: blue">- ' + usepoint + '</span>';
+                        dispHtml += '<span style="color: blue">- ' + usepoint.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '</span>';
                       } else {
                         dispHtml += usepoint;
                       }
                       dispHtml += '</td>';
                       dispHtml += '<td>'
                       if(earnpoint !== 0) {
-                        dispHtml += '<span style="color: red">+ ' + earnpoint + '</span>'
+                        dispHtml += '<span style="color: red">+ ' + earnpoint.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '</span>'
                       } else {
                         dispHtml += earnpoint;
                       }
@@ -234,8 +242,6 @@
                 })
               }
             </script>
-        </div>
-        <div class="col-2 d-flex justify-content-center">
         </div>
     </div>
 </div>

@@ -15,7 +15,4 @@
     <li class="list-group-item">
         <a id="roadmapManager" class="norm-menu" href="${pageContext.request.contextPath}/Teacher/roadmapManager.do">로드맵 관리</a>
     </li>
-    <li class="list-group-item">
-        <a id="chatView" class="norm-menu" href="${pageContext.request.contextPath}/Teacher/chatView.jsp">채팅방 조회</a>
-    </li>
 </ul>

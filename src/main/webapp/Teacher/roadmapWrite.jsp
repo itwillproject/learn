@@ -133,7 +133,7 @@
                 $('#summernote').summernote({
                   tabsize: 2,
                   height: 400,
-                  width: 1100,
+                  width: 1080,
                   callbacks: { // 콜백을 사용
                     // 이미지를 업로드할 경우 이벤트를 발생
                     onImageUpload: function(files, editor, welEditable) {
@@ -174,8 +174,8 @@
           <tr>
             <td colspan="2">
               <button id="send" type="button" class="active-btn">
-                <c:if test="${empty roadmap}">작성</c:if>
-                <c:if test="${not empty roadmap}">수정</c:if>
+                <c:if test="${empty roadmap}">로드맵 작성</c:if>
+                <c:if test="${not empty roadmap}">로드맵 수정</c:if>
               </button>
 
               <script>
