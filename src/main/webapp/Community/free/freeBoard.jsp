@@ -238,7 +238,7 @@
 					intHtml += '</div>';
 					intHtml += '<div class="ml-3">';
 					intHtml += '<div class="row">';
-					intHtml += '<span><h5><b><a href="#">'+ cvo.userName + '</a></b></h5></span>';
+					intHtml += '<span><h5><b><a href="${pageContext.request.contextPath}/member/goToPersonalPage.do?userId='+ cvo.userId + '">'+ cvo.userName + '</a></b></h5></span>';
 					intHtml += '</div>';
 					intHtml += '<div class="row text-secondary">';
 					intHtml += '<span>'+ cvo.commentRegdate +'</span>';
@@ -267,7 +267,7 @@
 							intHtml += '</div>';
 							intHtml += '<div class="ml-4 w-75">';
 							intHtml += '<div class="row">';
-							intHtml += '<span><h5><b><a href="#">'+ cocoment.userName +'</a></b></h5></span>';
+							intHtml += '<span><h5><b><a href="${pageContext.request.contextPath}/member/goToPersonalPage.do?userId='+ cocoment.userId +'">'+ cocoment.userName +'</a></b></h5></span>';
 							intHtml += '<span class="ml-auto">';
 							if("${user.userId}" == cocoment.userId){
 								intHtml += '<a href="javascript:deleteCoco('+ cocoment.comment2No +')">삭제</a>';
@@ -406,7 +406,7 @@
 					<h3><b>${board.boardTitle }</b></h3>
 				</div>
 				<div class="row pl-3 pb-3 gray-line">
-					<p><b>${board.userName } </b></p><p class="text-muted ml-2"> ${board.boardRegdate }</p>
+					<p><a a href="${pageContext.request.contextPath}/member/goToPersonalPage.do?userId=${board.userId }"><b>${board.userName } </b></a></p><p class="text-muted ml-2"> ${board.boardRegdate }</p>
 					
 					<!-- 수정, 삭제하기 -->
 					<p class="ml-auto">
@@ -526,7 +526,7 @@
 					<span><h5><b>
 					<c:choose>
 						<c:when test="${user != null }">
-						<a href="#" style="font-size: 1em">${user.userName}</a>님, 답변해주세요!
+							${user.userName}님, 답변해주세요!
 						</c:when>
 						<c:otherwise>
 						로그인 후 답변이 가능합니다.
@@ -587,7 +587,7 @@
 					</div>
 					<div class="ml-3">
 						<div class="row">
-						<span><h5><b><a href="#">${cvo.userName }</a></b></h5></span>
+						<span><h5><b><a href="${pageContext.request.contextPath}/member/goToPersonalPage.do?userId=${cvo.userId }">${cvo.userName }</a></b></h5></span>
 						</div>
 						<div class="row text-secondary">
 						<span>${cvo.commentRegdate }</span>
@@ -626,7 +626,7 @@
 									
 									<div class="ml-4 w-75">
 										<div class="row">
-											<span><h5><b><a href="#">${ccvo.userName }</a></b></h5></span>
+											<span><h5><b><a href="${pageContext.request.contextPath}/member/goToPersonalPage.do?userId=${ccvo.userId }">${ccvo.userName }</a></b></h5></span>
 											<span class="ml-auto">
 											<c:if test="${user.userId == ccvo.userId }">
 											<a href="javascript:deleteCoco(${ccvo.comment2No })">삭제</a>

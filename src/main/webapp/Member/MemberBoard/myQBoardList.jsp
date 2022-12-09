@@ -96,8 +96,6 @@ function ajaxserachh(pageNum){
 }
 
 
-
-
 function qnaWriteForm() {
 	if(${user.userId == null}){
 		alert("로그인 후 입력해주시기 바랍니다");

@@ -109,7 +109,7 @@
                             <c:if test="${empty timetableNo}">${stu.points}</c:if>
                         </td>
                         <td>
-                            <button class="active-btn">채팅</button>
+                            <button class="active-btn" onclick="location.href='${pageContext.request.contextPath}/memberChat/memberChatRoom.do?senderId=${stu.userId}&receiverId=${user.userId }'">채팅</button>
                         </td>
                     </tr>
                 </c:forEach>

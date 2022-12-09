@@ -191,6 +191,7 @@ body {
     </div>
     </div>
 </li>
+
  <li>
 <button type="button" class="btn" >
       <input type="text" id="search">
@@ -258,8 +259,8 @@ body {
 </li>
 				
 <li>
-	<button class="btn" style="width: 40px; padding: 6px 12px" type="button" onclick="location.href='${pageContext.request.contextPath}/memberChat/memberChatListGo.do?userId=${user.userId }'">
-		<img alt="채팅리스트" src="${pageContext.request.contextPath}/picture/chat/chatOff.png">
+	<button class="btn" type="button" onclick="location.href='${pageContext.request.contextPath}/memberChat/memberChatListGo.do?userId=${user.userId }'">
+		<i class='fab fa-rocketchat' style='font-size:24px'></i>
 	</button>
 </li>					
 <li>

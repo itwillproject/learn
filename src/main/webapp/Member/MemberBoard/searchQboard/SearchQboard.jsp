@@ -26,6 +26,57 @@
 	</table>
 </div>
 
+<div id="center">
+<table class="center">
+	<thead>
+		<tr>
+		    <th width="25%">작성자</th>
+		    <th>제목</th>
+		    <th width="20%">등록일</th>
+		    <th width="10%">답변여부</th>
+		</tr>
+	</thead>
+	<tbody>
+		<c:if test="${not empty memberBoardList}">
+	<c:forEach var="qna" items="${memberBoardList}">
+				<tr>
+				    <td>${qna.userName }</td>
+				    <!-- 게시글 상세링크 가져와서 걸어주기 재영씨 링크로 갈예정 -->
+				    <c:if test="${qna.qnaTitle eq null}">
+				    <td class="title"><a class='text-secondary' href="${pageContext.request.contextPath}/memberBoard/viewPage.do?qnaNo=${qna.qnaNo }">제목없음</a></td>
+				    </c:if>
+				     <c:if test="${qna.qnaTitle ne null}">
+				    <td class="title"><a href="${pageContext.request.contextPath}/memberBoard/viewPage.do?qnaNo=${qna.qnaNo }">${qna.qnaTitle }</a></td>
+				    </c:if>
+				    <!-- 제목길경우를 대비해 10자리까만 표시 -->
+				    <td>${qna.qnaRegdate.substring(0,10) }</td>
+				    <c:if test="${qna.qnaAdopt eq 'FALSE'}">
+				    <td>미답변</td>
+				    </c:if>
+				    <c:if test="${qna.qnaAdopt eq 'TRUE'}">
+				    <td>답변완료</td>
+				    </c:if>
+				</tr>
+			</c:forEach>
+		</c:if>
+		<!-- 게시글 없을 경우 표시할 내용 -->
+		<c:if test="${empty memberBoardList}">
+			<tr>
+				<td colspan="3">
+					<span style="text-align: center;">데이터가 없습니다.</span>
+				</td>
+			</tr>
+		</c:if>
+	</tbody>
+</table>
+</div>
+
+
+
+
+
+
+
 <div id="paging">
 
 	<ul>
