@@ -42,7 +42,7 @@
 			var joiner = JSON.parse(jsonData)[1];
 			
 			
-			$("#revenueTot").html("총 "+(revenue.thisMonthOnRevenue+revenue.thisMonthOffRevenue)+" 원");
+			$("#revenueTot").html("총 "+(revenue.thisMonthOnRevenue+revenue.thisMonthOffRevenue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+" 원");
 			$("#joinerTot").html("총 "+(joiner.thisMonthGeneralJoiner+joiner.thisMonthGoogleJoiner+joiner.thisMonthNaverJoiner)+" 명");
 	    	 
 			
@@ -206,7 +206,7 @@
 	            	
 	            	dispHTML += '';
 					$.each(data.list, function(idx, obj){
-						dispHTML += '<p class="h6" onclick="location.href=\'${pageContext.request.contextPath}/Member/getLecture.do?qnaNo='+obj.qnaNo+'\';">'+obj.qnaTitle+'</p>';
+						dispHTML += '<p class="h6" onclick="location.href=\'${pageContext.request.contextPath}/memberBoard/viewPage.do?qnaNo='+obj.qnaNo+'\';">'+obj.qnaTitle+'</p>';
 					})
 					$(".callcenter").html(dispHTML);
 					

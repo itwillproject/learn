@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -211,17 +212,23 @@
 												(${lecture.reviewCount })
 											</span>
 											<c:choose>
-												<c:when test="${lecture.lecturePrice != lecture.salePrice}">
-													<p class="card-price">	
-														<del class="text-secondary">&#8361; ${lecture.lecturePrice }</del>
-														<span class="text-primary font-weight-bold h5">&#8361; ${Math.round(lecture.salePrice) }</span>
-													</p>
-												</c:when>
-												<c:otherwise>
-													<p class="card-price">
-														<span class="font-weight-bold h5">&#8361; ${lecture.lecturePrice }</span>
-													</p>										
-												</c:otherwise>
+											<c:when test="${lecture.lecturePrice != lecture.salePrice}">
+												<p class="card-price">	
+													<del class="text-secondary">&#8361; 
+														<fmt:formatNumber type="number" maxFractionDigits="3" value="${lecture.lecturePrice }" />
+													</del>
+													<span class="text-primary font-weight-bold h5">&#8361;
+														<fmt:formatNumber type="number" maxFractionDigits="3" value="${Math.round(lecture.salePrice) }" />
+													</span>
+												</p>
+											</c:when>
+											<c:otherwise>
+												<p class="card-price">
+													<span class="font-weight-bold h5">&#8361;
+														<fmt:formatNumber type="number" maxFractionDigits="3" value="${lecture.lecturePrice }" />		
+													</span>
+												</p>										
+											</c:otherwise>
 											</c:choose>
 									      	<a href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo=${lecture.lectureNo }" class="stretched-link"></a>
 									  		<span class="badge badge-success">+${lecture.studentCount }명</span>
@@ -230,11 +237,11 @@
 										     <div class="w-100 h-75 overflow-hidden">
 											      <p class="font-weight-bold">${lecture.lectureTitle }</p>
 													<c:choose>
-														<c:when test="${fn:length(lecture.lectureContent) gt 100}">
-															<p>${fn:substring(lecture.lectureContent, 0, 100)}...</p>
+														<c:when test="${fn:length(lecture.lectureSummary) gt 100}">
+															<p>${fn:substring(lecture.lectureSummary, 0, 100)}...</p>
 														</c:when>
 														<c:otherwise>
-															<p>${lecture.lectureContent }</p>
+															<p>${lecture.lectureSummary }</p>
 														</c:otherwise>
 													</c:choose>
 										     </div>
