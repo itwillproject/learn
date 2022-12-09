@@ -12,6 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/Community/css/jyStyle.css">
 
 <link href="${pageContext.request.contextPath }/Admin/css/sideNav.css" rel="stylesheet" type="text/css">
 <style>
@@ -93,6 +94,95 @@
 	}
 	
 </style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	removeImg();
+});
+
+function removeImg(){
+	$(".contentWrap br").remove();
+	$(".contentWrap img").unwrap();
+	$(".contentWrap img").remove();		
+	$(".contentWrap hr").remove();		
+}
+
+$(document).on("keyup", "#searchKeyword", function(){
+	ajaxserachh();
+});
+
+$(document).on("click", ".adopt", function(){
+	$(".adopt").removeClass('black-line');
+	$(".adopt").removeClass('active');
+	$(this).addClass('black-line');		
+	$(this).addClass('active');		
+	ajaxserachh();
+});
+
+$(document).on("click", ".adoptItem", function(){
+	$(".adoptItem").removeAttr('id', 'adopt');
+	$(this).attr('id', 'adopt');
+});
+
+
+function pageGo(pageNum){		
+	ajaxserachh(pageNum);
+}
+
+function ajaxserachh(pageNum){
+	var searchKeyword = $("#searchKeyword").val().trim();
+	var boardAdopt =  $("#adopt").text();
+	
+	var gogo = "${pageContext.request.contextPath}/memberBoard/getMyQBoardListAj.do?searchKeyword=" + searchKeyword
+	if (boardAdopt != null){
+		var gogo = gogo + '&qnaAdopt=' + boardAdopt
+	}
+	if (pageNum != null){
+		var gogo = gogo + '&cPage=' + pageNum
+	}
+	
+	
+	$.ajax({
+		url: gogo,
+		type : "get",
+		async : true,
+		
+		success : function(data){
+			console.log("에이젝스 성공!!");
+			console.log(data);
+
+			var html = jQuery('<div>').html(data);
+			var center = html.find("div#center").html();
+			
+				$("#searchList").html(center);
+			
+			var paging = html.find("div#paging").html();
+			
+				$("#paginations").html(paging);
+			
+			removeImg();
+		},
+		
+		error : function(){
+			console.log("에이젝스 실패!!");
+		}
+			
+	});
+	
+}
+
+
+function qnaWriteForm() {
+	if(${user.userId == null}){
+		alert("로그인 후 입력해주시기 바랍니다");
+		return false;
+	}
+	location.href='${pageContext.request.contextPath}/memberBoard/qnaWriteForm.do';
+}
+
+</script>
+
+
 </head>
 <body>
 <%@ include file="/Admin/common/adminHeader.jspf" %>
@@ -103,42 +193,45 @@
 <!-- 	  <li class="li"><a style="background: #00C471; color: white; font-size: 1.5em">CS관리</a></li> -->
 	  <li class="li"><a  href="${pageContext.request.contextPath }/getNoticeAdminList.do">공지사항</a></li>
 	  <li class="li"><a  href="${pageContext.request.contextPath }/getAdminFaqList.do">자주묻는질문</a></li>
-	   <li class="li"><a style="color: #00C471;" href="getMyQBoardListM.do">Q & A</a></li>
+	   <li class="li"><a style="color: #00C471;" href="${pageContext.request.contextPath }/memberBoard/getMyQBoardListM.do">Q & A</a></li>
 	</ul>
 </div>
 <br><br>
 
 <!-- 검색창 QnA로 검색으로 바꾸기 -->
-<form action="${pageContext.request.contextPath}/memberBoard/getMyQBoardListM.do" method="post">
-	<div class="outer">
-		<div class="search">
-		  <div class="input-group mb-3">
-			    <input type="text" class="form-control" placeholder="검색어를 입력하세요." size="10" name="searchKeyword">
-			    <div class="input-group-append">
-			      <button class="btn btn-success" type="submit">검색</button>  
-			     </div>
-		  </div>
-		</div>
-	</div>
-</form>
+<%-- <form action="${pageContext.request.contextPath}/memberBoard/getMyQBoardListM.do" method="post"> --%>
+<!-- 	<div class="outer"> -->
+<!-- 		<div class="search"> -->
+<!-- 		  <div class="input-group mb-3"> -->
+<!-- 			    <input type="text" class="form-control" placeholder="검색어를 입력하세요." size="10" id="searchKeyword" name="searchKeyword"> -->
+<!-- 			    <div class="input-group-append"> -->
+<!-- 			      <button class="btn btn-success" type="submit">검색</button>   -->
+<!-- 			     </div> -->
+<!-- 		  </div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+<!-- </form> -->
 <br>
 
 <div class="d-flex">
 				<nav class="navbar navbar-expand-sm navbar-light p-3"  style="margin-left: 450px;">
-                    <ul class="navbar-nav gray-botton w-100" style="border-bottom: 1px solid gray">
-                        <li class="nav-item active black-line">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardListM.do">전체</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardListM.do?qnaAdopt=FALSE">미답변</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardListM.do?qnaAdopt=TRUE">답변완료</a>
-                        </li>
-                    </ul>
+              <ul class="navbar-nav gray-botton w-100" style="border-bottom: 1px solid gray">
+                  <li class="nav-item active adopt black-line">
+                  <a class="nav-link adoptItem" id="adopt" >전체</a>
+                  </li>
+                  <li class="nav-item adopt">
+                  <a class="nav-link adoptItem" >미해결</a>
+                  </li>
+                  <li class="nav-item adopt">
+                  <a class="nav-link adoptItem" >해결됨</a>
+                  </li>
+              </ul>
 				</nav>
+				
+				<input type="text" placeholder="검색어를 입력하세요." id="searchKeyword" name="searchKeyword" style="margin-left: 450px; margin-top:20px; height: 30px; width: 500px;">
 </div>
 <!-- 본문 -->
+<div id="searchList">	
 <table class="center">
 	<thead>
 		<tr>
@@ -152,7 +245,7 @@
 		<c:if test="${not empty memberBoardList}">
 	<c:forEach var="qna" items="${memberBoardList}">
 				<tr>
-				    <td>${qna.userId }</td>
+				    <td>${qna.userName }</td>
 				    <!-- 게시글 상세링크 가져와서 걸어주기 재영씨 링크로 갈예정 -->
 				    <c:if test="${qna.qnaTitle eq null}">
 				    <td class="title"><a class='text-secondary' href="${pageContext.request.contextPath}/memberBoard/viewPage.do?qnaNo=${qna.qnaNo }">제목없음</a></td>
@@ -181,6 +274,8 @@
 		</c:if>
 	</tbody>
 </table>
+</div>
+
 <br>
 
 <%-- <div class="outer2">
@@ -193,26 +288,40 @@
 <br>
 	
 <!-- 페이징처리-->
-<div class="page_wrap">
-   <div class="page_nation">
-	<c:if test="${pvo.beginPage != 1}">	
-		<a class="arrow prev" href="getNoticeAdminList.do?cPage=${pvo.beginPage - 1 }">&lt</a>
-	</c:if>
-	
-	<c:forEach var="pageNo" begin="${pvo.beginPage }" end="${pvo.endPage }">
-		<c:if test="${pageNo == pvo.nowPage }">
-			<a class="active">${pageNo}</a>
-		</c:if>
-		<c:if test="${pageNo != pvo.nowPage }">
-			<a href="getNoticeAdminList.do?cPage=${pageNo }">${pageNo}</a>
-		</c:if>
-	</c:forEach>	
-	
-	<c:if test="${pvo.endPage < pvo.totalPage}">
-		<a class="arrow next" href="getNoticeAdminList.do?cPage=${pvo.endPage + 1 }">&gt</a>
-	</c:if>
-   </div>
-</div> 		
+   				<c:if test="${pvo.totalRecord != 0 }">
+				
+				<div id="paginations" class="pagination p12 justify-content-center">
+			      <ul>
+ 					<c:if test="${pvo.beginPage == 1 }">
+			        	<a href="#" class="disabled"><li>이전페이지</li></a>
+					</c:if>
+					<c:if test="${pvo.beginPage != 1 }">
+			        	<a href="javascript:pageGo(${pvo.beginPage -1 })">
+			        	<li>이전페이지</li></a>
+					</c:if>
+					
+					
+					<c:forEach var="pageNo" begin="${pvo.beginPage }" end="${pvo.endPage }">
+						<c:if test="${pageNo == pvo.nowPage }">
+				        	<a href="#" class="is-active disabled" ><li>${pageNo }</li></a>
+						</c:if>
+						
+						<c:if test="${pageNo != pvo.nowPage }">
+					        <a href="javascript:pageGo(${pageNo })"><li>${pageNo }</li></a>
+						</c:if>
+					</c:forEach>
+
+					
+					<c:if test="${pvo.endPage < pvo.totalPage }">
+				        <a href="javascript:pageGo(${pvo.endPage + 1 })"><li>다음페이지</li></a>
+					</c:if>
+					<c:if test="${pvo.endPage >= pvo.totalPage }">
+				        <a href="#" class="disabled" ><li>다음페이지</li></a>
+					</c:if>
+					
+			      </ul>
+			    </div>
+			    </c:if> 		
 
 <br><br>
 

@@ -154,7 +154,7 @@
 				<table class="qna" id="dispBody">
 					<tr>
 						<th colspan="2">
-							<h4><a href="${pageContext.request.contextPath }/getMyQBoardListM.do">Q&A 바로가기</a></h4>
+							<h4><a href="${pageContext.request.contextPath }/memberBoard/getMyQBoardListM.do">Q&A 바로가기</a></h4>
 						</th>
 					</tr>
 					<tr>

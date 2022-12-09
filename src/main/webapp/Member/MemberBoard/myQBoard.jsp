@@ -6,9 +6,9 @@
 <meta charset="UTF-8">
 <title>글상세페이지</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/Community/css/jyStyle.css">
@@ -21,22 +21,28 @@
 
 	<script>
 	$(document).ready(function() {
-		   $('#summernote').summernote({
-		     height: 300,                 // set editor height
-		     minHeight: null,             // set minimum height of editor
-		     maxHeight: null,             // set maximum height of editor
-		     focus: true,                  // set focus to editable area after initializing summernote
-		     callbacks: { // 콜백을 사용
-		       // 이미지를 업로드할 경우 이벤트를 발생
-		       onImageUpload: function(files, editor, welEditable) {
-		         sendFile(files[0], this);
-		       }
-		     }
-		   });
-		   
-		$('.summernote').summernote();
 		
-		 });
+		var fontList = ['맑은 고딕','굴림','돋움','바탕','궁서','NotoSansKR','Arial','Courier New','Verdana','Tahoma','Times New Roamn'];
+		var setting = {
+				height: 150,                 // set editor height
+				minHeight: null,             // set minimum height of editor
+				maxHeight: null,             // set maximum height of editor
+				focus: true,                  // set focus to editable area after initializing summernote
+				lang : 'ko-KR',
+				fontNames: fontList,
+				callbacks: { // 콜백을 사용
+				// 이미지를 업로드할 경우 이벤트를 발생
+				onImageUpload: function(files, editor, welEditable) {
+					for (var i = files.length - 1; i >= 0; i--) {
+						uploadSummernoteImageFile(files[i], this);
+						}
+					}
+				}
+		};				
+		   
+		$('#summernote').summernote(setting);
+		
+	});
 
 		 function sendFile(file, editor) {
 		   // 파일 전송을 위한 폼생성
@@ -125,7 +131,7 @@
 		
 		
 <!-- 		<div> 문의게시판에는 답글을 하나만 달 수 있습니다 </div> -->
-		<c:if test=" ${cvoCnt < 1 } ">
+		<c:if test="${user.grade eq '관리자' && cvoCnt < 1}">
 		<div class="row w-50 border mx-auto rounded bg-white px-3 py-5" >
 			<div class="w-100 mb-3 ml-3 text-editor-block d-flex align-items-center">
 				<div class="ml-3">
@@ -145,7 +151,7 @@
 		<!-- 댓글 입력 부분 -->
 			<div class="row w-100 w-100 p-3 mx-auto">
 				<form method="post" class="w-100" action="${pageContext.request.contextPath}/memberBoard/addCallcenterComment.do?qnaNo=${callBvo.qnaNo}">
-					<textarea class="summernote" name="commentContent"></textarea>
+					<textarea id="summernote" name="commentContent"></textarea>
 					<div class="row mt-3">
 						<button class="btn btn-success ml-auto">답변등록</button>
 					</div>
@@ -173,7 +179,6 @@
 			<div class="row w-100  mt-3 mb-3">
 				<div class="w-100 flex-row d-flex">
 					<P class="ml-auto">
-					<a>수정</a> 
 					<a href="javascript:deleteOk(${cvo.commentNo })">삭제</a>
 					</P>
 				</div>
@@ -184,7 +189,7 @@
 					</div>
 					<div class="ml-3">
 						<div class="row">
-						<span><h5><b><a href="#">${cvo.userId }</a></b></h5></span>
+						<span><h5><b><a href="#">${cvo.userName }</a></b></h5></span>
 						</div>
 						<div class="row text-secondary">
 						<span>${cvo.commentRegdate }</span>

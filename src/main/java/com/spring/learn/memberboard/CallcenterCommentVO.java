@@ -1,7 +1,9 @@
 package com.spring.learn.memberboard;
 
 public class CallcenterCommentVO {
-	private String commentNo,qnaNo,userId,grade,commentContent,commentRegdate,commentFile;
+	private String commentNo,qnaNo,userId,grade,commentContent,commentRegdate,commentFile
+	,userName
+	;
 
 	public String getCommentNo() {
 		return commentNo;
@@ -58,12 +60,20 @@ public class CallcenterCommentVO {
 	public void setCommentFile(String commentFile) {
 		this.commentFile = commentFile;
 	}
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
 	@Override
 	public String toString() {
 		return "CallcenterCommentVO [commentNo=" + commentNo + ", qnaNo=" + qnaNo + ", userId=" + userId + ", grade="
 				+ grade + ", commentContent=" + commentContent + ", commentRegdate=" + commentRegdate + ", commentFile="
-				+ commentFile + "]";
+				+ commentFile + ", userName=" + userName + "]";
 	}
-	
+
 }
