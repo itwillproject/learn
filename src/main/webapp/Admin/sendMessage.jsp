@@ -120,6 +120,7 @@
 
 	$(document).on("click", "#send", function(){
 		//console.log($('#mailForm [name="receiver"]').val());
+		localStorage.removeItem('html'); //삭제
 		$('#mailForm').submit();
 	})
 	

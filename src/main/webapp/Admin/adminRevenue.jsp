@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <meta charset="UTF-8">
@@ -184,8 +185,8 @@
 			            	dispHTML += '<td class="h6 text-center">'+ obj.teacher.split('@')[0]+'</td>';
 			            	dispHTML += '<td class="h6 text-center">'+obj.lectureOnOff+'</td>';
 			            	dispHTML += '<td class="h6 text-center">'+obj.orderRegdate+'</td>';
-			            	dispHTML += '<td class="h6 text-center">'+obj.lecturePrice+'</td>';
-			            	dispHTML += '<td class="h6 text-center">'+obj.commission+'</td>';
+			            	dispHTML += '<td class="h6 text-center">'+obj.lecturePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</td>';
+			            	dispHTML += '<td class="h6 text-center">'+obj.commission.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</td>';
 			            	dispHTML += '</tr>';
 				           
 	           			});
@@ -333,8 +334,12 @@
      							<td class="h6 text-center">${fn:substringBefore(order.teacher, '@') }</td>
      							<td class="h6 text-center">${order.lectureOnOff }</td>
      							<td class="h6 text-center">${order.orderRegdate }</td>
-     							<td class="h6 text-center">${order.lecturePrice }</td>
-     							<td class="h6 text-center">${order.commission }</td>
+     							<td class="h6 text-center">
+     								<fmt:formatNumber type="number" maxFractionDigits="3" value="${order.lecturePrice }" /> 								
+     							</td>
+     							<td class="h6 text-center">
+     								<fmt:formatNumber type="number" maxFractionDigits="3" value="${order.commission}" />
+     							</td>
      						</tr>
      					</c:forEach>
      				</c:otherwise>
