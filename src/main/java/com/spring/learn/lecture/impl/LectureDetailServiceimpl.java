@@ -105,6 +105,31 @@ public class LectureDetailServiceimpl implements LectureDetailService {
 		
 	}
 
+	public ClassVO getClassDetail(String classNo) {
+		ClassVO vo = lectureDetailDAO.getClassDetail(classNo);
+		return vo;
+	}
+
+	public int checkpurchase(HashMap<String, String> map) {
+		int checkValue = lectureDetailDAO.checkpurchase(map);
+		return checkValue;
+	}
+	
+	public int checkCart(HashMap<String, String> map) {
+		int checkValue = lectureDetailDAO.checkCart(map);
+		return checkValue;
+	}
+
+	public void deleteComment(LectureCommentVO vo) {
+		lectureDetailDAO.deleteComment(vo);
+		
+	}
+
+	public int[] getMyBoardNo(HashMap<String, String> map) {
+		int[] arr = lectureDetailDAO.getMyBoardNo(map);
+		return arr;
+	}
+
 
 
 	

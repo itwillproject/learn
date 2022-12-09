@@ -26,7 +26,6 @@
 	</table>
 </div>
 
-
 <div id="paging">
 
 	<ul>

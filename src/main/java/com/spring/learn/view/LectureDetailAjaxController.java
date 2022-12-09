@@ -143,6 +143,7 @@ public List<LectureCommentVO> ajaxGetLectureCommentRateAsc(int lectureNo) {
 
 }
 
+//답글달기
 @RequestMapping(value = "ajaxInsertCommentReply.do")
 @ResponseBody
 public List<LectureReviewCommentVO> ajaxInsertCommentReply(String boardNo, String lectureNo, String replyContent, HttpSession session) {
@@ -165,25 +166,40 @@ public List<LectureReviewCommentVO> ajaxInsertCommentReply(String boardNo, Strin
 
 }
 
+//답변 삭제하기
 @RequestMapping(value = "ajaxDeleteCommentReply.do")
 @ResponseBody
-public List<LectureReviewCommentVO> ajaxDeleteCommentReply(String boardNo, String lectureNo) {
+public int ajaxDeleteCommentReply(String boardNo, String lectureNo) {
 	
 	System.out.println("boardNo : " + boardNo);
 	
 	LectureReviewCommentVO reply = new LectureReviewCommentVO();
 	reply.setBoardNo(boardNo);
 	
-	System.out.println("표시선------------");
-	
 	lectureDetailService.deleteReply(reply);
-	List<LectureReviewCommentVO> list =  lectureDetailService.getReplyList(lectureNo);
-	System.out.println(list);
+
 	
-	return list;
+	return 0;
 
 }
 
+//수강후기 삭제하기
+@RequestMapping(value = "ajaxDeleteComment.do")
+@ResponseBody
+public int ajaxDeleteComment(String boardNo, String lectureNo) {
+	
+	System.out.println("boardNo : " + boardNo);
+	
+	LectureCommentVO comment = new LectureCommentVO();
+	comment.setBoardNo(Integer.parseInt(boardNo));
+	comment.setLectureNo(Integer.parseInt(lectureNo));
+	
+	lectureDetailService.deleteComment(comment);
+	
+	return 0;
+
+}
+//답변 리스트 불러오기
 @RequestMapping(value = "ajaxGetCommentReply.do")
 @ResponseBody
 public List<LectureReviewCommentVO> ajaxGetCommentReply(String lectureNo) {

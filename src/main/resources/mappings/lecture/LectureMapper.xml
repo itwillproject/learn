@@ -372,6 +372,19 @@
   		SELECT COUNT(*) FROM LECTURE
 		WHERE USER_ID = #{userId}
   </select>
+  
+    <select id="getLectureProfilePage_old" parameterType="map" resultType="lecture">
+		SELECT *
+		FROM (SELECT ROWNUM R_NUM, B.*
+	        FROM (	SELECT *
+	                FROM LECTURE
+		                WHERE USER_ID = #{userId}
+	                 	ORDER BY LECTURE_NO
+	             ) B 
+	         )
+		WHERE R_NUM BETWEEN #{begin} AND #{end}
+  </select>
+  
    <!-- ===================== -->
 
 

@@ -115,7 +115,9 @@ public String login(HttpServletRequest request, UserVO vo, Model model){
 			UserVO vo2 = userService.getUser(vo);
 			session.setAttribute("user", vo2);
 			if (vo2.getGrade().equals("관리자")) {
-				str = "/Admin/adminIndex.jsp"; //회원등급이 관리자일 경우 관리자 페이지로 전환
+				str = "/Admin/adminIndex.do"; //회원등급이 관리자일 경우 관리자 페이지로 전환
+			} else {
+				str = "/common/main.do";
 			}
 		} else { // 로그인 실패
 			System.out.println(">> 로그인 실패~~~");
@@ -582,14 +584,13 @@ public String login(HttpServletRequest request, UserVO vo, Model model){
 	public String goToPersonalPage_Lecture(UserVO vo, Paging p, Model model) {
 		
 		UserVO person = userService.findUserId(vo); 
+		System.out.println("person : " + person);
 		model.addAttribute("person", person);
 		
-		System.out.println(person.getGrade());
-	
-        Integer studentCnt = lectureService.getStudentCount(person.getUserName());
+        Integer studentCnt = lectureService.getStudentCount(person.getUserId());
         model.addAttribute("studentCnt", studentCnt);
         
-        String lectureRate = String.format("%.2f", lectureService.getLectureAvgRate(person.getUserName()));
+        String lectureRate = String.format("%.2f", lectureService.getLectureAvgRate(person.getUserId()));
         model.addAttribute("lectureRate", lectureRate);
         
         //==================================================
@@ -634,7 +635,13 @@ public String login(HttpServletRequest request, UserVO vo, Model model){
 
 		// 리스트 가져오기
 		List<LectureVO> list = lectureService.getLectureProfilePage(map);
-
+		for (int i = 0; i < list.size(); i++) {
+			list.get(i).setSalePrice();
+			list.get(i).setStudentCount(lectureService.countStudents(list.get(i).getLectureNo())); // 수강생수
+			list.get(i).setLectureRate(lectureService.getAvgLecture(list.get(i).getLectureNo())); //평점
+			list.get(i).setReviewCount(lectureService.countLectureReview(list.get(i).getLectureNo())); //리뷰 개수
+		}	
+				
 		// 리스트 모델에 저장
 		if (list != null) {
 			model.addAttribute("lectures", list);
@@ -642,6 +649,87 @@ public String login(HttpServletRequest request, UserVO vo, Model model){
 		}		
 		
 		System.out.println("list : " + list);
+		
+		String listUp = "new";
+		model.addAttribute("listUp", listUp);
+        
+		return "/Member/userPageLecture.jsp";		
+			
+	}
+	
+	//사용자조회 - 강의목록(현지) - 오래된순
+	@RequestMapping("/goToPersonalPage_Lecture_old.do")
+	public String goToPersonalPage_Lecture_old(UserVO vo, Paging p, Model model) {
+		
+		UserVO person = userService.findUserId(vo); 
+		System.out.println("person : " + person);
+		model.addAttribute("person", person);
+		
+        Integer studentCnt = lectureService.getStudentCount(person.getUserId());
+        model.addAttribute("studentCnt", studentCnt);
+        
+        String lectureRate = String.format("%.2f", lectureService.getLectureAvgRate(person.getUserId()));
+        model.addAttribute("lectureRate", lectureRate);
+        
+        //==================================================
+        p.setNumPerPage(6);
+		p.setNumPerBlock(10);
+		
+		// 전체 페이지 수 구하기
+		p.setTotalRecord(lectureService.countLectureProfilePage(person));
+		p.setTotalPage();
+		
+		// 현재 페이지 구하기
+		if (p.getcPage() != 0) {
+			p.setNowPage(p.getcPage());
+		}
+		
+		// 현재 페이지에 시작할 첫게시글 번호, 끝 게시글 번호
+		p.setEnd(p.getNowPage()*p.getNumPerPage());
+		p.setBegin(p.getEnd() - p.getNumPerPage() +1);
+		
+		// 끝번호가 더 크면 토탈번호와 맞게 하기 - 끝블록 끝페이지 때문
+		if (p.getEnd() > p.getTotalRecord()) p.setEnd(p.getTotalRecord());
+		
+		// 블록 계산하기
+		int nowPage = p.getNowPage();
+		int beginPage = (nowPage -1) / p.getNumPerBlock() * p.getNumPerBlock() + 1;
+		p.setBeginPage(beginPage);
+		p.setEndPage(beginPage + p.getNumPerBlock() - 1);
+		
+		if (p.getEndPage() > p.getTotalPage()) p.setEndPage(p.getTotalPage());		
+		
+		System.out.println("계산된 lectures paging : " + p);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", person.getUserId());
+		map.put("begin", Integer.toString(p.getBegin()));
+		map.put("end", Integer.toString(p.getEnd()));
+		
+		List<LectureVO> all = lectureService.getLectureProfileAll(person);
+		if (all.size() != 0) {
+			model.addAttribute("lecturesSize", all.size());
+		}
+
+		// 리스트 가져오기
+		List<LectureVO> list = lectureService.getLectureProfilePage_old(map);
+		for (int i = 0; i < list.size(); i++) {
+			list.get(i).setSalePrice();
+			list.get(i).setStudentCount(lectureService.countStudents(list.get(i).getLectureNo())); // 수강생수
+			list.get(i).setLectureRate(lectureService.getAvgLecture(list.get(i).getLectureNo())); //평점
+			list.get(i).setReviewCount(lectureService.countLectureReview(list.get(i).getLectureNo())); //리뷰 개수
+		}	
+				
+		// 리스트 모델에 저장
+		if (list != null) {
+			model.addAttribute("lectures", list);
+			model.addAttribute("pvo", p);
+		}		
+		
+		System.out.println("list : " + list);
+		
+		String listUp = "old";
+		model.addAttribute("listUp", listUp);
         
 		return "/Member/userPageLecture.jsp";		
 			
