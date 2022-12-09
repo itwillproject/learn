@@ -193,8 +193,10 @@ body {
 </li>
 
  <li>
-<button type="button" class="btn" >
-      <input type="text" id="search">
+   <button type="button" class="btn" >
+      <form action="${pageContext.request.contextPath}/common/getIndexSearch.do">
+         <input id="search" type="text" name="searchKeyword">
+      </form>
     </button>
 </li>    
 <c:if test="${empty user.userId }">

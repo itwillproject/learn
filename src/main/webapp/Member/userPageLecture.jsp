@@ -166,7 +166,7 @@
 				<c:if test="${not empty lecturesSize}">
 				<div>
 					<div class="col-2 form-group pr-0" style="float: right;">
-						<select id="filter" name="filter" onchange="chageSelect('${person.userId }')"> 
+						<select id="filter" name="filter" class="form-control w-100 float-right pr-0" onchange="chageSelect('${person.userId }')"> 
 							<c:if test="${listUp eq 'new'}">
 								<option value="new" selected="selected">최신순</option>
 								<option value="old">오래된순</option>
