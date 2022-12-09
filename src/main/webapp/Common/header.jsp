@@ -227,6 +227,13 @@ padding:10px;
 						<i class="fas fa-cart-plus fa-lg"></i>
 					</button> &nbsp;
 				</li>
+				
+<li>
+	<button class="btn" style="width: 40px; padding: 6px 12px" type="button" onclick="location.href='${pageContext.request.contextPath}/memberChat/memberChatListGo.do?userId=${user.userId }'">
+		<img alt="채팅리스트" src="${pageContext.request.contextPath}/picture/chat/chatOff.png">
+	</button>
+</li>				
+				
 <li>
     <div class="dropdown">
         <button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/Member/myPage.jsp'"><i class="far fa-user fa-lg"></i></button>
