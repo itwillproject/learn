@@ -197,21 +197,6 @@ function qnaWriteForm() {
 </div>
 <br><br>
 
-<!-- 검색창 QnA로 검색으로 바꾸기 -->
-<<<<<<< HEAD
-<form action="${pageContext.request.contextPath}/memberBoard/getMyQBoardListM.do" method="post">
-	<div class="outer">
-		<div class="search">
-		  <div class="input-group mb-3">
-			    <input type="text" class="form-control" placeholder="검색어를 입력하세요." size="10" name="searchKeyword">
-			    <div class="input-group-append">
-			      <button class="btn btn-success" type="submit">검색</button>  
-			     </div>
-		  </div>
-		</div>
-	</div>
-</form>
-
 <br>
 
 <div class="d-flex">
