@@ -272,7 +272,7 @@ body {
             <a class="dropdown-item"><small>${user.grade }</small></a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/viewPoints.do"><small>포인트: ${user.points }점</small></a>
             <a class="dropdown-item"><hr></a>
-            <a class="dropdown-item" href="#">내 학습</a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/memberBoard/goMyLectureList.do">내 학습</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/inquiry.jsp">작성한 게시글</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/likeGo.do?userId=${user.userId }">좋아요</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Order/orderDetailGo.do?userId=${user.userId }">구매내역</a>

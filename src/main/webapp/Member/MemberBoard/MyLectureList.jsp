@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -193,6 +194,7 @@
 					
 					
 				<div class="container mt-3" id="myLectures">
+				
 						<c:forEach varStatus="vs" var="myOrderDetail" items="${myOrderDetailList }" >
 						
 							<c:if test="${vs.count % 3 == 1 }">
@@ -201,9 +203,9 @@
 							
 							<div class="col-4 border">
 							
-							<%-- <p>${myOrderDetail.lectureNo }</p> --%>
-							<a href="#"><img class="mx-auto" width="220px" alt="lectureImg" src="${pageContext.request.contextPath}/filepath/${myOrderDetail.lectureCoverimg }"></a>  <!-- 이미지 파일에서 불러오는 것은 차후에 구현 -->
-							<p><a href="#">${myOrderDetail.lectureTitle }</a></p>
+							<p>${myOrderDetail.lectureNo }</p>
+							<a href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo=${myOrderDetail.lectureNo }"><img class="mx-auto" width="220px" alt="lectureImg" src="${pageContext.request.contextPath}/filepath/${myOrderDetail.lectureCoverimg }"></a>  <!-- 이미지 파일에서 불러오는 것은 차후에 구현 -->
+							<p><a href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo=${myOrderDetail.lectureNo }">${myOrderDetail.lectureTitle }</a></p>
 							
 							</div>
 							
