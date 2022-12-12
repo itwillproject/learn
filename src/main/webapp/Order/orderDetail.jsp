@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +15,7 @@ th, td {
 </style>
 </head>
 <body>
+<fmt:requestEncoding value="utf-8"/>
 	<%@include file="/Common/header.jsp"%>
 
 	<div class="column is-centered">
@@ -50,14 +52,14 @@ th, td {
 											style="color: black; text-decoration: underline;"><B>${orderList.lectureTitle }</B></a></td>
 										<td class="pay_price" style="vertical-align: middle; text-align: right;">
 										<c:if test="${orderList.lectureSalerate != 0}">
-											<span>₩${orderList.lecturePrice }</span><br>
+											<span>₩<fmt:formatNumber type="number" maxFractionDigits="3" value="${orderList.lecturePrice }"/></span><br>
 											<span
 											style="background-color: lightgray; border-bottom: 1px solid; width: 100%; display: inline-block;">-
-												₩${orderList.realSalePrice }</span><br>
-												 <span>₩${orderList.lectureSalePrice }</span>
+												₩<fmt:formatNumber type="number" maxFractionDigits="3" value="${orderList.realSalePrice }"/></span><br>
+												 <span>₩<fmt:formatNumber type="number" maxFractionDigits="3" value="${orderList.lectureSalePrice }"/></span>
 										</c:if>
 										<c:if test="${orderList.lectureSalerate == 0}">
-												<span>₩${orderList.lecturePrice }</span>
+												<span>₩<fmt:formatNumber type="number" maxFractionDigits="3" value="${orderList.lecturePrice }"/></span>
 										</c:if>
 										</td>
 										<td style="vertical-align: middle; text-align: center;">${orderList.orderPayment }</td>

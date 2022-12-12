@@ -41,7 +41,7 @@ var socket = null;
 	$(document).ready(function(){
 		if("${user.userId}" != null){
 			connectWs();	
-		}
+	}
 })
 
 function connectWs(){

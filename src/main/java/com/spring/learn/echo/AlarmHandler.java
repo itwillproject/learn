@@ -66,22 +66,52 @@ public class AlarmHandler extends TextWebSocketHandler {
 				System.out.println("boardWriterSession="+userSessionsMap.get(boardWriter));
 				System.out.println("boardWirterSession="+boardWriterSession);
 				
-				//댓글
-				if ("reply".equals(cmd) && boardWriterSession != null) {
-					System.out.println("onmessage되나?");
+				//신고 승인
+				if ("reporttrue".equals(cmd)) {
+					System.out.println("신고알림되나?");
 					TextMessage tmpMsg = new TextMessage(replyWriter + "님이 "
 							+ "<a href='/board/readView?bno="+ bno +"&bgno="+bgno+"'  style=\"color: black\">"
 							+ title+" 에 댓글을 달았습니다!</a>");
-					boardWriterSession.sendMessage(tmpMsg);
+					AlramVO vo = new AlramVO();
+					vo.setbNo((Integer.parseInt(bno)));
+					vo.setCategori(cmd);
+					vo.setFromId(replyWriter);
+					vo.setToId(boardWriter);
+					vo.setTitle(title);
+					alramService.insertAlram(vo);
+					
+					if(boardWriterSession != null) {
+						boardWriterSession.sendMessage(tmpMsg);						
+					}
+				}
+				
+				//신고 거절
+				if ("reportfalse".equals(cmd)) {
+					System.out.println("신고알림되나?");
+					TextMessage tmpMsg = new TextMessage(replyWriter + "님이 "
+							+ "<a href='/board/readView?bno="+ bno +"&bgno="+bgno+"'  style=\"color: black\">"
+							+ title+" 에 댓글을 달았습니다!</a>");
+					AlramVO vo = new AlramVO();
+					vo.setbNo((Integer.parseInt(bno)));
+					vo.setCategori(cmd);
+					vo.setFromId(replyWriter);
+					vo.setToId(boardWriter);
+					vo.setTitle(title);
+					alramService.insertAlram(vo);
+					
+					if(boardWriterSession != null) {
+						boardWriterSession.sendMessage(tmpMsg);						
+					}
 				}
 				
 				//새로운 공지가 작성되면
-				else if("Notice".equals(cmd) && boardWriterSession != null) {
+				else if("Notice".equals(cmd)) {
 					//replyWriter = 스크랩누른사람 , boardWriter = 게시글작성자
 					System.out.println("새로운 공지글 이 실행 됩니다!!");
 					AlramVO vo = new AlramVO();
 					List<UserVO> vo2 = userService.getUserList();
 					vo.setbNo((Integer.parseInt(bno)));
+					System.out.println(vo.getbNo());
 					vo.setCategori(cmd);
 					vo.setFromId(replyWriter);
 					vo.setTitle("New 공지");
@@ -96,7 +126,7 @@ public class AlarmHandler extends TextWebSocketHandler {
 				}
 				
 				//좋아요 등록
-				else if("lectureLike".equals(cmd) && boardWriterSession != null) {// && boardWriterSession != null
+				else if("lectureLike".equals(cmd)) {// && boardWriterSession != null
 					//replyWriter = 좋아요누른사람 , boardWriter = 게시글작성자
 					System.out.println("너 실행되니?");
 					TextMessage tmpMsg = new TextMessage(replyWriter + "님이 "
@@ -110,12 +140,14 @@ public class AlarmHandler extends TextWebSocketHandler {
 					vo.setToId(boardWriter);
 					vo.setTitle("좋아요 Plus");
 					alramService.insertAlram(vo);
-					boardWriterSession.sendMessage(tmpMsg);
+					if(boardWriterSession != null) {
+						boardWriterSession.sendMessage(tmpMsg);						
+					}
 					System.out.println("너는??????????? 실행되니?");
 				}
 				
 				//좋아요 취소
-				else if("lectureLikeCancle".equals(cmd) && boardWriterSession != null) {// && boardWriterSession != null
+				else if("lectureLikeCancle".equals(cmd)) {// && boardWriterSession != null
 					//replyWriter = 좋아요누른사람 , boardWriter = 게시글작성자
 					System.out.println("너 실행되니?");
 					TextMessage tmpMsg = new TextMessage(replyWriter + "님이 "
@@ -129,9 +161,54 @@ public class AlarmHandler extends TextWebSocketHandler {
 					vo.setToId(boardWriter);
 					vo.setTitle("좋아요가 취소됬습니다.");
 					alramService.insertAlram(vo);
-					boardWriterSession.sendMessage(tmpMsg);
+					if(boardWriterSession != null) {
+						boardWriterSession.sendMessage(tmpMsg);						
+					}
 					System.out.println("너는??????????? 실행되니?");
 				}
+				
+				//댓글 등록
+				else if("lectureComment".equals(cmd)) {// && boardWriterSession != null
+					//replyWriter = 좋아요누른사람 , boardWriter = 게시글작성자
+					System.out.println("너 실행되니?");
+					TextMessage tmpMsg = new TextMessage(replyWriter + "님이 "
+							+ "<a href='/board/readView?bno=" + bno + "&bgno="+bgno+"'  style=\"color: black\"><strong>"
+							+ title+"</strong> 에 작성한 글을 좋아요했습니다!</a>");
+					System.out.println("너는 실행되니?");
+					AlramVO vo = new AlramVO();
+					vo.setbNo((Integer.parseInt(bno)));
+					vo.setCategori(cmd);
+					vo.setFromId(replyWriter);
+					vo.setToId(boardWriter);
+					vo.setTitle("강의댓글 Plus");
+					alramService.insertAlram(vo);
+					if(boardWriterSession != null) {
+						boardWriterSession.sendMessage(tmpMsg);						
+					}
+					System.out.println("너는??????????? 실행되니?");
+				}
+				
+				//댓글 삭제
+				else if("lectureCommentCancle".equals(cmd)) {// && boardWriterSession != null
+					//replyWriter = 좋아요누른사람 , boardWriter = 게시글작성자
+					System.out.println("너 실행되니?");
+					TextMessage tmpMsg = new TextMessage(replyWriter + "님이 "
+							+ "<a href='/board/readView?bno=" + bno + "&bgno="+bgno+"'  style=\"color: black\"><strong>"
+							+ title+"</strong> 에 작성한 글을 좋아요를 취소했습니다!</a>");
+					System.out.println("너는 실행되니?");
+					AlramVO vo = new AlramVO();
+					vo.setbNo((Integer.parseInt(bno)));
+					vo.setCategori(cmd);
+					vo.setFromId(replyWriter);
+					vo.setToId(boardWriter);
+					vo.setTitle("좋아요가 취소됬습니다.");
+					alramService.insertAlram(vo);
+					if(boardWriterSession != null) {
+						boardWriterSession.sendMessage(tmpMsg);						
+					}
+					System.out.println("너는??????????? 실행되니?");
+				}
+				
 				
 				//DEV
 				else if("Dev".equals(cmd) && boardWriterSession != null) {

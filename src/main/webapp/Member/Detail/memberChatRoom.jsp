@@ -201,7 +201,7 @@
 	
         $(window).on('load', function () {
         	
-			webSocket.init({ url: '<c:url value="/memberChat" />' });	
+			webSocket.init({ url: '<c:url value="/memberChat" />' });
 			
 			seeYourMsg();
 			

@@ -252,6 +252,7 @@
 				$("#commentCnt").html(intHtml);
 				
 				var inHtml = "";
+				var cvoVr = 0;
 				for (var cvo of data.cvoList){
 					
 					intHtml += '<div class="row w-50 border mx-auto rounded bg-white p-3 mb-5" >';
@@ -328,10 +329,10 @@
 						
 						intHtml += '<div class="row ml-3 mt-3 w-100 align-items-center">';
 						intHtml += '<span class="mx-auto">';
-						intHtml += '<button data-toggle="collapse" data-target=".cocoment">답글쓰기</button>';
+						intHtml += '<button data-toggle="collapse" data-target="#co'+ cvoVr +'">답글쓰기</button>';
 						intHtml += '</span>';
 						intHtml += '</div>';
-						intHtml += '<div class="row p-3 mx-auto rounded cocoment collapse">';
+						intHtml += '<div class="row p-3 mx-auto rounded cocoment collapse" id="co'+ cvoVr +'">';
 						intHtml += '<form method="post" class="w-100">';
 						intHtml += '<textarea class="cocoText" name="comment2Content"></textarea>';
 						intHtml += '<div class="row mt-3">';
@@ -343,6 +344,8 @@
 					}
 					intHtml += '</div>';
 					intHtml += '</div>';
+					
+					cvoVr = cvoVr + 1;
 				}
 				
 				$("#commentLine").html(intHtml);
@@ -480,12 +483,12 @@
 								<p>신고는 반대의견을 표시하는 기능이 아닙니다.</p>
 								<p>신고에 부적합한 글을 지속적으로 신고하는 회원에게는 제한 조치가 취해질 수 있습니다.</p>
 					          <div id="reason">
-					          	<p><input type="radio" name="reason" value="집단간싸움유발"><strong> 집단간 싸움 유발</strong> (학과, 작업간 서열/비교, 지역감정, 종교등)</p>
-					          	<p><input type="radio" name="reason" value="성(姓)관련순환주제"><strong> 성(姓)관련 순환 주제</strong> (양성평등, 군대, 혼전순결, 된장녀, 외모/몸매 등)</p>
-					          	<p><input type="radio" name="reason" value="욕설,비속어,인신공격"><strong> 욕설, 비속어, 인신공격</strong> (심한 불쾌감 유발)</p>
-					          	<p><input type="radio" name="reason" value="선정적,음란성"><strong> 선정적, 음란성</strong> (신고자가 선정적이라고 판단)</p>
-					          	<p><input type="radio" name="reason" value="낚시성,도배,무의미"><strong> 낚시성, 도배, 무의미</strong> (무의미한 짧을 글 포함)</p>
-					          	<p><input type="radio" name="reason" value="기타"><strong> 기타</strong> (신고자가 선정적이라고 판단)</p>
+					          	<p><label><input type="radio" name="reason" value="집단간싸움유발"><strong> 집단간 싸움 유발</strong> (학과, 작업간 서열/비교, 지역감정, 종교등)</label></p>
+					          	<p><label><input type="radio" name="reason" value="성(姓)관련순환주제"><strong> 성(姓)관련 순환 주제</strong> (양성평등, 군대, 혼전순결, 된장녀, 외모/몸매 등)</label></p>
+					          	<p><label><input type="radio" name="reason" value="욕설,비속어,인신공격"><strong> 욕설, 비속어, 인신공격</strong> (심한 불쾌감 유발)</label></p>
+					          	<p><label><input type="radio" name="reason" value="선정적,음란성"><strong> 선정적, 음란성</strong> (신고자가 선정적이라고 판단)</label></p>
+					          	<p><label><input type="radio" name="reason" value="낚시성,도배,무의미"><strong> 낚시성, 도배, 무의미</strong> (무의미한 짧은 글 포함)</label></p>
+					          	<p><label><input type="radio" name="reason" value="기타"><strong> 기타</strong> (신고자가 선정적이라고 판단)</label></p>
 					          	<textarea id="reasonEtc" rows="3" cols="90" placeholder="기타 선택시 사유 입력해주세요"></textarea>
 					          </div>
 					        </div>
@@ -705,11 +708,11 @@
 				<c:if test="${user != null }">
 					<div class="row ml-3 mt-3 w-100 align-items-center">
 						<span class="mx-auto">
-							<button data-toggle="collapse" data-target=".cocoment">답글쓰기</button>
+							<button data-toggle="collapse" data-target="#co${cvoVr.index }">답글쓰기</button>
 						</span>
 					</div>
 					
-					<div class="row p-3 rounded cocoment collapse w-100">
+					<div class="row p-3 rounded cocoment collapse w-100" id="co${cvoVr.index }">
 						<form method="post" class="w-100">
 							<div class="row">
 							<textarea class="cocoText mx-auto" name="comment2Content"></textarea>

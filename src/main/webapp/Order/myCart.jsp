@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,6 +42,7 @@ input::placeholder {
 	src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 </head>
 <body>
+<fmt:requestEncoding value="utf-8"/>
 	<%@ include file="../Common/header.jsp"%>
 	<div class="container-fluid bg-dark">
 		<div class="container tape">
@@ -96,15 +98,15 @@ input::placeholder {
 								<c:if test="${cartList.lectureSalerate != 0}">
 									<p style="color: red;">
 										<B><small>${cartList.lectureSalerate }% &nbsp;</small></B> 
-										<STRIKE><small style="color: gray;">${cartList.lecturePrice }원</small></STRIKE>
+										<STRIKE><small style="color: gray;"><fmt:formatNumber type="number" maxFractionDigits="3" value="${cartList.lecturePrice }"/>원</small></STRIKE>
 									</p>
-									<p>${cartList.lectureSalePrice }원</p>
+									<p><fmt:formatNumber type="number" maxFractionDigits="3" value="${cartList.lectureSalePrice }"/>원</p>
 								</c:if>
 								<c:if test="${cartList.lectureSalerate == 0}">
 									<p>
 										<small>&nbsp;</small>
 									</p>
-									<p>${cartList.lecturePrice }원</p>
+									<p><fmt:formatNumber type="number" maxFractionDigits="3" value="${cartList.lecturePrice }"/>원</p>
 								</c:if>
 							</div>
 						</div>
@@ -140,7 +142,7 @@ input::placeholder {
 				<div
 					style="border-radius: 10px 10px 10px 10px; border: 1px solid lightgray; padding: 16px 20px;">
 					<p style="float: right">
-						사용가능: <span style="color: green">${cartList[0].points }</span>
+						사용가능: <span style="color: green"><fmt:formatNumber type="number" maxFractionDigits="3" value="${cartList[0].points }"/></span>
 					</p>
 					<p>
 						<B>포인트</B>
@@ -158,7 +160,7 @@ input::placeholder {
 						<div class="col-12" id="checkPoint"></div>
 						
 						<div class="col-7" style="color: gray;">선택상품 금액</div>
-						<div class="col-5" style="color: gray; text-align: right;" id="realPrice">${cartList[0].realPrice }원</div>
+						<div class="col-5" style="color: gray; text-align: right;" id="realPrice"><fmt:formatNumber type="number" maxFractionDigits="3" value="${cartList[0].realPrice }"/>원</div>
 						<div class="col-6" style="color: red;" id="realSalePrice2">할인된 금액</div>
 						<c:set var = "total" value = "0" />
 						<c:if test="${not empty cartList}">
@@ -166,7 +168,7 @@ input::placeholder {
 							<c:set var= "total" value="${total + cartList.realSalePrice}"/>
 						</c:forEach>
 						</c:if>
-						<div class="col-6" style="color: red; text-align: right;" id="realSalePrice"></div>
+						<div class="col-6" style="color: red; text-align: right;" id="realSalePrice">-<fmt:formatNumber type="number" maxFractionDigits="3" value="${total}"/></div>
 						<div class="col-7" style="color: red; padding: 0px 0px 0px 15px;" id="realUsePoint2"></div>
 						<div id="realUsePoint" class="col-5"
 							style="color: red; text-align: right; padding: 0px 15px 0px 0px;"></div>
@@ -174,7 +176,7 @@ input::placeholder {
 							<B>총 결제금액</B>
 						</div>
 						<div class="col-6" style="text-align: right;" id="my_div">
-							<B>${cartList[0].realPrice - cartList[0].realSalePrice }원</B>
+							<B><fmt:formatNumber type="number" maxFractionDigits="3" value="${cartList[0].realPrice - cartList[0].realSalePrice }"/>원</B>
 						</div>
 					</div>
 					<br>
@@ -225,7 +227,7 @@ $(document).on("keyup", "#usePoint", function () {
 						type : "post",
 						async : false,
 
-						success : function(data) {
+						success : function(data) { 
 							myPoint = data.points;
 							console.log("data : " + data);
 								if(data.lectureSalerate > 0){
@@ -259,19 +261,19 @@ $(document).on("keyup", "#usePoint", function () {
 			usePoint = myPoint;
 		} 				
 		if(usePoint >= totalPrice){ 		
-			$('#usePoint').val(totalPrice);
-			$('#realUsePoint').text('-'+totalPrice+'원');
+			$('#usePoint').val(totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+			$('#realUsePoint').text('-'+totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원');
 			$('#my_div').text("0원");
 		} else{
-			$('#realUsePoint').text('-'+usePoint+'원');
+			$('#realUsePoint').text('-'+usePoint.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원');
 			$('#realUsePoint2').text('포인트 사용 금액');
-			$('#my_div').text(totalPrice-usePoint+"원");
+			$('#my_div').text((totalPrice-usePoint).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+"원");
 		}
 		if (usePoint.length == 0){
 			$('#checkPoint').text('');
 			$('#realUsePoint').text('');
 			$('#realUsePoint2').text('');
-			$('#my_div').text(totalPrice+'원');
+			$('#my_div').text(totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원');
 		}
 		if(usePoint == 0){
 			$('#checkPoint').text('');
@@ -346,19 +348,19 @@ $(document).on("keyup", "#usePoint", function () {
 				usePoint = myPoint;
 			} 				
 			if(usePoint >= totalPrice){ 		
-				$('#usePoint').val(totalPrice);
-				$('#realUsePoint').text('-'+totalPrice+'원');
+				$('#usePoint').val(totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+				$('#realUsePoint').text('-'+totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원');
 				$('#my_div').text("0원");
 			} else{
-				$('#realUsePoint').text('-'+usePoint+'원');
+				$('#realUsePoint').text('-'+usePoint.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원');
 				$('#realUsePoint2').text('포인트 사용 금액');
-				$('#my_div').text(totalPrice-usePoint+"원");
+				$('#my_div').text((totalPrice-usePoint).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+"원");
 			}
 			if (usePoint.length == 0){
 				$('#checkPoint').text('');
 				$('#realUsePoint').text('');
 				$('#realUsePoint2').text('');
-				$('#my_div').text(totalPrice+'원');
+				$('#my_div').text(totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원');
 			}
 	};
 </script>
@@ -410,25 +412,24 @@ $(document).on("keyup", "#usePoint", function () {
 			var c = "${total}";
 			if(c > 0){
 				$('#realSalePrice2').text('할인된 금액');
-				$('#realSalePrice').text('-'+'${total}'+'원');
+				$('#realSalePrice').text('-'+'<fmt:formatNumber type="number" maxFractionDigits="3" value="${total}"/>'+'원');
 			} else {
 				$('#realSalePrice2').text('');
 				$('#realSalePrice').text('');
 			}
-			
 			$(document).on("click", "#cbx_chkAll", function () {
 				c = "${total}";
 				if ($("#cbx_chkAll").is(":checked")){
 					$("input[name=zzim]").prop("checked", true);
-					$('#realPrice').text("${cartList[0].realPrice}"+'원'	);
+					$('#realPrice').text('<fmt:formatNumber type="number" maxFractionDigits="3" value="${cartList[0].realPrice}"/>'+'원'	);
 					if(c > 0){
 						$('#realSalePrice2').text('할인된 금액');
-						$('#realSalePrice').text(''+'${total}'+'원');
+						$('#realSalePrice').text(''+'<fmt:formatNumber type="number" maxFractionDigits="3" value="${total}"/>'+'원');
 					} else {
 						$('#realSalePrice2').text('');
 						$('#realSalePrice').text('');
 					}
-					$('#my_div').text('${cartList[0].realPrice - total}'+'원');
+					$('#my_div').text('<fmt:formatNumber type="number" maxFractionDigits="3" value="${cartList[0].realPrice - total}"/>'+'원');
 					$("#usePoint").attr("disabled",false);
 				}
 				else{
@@ -508,15 +509,16 @@ $(document).on("keyup", "#usePoint", function () {
 												console.log("totalPrice : " + totalPrice);
 											}
 											console.log("성공");
-												$('#realPrice').text(totalPrice+SaPrice+'원');
+												$('#realPrice').text((totalPrice+SaPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원');
 												if(SaPrice > 0){
 													$('#realSalePrice2').text('할인된 금액');
-													$('#realSalePrice').text('-'+SaPrice+'원');	
+													$('#realSalePrice').text('-'+SaPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원');	
 												}else{
+													$('#realSalePrice2').text('');
 													$('#realSalePrice').text('');
 												}
 												
-												$('#my_div').text(totalPrice+"원");
+												$('#my_div').text(totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+"원");
 											//$("#reload").load(window.location.href + " #reload");
 //											$("#reload").load("${pageContext.request.contextPath }/Order/myCart.jsp #reload");
 										

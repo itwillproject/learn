@@ -195,11 +195,11 @@ body {
 </li>
 
  <li>
-   <button type="button" class="btn" >
-      <form action="${pageContext.request.contextPath}/common/getIndexSearch.do">
-         <input id="search" type="text" name="searchKeyword">
-      </form>
+	<form action="${pageContext.request.contextPath}/common/getIndexSearch.do">
+	<button type="button" class="btn" >
+      <input type="text" id="search" name="searchKeyword">
     </button>
+      </form>
 </li>    
 <c:if test="${empty user.userId }">
 <li>
@@ -270,7 +270,6 @@ body {
 <li>
     <div class="dropdown">
         <button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/Member/myPage.jsp'"><i class="far fa-user fa-lg"></i></button>
-        <div id="socketAlert"></div>
         <div class="dropdown-menu">
             <a class="dropdown-item">${user.userName }</a>
             <a class="dropdown-item"><small>${user.grade }</small></a>
@@ -278,8 +277,8 @@ body {
                 <fmt:formatNumber type="number" maxFractionDigits="3" value="${user.points }" />점
             </small></a>
             <a class="dropdown-item"><hr></a>
-            <a class="dropdown-item" href="#">내 학습</a>
-            <a class="dropdown-item" href="${pageContext.request.contextPath}/memberBoard/callCenterBoardList.do?userId=${user.userId }">작성한 게시글</a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/memberBoard/goMyLectureList.do">내 학습</a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/inquiry.jsp">작성한 게시글</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/likeGo.do?userId=${user.userId }">좋아요</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Order/orderDetailGo.do?userId=${user.userId }">구매내역</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터<hr></a>
@@ -322,6 +321,10 @@ body {
 		style="background-color: #D9F2D9; display: none; z-index: 90; border: 1px solid gold; border-radius: 20px;
 		width: 250px; position: fixed; right: 50px; bottom: 80px; text-align : center;">
 		</div>
+		<div id="socketAlert2" class="py-2" 
+		style="position: fixed; right: 100px; bottom: 30px; z-index: 95; background-color: #A3E0BE; width: 250px;
+		text-align : center; color: white; display: none;">
+		새로운 알림이 도착했습니다.</div>
 		<button id="jong" type="button" class="icon-button" onclick="alramList()" style="position: fixed; right: 50px; bottom: 30px; z-index: 95;">
 		    <span class="material-icons">notifications</span>
 		    <span id="alramCount" class="icon-button__badge" style="display: none;">0</span>
@@ -333,6 +336,7 @@ body {
 </div>
 <script type="text/javascript">
 var socket = null;
+var gnbSlide = false;
 	$(document).ready(function(){
 		if("${user.userId}" != null){
 		connectWs();
@@ -352,26 +356,20 @@ function connectWs(){
 		console.log('open');
 	 
 	};
-	
 	ws.onmessage = function(event) {
-		console.log("onmessage"+event.data);
-		let $socketAlert = $('div#socketAlert');
+		console.log("onmessage : "+event.data);//데이터 필요하면 데이터 처리
+		let $socketAlert2 = $('div#socketAlert2');
 		alramCount();
-/* 		$socketAlert.html(event.data)
-		$socketAlert.css('display', 'block'); */
+		$socketAlert2.css('display', 'block');
 		
 		setTimeout(function(){
-			$socketAlert.css('display','none');
+			$socketAlert2.css('display','none');
 			
-		}, 5000);
-	};
-	
+		}, 1500);
+	};	
 		ws.onclose = function() {
 		    console.log('close');
-	 };
- 
- 
- 
+	};
 
 };
 
@@ -404,11 +402,10 @@ function alramList(){
 	         	}else{
 					a += '<br><div class="small" style="">새로운 알림</div><br>';
 	         	}
-	         	$.each(data, function(key, value){ 
+	         	$.each(data, function(key, value){
 	         	var categori = value.categori;
 	         	a += '<div class="small">';
 				if(categori == "lectureLike"){
-					/* a += '<div style="float: right;"></div>'; */
 					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 강의에 좋아요가 추가됬습니다.</a>';
 					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
 				}else if(categori == "Notice"){
@@ -417,11 +414,20 @@ function alramList(){
 				}else if(categori == "lectureLikeCancle"){
 					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 강의에 좋아요가 취소됬습니다.</a>';
 					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
+				}else if(categori == "reporttrue"){
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 게시글 신고가 승인됬습니다.</a>';
+					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
+				}else if(categori == "reportfalse"){
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 게시글 신고가 거절됬습니다.</a>';
+					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
+				}else if(categori == "lectureComment"){
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 강의에 댓글이 등록됬습니다.</a>';
+					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
 				}
 				a += '</div><hr>';	
 				        		 
 	         	});
-	         	
+	         	gnbSlide = true;
 	         	$("#alramList").html(a);
 	         	$('#alramCount').text(0);
 	         	$('#alramCount').css('display', 'none');
@@ -431,6 +437,21 @@ function alramList(){
 		
 	}
 //목록끝
+
+//document.addEventListener('click',function(e){
+	document.addEventListener('mouseup', function(e) {
+	    var container = document.getElementById('alramList');
+	    var jong = document.getElementById('jong');
+	    console.log("1번");
+	    console.log(e.target);
+	    if (!container.contains(e.target) && !jong.contains(e.target)) {
+	    	console.log("2번");
+	    	console.log(e.target);
+	    	container.style.display = 'none';
+	    	
+	    }
+	});
+
 
 //알람목록
 function alramList2(){
@@ -463,12 +484,22 @@ function alramList2(){
 				}else if(categori == "lectureLikeCancle"){
 					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 강의에 좋아요가 취소됬습니다.</a>';
 					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
+				}else if(categori == "reporttrue"){
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 게시글 신고가 승인됬습니다.</a>';
+					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
+				}else if(categori == "reportfalse"){
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 게시글 신고가 거절됬습니다.</a>';
+					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
+				}else if(categori == "lectureComment"){
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 강의에 댓글이 등록됬습니다.</a>';
+					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
 				}
 				a += '</div><hr>';	
 				        		 
 	         	});
-	         	
+	         	gnbSlide = true;
 	         	$("#alramList").html(a);
+	         	//$('#alramList').css('display', 'block');
 	         	$('#alramCount').text(0);
 	         	$('#alramCount').css('display', 'none');
 	        }
@@ -490,7 +521,15 @@ function alramClick(bNo,categori,aNo,toId){
 				if(categori == 'lectureLike' || categori == 'lectureLikeCancle'){
 					location.href="${pageContext.request.contextPath }/Common/getLecture.do?lectureNo="+bNo;	
 				} else if(categori == 'Notice'){
-					location.href="${pageContext.request.contextPath }/getAdminNotice.do?boardNo="+bNo;
+					alert(bNo);
+					location.href="${pageContext.request.contextPath }/getNotice.do?boardNo="+bNo;
+				} else if(categori == 'reporttrue'){
+					alramListDelete(aNo,toId);//단순삭제처리 준비해요
+				} else if(categori == 'reportfalse'){
+					alramListDelete(aNo,toId);//단순삭제처리 준비해요
+				} else if(categori == 'lectureComment'){
+					alert(bNo);
+					location.href="${pageContext.request.contextPath }/Common/getLecture.do?lectureNo="+bNo;
 				}
 	        }
 	        
@@ -530,6 +569,7 @@ function alramCount(){
 	        
 	        success : function(alram){
 	         	console.log(alram);
+	         	/* alert(alram); */
 	         	console.log("알람성공");
  		        $('#alramCount').text(alram);//빨간표시등이 뜨면서 숫자값을 입력해야한다
  		        let $socketAlert = $('#alramCount');

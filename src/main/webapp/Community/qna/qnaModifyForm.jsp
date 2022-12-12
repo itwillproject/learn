@@ -97,8 +97,10 @@
 	<div class="container-fluid">
 		<div class="row justify-content-center">
 			<div class="col-sm-2">
-				<p>-------왼쪽네비-------</p>
+<!-- 				<p>-------왼쪽네비-------</p> -->
+				<a href="javascript:history.back()" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
 			</div>
+			
 			
 			<div class="col-sm-6 align-content-center">
 				
@@ -141,7 +143,7 @@
 			</div>	
 
 			<div class="col-sm-2">
-				<p>------오른쪽네비--------</p>
+<!-- 				<p>------오른쪽네비--------</p> -->
 			</div>
 		</div>
 	</div>

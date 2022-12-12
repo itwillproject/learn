@@ -326,12 +326,16 @@ public class MemberBoardController {
 		System.out.println(">> QnaWrite 입력 도착, uvo : " + uvo);
 		System.out.println(">> QnaWrite 입력 도착, cvo : " + cvo);
 		
-		
 		memberBoardService.addCallcenterComment(cvo);
 		
 		// 커멘트 가져오기
-		bvo = (MemberBoardVO) session.getAttribute("callBvo");
+		// qna넘버로 보드 가져오기 + 보드 어답트로 업데이트 하기
+		bvo = memberBoardService.getBoard(bvo);
+		bvo.setQnaAdopt("TRUE");
+		
 		List<CallcenterCommentVO> cvoList = memberBoardService.getCallcenterComment(bvo);
+		
+		model.addAttribute("callBvo", bvo);
 		
 		model.addAttribute("cvoList", cvoList);
 		
@@ -350,20 +354,24 @@ public class MemberBoardController {
 		
 		// 커멘트 가져오기
 		bvo = (MemberBoardVO) session.getAttribute("callBvo");
+		
+		bvo.setQnaAdopt("FALSE");
+		
+		memberBoardService.updateBoard(bvo);
+		
+		
 		List<CallcenterCommentVO> cvoList = memberBoardService.getCallcenterComment(bvo);
+		
+		model.addAttribute("callBvo", bvo);
 		
 		model.addAttribute("cvoList", cvoList);
 		
 		model.addAttribute("cvoCnt", cvoList.size());
 		
-		
 		System.out.println(">>>>> cvoList : " + cvoList);
 		
 		return "/Member/MemberBoard/myQBoard.jsp"; // 이동
 	}
-	
-	
-	
 	
 	
 	
