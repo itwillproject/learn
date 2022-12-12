@@ -17,6 +17,16 @@
 						<a href="${pageContext.request.contextPath}/memberBoard/viewPage.do?qnaNo=${memberBoard.qnaNo }"><h4>${memberBoard.qnaTitle }</h4>
 						<p>${memberBoard.qnaContent }</p>
 						<p>${memberBoard.userName } ·${memberBoard.qnaRegdate } </p></a>
+						</div>
+						<div class="col-2">
+							<c:choose>
+								<c:when test="${memberBoard.qnaAdopt eq 'FALSE' }">
+									<p class="mt-5 mb-5" style="text-align: center;">미응답</p>
+								</c:when>
+								<c:otherwise>
+									<p class="mt-5 mb-5" style="text-align: center; color: red; font-weight: bold;">응답</p>
+								</c:otherwise>
+							</c:choose>
 						</div>	
 					</div>
 					</td>

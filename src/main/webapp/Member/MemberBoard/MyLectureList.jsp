@@ -204,7 +204,8 @@
 							<div class="col-4 border">
 							
 							<p>${myOrderDetail.lectureNo }</p>
-							<a href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo=${myOrderDetail.lectureNo }"><img class="mx-auto" width="220px" alt="lectureImg" src="${pageContext.request.contextPath}/filepath/${myOrderDetail.lectureCoverimg }"></a>  <!-- 이미지 파일에서 불러오는 것은 차후에 구현 -->
+							<a href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo=${myOrderDetail.lectureNo }">
+							<img class="mx-auto" width="220px" alt="lectureImg" src="${pageContext.request.contextPath}/filepath/${myOrderDetail.lectureCoverimg }"></a>  <!-- 이미지 파일에서 불러오는 것은 차후에 구현 -->
 							<p><a href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo=${myOrderDetail.lectureNo }">${myOrderDetail.lectureTitle }</a></p>
 							
 							</div>

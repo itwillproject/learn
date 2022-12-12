@@ -63,6 +63,9 @@ public class BoardController {
 		
 		System.out.println(">>파일 업로드 도착");
 		
+//		String url = "\\\\192.168.18.11\\temp\\" + savedFileName;
+		
+		
 		// 내부경로로 저장
 		String contextRoot = new HttpServletRequestWrapper(request).getSession().getServletContext().getRealPath("/");
 		String fileRoot = contextRoot+"resources/fileupload/";

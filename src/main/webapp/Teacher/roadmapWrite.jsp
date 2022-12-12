@@ -57,7 +57,7 @@
       <form id="form" class="mt-4" method="post" enctype="multipart/form-data">
         <table class="table">
           <tr>
-            <th style="width: 30%"><label for="categoryName">카테고리: </label></th>
+            <th><label for="categoryName">카테고리: </label></th>
             <td>
               <select id="categoryName" name="categoryName" class="custom-select">
                 <option selected disabled>로드맵 카테고리</option>
