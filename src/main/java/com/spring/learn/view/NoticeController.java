@@ -107,7 +107,7 @@ public class NoticeController {
 		System.out.println("상세보기 vo : " + vo);
 		
 		NoticeVO vo2 = noticeService.getNotice(vo); 
-
+		System.out.println("vo2 : " + vo2);
 		model.addAttribute("vo", vo2);
 		
 		return "Member/MemberBoard/noticeView.jsp";

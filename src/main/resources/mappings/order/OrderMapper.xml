@@ -51,11 +51,11 @@
 	</insert>
 	
 	<insert id="insertPointLog" parameterType="orderFinishVO">
-		insert into point_log values(nvl((select max(log_num) from point_log), 1) + 1, #{userId}, #{orderNo}, #{point}, sysdate, #{earnPoint})
+		insert into point_log values((select nvl(max(log_num), 1) from point_log) + 1, #{userId}, #{orderNo}, #{point}, sysdate, #{earnPoint})
 	</insert>
 	
 	<insert id="insertOrderDetail" parameterType="orderFinishVO">
-		insert into order_detail values(nvl((select max(order_detail_no) from order_detail), 1) + 1, #{orderNo}, #{userId}, #{lectureNo}, 0, 0, 0)
+		insert into order_detail values((select nvl(max(order_detail_no), 1) from order_detail) + 1, #{orderNo}, #{userId}, #{lectureNo}, 0, 0, 0)
 	</insert>
 	
 	<select id="getOrderNo" resultType="int">

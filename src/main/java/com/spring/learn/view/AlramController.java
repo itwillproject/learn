@@ -136,7 +136,7 @@ public class AlramController {
 			System.out.println("alramCount 요청이 들어옴!");
 			System.out.println("vo : " + vo);
 			int alram = alramService.alramCount(vo);
-			
+			System.out.println("alram : " + alram);
 		return alram;
 		}	
 	

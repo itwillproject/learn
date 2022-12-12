@@ -12,6 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <style>
 	.outer {
 		text-align: center;
@@ -36,18 +37,69 @@
 
 
 	function save_go() {
+		var socket = null;
+		connectWs();
 		var con_test = confirm("저장하시겠습니까?");
 		if (con_test == true) {
 			window.opener.name = "parentPage"; // 부모창의 이름 설정
 		    document.getElementById('frm').target = "parentPage"; // 타켓을 부모창으로 설정
 		    document.getElementById('frm').action = "${pageContext.request.contextPath}/resultReportStatus.do";  //부모창에 호출될 url 
+		    
 		    document.getElementById('frm').submit();
-		    alert("완료되었습니다.");
-		    self.close();
+		    
 		}
 		
 	}
+	
+/////////////////////////////////////////////////////////////////////////////
+
+/* $(document).ready(function(){
+	if("${user.userId}" != null){
+		connectWs();	
+	}
+}) */
+
+function connectWs(){
+	var ch = $("#select").val();
+    alert(ch);
+    var toId = $("#reporter").val();
+    var boardType = $("#boardType").val();
+    var boardNo = $("#boardNo").val()
+	console.log("tttttt");
+	var ws = new SockJS("http://192.168.18.10:8080/learn/alram");
+	
+	socket = ws;
+	
+	ws.onopen = function() {
+			console.log('open');	
+			if(ch == "approve"){
+			    if(socket){
+					let socketMsg = "reporttrue,"+"${user.userId}"+","+toId+","+boardNo+","+boardType+","+"신고승인했다";
+					console.log(socketMsg);
+					ws.send(socketMsg);
+		    		self.close();
+		   		}
+		    } else {
+		    	if(socket){
+					let socketMsg = "reportfalse,"+"${user.userId}"+","+toId+","+boardNo+","+boardType+","+"신고거절했다";
+					console.log(socketMsg);
+					ws.send(socketMsg);
+					self.close();
+		   		}
+		    }
+	};
+	
+	ws.onclose = function() {
+		 console.log('close');
+	};
+ 
+ 
+	
+
+};
+	
 </script>
+
 </head>
 <body>
 <div class="outer">
@@ -62,10 +114,10 @@
 				<option title="거절" value="reject">거절</option>
 			</select>
  			<button type="button" class="save" onclick="save_go()">저장</button> 
-			<input type="hidden" name="boardType" value="${vo.boardType }">
-			<input type="hidden" name="boardNo" value="${vo.boardNo }">
-			<input type="hidden" name="reporter" value="${vo.reporter }">
-			<br>
+			<input type="hidden" name="boardType" value="${vo.boardType }" id="boardType">
+			<input type="hidden" name="boardNo" value="${vo.boardNo }" id="boardNo">
+			<input type="hidden" name="reporter" value="${vo.reporter }" id="reporter">
+			<br><br>
 		</form>
 	</div>
 </div>
