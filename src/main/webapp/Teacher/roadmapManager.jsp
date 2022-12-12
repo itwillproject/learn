@@ -61,6 +61,11 @@
       background-color: #00C471 !Important;
       border: solid 1px #00C471;
   }
+  .rboardTitle {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 </style>
 <body>
 <%@include file="/Common/header.jsp" %>
@@ -99,8 +104,8 @@
                 <c:forEach items="${roadmapList}" var="roadmap">
                     <tr>
                         <td>${roadmap.rboardNo}</td>
-                        <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                            <a href="${pageContext.request.contextPath}/Lecture/roadmapDetail.do?rboardNo=${roadmap.rboardNo}">
+                        <td class="rboardTitle">
+                            <a style="color: black" href="${pageContext.request.contextPath}/Lecture/roadmapDetail.do?rboardNo=${roadmap.rboardNo}">
                                     ${roadmap.rboardTitle}
                             </a>
                         </td>
@@ -161,8 +166,8 @@
                     $.each(data.pmap, function() {
                       let dispHtml = '<tr>';
                       dispHtml += '<td>' + this.rboardNo + '</td>';
-                      dispHtml += '<td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">';
-                      dispHtml += '<a href="/learn/Lecture/roadmapDetail.do?rboardNo=' + this.rboardNo + '">' + this.rboardTitle + '</a>'
+                      dispHtml += '<td class="rboardTitle">';
+                      dispHtml += '<a style="color: black" href="/learn/Lecture/roadmapDetail.do?rboardNo=' + this.rboardNo + '">' + this.rboardTitle + '</a>'
                       dispHtml += '</td>';
                       dispHtml += '<td colspan="2">'
                       dispHtml += '<a class="active-btn" href="/learn/Teacher/roadmapWrite.do?rboardNo=' + this.rboardNo + '">수정</button>';

@@ -90,9 +90,9 @@ ${count.totalComment}
 <c:if test="${lecture.lectureOnOff == 1}">오프라인 수업</c:if>
 <c:if test="${lecture.lectureOnOff == 0}">온라인 수업</c:if>
 </span>
-<c:if test="${lecture.lectureOnOff == 0}">
-  <button onclick="location.href='${pageContext.request.contextPath}/lecture/realtimeQuestion.do?lectureNo=${lecture.lectureNo}'">실시간 질문</button>
-</c:if>
+	<span id="realtimeDiv" class="ml-2" style="display: none">
+		<button class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/realtimeQuestion.do?lectureNo=${lecture.lectureNo}'">실시간 질문</button>
+	</span>
 </div>
 
 <br><br><br>
@@ -1047,6 +1047,36 @@ window.onload=function(){
 	
 /*화면 킬때 할 ajax*/
 	window.onload=function(){
+		let today = new Date();
+		let thour = today.getHours();
+		let tminute = today.getMinutes();
+		let shour = '${lecture.qsStart}'.substring(11, 13);
+		let sminute = '${lecture.qsStart}'.substring(14, 16);
+		let ehour = '${lecture.qsEnd}'.substring(11, 13);
+		let eminute = '${lecture.qsEnd}'.substring(14, 16);
+
+		let earlyStart = (shour > thour || ((shour === String(thour)) && (sminute > tminute)) ); // 시간이 작거나 시간이 같으면 분이 작으면 true
+		let lateEnd = (ehour < thour || ((ehour === String(thour)) && (eminute < tminute)) ); // 시간이 크거나 시간이 같으면 분이 크면 true
+
+		let rtDiv = $('#realtimeDiv');
+		let weekday = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+		let dispHtml = '<span>&nbsp;|&nbsp;실시간 질문: ' + weekday[today.getDay()] + ' ' +
+				'${lecture.qsStart}'.substring(11, 16)  + ' ~ ' + '${lecture.qsEnd}'.substring(11, 16) + '</span>';
+
+		if(('${not empty lecture.qsStart}' === 'true')) {
+			if(String(today.getDay()) !== '${lecture.qsWeekdays}') { // 해당 요일 아님
+				rtDiv.css('display', 'none');
+				rtDiv.after(dispHtml);
+			} else if(earlyStart || lateEnd) { // 시작 시간 이전이거나 끝 시간 이후면 안 눌리게
+				rtDiv.css('display', 'none');
+				rtDiv.after(dispHtml);
+			} else {
+				rtDiv.css('display', '');
+			}
+		} else { // 실시간 강의 없으면 버튼 안 보이게
+			rtDiv.css('display', 'none');
+		}
+
 		var lectureNo = "<c:out value ='${lecture.lectureNo}'/>";
 		console.log(lectureNo);
 		$.ajax("ajaxGetLectureComment.do?lectureNo=" + lectureNo, {

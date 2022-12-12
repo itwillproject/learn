@@ -169,7 +169,6 @@
                                           alert('실패...');
                                         },
                                         success: function(data) {
-                                          alert('성공');
                                         }
                                       })
                                     })

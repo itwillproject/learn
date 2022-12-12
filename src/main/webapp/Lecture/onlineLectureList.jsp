@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -128,10 +129,10 @@
 				            dispHTML += '</span>';   
 				            dispHTML += '<p class="card-price">';
 				            if (this.lecturePrice != this.salePrice) {
-					            dispHTML += '<del class="text-secondary">&#8361;'+this.lecturePrice+'</del>';        	
-					            dispHTML += '<span class="text-primary font-weight-bold h5">&#8361;'+Math.round(this.salePrice)+'</span>';        	
+					            dispHTML += '<del class="text-secondary">&#8361;'+this.lecturePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</del>';        	
+					            dispHTML += '<span class="text-primary font-weight-bold h5">&#8361;'+Math.round(this.salePrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</span>';        	
 				            } else {
-					            dispHTML += '<span class="font-weight-bold h5">&#8361;'+this.lecturePrice+'</span>';			            	
+					            dispHTML += '<span class="font-weight-bold h5">&#8361;'+this.lecturePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</span>';			            	
 				            }
 				            dispHTML += '</p>';
 				            dispHTML += '<a href="${pageContext.request.contextPath}/Member/getLecture.do?lectureNo='+this.lectureNo+'" class="stretched-link"></a>';
@@ -141,10 +142,10 @@
 				            dispHTML += '<div class="info">';
 				            dispHTML += '<div class="w-100 h-75 overflow-hidden">';
 				            dispHTML += '<p class="font-weight-bold">'+this.lectureTitle+'</p>';
-				            if (this.lectureContent.length > 100){
-					            dispHTML += '<p>'+this.lectureContent.substring(0, 100)+'...</p>';
+				            if (this.lectureSummary.length > 100){
+					            dispHTML += '<p>'+this.lectureSummary.substring(0, 100)+'...</p>';
 				            } else {
-				            	dispHTML += '<p>'+this.lectureContent+'</p>';
+				            	dispHTML += '<p>'+this.lectureSummary+'</p>';
 				            }
 			            	dispHTML += '</div>';
 			            	dispHTML += '<div class="position-absolute bottom-0 w-100 h-15">';
@@ -314,13 +315,19 @@
 										<c:choose>
 											<c:when test="${lecture.lecturePrice != lecture.salePrice}">
 												<p class="card-price">	
-													<del class="text-secondary">&#8361; ${lecture.lecturePrice }</del>
-													<span class="text-primary font-weight-bold h5">&#8361; ${Math.round(lecture.salePrice) }</span>
+													<del class="text-secondary">&#8361; 
+														<fmt:formatNumber type="number" maxFractionDigits="3" value="${lecture.lecturePrice }" />
+													</del>
+													<span class="text-primary font-weight-bold h5">&#8361;
+														<fmt:formatNumber type="number" maxFractionDigits="3" value="${Math.round(lecture.salePrice) }" />
+													</span>
 												</p>
 											</c:when>
 											<c:otherwise>
 												<p class="card-price">
-													<span class="font-weight-bold h5">&#8361; ${lecture.lecturePrice }</span>
+													<span class="font-weight-bold h5">&#8361;
+														<fmt:formatNumber type="number" maxFractionDigits="3" value="${lecture.lecturePrice }" />		
+													</span>
 												</p>										
 											</c:otherwise>
 										</c:choose>
@@ -331,11 +338,11 @@
 									     <div class="w-100 h-75 overflow-hidden">
 										      <p class="font-weight-bold">${lecture.lectureTitle }</p>
 												<c:choose>
-													<c:when test="${fn:length(lecture.lectureContent) gt 100}">
-														<p>${fn:substring(lecture.lectureContent, 0, 100)}...</p>
+													<c:when test="${fn:length(lecture.lectureSummary) gt 100}">
+														<p>${fn:substring(lecture.lectureSummary, 0, 100)}...</p>
 													</c:when>
 													<c:otherwise>
-														<p>${lecture.lectureContent }</p>
+														<p>${lecture.lectureSummary }</p>
 													</c:otherwise>
 												</c:choose>
 									     </div>

@@ -2,6 +2,7 @@
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,6 +65,7 @@
   }
 </style>
 <body>
+<fmt:requestEncoding value="utf-8"/>
 <%@include file="/Common/header.jsp" %>
 <div class="container-fluid bg-dark">
     <div class="container tape">
@@ -90,11 +92,13 @@
             <table>
                 <tr>
                     <th>등록건수</th>
-                    <td style="text-align: right">${fn:length(salesList)} (건)</td>
+                    <td style="text-align: right">${count} (건)</td>
                 </tr>
                 <tr>
                     <th>총액</th>
-                    <td style="text-align: right">${lectureSales} (원)</td>
+                    <td style="text-align: right">
+                        <fmt:formatNumber type="number" maxFractionDigits="3" value="${lectureSales}" /> (원)
+                    </td>
                 </tr>
             </table>
             <button class="active-btn float-right mb-3" type="button" onclick="saveExcel()">엑셀파일로 저장</button>
@@ -106,20 +110,23 @@
             <table class="table mt-4">
                 <thead>
                 <tr>
-                    <th style="width: 10%">강의ID</th>
-                    <th style="width: 65%">강의명</th>
+                    <th style="width: 8%">번호</th>
+                    <th style="width: 67%">강의명</th>
                     <th style="width: 10%">총수익</th>
                     <th style="width: 15%"></th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${salesList}" var="sales">
+                <c:forEach items="${salesList}" var="sales" varStatus="status">
                     <tr>
-                        <td>${sales.lectureNo}</td>
+                        <td>${pvo.begin + status.index}</td>
                         <td>
-                            <a href="#">${sales.lectureTitle}</a>
+                            <a style="color: black;"
+                               href="${pageContext.request.contextPath}/Member/getLecture.do?lectureNo=${sales.lectureNo}">${sales.lectureTitle}</a>
                         </td>
-                        <td style="text-align: right">${sales.lecturePrice}원</td>
+                        <td style="text-align: right">
+                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${sales.lecturePrice}" />원
+                        </td>
                         <td class="pr-0" style="text-align: right">
                             <button class="active-btn" onclick="location.href='salesLectureView.do?lectureNo=${sales.lectureNo}'">자세히 알아보기</button>
                         </td>

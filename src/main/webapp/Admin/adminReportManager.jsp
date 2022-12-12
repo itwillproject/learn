@@ -114,10 +114,17 @@
 
   </style>
 <script>
-	function getTrueReport() {
-		//alert("getTrueReport() 실행");
+	function getTrueReport(cPage) {
+		//alert("getTrueReport() 실행 : " + cPage);
+		var url = null;
 		
-		$.ajax("getTrueReport.do", {
+		if (cPage > 1) {
+			url = "getTrueReport.do?cPage=" + cPage;
+		} else {
+			url = "getTrueReport.do";
+		}
+		
+		$.ajax(url, {
 			type: "get",
 			dataType: "json", 
 			success: function(data){ 
@@ -167,7 +174,7 @@
 					if (i == data.pvo.nowPage) {
 						page += '<a class="active">' + i + '</a>';
 					} else if (i != data.pvo.nowPage) {
-						page += '<a href="${pageContext.request.contextPath}/getTrueReport.do?cPage=${pageNo }">' + i + '</a>';
+						page += '<a href="javascript:getTrueReport(' + i + ')">' + i + '</a>';
 					}
 				}
 	            if (data.pvo.endPage < data.pvo.totalPage) {
@@ -194,10 +201,17 @@
 		});
 	}
 
-	function getDeleteReport() {
+	function getDeleteReport(cPage) {
 		//alert("getDeleteReport() 실행");
+		var url = null;
 		
-		$.ajax("getDeleteReport.do", {
+		if (cPage > 1) {
+			url = "getDeleteReport.do?cPage=" + cPage;
+		} else {
+			url = "getDeleteReport.do";
+		}
+		
+		$.ajax(url, {
 			type: "get",
 			dataType: "json", 
 			success: function(data){ 
@@ -235,7 +249,7 @@
 					if (i == data.pvo.nowPage) {
 						page += '<a class="active">' + i + '</a>';
 					} else if (i != data.pvo.nowPage) {
-						page += '<a href="${pageContext.request.contextPath}/getDeleteReport.do?cPage=${pageNo }">' + i + '</a>';
+						page += '<a href="javascript:getDeleteReport(' + i + ')">' + i + '</a>';
 					}
 				}
 	            if (data.pvo.endPage < data.pvo.totalPage) {

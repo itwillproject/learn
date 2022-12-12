@@ -790,4 +790,98 @@ public String login(HttpServletRequest request, UserVO vo, Model model){
 		return "/Member/userBoardPage.jsp";
 	}
 
+	// 마이페이지: 작성한 게시글(질문)
+	@RequestMapping("/myQuestion.do")
+	public String myQuestion(HttpSession session, Model model,
+			@RequestParam(value = "order", required = false) String order,
+			@RequestParam(value = "cPage", required = false) String cPage) {
+
+		UserVO user = (UserVO) session.getAttribute("user");
+
+		Map<String, String> pmap = new HashMap<>();
+		pmap.put("userId", user.getUserId());
+		pmap.put("order", order);
+		pmap.put("type", "1");
+
+		PagingJS p = makePaging(cPage, boardService.getMyBoardCount(pmap));
+
+		pmap.put("begin", Integer.toString(p.getBegin()));
+		pmap.put("end", Integer.toString(p.getEnd()));
+
+		model.addAttribute("list", boardService.getMyBoardList(pmap));
+		model.addAttribute("pvo", p);
+
+			return "/Member/myQuestion.jsp";
+	}
+
+	// 마이페이지: 작성한 게시글(자유주제)
+	@RequestMapping("/myFree.do")
+	public String myFree(HttpSession session, Model model,
+			@RequestParam(value = "order", required = false) String order,
+			@RequestParam(value = "cPage", required = false) String cPage) {
+			UserVO user = (UserVO) session.getAttribute("user");
+
+			Map<String, String> pmap = new HashMap<>();
+			pmap.put("userId", user.getUserId());
+			pmap.put("order", order);
+			pmap.put("type", "2");
+
+			PagingJS p = makePaging(cPage, boardService.getMyBoardCount(pmap));
+
+			pmap.put("begin", Integer.toString(p.getBegin()));
+			pmap.put("end", Integer.toString(p.getEnd()));
+
+			model.addAttribute("list", boardService.getMyBoardList(pmap));
+			model.addAttribute("pvo", p);
+
+			return "/Member/myFree.jsp";
+	}
+
+	@RequestMapping("/myFreeAjax.do")
+	public String userFreeAjax(@RequestParam String order, HttpSession session,
+			@RequestParam String cPage, Model model) {
+
+		UserVO user = (UserVO) session.getAttribute("user");
+
+		Map<String, String> pmap = new HashMap<>();
+		pmap.put("userId", user.getUserId());
+		pmap.put("order", order);
+		pmap.put("type", "2");
+
+		PagingJS p = makePaging(cPage, boardService.getMyBoardCount(pmap));
+
+		pmap.put("begin", Integer.toString(p.getBegin()));
+		pmap.put("end", Integer.toString(p.getEnd()));
+
+		model.addAttribute("list2", boardService.getMyBoardList(pmap));
+		model.addAttribute("pvo", p);
+
+		return "/Member/myFreeAjax.jsp";
+
+	}
+
+	@RequestMapping("/myQuestionAjax.do")
+	public String userQuestionAjax(@RequestParam String order, HttpSession session,
+			@RequestParam String cPage, @RequestParam String status, Model model) {
+
+		UserVO user = (UserVO) session.getAttribute("user");
+
+		Map<String, String> pmap = new HashMap<>();
+		pmap.put("userId", user.getUserId());
+		pmap.put("order", order);
+		pmap.put("type", "1");
+		pmap.put("status", status);
+
+		PagingJS p = makePaging(cPage, boardService.getMyQBoardCount(pmap));
+
+		pmap.put("begin", Integer.toString(p.getBegin()));
+		pmap.put("end", Integer.toString(p.getEnd()));
+
+		model.addAttribute("list2", boardService.getMyQBoardList(pmap));
+		model.addAttribute("pvo", p);
+
+		return "/Member/myQuestionAjax.jsp";
+
+	}
+
 }

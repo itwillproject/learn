@@ -72,7 +72,7 @@
             <h5 style="font-weight: bold">Group Chat</h5>
         </div>
         <hr>
-        <div class="groupChat" style="height: 82%; overflow: auto">
+        <div class="groupChat" style="height: 82%; overflow: auto;">
             <ul id="chatBox" class="pl-0 pr-2" style="list-style: none">
 
             </ul>
@@ -97,6 +97,11 @@
     const video = document.querySelector(id);
     window.stream = stream;
     video.srcObject = stream;
+  }
+
+  function autoScroll () {
+    let gc = $('.groupChat');
+    gc.scrollTop(gc[0].scrollHeight);
   }
 
   $(async function() {
@@ -149,6 +154,7 @@
                 + ' </small><br>' + data.msg + '<br>' + '</li>';
             $('#chatBox').append(dispHtml);
           }
+          autoScroll();
         });
       })
     })
@@ -164,6 +170,7 @@
       let msg = chatText.val();
       let dispHtml = '<li id="myMsg">' + '<small><b>' + '${user.userName}' + '</b> / ' + now + ' </small><br>' + msg + '<br>' + '</li>';
       $('#chatBox').append(dispHtml);
+      autoScroll();
       chatText.val('');
 
       let data = {

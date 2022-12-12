@@ -140,5 +140,15 @@ public class BoardServiceImpl implements BoardService {
 		return boardDAO.getMyBoardCount(map);
 	}
 
-  
+	@Override
+	public int getMyQBoardCount(Map<String, String> pmap) {
+		return boardDAO.getMyQBoardCount(pmap);
+	}
+
+	@Override
+	public List<BoardVO> getMyQBoardList(Map<String, String> pmap) {
+		return boardDAO.getMyQBoardList(pmap);
+	}
+
+
 }

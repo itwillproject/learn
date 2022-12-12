@@ -172,7 +172,8 @@ public class LectureController {
 		return p;
 
 	}
-	
+
+	// 실시간 질문: 학생
 	@RequestMapping("/realtimeQuestion.do")
 	public String realtimeQuestion(@RequestParam String lectureNo, Model model) {
 	LectureVO lecture = lectureService.getLecture(lectureNo);

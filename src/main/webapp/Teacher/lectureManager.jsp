@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,6 +65,7 @@
   }
 </style>
 <body>
+<fmt:requestEncoding value="utf-8"/>
 <%@include file="/Common/header.jsp" %>
 <div class="container-fluid bg-dark">
     <div class="container tape">
@@ -91,7 +93,7 @@
             <table class="table mt-4" style="table-layout: fixed">
                 <thead>
                     <tr>
-                        <th style="width: 8%">강의ID</th>
+                        <th style="width: 8%">번호</th>
                         <th style="width: 8%">강의종류</th>
                         <th style="width: 12%">카테고리</th>
                         <th style="width: 20%">강의명</th>
@@ -102,18 +104,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${lectureList}" var="lec">
+                <c:forEach items="${lectureList}" var="lec" varStatus="status">
                     <tr>
-                        <td>${lec.lectureNo}</td>
+                        <td>${pvo.begin + status.index}</td>
                         <td>
                             <c:if test="${lec.lectureOnOff == 0}">온라인</c:if>
                             <c:if test="${lec.lectureOnOff == 1}">오프라인</c:if>
                         </td>
                         <td>${lec.categoryName}</td>
                         <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                            <a href="#">${lec.lectureTitle}</a>
+                            <a style="color: black" href="${pageContext.request.contextPath}/Member/getLecture.do?lectureNo=${lec.lectureNo}">${lec.lectureTitle}</a>
                         </td>
-                        <td>${lec.lecturePrice}원</td>
+                        <td>
+                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${lec.lecturePrice}" />원
+                        </td>
                         <td>
                             <c:choose>
                                 <c:when test="${empty lec.lectureDue}">
@@ -134,9 +138,32 @@
                             <button onclick="location.href='${pageContext.request.contextPath}/getLectureNewsList.do?lectureNo=${lec.lectureNo}'" class="active-btn" style="background-color: #17a2b8">새소식</button>
                             <c:if test="${lec.lectureOnOff == 0}">
                                 <button onclick="location.href='studentManager.do?lectureNo=${lec.lectureNo}'" class="active-btn">수강자</button>
-                                <button class="active-btn" style="background-color: #7dd99f"
-                                        onclick="location.href='${pageContext.request.contextPath}/Teacher/realtimeQuestion.do?lectureNo=${lec.lectureNo}'">질문</button>
+                                <span id="realtimeDiv${status.index}">
+                                    <button class="active-btn" style="background-color: #7dd99f"
+                                            onclick="location.href='${pageContext.request.contextPath}/Teacher/realtimeQuestion.do?lectureNo=${lec.lectureNo}'">질문</button>
+                                </span>
+                                <script>
+                                  today = new Date();
+                                  thour = today.getHours();
+                                  tminute = today.getMinutes();
+                                  shour = '${lec.qsStart}'.substring(11, 13);
+                                  sminute = '${lec.qsStart}'.substring(14, 16);
+                                  ehour = '${lec.qsEnd}'.substring(11, 13);
+                                  eminute = '${lec.qsEnd}'.substring(14, 16);
 
+                                  earlyStart = (shour > thour || ((shour === String(thour)) && (sminute > tminute)) ); // 시간이 작거나 시간이 같으면 분이 작으면 true
+                                  lateEnd = (ehour < thour || ((ehour === String(thour)) && (eminute < tminute)) ); // 시간이 크거나 시간이 같으면 분이 크면 true
+
+                                  if(('${not empty lec.qsStart}' === 'true')) {
+                                    if(String(today.getDay()) !== '${lec.qsWeekdays}') { // 해당 요일 아님
+                                      $('#realtimeDiv${status.index}').css('display', 'none');
+                                    } else if(earlyStart || lateEnd) { // 시작 시간 이전이거나 끝 시간 이후면 안 눌리게
+                                      $('#realtimeDiv${status.index}').css('display', 'none');
+                                    }
+                                  } else { // 실시간 강의 없으면 버튼 안 보이게
+                                    $('#realtimeDiv${status.index}').css('display', 'none');
+                                  }
+                                </script>
                             </c:if>
                             <c:if test="${lec.lectureOnOff == 1}">
                                 <button onclick="location.href='timetableManager.do?lectureNo=${lec.lectureNo}'" class="active-btn" style="background-color: #007bff">시간표</button>

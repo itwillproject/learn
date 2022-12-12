@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -115,6 +116,7 @@
     }
 </style>
 <body>
+<fmt:requestEncoding value="utf-8"/>
 <%@include file="/Common/header.jsp" %>
 <div class="container-fluid bg-dark">
     <div class="container tape">
@@ -172,7 +174,9 @@
                     <h5>총 수익</h5>
                     <h2>
                         <c:if test="${empty map.lectureSales}">0</c:if>
-                        <c:if test="${not empty map.lectureSales}">${map.lectureSales}</c:if>
+                        <c:if test="${not empty map.lectureSales}">
+                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${map.lectureSales}" />
+                        </c:if>
                         <small>원</small>
                     </h2>
                 </div>
@@ -207,7 +211,9 @@
                             <tr>
                                 <td>${lec.lectureTitle}</td>
                                 <td>${lec.lectureRegdate}</td>
-                                <td>${lec.lecturePrice}원</td>
+                                <td>
+                                    <fmt:formatNumber type="number" maxFractionDigits="3" value="${lec.lecturePrice}" />원
+                                </td>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -262,7 +268,7 @@
                                 let dispHtml = '<tr>';
                                 dispHtml += '<td>' + this.lectureTitle + '</td>';
                                 dispHtml += '<td>' + this.lectureRegdate + '</td>';
-                                dispHtml += '<td>' + this.lecturePrice + '원</td>';
+                                dispHtml += '<td>' + this.lecturePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원</td>';
                                 dispHtml += '</tr>';
                                 $('#rtContent').append(dispHtml);
                               })

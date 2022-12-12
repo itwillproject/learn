@@ -327,7 +327,43 @@
 			<if test="order == 3"> ORDER BY BOARD_LIKE, BOARD_REGDATE DESC</if> <!-- 좋아요순 -->
 		</if>
 	</select>
-	
+
+	<!--
+	int getMyQBoardCount(Map<String, String> pmap);
+
+	List<BoardVO> getMyQBoardList(Map<String, String> pmap);
+	-->
+
+	<select id="getMyQBoardList" parameterType="hashMap" resultType="board">
+		SELECT * FROM (SELECT ROWNUM R_NUM, K.* FROM ( SELECT * FROM (
+		SELECT USER_ID, QBOARD_NO, BOARD_ADOPT, BOARD_TITLE, BOARD_REGDATE, BOARD_LIKE, COMMENT_CNT FROM QUESTION_BOARD
+		) WHERE USER_ID = #{userId}
+		<if test="status != null">
+			<if test="status == 2"> AND BOARD_ADOPT = 'TRUE'</if> <!-- 해결됨 -->
+			<if test="status == 3"> AND BOARD_ADOPT = 'FALSE'</if> <!-- 미해결 -->
+		</if>
+		<if test="order != null">
+			<if test="order == 1"> ORDER BY BOARD_REGDATE DESC</if> <!-- 최신순 -->
+			<if test="order == 2"> ORDER BY BOARD_REGDATE</if> <!-- 오래된순 -->
+			<if test="order == 3"> ORDER BY BOARD_LIKE, BOARD_REGDATE DESC</if> <!-- 좋아요순 -->
+		</if>) K
+		) WHERE R_NUM BETWEEN #{begin} AND #{end}
+	</select>
+
+	<select id="getMyQBoardCount" parameterType="hashMap" resultType="int">
+		SELECT COUNT(*) FROM QUESTION_BOARD
+		WHERE USER_ID = #{userId}
+		<if test="status != null">
+			<if test="status == 2"> AND BOARD_ADOPT = 'TRUE'</if> <!-- 해결됨 -->
+			<if test="status == 3"> AND BOARD_ADOPT = 'FALSE'</if> <!-- 미해결 -->
+		</if>
+		<if test="order != null">
+			<if test="order == 1"> ORDER BY BOARD_REGDATE DESC</if> <!-- 최신순 -->
+			<if test="order == 2"> ORDER BY BOARD_REGDATE</if> <!-- 오래된순 -->
+			<if test="order == 3"> ORDER BY BOARD_LIKE, BOARD_REGDATE DESC</if> <!-- 좋아요순 -->
+		</if>
+	</select>
+
 </mapper>
 
 

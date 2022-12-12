@@ -93,7 +93,6 @@
                     <th>이름</th>
                     <th>아이디</th>
                     <th>등록일</th>
-                    <th>학습강의수</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -105,11 +104,7 @@
                         <td>${stu.userId}</td>
                         <td>${stu.userRegdate}</td>
                         <td>
-                            <c:if test="${empty lectureNo}">-</c:if>
-                            <c:if test="${empty timetableNo}">${stu.points}</c:if>
-                        </td>
-                        <td>
-                            <button class="active-btn" onclick="location.href='${pageContext.request.contextPath}/memberChat/memberChatRoom.do?senderId=${stu.userId}&receiverId=${user.userId }'">채팅</button>
+                            <button class="active-btn">채팅</button>
                         </td>
                     </tr>
                 </c:forEach>

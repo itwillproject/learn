@@ -85,12 +85,15 @@
                                     <div class="num-circle">${status.index + 1}</div>
                                 </td>
                                 <td style="width: 30%">
-                                    <img class="w-100" src="${lec.lectureCoverimg}"/>
+                                    <img class="w-100" src="${pageContext.request.contextPath}/filepath/${lec.lectureCoverimg}"/>
                                 </td>
                                 <td style="width: 65%;" class="pt-4">
                                     <div><h5><b>${lec.lectureTitle}</b></h5></div>
                                     <div class="pb-3">${lec.lectureSummary}</div>
-                                    <button class="btn btn-light">강의 보러가기 ></button>
+                                    <button class="btn btn-light"
+                                            onclick="location.href='${pageContext.request.contextPath}/Member/getLecture.do?lectureNo=${lec.lectureNo}'">
+                                        강의 보러가기 >
+                                    </button>
                                 </td>
                             </tr>
                         </c:forEach>

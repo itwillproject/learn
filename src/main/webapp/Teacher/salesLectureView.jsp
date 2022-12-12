@@ -2,6 +2,7 @@
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,6 +65,7 @@
   }
 </style>
 <body>
+<fmt:requestEncoding value="utf-8"/>
 <%@include file="/Common/header.jsp" %>
 <div class="container-fluid bg-dark">
     <div class="container tape">
@@ -90,11 +92,13 @@
             <table>
                 <tr>
                     <th>등록건수</th>
-                    <td style="text-align: right">${fn:length(salesList)} (건)</td>
+                    <td style="text-align: right">${count} (건)</td>
                 </tr>
                 <tr>
                     <th>총액</th>
-                    <td style="text-align: right">${lectureSales} (원)</td>
+                    <td style="text-align: right">
+                        <fmt:formatNumber type="number" maxFractionDigits="3" value="${lectureSales}" /> (원)
+                    </td>
                 </tr>
             </table>
             <button class="active-btn float-right mb-3" type="button" onclick="saveExcel()">엑셀파일로 저장</button>
@@ -115,13 +119,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${salesList}" var="lec">
+                <c:forEach items="${salesList}" var="lec" varStatus="status">
                     <tr>
-                        <td>${lec.lectureNo}</td>
+                        <td>${pvo.begin + status.index}</td>
                         <td>${lec.lectureWriter}</td>
                         <td>${lec.userId}</td>
                         <td>${fn:substring(lec.lectureRegdate, 0, 10)}</td>
-                        <td style="text-align: right">${lec.lecturePrice}원</td>
+                        <td style="text-align: right">
+                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${lec.lecturePrice}" />원
+                        </td>
                     </tr>
                 </c:forEach>
                 </tbody>

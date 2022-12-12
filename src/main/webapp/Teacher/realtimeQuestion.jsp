@@ -69,7 +69,7 @@
             <h5 style="font-weight: bold">Group Chat</h5>
         </div>
         <hr>
-        <div class="groupChat" style="height: 82%; overflow: auto">
+        <div class="groupChat" style="height: 82%; overflow: auto;">
             <ul id="chatBox" class="pl-0 pr-2" style="list-style: none">
 
             </ul>
@@ -96,6 +96,11 @@
       height: 824
     }
   };
+
+  function autoScroll () {
+    let gc = $('.groupChat');
+    gc.scrollTop(gc[0].scrollHeight);
+  }
 
   function handleSuccess(stream, id) {
     const video = document.querySelector(id);
@@ -124,6 +129,7 @@
             let dispHtml = '<li id="yourMsg">' + '<small><b>' + data.name + '</b> / ' + data.now
                 + ' </small><br>' + data.msg + '<br>' + '</li>';
             $('#chatBox').append(dispHtml);
+            autoScroll();
 
             for(let id of group) {
               let conn = await peer.connect(id);
@@ -138,6 +144,7 @@
               let enterMsg = '[<b>' + data.stuName + '</b> 님이 입장하셨습니다]';
               let dispHtml = '<li id="enterMsg">' + enterMsg + '</li>';
               $('#chatBox').append(dispHtml);
+              autoScroll();
               for(let id of group) {
                 let conn = await peer.connect(id);
                 conn.on('open', function() {
@@ -162,6 +169,7 @@
       let msg = chatText.val();
       let dispHtml = '<li id="myMsg">' + '<small><b>' + '${user.userName}' + '</b> / ' + now + ' </small><br>' + msg + '<br>' + '</li>';
       $('#chatBox').append(dispHtml);
+      autoScroll();
       chatText.val('');
 
       let data = {

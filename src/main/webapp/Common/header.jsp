@@ -1,5 +1,6 @@
 <%@ page    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -136,6 +137,7 @@ body {
    </head>
 
     <header>
+        <fmt:requestEncoding value="utf-8"/>
   <ul class="nav mr-auto justify-content-center bg-white" >
   	<li class="nav-item">
   		<a href="${pageContext.request.contextPath}"><img src="${pageContext.request.contextPath}/picture/mainlogo.png" alt="mainlogo" width="120px" height="40px"></a>
@@ -193,8 +195,10 @@ body {
 </li>
 
  <li>
-<button type="button" class="btn" >
-      <input type="text" id="search">
+   <button type="button" class="btn" >
+      <form action="${pageContext.request.contextPath}/common/getIndexSearch.do">
+         <input id="search" type="text" name="searchKeyword">
+      </form>
     </button>
 </li>    
 <c:if test="${empty user.userId }">
@@ -270,7 +274,9 @@ body {
         <div class="dropdown-menu">
             <a class="dropdown-item">${user.userName }</a>
             <a class="dropdown-item"><small>${user.grade }</small></a>
-            <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/viewPoints.do"><small>포인트: ${user.points }점</small></a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/viewPoints.do"><small>포인트:
+                <fmt:formatNumber type="number" maxFractionDigits="3" value="${user.points }" />점
+            </small></a>
             <a class="dropdown-item"><hr></a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/memberBoard/goMyLectureList.do">내 학습</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/inquiry.jsp">작성한 게시글</a>
