@@ -63,6 +63,9 @@ public class BoardController {
 		
 		System.out.println(">>파일 업로드 도착");
 		
+//		String url = "\\\\192.168.18.11\\temp\\" + savedFileName;
+		
+		
 		// 내부경로로 저장
 		String contextRoot = new HttpServletRequestWrapper(request).getSession().getServletContext().getRealPath("/");
 		String fileRoot = contextRoot+"resources/fileupload/";
@@ -258,18 +261,22 @@ public class BoardController {
 	
 	// qna 글쓰기 폼으로 이동
 	@GetMapping("/qnaWriteForm.do")
-	public String toQnaWriteForm(BoardVO vo) {
-		System.out.println(">>> qna작성폼 이동");						
+	public String toQnaWriteForm(BoardVO bvo, Model model) {
+		System.out.println(">>> qna작성폼 이동");	
+		
+		model.addAttribute("board", bvo);
 				
-		return "redirect:/Community/qna/qnaWriteForm.jsp"; // 이동
+		return "/Community/qna/qnaWriteForm.jsp"; // 이동
 	}
 	
 	// free 글쓰기 폼으로 이동
 	@GetMapping("/freeWriteForm.do")
-	public String toFreeWriteForm(BoardVO vo) {
+	public String toFreeWriteForm(BoardVO bvo, Model model) {
 		System.out.println(">>> free작성폼 이동");						
 		
-		return "redirect:/Community/free/freeWriteForm.jsp"; // 이동
+		model.addAttribute("board", bvo);
+		
+		return "/Community/free/freeWriteForm.jsp"; // 이동
 	}
 	
 	// qna, free 글쓰기 입력
