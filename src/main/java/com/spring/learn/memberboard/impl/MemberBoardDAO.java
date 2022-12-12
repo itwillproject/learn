@@ -6,6 +6,8 @@ import java.util.Map;
 import com.spring.learn.memberboard.CallcenterCommentVO;
 import com.spring.learn.memberboard.MemberBoardVO;
 import com.spring.learn.memberboard.OrdersDetailVO;
+import com.spring.learn.roadmap.MyroadmapVO;
+import com.spring.learn.roadmap.RoadmapVO;
 
 public interface MemberBoardDAO {
 	
@@ -25,6 +27,8 @@ public interface MemberBoardDAO {
 	List<MemberBoardVO> resolvedCBoardList(MemberBoardVO vo);
 	List<MemberBoardVO> unResolvedCBoardList(MemberBoardVO vo);
 	List<OrdersDetailVO> goMyLectureList(OrdersDetailVO oov);
+	List<MyroadmapVO> getMyRoadMapList(MyroadmapVO mrvo);
+	RoadmapVO getRoadMap(MyroadmapVO roadMap);
 
 }
 

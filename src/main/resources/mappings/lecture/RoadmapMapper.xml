@@ -13,7 +13,7 @@
     SELECT * FROM MYROADMAP WHERE USER_ID = #{userId} AND RBOARD_NO = #{rboardNo}
   </select>
   <insert id="addMyroadmap" parameterType="hashMap">
-    INSERT INTO MYROADMAP VALUES (#{rboardNo}, #{userId}, SYSDATE, 0)
+    INSERT INTO MYROADMAP (RBOARD_NO, USER_ID, ROADMAP_START, ROADMAP_RATE) VALUES (#{rboardNo}, #{userId}, SYSDATE, 0)
   </insert>
   <update id="addUserCount" parameterType="String">
     UPDATE ROADMAP r

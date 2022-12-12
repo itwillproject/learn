@@ -6,6 +6,8 @@ public class MyroadmapVO {
   private String rboardNo, userId;
   private Date roadmapStart;
   private int roadmapRate;
+  private String searchKeyword, ordering
+  ;
 
   public String getRboardNo() {
     return rboardNo;
@@ -38,15 +40,27 @@ public class MyroadmapVO {
   public void setRoadmapRate(int roadmapRate) {
     this.roadmapRate = roadmapRate;
   }
+	
+	public String getSearchKeyword() {
+		return searchKeyword;
+	}
 
-  @Override
-  public String toString() {
-    return "MyroadmapVO{" +
-        "rboardNo='" + rboardNo + '\'' +
-        ", userId='" + userId + '\'' +
-        ", roadmapStart=" + roadmapStart +
-        ", roadmapRate=" + roadmapRate +
-        '}';
-  }
+	public void setSearchKeyword(String searchKeyword) {
+		this.searchKeyword = searchKeyword;
+	}
+
+	public String getOrdering() {
+		return ordering;
+	}
+
+	public void setOrdering(String ordering) {
+		this.ordering = ordering;
+	}
+
+	@Override
+	public String toString() {
+		return "MyroadmapVO [rboardNo=" + rboardNo + ", userId=" + userId + ", roadmapStart=" + roadmapStart
+				+ ", roadmapRate=" + roadmapRate + ", searchKeyword=" + searchKeyword + ", ordering=" + ordering + "]";
+	}
 
 }
