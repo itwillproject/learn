@@ -292,7 +292,38 @@ body {
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Order/orderDetailGo.do?userId=${user.userId }">구매내역</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터<hr></a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatTest.jsp">실시간 접속자와 채팅</a>
-			<a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatTest2.do?bang_id=${user.userId}&userId=${user.userId}">실시간 상담2(09:00 ~ 18:00)</a>
+			<a class="dropdown-item" href="javascript:TimeChatGo();">실시간 상담2(09:00 ~ 18:00)</a>
+			<script type="text/javascript">
+				function TimeChatGo() {
+	            	var Now = new Date(); // 현재 날짜 및 시간
+		            var nowMonth = Now.getMonth() + 1; // 월
+		            var nowDay = Now.getDate(); // 일
+		            var nowHour = Now.getHours(); // 시
+		            var nowMins = Now.getMinutes(); // 분
+		            function pluszero(time){
+		                var time = time.toString(); // 시간을 숫자에서 문자로 바꿈
+		                if(time.length < 2){ //2자리 보다 작다면
+		                    time = '0' + time; //숫자앞 0을 붙여줌
+		                    return time; //값을 내보냄
+			            }else{
+			                return time; //2자리라면 값을 내보냄
+			            }
+		            }
+		            nowMonth = pluszero(nowMonth); //만들었던 함수 적용
+		            nowDay = pluszero(nowDay);
+		            nowHour = pluszero(nowHour);
+		            nowMins = pluszero(nowMins);
+		            var nowtime = nowHour + nowMins; // 월+일+시+분
+		            var startdate = 0900 //시작 시간
+		            var enddate = 1800 // 종류 시간
+		            if(startdate > nowtime || enddate < nowtime ){ //지금이 시작시간보다 작거나, 종류시간보다 크면 
+		                alert("상담시간이 아닙니다.");
+		                location.href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do";
+		            } else {
+		            	location.href="${pageContext.request.contextPath}/Admin/chatTest2.do?bang_id=${user.userId}&userId=${user.userId}";
+		            }      
+				}
+            </script>
 			<c:if test="${user.grade == '관리자' }">
 				<a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatGoAdmin.do">관리자 상담 확인하기</a>
 			</c:if>

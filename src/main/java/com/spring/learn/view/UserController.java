@@ -218,8 +218,10 @@ public String login(HttpServletRequest request, UserVO vo, Model model){
 		UserVO user = (UserVO) session.getAttribute("user");
 		System.out.println("삭제 전 user: " + user);
 		userService.deleteUser(user);
+		session.removeAttribute("user"); //추가 코드
 		return "/Common/index.jsp";
 	}
+
 
 	@RequestMapping("/googleLogin.do")
 	@ResponseBody
