@@ -46,7 +46,13 @@
 	background: #eeeeee;
 }
 
-
+.active-menu {
+	color: #1dc078;
+	font-weight: bold;
+}
+.norm-menu {
+	color: black;
+}
 </style>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -173,7 +179,13 @@
 		
 			<!-- 왼쪽 사이드 네비 -->
 			<div class="col-2 d-flex justify-content-center">
-				<%@ include file="/Member/sideNav.jspf"%>
+				<%@ include file="/Member/sidebar.jspf"%>
+				<script>
+					var menu = $('#mystudyMenu');
+					console.log(menu);
+					menu.removeClass('norm-menu');
+					menu.addClass('active-menu');
+				</script>
 			</div>
 			
 			<!-- 가운데 내용 -->
