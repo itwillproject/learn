@@ -334,7 +334,7 @@
 		<div class="weeklyNewLectures">
 			<c:forEach var="lecture" items="${newWeeklyLectures }">
 				<c:set var="j" value="${j+1 }"/>
-				<p class="h6" onclick="location.href='${pageContext.request.contextPath}/Member/getLecture.do?lectureNo=${lecture.lectureNo }';">${j}. ${lecture.lectureTitle }</p>
+				<p class="h6" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" onclick="location.href='${pageContext.request.contextPath}/Member/getLecture.do?lectureNo=${lecture.lectureNo }';">${j}. ${lecture.lectureTitle }</p>
 			</c:forEach>
 		</div>
     </div>
@@ -342,7 +342,7 @@
       <h3 class="text-center">미승인 지식공유자 신청</h3>
       	<div class="teacherResume" style="height:150px;">
 			<c:forEach var="resume" items="${resumes }">
-				<p class="h6" onclick="openPopUp('${resume.userId}')">${resume.userId }</p>
+				<p class="h6" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" onclick="openPopUp('${resume.userId}')">${resume.userId }</p>
 			</c:forEach>
       	</div>
       	<div class="pagingAreaResume mx-auto">
@@ -353,7 +353,7 @@
       <h3 class="text-center">미답변 문의</h3>
       <div class="callcenter" style="height:150px;">
      	<c:forEach var="call" items="${callcenters }">
-			<p class="h6" onclick="location.href='${pageContext.request.contextPath}/memberBoard/viewPage.do?qnaNo=${call.qnaNo }';">${call.qnaTitle }</p>
+			<p class="h6" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" onclick="location.href='${pageContext.request.contextPath}/memberBoard/viewPage.do?qnaNo=${call.qnaNo }';">${call.qnaTitle }</p>
 		</c:forEach>
       </div>
       <div class="pagingAreaCallcenter mx-auto">

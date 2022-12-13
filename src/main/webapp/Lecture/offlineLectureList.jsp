@@ -274,7 +274,7 @@
 			            dispHTML += '<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/'+this.lectureCoverimg+'" width="100%" alt="'+this.lectureTitle+'">';
 			            dispHTML += '</div>';
 			            dispHTML += '<div class="card-body w-100 overflow-hidden">';
-			            dispHTML += '<p class="card-title font-weight-bold" style="height:50px;">'+this.lectureTitle+'</a></p>';
+			            dispHTML += '<p class="card-title font-weight-bold" style="height:50px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical">'+this.lectureTitle+'</a></p>';
 			            dispHTML += '<span class="card-user font-weight-bold">'+this.lectureWriter+'</span>';	
 			            dispHTML += '<br>';	
 			            dispHTML += '<span>';
@@ -484,7 +484,7 @@
 										<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/${lecture.lectureCoverimg }" width="100%" alt="${lecture.lectureTitle }">
 								  	</div>
 								  	<div class="card-body w-100 overflow-hidden">
-									    <p class="card-title font-weight-bold" style="height:50px;">${lecture.lectureTitle }</a></p>								
+									    <p class="card-title font-weight-bold" style="height:50px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical">${lecture.lectureTitle }</a></p>								
 										<span class="card-user font-weight-bold">${lecture.lectureWriter }</span>
 										<br>
 										<span>
