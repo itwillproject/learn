@@ -7,6 +7,13 @@
 <meta charset="UTF-8">
 <title>마이페이지</title>
 <style>
+	.active-menu {
+		color: #1dc078;
+		font-weight: bold;
+	}
+	.norm-menu {
+		color: black;
+	}
 .tape {
 	height: 100px;
 	margin: 50px auto;
@@ -97,6 +104,12 @@
 		<div class="row w-100 pb-4 justify-content-center">
 			<div class="col-2 d-flex justify-content-center">
 				<%@ include file="sidebar.jspf"%>
+				<script>
+					var menu = $('#mypageMenu');
+					console.log(menu);
+					menu.removeClass('norm-menu');
+					menu.addClass('active-menu');
+				</script>
 			</div>
 			<div class="col-6 pl-3 gray-line">
 				<div class="text-center">
