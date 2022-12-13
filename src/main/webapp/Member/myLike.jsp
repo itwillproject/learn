@@ -170,7 +170,7 @@
 									<c:if test="${likeList.orderCh == 1}">
 										<p class="card-text" style="color: green"><B>학습중</B></p>
 									</c:if>
-									<a href="#" class="stretched-link"></a>
+									<a href="${pageContext.request.contextPath }/Common/getLecture.do?lectureNo=${likeList.lectureNo}" class="stretched-link"></a>
 								</div>
 								<div class="info">
 									<h3>${likeList.lectureTitle }</h3>
