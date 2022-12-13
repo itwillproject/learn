@@ -18,7 +18,7 @@ import com.spring.learn.lecture.OfftimetableVO;
 import com.spring.learn.user.UserVO;
 
 
-@RequestMapping({"/Common", "/Member"})
+@RequestMapping({"/Common", "/Member","/"})
 @Controller
 public class LectureDetailController {
 	

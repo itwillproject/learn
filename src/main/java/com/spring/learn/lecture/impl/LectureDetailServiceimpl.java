@@ -1,5 +1,6 @@
 package com.spring.learn.lecture.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -130,7 +131,25 @@ public class LectureDetailServiceimpl implements LectureDetailService {
 		return arr;
 	}
 
+	public List<LectureCommentVO> getMyCommentList(UserVO user) {
+		List<LectureCommentVO> list = new ArrayList<>();
+		list = lectureDetailDAO.getMyCommentList(user);
+		return list;
+	}
 
+	public LectureVO getLectDetail(LectureCommentVO comment) {
+		LectureVO vo= lectureDetailDAO.getLectDetail(comment);
+		
+		return vo;
+	}
+
+	public String getCommentName(LectureCommentVO comment) {
+	String name = lectureDetailDAO.getCommentName(comment);	
+	
+		return name;
+	}
+
+	
 
 	
 

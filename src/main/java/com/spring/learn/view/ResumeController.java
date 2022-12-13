@@ -18,7 +18,7 @@ import com.spring.learn.user.UserService;
 import com.spring.learn.user.UserVO;
 
 @SessionAttributes("resume")
-@RequestMapping({"/Member", "/memberBoard", "/Admin"})
+@RequestMapping({"/Member", "/memberBoard", "/Admin","Member/Belecture"})
 @Controller
 public class ResumeController {
 	

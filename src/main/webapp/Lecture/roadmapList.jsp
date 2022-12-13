@@ -84,7 +84,7 @@
 			            dispHTML += '<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/'+this.rboardCoverimg+'" width="100%" alt="'+this.rboardTitle+'">';
 			            dispHTML += '</div>';
 			            dispHTML += '<div class="card-body w-100 overflow-hidden">';
-			            dispHTML += '<p class="card-title font-weight-bold" style="height:50px;">'+this.rboardTitle+'</a></p>';
+			            dispHTML += '<p class="card-title font-weight-bold" style="height:50px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical">'+this.rboardTitle+'</a></p>';
 			            dispHTML += '<span class="card-user font-weight-bold">'+this.userName+'</span>';
 			            dispHTML += '<a href="${pageContext.request.contextPath}/roadmap/roadmapDetail.do?rboardNo='+this.rboardNo+'" class="stretched-link"></a>';
 			            dispHTML += '<p>';
@@ -230,7 +230,7 @@
 										<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/${roadmap.rboardCoverimg }" width="100%" alt="${roadmap.rboardTitle }">
 								  	</div>
 								  	<div class="card-body w-100 overflow-hidden">
-									    <p class="card-title font-weight-bold" style="height:50px;">${roadmap.rboardTitle }</a></p>								
+									    <p class="card-title font-weight-bold" style="height:50px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical">${roadmap.rboardTitle }</a></p>								
 										<span class="card-user font-weight-bold">${roadmap.userName }</span>
 								      	<a href="${pageContext.request.contextPath}/roadmap/roadmapDetail.do?rboardNo=${roadmap.rboardNo }" class="stretched-link"></a>
 								  		<p>
