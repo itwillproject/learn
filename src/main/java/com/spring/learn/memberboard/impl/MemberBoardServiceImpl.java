@@ -10,6 +10,8 @@ import com.spring.learn.memberboard.CallcenterCommentVO;
 import com.spring.learn.memberboard.MemberBoardService;
 import com.spring.learn.memberboard.MemberBoardVO;
 import com.spring.learn.memberboard.OrdersDetailVO;
+import com.spring.learn.roadmap.MyroadmapVO;
+import com.spring.learn.roadmap.RoadmapVO;
 
 // UserService
 @Service("memberBoardService")
@@ -90,6 +92,18 @@ public class MemberBoardServiceImpl implements MemberBoardService {
 	public List<OrdersDetailVO> goMyLectureList(OrdersDetailVO oov) {
 		return memberBoardDAO.goMyLectureList(oov);
 	}
+
+	@Override
+	public List<MyroadmapVO> getMyRoadMapList(MyroadmapVO mrvo) {
+		return memberBoardDAO.getMyRoadMapList(mrvo);
+	}
+
+	@Override
+	public RoadmapVO getRoadMap(MyroadmapVO roadMap) {
+		return memberBoardDAO.getRoadMap(roadMap);
+	}
+
+
 
 
   

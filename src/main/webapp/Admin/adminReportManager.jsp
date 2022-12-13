@@ -281,7 +281,7 @@
 	}
 
 	function openPopUp(boardType, boardNo, reporter) {
-		window.open("getReportDetail.do?boardType=" + boardType + "&boardNo=" + boardNo + "&reporter=" + reporter, "상세보기", "width=500, height=180, top=150, left=600");
+		window.open("getReportDetail.do?boardType=" + boardType + "&boardNo=" + boardNo + "&reporter=" + reporter, "상세보기", "width=500, height=210, top=150, left=600");
 	}
 </script>
 </head>

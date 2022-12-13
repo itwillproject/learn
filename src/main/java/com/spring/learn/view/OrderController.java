@@ -47,6 +47,8 @@ public class OrderController {
 		 // 장바구니 리스트 담음
 		List<OrderCartVO> cartList = orderService.getCartList(vo);
 		int sum = 0;
+		System.out.println("cartList : " + cartList);
+		
 		for(OrderCartVO cvo : cartList) {
 			cvo.setLectureSalePrice();
 			cvo.setRealSalePrice();

@@ -1,11 +1,14 @@
 package com.spring.learn.view;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.naming.java.javaURLContextFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +26,8 @@ import com.spring.learn.memberboard.CallcenterCommentVO;
 import com.spring.learn.memberboard.MemberBoardService;
 import com.spring.learn.memberboard.MemberBoardVO;
 import com.spring.learn.memberboard.OrdersDetailVO;
+import com.spring.learn.roadmap.MyroadmapVO;
+import com.spring.learn.roadmap.RoadmapVO;
 import com.spring.learn.user.UserService;
 import com.spring.learn.user.UserVO;
 
@@ -39,6 +44,8 @@ public class MemberBoardController {
 	
 	@Autowired
 	private UserService userService;
+	
+	
 	
 	
 	public MemberBoardController() {
@@ -326,12 +333,16 @@ public class MemberBoardController {
 		System.out.println(">> QnaWrite 입력 도착, uvo : " + uvo);
 		System.out.println(">> QnaWrite 입력 도착, cvo : " + cvo);
 		
-		
 		memberBoardService.addCallcenterComment(cvo);
 		
 		// 커멘트 가져오기
-		bvo = (MemberBoardVO) session.getAttribute("callBvo");
+		// qna넘버로 보드 가져오기 + 보드 어답트로 업데이트 하기
+		bvo = memberBoardService.getBoard(bvo);
+		bvo.setQnaAdopt("TRUE");
+		
 		List<CallcenterCommentVO> cvoList = memberBoardService.getCallcenterComment(bvo);
+		
+		model.addAttribute("callBvo", bvo);
 		
 		model.addAttribute("cvoList", cvoList);
 		
@@ -350,20 +361,24 @@ public class MemberBoardController {
 		
 		// 커멘트 가져오기
 		bvo = (MemberBoardVO) session.getAttribute("callBvo");
+		
+		bvo.setQnaAdopt("FALSE");
+		
+		memberBoardService.updateBoard(bvo);
+		
+		
 		List<CallcenterCommentVO> cvoList = memberBoardService.getCallcenterComment(bvo);
+		
+		model.addAttribute("callBvo", bvo);
 		
 		model.addAttribute("cvoList", cvoList);
 		
 		model.addAttribute("cvoCnt", cvoList.size());
 		
-		
 		System.out.println(">>>>> cvoList : " + cvoList);
 		
 		return "/Member/MemberBoard/myQBoard.jsp"; // 이동
 	}
-	
-	
-	
 	
 	
 	
@@ -444,7 +459,19 @@ public class MemberBoardController {
 		
 		oov.setUserId(uvo.getUserId());
 		
-		List<OrdersDetailVO> myOrderDetailList = memberBoardService.goMyLectureList(oov);
+		// 이건 렉쳐 due와  ORDER_REGDATE 가져오나, 그냥 다 가져온 것임, 그런데 문제는 
+		List<OrdersDetailVO> myOrderDetailListI = memberBoardService.goMyLectureList(oov);
+		List<OrdersDetailVO> myOrderDetailList = new ArrayList<OrdersDetailVO>();
+		
+		for (int i = 0; i < myOrderDetailListI.size(); i++) {
+			if(myOrderDetailListI.get(i).getLectureDue() != null) {
+				if (myOrderDetailListI.get(i).getEndDate().compareTo(myOrderDetailListI.get(i).getSysdate()) > 0) {
+					myOrderDetailList.add(myOrderDetailListI.get(i));
+				}
+			} else {
+				myOrderDetailList.add(myOrderDetailListI.get(i));
+			}
+		}
 		
 		model.addAttribute("myOrderDetailList", myOrderDetailList);
 		
@@ -466,21 +493,114 @@ public class MemberBoardController {
 				
 		oov.setUserId(uvo.getUserId());
 		
-		List<OrdersDetailVO> myOrderDetailList = memberBoardService.goMyLectureList(oov);
+		// 이건 렉쳐 due와  ORDER_REGDATE 가져오나, 그냥 다 가져온 것임, 그런데 문제는 
+		List<OrdersDetailVO> myOrderDetailListI = memberBoardService.goMyLectureList(oov);
+		List<OrdersDetailVO> myOrderDetailList = new ArrayList<OrdersDetailVO>();
+		
+		for (int i = 0; i < myOrderDetailListI.size(); i++) {
+			if(myOrderDetailListI.get(i).getLectureDue() != null) {
+				if (myOrderDetailListI.get(i).getEndDate().compareTo(myOrderDetailListI.get(i).getSysdate()) > 0) {
+					myOrderDetailList.add(myOrderDetailListI.get(i));
+				}
+			} else {
+				myOrderDetailList.add(myOrderDetailListI.get(i));
+			}
+		}
 		
 		model.addAttribute("myOrderDetailList", myOrderDetailList);
 		
 		System.out.println("oov : " + oov);
 		System.out.println("myOrderDetailList : " + myOrderDetailList);
 		
-				
 		return myOrderDetailList;
 	}
 	
 	
+	// 내학습 부분
+	@GetMapping("/goMyRoadMapList.do")
+	public String goMyRoadMapList(UserVO uvo, HttpSession session, Model model, MyroadmapVO mrvo) {
+		System.out.println(">>> 내 로드맵 리스트 보기로 이동");
+		
+		// 로그인 된 유저 아이디 불러오기
+		uvo = (UserVO) session.getAttribute("user");
+		
+		// 잘못된 접근 인 경우 로그인 페이지로 이동
+		if (uvo.getUserId() == null) {
+			return "/member/login.do";
+		}
+		
+		//로그인 된 아이디로 MYROADMAP 테이블에서 목록 가져오기 - 여기에 이미 키워드나 오더링 들어가 있음, rate도 rate는 숫자여야함
+		mrvo.setUserId(uvo.getUserId());
+		List<MyroadmapVO> myRoadMapList = memberBoardService.getMyRoadMapList(mrvo);
+		
+		for(MyroadmapVO myroad : myRoadMapList) {
+			myroad.setSearchKeyword(mrvo.getSearchKeyword());
+		}		
+		
+		// 가져온 곳 정보토대로 (RBOARD_NO 이용해서 로드맵 정보 가져오기) - 리스트로 만들어짐
+		List<RoadmapVO>  roadMapList = new ArrayList<RoadmapVO>();
+		
+		for (MyroadmapVO roadMap : myRoadMapList) {
+			RoadmapVO rvo = new RoadmapVO(); // 로드맵 번호로 찾아서 - RBOARD_TITLE, RBOARD_CONTENT, LECTURE_LIST, RBOARD_COVERIMG, USER_COUNT, USER_NAME (상대방의) 을 넣어야 함
+			rvo = memberBoardService.getRoadMap(roadMap);
+			if (rvo != null) {
+				roadMapList.add(rvo);
+			}
+		}
+		
+		// 전부 모델에 입력하기
+		model.addAttribute("myRoadMapList", myRoadMapList);
+		model.addAttribute("roadMapList", roadMapList);
+		
+		// 내용 확인하기
+		System.out.println("myRoadMapList : " + myRoadMapList);
+		System.out.println("roadMapList : " + roadMapList); // 이것을 가지고 리스트에 뿌려야함
+				
+		return "/Member/MemberBoard/MyRoadMapList.jsp"; // 이동
+	}
 	
 	
-	
+	@GetMapping("/goMyRoadMapListAj.do")
+	public String goMyRoadMapListAj(UserVO uvo, HttpSession session, Model model, MyroadmapVO mrvo) {
+		System.out.println(">>> 내 로드맵 리스트 보기로 이동");
+		
+		// 로그인 된 유저 아이디 불러오기
+		uvo = (UserVO) session.getAttribute("user");
+		
+		// 잘못된 접근 인 경우 로그인 페이지로 이동
+		if (uvo.getUserId() == null) {
+			return "/member/login.do";
+		}
+		
+		//로그인 된 아이디로 MYROADMAP 테이블에서 목록 가져오기 - 여기에 이미 키워드나 오더링 들어가 있음, rate도 rate는 숫자여야함
+		mrvo.setUserId(uvo.getUserId());
+		List<MyroadmapVO> myRoadMapList = memberBoardService.getMyRoadMapList(mrvo);
+		
+		for(MyroadmapVO myroad : myRoadMapList) {
+			myroad.setSearchKeyword(mrvo.getSearchKeyword());
+		}	
+		
+		// 가져온 곳 정보토대로 (RBOARD_NO 이용해서 로드맵 정보 가져오기) - 리스트로 만들어짐
+		List<RoadmapVO>  roadMapList = new ArrayList<RoadmapVO>();
+		
+		for (MyroadmapVO roadMap : myRoadMapList) {
+			RoadmapVO rvo = new RoadmapVO(); // 로드맵 번호로 찾아서 - RBOARD_TITLE, RBOARD_CONTENT, LECTURE_LIST, RBOARD_COVERIMG, USER_COUNT, USER_NAME (상대방의) 을 넣어야 함
+			rvo = memberBoardService.getRoadMap(roadMap);
+			if (rvo != null) {
+				roadMapList.add(rvo);
+			}
+		}
+		
+		// 전부 모델에 입력하기
+		model.addAttribute("myRoadMapList", myRoadMapList);
+		model.addAttribute("roadMapList", roadMapList);
+		
+		// 내용 확인하기
+		System.out.println("myRoadMapList : " + myRoadMapList);
+		System.out.println("roadMapList : " + roadMapList); // 이것을 가지고 리스트에 뿌려야함
+		
+		return "/Member/MemberBoard/searchQboard/SearchMyRoadMap.jsp"; // 이동
+	}	
 	
 	
 	

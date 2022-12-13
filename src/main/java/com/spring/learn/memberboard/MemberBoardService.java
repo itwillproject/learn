@@ -3,6 +3,9 @@ package com.spring.learn.memberboard;
 import java.util.List;
 import java.util.Map;
 
+import com.spring.learn.roadmap.MyroadmapVO;
+import com.spring.learn.roadmap.RoadmapVO;
+
 public interface MemberBoardService {
 	void insertBoard(MemberBoardVO vo);
 	void updateBoard(MemberBoardVO vo);
@@ -17,4 +20,6 @@ public interface MemberBoardService {
 	List<MemberBoardVO> resolvedCBoardList(MemberBoardVO vo);
 	List<MemberBoardVO> unResolvedCBoardList(MemberBoardVO vo);
 	List<OrdersDetailVO> goMyLectureList(OrdersDetailVO oov);
+	List<MyroadmapVO> getMyRoadMapList(MyroadmapVO mrvo);
+	RoadmapVO getRoadMap(MyroadmapVO roadMap);
 }

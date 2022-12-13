@@ -2,9 +2,11 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <title>좋아요</title>
 <style>
@@ -81,6 +83,7 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+<fmt:requestEncoding value="utf-8"/>
 	<%@ include file="../Common/header.jsp"%>
 	<div class="container-fluid bg-dark">
 		<div class="container tape">
@@ -151,17 +154,17 @@
 										</div>
 										<div class="star-ratings-base space-x-2 text-lg">
 											<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
-											<span><small>(${likeList.reviewCnt })</small></span>
+											<span><small>(<fmt:formatNumber type="number" maxFractionDigits="3" value="${likeList.reviewCnt }"/>)</small></span>
 										</div>
 									</div>
 									<p></p>
 				
 									<c:if test="${likeList.orderCh == 0}">
 										<c:if test="${likeList.lectureSalePrice == 0}">
-											<p class="card-text" style="color: blue"> &#8361;${likeList.lecturePrice }</p>
+											<p class="card-text" style="color: blue"> &#8361;<fmt:formatNumber type="number" maxFractionDigits="3" value="${likeList.lecturePrice }"/></p>
 										</c:if>
 										<c:if test="${likeList.lectureSalePrice > 0}">
-											<p class="card-text" style="color: blue"> &#8361;${likeList.lectureSalePrice }</p>
+											<p class="card-text" style="color: blue"> &#8361;<fmt:formatNumber type="number" maxFractionDigits="3" value="${likeList.lectureSalePrice }"/></p>
 										</c:if>
 									</c:if>
 									<c:if test="${likeList.orderCh == 1}">

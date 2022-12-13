@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:requestEncoding value="utf-8"/>
 		<div class="col-1 d-flex justify-content-center">
 				<%@ include file="../Member/sideNav.jspf"%>
 			</div>
@@ -41,15 +43,15 @@
 								<c:if test="${cartList2.lectureSalerate != 0}">
 									<p style="color: red;">
 										<B><small>${cartList2.lectureSalerate }% &nbsp;</small></B> 
-										<STRIKE><small style="color: gray;">${cartList2.lecturePrice }원</small></STRIKE>
+										<STRIKE><small style="color: gray;"><fmt:formatNumber type="number" maxFractionDigits="3" value="${cartList2.lecturePrice }"/>원</small></STRIKE>
 									</p>
-									<p>${cartList2.lectureSalePrice }원</p>
+									<p><fmt:formatNumber type="number" maxFractionDigits="3" value="${cartList2.lectureSalePrice }"/>원</p>
 								</c:if>
 								<c:if test="${cartList2.lectureSalerate == 0}">
 									<p>
 										<small>&nbsp;</small>
 									</p>
-									<p>${cartList2.lecturePrice }원</p>
+									<p><fmt:formatNumber type="number" maxFractionDigits="3" value="${cartList2.lecturePrice }"/>원</p>
 								</c:if>
 							</div>
 						</div>
@@ -85,7 +87,7 @@
 				<div
 					style="border-radius: 10px 10px 10px 10px; border: 1px solid lightgray; padding: 16px 20px;">
 					<p style="float: right">
-						사용가능: <span style="color: green">${cartList2[0].points }</span>
+						사용가능: <span style="color: green"><fmt:formatNumber type="number" maxFractionDigits="3" value="${cartList2[0].points }"/></span>
 					</p>
 					<p>
 						<B>포인트</B>
@@ -103,7 +105,7 @@
 						<div class="col-12" id="checkPoint"></div>
 						
 						<div class="col-7" style="color: gray;">선택상품 금액</div>
-						<div class="col-5" style="color: gray; text-align: right;" id="realPrice">${cartList2[0].realPrice }원</div>
+						<div class="col-5" style="color: gray; text-align: right;" id="realPrice"><fmt:formatNumber type="number" maxFractionDigits="3" value="${cartList2[0].realPrice }"/>원</div>
 						<div class="col-6" style="color: red;" id="realSalePrice2">할인된 금액</div>
 						<c:set var = "total" value = "0" />
 						<c:if test="${not empty cartList2}">
@@ -111,7 +113,7 @@
 							<c:set var= "total" value="${total + cartList2.realSalePrice}"/>
 						</c:forEach>
 						</c:if>
-						<div class="col-6" style="color: red; text-align: right;" id="realSalePrice">-${total}</div>
+						<div class="col-6" style="color: red; text-align: right;" id="realSalePrice">-<fmt:formatNumber type="number" maxFractionDigits="3" value="${total}"/></div>
 						<div class="col-7" style="color: red; padding: 0px 0px 0px 15px;" id="realUsePoint2"></div>
 						<div id="realUsePoint" class="col-5"
 							style="color: red; text-align: right; padding: 0px 15px 0px 0px;"></div>
@@ -119,7 +121,7 @@
 							<B>총 결제금액</B>
 						</div>
 						<div class="col-6" style="text-align: right;" id="my_div">
-							<B>${cartList2[0].realPrice - cartList2[0].realSalePrice }원</B>
+							<B><fmt:formatNumber type="number" maxFractionDigits="3" value="${cartList2[0].realPrice - cartList2[0].realSalePrice }"/>원</B>
 						</div>
 					</div>
 					<br>
