@@ -109,21 +109,30 @@ body {
                 inputPlaceholder: '형식: 숫자 8자리'
               }).then(function(r) {
                 if(r.isConfirmed) {
-                  data.append("userBirth", r.value);
-                  $.ajax({
-                    data : data,
-                    type : "POST",
-                    url : "${pageContext.request.contextPath}/Member/googleLogin.do",
-                    cache : false,
-                    contentType : false,
-                    processData : false,
-                    success: function (url) {
-                      location.href = url;
-                    },
-                    error: function () {
-                      alert("실패...");
-                    }
-                  })
+                  let pattern = /^[0-9]{8}$/;
+                  if(pattern.test(r.value)) {
+                    data.append("userBirth", r.value);
+                    $.ajax({
+                      data : data,
+                      type : "POST",
+                      url : "${pageContext.request.contextPath}/Member/googleLogin.do",
+                      cache : false,
+                      contentType : false,
+                      processData : false,
+                      success: function (url) {
+                        location.href = url;
+                      },
+                      error: function () {
+                        alert("실패...");
+                      }
+                    })
+                  } else {
+                    Swal.fire({
+                      icon: 'error',  // 여기다가 아이콘 종류를 쓰면 됩니다.
+                      title: '회원가입 오류',
+                      text: '생년월일 형식이 틀립니다.',
+                    });
+                  }
                 }
               })
             }
@@ -287,7 +296,8 @@ body {
 			<c:if test="${user.grade == '관리자' }">
 				<a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatGoAdmin.do">관리자 상담 확인하기</a>
 			</c:if>
-            <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/logout.do"><hr>로그아웃</a>
+            <a class="dropdown-item"><hr></a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/logout.do">로그아웃</a>
         </div>
     </div>
     </li>

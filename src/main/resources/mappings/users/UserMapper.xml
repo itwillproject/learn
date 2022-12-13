@@ -18,7 +18,7 @@
 	</select>
 	
 	<select id="insertUser" parameterType="userVO">
-		INSERT INTO USERS VALUES(#{userId}, '일반회원', #{userName}, #{userBirth}, #{userPwd}, SYSDATE,0, #{socialType})
+		INSERT INTO USERS VALUES (#{userId}, '일반회원', #{userName}, #{userBirth}, #{userPwd}, SYSDATE,0, #{socialType}, null)
 	</select>
 	
 	<select id="modifyUser" parameterType="userVO" resultType="int">
