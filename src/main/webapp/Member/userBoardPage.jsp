@@ -128,9 +128,25 @@
                         <li class="nav-item d-flex p-2 w-100">
                             <a href="${pageContext.request.contextPath}/member/goToPersonalPage.do?userId=${person.userId}" class="text-dark">홈</a>
                         </li>
+                        <c:if test="${person.grade == '강의자'}">
+                            <li class="nav-item d-flex p-2 w-100">
+                                <a href="${pageContext.request.contextPath}/member/goToPersonalPage_Lecture.do?userId=${person.userId }" class="text-dark">강의</a>
+                            </li>
+                            <li class="nav-item d-flex p-2 w-100">
+                                <a href="${pageContext.request.contextPath}/member/getGoToPersonalRoadPage.do?userId=${person.userId}" class="text-dark">로드맵</a>
+                            </li>
+                            <li class="nav-item d-flex p-2 w-100">
+                                <a href="#" class="text-dark">수강후기</a>
+                            </li>
+                        </c:if>
                         <li class="nav-item d-flex p-2 w-100">
-                            <a href="#" class="text-dark">게시글</a>
+                            <a href="userBoardPage.do?userId=${person.userId}" class="text-dark">게시글</a>
                         </li>
+                        <c:if test="${user.userId != person.userId}">
+                        <li class="nav-item d-flex p-2 w-100">
+                            <a href="${pageContext.request.contextPath}/memberChat/memberChatRoom.do?senderId=${user.userId }&receiverId=${person.userId }" class="text-dark">채팅하기</a>
+                        </li>
+                        </c:if>
                     </ul>
                 </nav>
             </div>
@@ -191,9 +207,9 @@
                                       dispHtml += '</div>';
                                       dispHtml += '<div class="col-12 pt-2 pb-1">';
                                       if(this.boardAdopt != null) { // 질문게시판
-                                        dispHtml += '<a class="h5" href="#">' + this.boardTitle + '</a>';
+                                        dispHtml += '<a class="h5" href="${pageContext.request.contextPath}/board/viewQnaPage.do?qboardNo=' + this.qboardNo + '">' + this.boardTitle + '</a>';
                                       } else { // 자유게시판
-                                        dispHtml += '<a class="h5" href="#">' + this.boardTitle + '</a>';
+                                        dispHtml += '<a class="h5" href="${pageContext.request.contextPath}/board/viewQnaPage.do?fboardNo=' + this.fboardNo + '">' + this.boardTitle + '</a>';
                                       }
                                       dispHtml += '</div>';
                                       dispHtml += '<div class="col-12">';
@@ -262,13 +278,11 @@
                                     <span style="color: darkgray">${board.boardRegdate}</span>
                                 </div>
                                 <div class="col-12 pt-2 pb-1">
-                                    <!-- 질문게시판: 링크 연결해야 함!!! -->
                                     <c:if test="${not empty board.boardAdopt}">
-                                        <a class="h5" href="#">${board.boardTitle}</a>
+                                        <a class="h5" href="${pageContext.request.contextPath}/board/viewQnaPage.do?qboardNo=${board.qboardNo}">${board.boardTitle}</a>
                                     </c:if>
-                                    <!-- 자유게시판: 링크 연결해야 함!!! -->
                                     <c:if test="${empty board.boardAdopt}">
-                                        <a class="h5" href="#">${board.boardTitle}</a>
+                                        <a class="h5" href="${pageContext.request.contextPath}/board/viewQnaPage.do?fboardNo=${board.fboardNo}">${board.boardTitle}</a>
                                     </c:if>
                                 </div>
                                 <div class="col-12">
