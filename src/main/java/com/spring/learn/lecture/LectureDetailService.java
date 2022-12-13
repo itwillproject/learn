@@ -36,5 +36,9 @@ public interface LectureDetailService {
 	int checkCart(HashMap<String, String> map);
 	
 	int[] getMyBoardNo(HashMap<String, String> map);
+	
+	List<LectureCommentVO> getMyCommentList(UserVO user);
+	LectureVO getLectDetail(LectureCommentVO comment);
+	String getCommentName(LectureCommentVO comment);
 
 }

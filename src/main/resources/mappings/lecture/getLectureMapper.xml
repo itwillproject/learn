@@ -101,6 +101,18 @@
 				AND TIMETABLE_NO = #{timetableNo}
 				</if>
 		</select>
+		<select id="getMyCommentList" parameterType="userVO" resultType="lectureComment">
+				SELECT L.*
+				FROM LECTURE_REVIEW L, (SELECT LECTURE_NO, USER_ID FROM LECTURE WHERE USER_ID=#{userId}) R
+				WHERE L.LECTURE_NO = R.LECTURE_NO ORDER BY BOARD_NO
+		</select>
+		<select id="getLectDetail" parameterType="lectureComment" resultType="lecture">
+				SELECT * FROM LECTURE WHERE LECTURE_NO = ${lectureNo} 
+		</select>
+		<select id="getCommentName" parameterType="lectureComment" resultType="String">
+				SELECT USER_NAME FROM USERS 
+				WHERE USER_ID = #{userId}
+		</select>
 </mapper>
 
 

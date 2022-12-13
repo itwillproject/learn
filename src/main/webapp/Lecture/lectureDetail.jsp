@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-<title>강의 상세페이지</title>
+<title>${lecture.lectureTitle}</title>
 <style>
 	#mainimg {
 		position: absolute;
@@ -49,6 +49,14 @@
 	.letright{
 		float:right;
 	}
+	
+	div.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 50px;
+  padding: 5px;
+
+}
 </style>
 
 </head>
@@ -112,8 +120,6 @@ ${count.totalComment}
 		<span class="col"><a href="#contents">강의소개</a></span>
 		<span class="col"><a href="#curriculum">커리큘럼</a></span>
 		<span class="col"><a href="#review">수강평</a></span>
-		<span class="col"><a href="#">커뮤니티</a></span>
-		<span class="col"><a href="#">새소식</a></span>
 	
 <br><br>
 <div id="introTitle" >
@@ -393,20 +399,21 @@ window.onload=function(){
 
 
 </div>
+<div class="col-sm-4">
 
-
-<div class="col-sm-4" style="position: fixed; top:630px; right: 50px;" >
-  <div class="card rounded-lg" >
+	<div class="sticky">
+	
+<div class="card rounded-lg" >
     <div class="card-header bg-white">
     <c:if test="${lecture.lectureSalerate eq 0}">
-	<h4>${lecture.lecturePrice }원</h4>
+	<h4><fmt:formatNumber type="number" maxFractionDigits="3" value="${lecture.lecturePrice}" />원</h4>
 	</c:if>
 	 <c:if test="${lecture.lectureSalerate ne 0}">
 	 <c:set var="discountedPrice" value="${lecture.lecturePrice*(100-lecture.lectureSalerate)/100.0}"></c:set>
 	 
 	 <div style="display: flex;">
-	<h4><span class="text-danger">${lecture.lectureSalerate}%</span>&nbsp; <fmt:formatNumber value="${discountedPrice }" pattern="0,000" groupingUsed="true"/>원</h4>
-	 &nbsp; <span class="text-muted" style="text-decoration:line-through"><fmt:formatNumber value="${lecture.lecturePrice}" pattern="0,000" groupingUsed="true"/>원</span>
+	<h4><span class="text-danger">${lecture.lectureSalerate}%</span>&nbsp; <fmt:formatNumber type="number" maxFractionDigits="3" value="${discountedPrice}" />원</h4>
+	 &nbsp; <span class="text-muted" style="text-decoration:line-through"><fmt:formatNumber type="number" maxFractionDigits="3" value="${lecture.lecturePrice}" /> 원</span>
 	 </div>
 	</c:if>
 	
@@ -532,26 +539,13 @@ window.onload=function(){
   
   </div>
   </div>
-<br><br><br>
-<br><br><br><br>
-<br><br><br>
-<br><br><br><br>
-<br><br><br><br><br><br><br>
-<br><br><br>
   </div>
-<br><br><br>
-<br><br><br><br>
-<br><br><br>
-<br><br><br><br>
-<br><br><br><br><br><br><br>
-<br><br><br>
+
+  </div>
+
   
   
 </div>
-
-<h3><a href="#" style="text-decoration: none; color: black;">${lecture.lectureWriter}님의 다른 강의<i class="fa fa-location-arrow"></i></a></h3>
-<span style="color: #ADB5BD">지식공유자님의 다른 강의를 만나보세요!</span>
-
 
 
 </div>
@@ -593,7 +587,7 @@ window.onload=function(){
 				$("#lectureNum").html(sentence);
 			},
 			error: function(){
-				alert("실패~~");
+
 			}
 		});
 	}
@@ -615,7 +609,7 @@ window.onload=function(){
 				$("#lectureNum").html(sentence);
 			},
 			error: function(){
-				alert("실패~~");
+		
 			}
 		});
 	}
@@ -766,7 +760,7 @@ window.onload=function(){
 				
 			},
 			error: function(){
-				alert("실패~~");
+	
 			}
 		});
 
@@ -824,7 +818,7 @@ window.onload=function(){
 				
 			},
 			error: function(){
-				alert("실패~~");
+		
 			}
 		});
 		
@@ -862,7 +856,7 @@ window.onload=function(){
 				
 			},
 			error: function(){
-				alert("실패~~");
+			
 			}
 		});
 		
@@ -920,7 +914,7 @@ window.onload=function(){
 				
 			},
 			error: function(){
-				alert("실패~~");
+				
 			}
 		});
 		
@@ -958,7 +952,7 @@ window.onload=function(){
 				
 			},
 			error: function(){
-				alert("실패~~");
+	
 			}
 		});
 		
@@ -1016,7 +1010,7 @@ window.onload=function(){
 				
 			},
 			error: function(){
-				alert("실패~~");
+		
 			}
 		});
 		
@@ -1054,7 +1048,7 @@ window.onload=function(){
 				
 			},
 			error: function(){
-				alert("실패~~");
+		
 			}
 		});
 		
@@ -1145,7 +1139,7 @@ window.onload=function(){
 				
 			},
 			error: function(){
-				alert("실패~~");
+				
 			}
 		});
 		
@@ -1183,7 +1177,7 @@ window.onload=function(){
 				
 			},
 			error: function(){
-				alert("실패~~");
+			
 			}
 		});
 		
@@ -1201,7 +1195,7 @@ window.onload=function(){
 									
 			},
 			error: function(){
-				alert("실패~~");
+				
 			}
 					
 		});
