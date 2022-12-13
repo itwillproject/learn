@@ -398,7 +398,7 @@
 			
 			<!-- 왼쪽 네비 -->
 			<div class="col-2 d-flex justify-content-center">
-				<a href="${pageContext.request.contextPath}/board/getQnaBoardList.do?section=fboard" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
+					<a href="javascript:history.back()" style="position: fixed;"><img class="mt-3" height="35px" src="${pageContext.request.contextPath}/Community/img/back.png"></a>
 			</div>
 
 			<!-- 중앙 위 내용 - 글내용 -->

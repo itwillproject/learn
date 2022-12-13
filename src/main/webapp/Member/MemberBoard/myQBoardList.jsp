@@ -33,6 +33,7 @@ function removeImg(){
 
 $(document).on("keyup", "#searchKeyword", function(){
 	ajaxserachh();
+	
 });
 
 $(document).on("click", ".adopt", function(){
@@ -92,6 +93,8 @@ function ajaxserachh(pageNum){
 		}
 			
 	});
+	
+	removeImg();
 	
 }
 
@@ -265,7 +268,7 @@ function qnaWriteForm() {
 					<p>검색한 내용이 없습니다.</p>
 				</c:if>
 					
-				<table class="table table-hover mt-5">
+				<table class="table table-hover mt-5 contentWrap">
 					<tbody>
 						<c:forEach var="memberBoard" items="${memberBoardList }">							
 							<tr>

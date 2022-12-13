@@ -7,7 +7,7 @@
 		<p>검색한 내용이 없습니다.</p>
 	</c:if>
 		
-	<table class="table table-hover mt-5">
+	<table class="table table-hover mt-5 contentWrap">
 		<tbody>
 			<c:forEach var="memberBoard" items="${memberBoardList }">							
 				<tr>
