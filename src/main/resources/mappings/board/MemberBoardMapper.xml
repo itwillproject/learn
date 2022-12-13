@@ -116,7 +116,8 @@
 	
 	<select id="goMyLectureList" parameterType="OrdersDetail" resultType="OrdersDetail">
 		SELECT J.LECTURE_NO LECTURE_NO, J.USER_ID USER_ID, ORDER_NO, ORDER_REGDATE,
-		LECTURE_COVERIMG, LECTURE_TITLE, LECTURE_SUMMARY, LECTURE_DUE, LECTURE_RATE,
+		LECTURE_COVERIMG, LECTURE_TITLE, LECTURE_SUMMARY, LECTURE_DUE ,LECTURE_DUE + ORDER_REGDATE END_DATE,
+		SYSDATE, LECTURE_RATE,
 		LECTURE_WRITER
 		FROM (
 		 SELECT LECTURE_NO, D.USER_ID USER_ID, D.ORDER_NO ORDER_NO, ORDER_REGDATE, LECTURE_RATE
@@ -185,7 +186,26 @@
             WHERE R_NUM BETWEEN 1 AND 5
 	</select>
 
-
+	
+	<!-- 키워드,  -->
+	<select id="getMyRoadMapList" parameterType="myroadmap" resultType="myroadmap">
+		SELECT * FROM MYROADMAP
+		WHERE USER_ID = #{userId}
+	</select>
+	
+	<select id="getRoadMap" parameterType="myroadmap" resultType="roadmap">
+		SELECT * FROM ROADMAP
+		WHERE RBOARD_NO = ${rboardNo}
+		<if test="searchKeyword != null">
+		AND
+		(RBOARD_TITLE LIKE '%'||#{searchKeyword}||'%'
+		OR RBOARD_CONTENT LIKE '%'||#{searchKeyword}||'%'
+		OR CATEGORY_NAME LIKE '%'||#{searchKeyword}||'%'
+		OR USER_NAME LIKE '%'||#{searchKeyword}||'%')
+		</if>
+		ORDER BY
+		RBOARD_TITLE ASC
+	</select>
 
 	
 	

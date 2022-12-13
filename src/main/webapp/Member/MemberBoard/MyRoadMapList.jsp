@@ -42,6 +42,10 @@
 	background: #2ed39a;
 }
 
+#teacherName{
+	font-weight: bold;
+}
+
 .col-4:hover {
 	background: #eeeeee;
 }
@@ -57,13 +61,10 @@
 	
 	<script type="text/javascript">
 	
-	$(document).on("change", "#sorting", function(){
-		ajaxserachh();
-	});
+// 	$(document).on("change", "#ordering", function(){
+// 		ajaxserachh();
+// 	});
 	
-	$(document).on("change", "#lectureRate", function(){
-		ajaxserachh();
-	});
 	
 	$(document).on("keyup", "#searchKeyword", function(){
 		ajaxserachh();
@@ -74,57 +75,27 @@
 	
 	function ajaxserachh(){
 		var searchKeyword = $("#searchKeyword").val();
-		var sorting = $("#sorting").val();
-		var lectureRate = $("#lectureRate").val();
+// 		var sorting = $("#ordering").val();
+		
 		
 		
 		$.ajax({
-			url: "${pageContext.request.contextPath}/memberBoard/goMyLectureListAj.do?sorting="+sorting+"&searchKeyword="+searchKeyword+"&lectureRate="+lectureRate,
+// 			url: "${pageContext.request.contextPath}/memberBoard/goMyRoadMapListAj.do?ordering="+ordering+"&searchKeyword="+searchKeyword,
+			url: "${pageContext.request.contextPath}/memberBoard/goMyRoadMapListAj.do?searchKeyword="+searchKeyword,
 			type : "get",
 			async : true,
 			
 			success : function(data){
 				console.log("에이젝스 성공!!");
+// 				console.log(data);
+
+				var html = jQuery('<div>').html(data);
+				var myRoadMaps = html.find("div#myRoadMaps").html();
 				
-				var inHtml = "";
-								
-				if (data.length == 0){
-					inHtml = '<div class="row w-100">검색 결과가 없습니다.</div>';
-				} else {
-					
-					$.each(data, function(index, obj){
-						
-						if (index % 3 == 0){
-							inHtml += '<div class="row w-100">'; 
-						}
-						
-						inHtml += '<div class="col-4 p-3">';
-						inHtml += '<div class="row p-2">';
-						inHtml += '<a href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo='+ this.lectureNo +'">';
-						inHtml += '<img width="100%" alt="lectureImg" src="'+'${pageContext.request.contextPath}/filepath/'+this.lectureCoverimg+'">'
-						inHtml += '</a>'
-						inHtml += '</div>';
-						inHtml += '<p><a href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo='+ this.lectureNo +'">'+ this.lectureTitle +'</a></p></div>';
-						
-						
-						if(index == data.length-1){
-							if ((data.length) % 3 ==2){
-								inHtml += '<div class="col-4 p-3"></div>';
-							}
-							if ((data.length) % 3 ==1){
-								inHtml += '<div class="col-4 p-3"></div><div class="col-4 p-3"></div>';
-							}
-						}
-						
-						if(index % 3 == 2){
-							inHtml += '</div>';
-						}
-						
-						});
-					
-				}
+				console.log(myRoadMaps);
 				
-				$("#myLectures").html(inHtml);
+				
+				$("#myRoadMap").html(myRoadMaps);
 				
 			},
 			
@@ -158,7 +129,7 @@
 		<div class="row w-100 tape">		
 		
 			<div class="col-4 d-flex flex-row  align-content-center justify-content-center w-100">
-				<h2 class="mx-auto my-auto w-100" style="text-align: center;">보유한 강의</h2>
+				<h2 class="mx-auto my-auto w-100" style="text-align: center;">나의 로드맵</h2>
 			</div>
 									
 			<div class="col-6 pl-3">
@@ -191,12 +162,6 @@
 						  <li class="nav-item">
 						    <a class="nav-link" href="${pageContext.request.contextPath}/memberBoard/goMyRoadMapList.do">로드맵</a>
 						  </li>
-<!-- 						  <li class="nav-item"> -->
-<!-- 						    <a class="nav-link" href="#">수강확인증</a> -->
-<!-- 						  </li> -->
-<!-- 						  <li class="nav-item"> -->
-<!-- 						    <a class="nav-link" href="#">수료증</a> -->
-<!-- 						  </li>						   -->
 						</ul>
 					</div>															
 					
@@ -204,32 +169,28 @@
 					<div class="row w-100 my-3 pb-3">
 							<form id="ajaxForm" class="w-100 d-flex">
 							<div class="ml-4">
-							<select id="sorting" name="sorting">
-								<option value="regdate" selected="selected">최근 수강신청</option>
-								<option value="title">제목순</option>
-							</select>
+<!-- 							<select id="ordering" name="sorting"> -->
+<!-- 								<option value="asc" selected="selected">제목 오름차순</option> -->
+<!-- 								<option value="desc">제목 내림차순</option> -->
+<!-- 							</select> -->
 							</div>
 							
 							<div class="ml-4">
-							<select id="lectureRate" name="lectureRate">
-								<option selected="selected">모두보기</option>
-								<option value="ing">학습중</option>
-								<option value="perfect">완강</option>
-							</select>
+
 							</div>
 													
-								<input type="text" class="w-50 ml-auto" id="searchKeyword" name="searchKeyword" placeholder="강의명 또는 지식공유자 이름으로 검색">
+								<input type="text" class="w-50 ml-auto" id="searchKeyword" name="searchKeyword" placeholder="로드맵 또는 지식공유자 이름으로 검색">
 							</form>
 					</div>
 					
 				</div>
 				
-				
 					
-					
-				<div class="container mt-3" id="myLectures">
+				<div class="container mt-3" id="myRoadMap">
 				
-						<c:forEach varStatus="vs" var="myOrderDetail" items="${myOrderDetailList }" >
+				
+				<div>
+						<c:forEach varStatus="vs" var="roadMap" items="${roadMapList }" >
 						
 							<c:if test="${vs.count % 3 == 1 }">
 								<div class="row w-100">
@@ -237,10 +198,11 @@
 							
 							<div class="col-4 p-3">
 							<div class="row p-2">							
-								<a href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo=${myOrderDetail.lectureNo }">
-								<img width="100%" alt="lectureImg" src="${pageContext.request.contextPath}/filepath/${myOrderDetail.lectureCoverimg }"></a>
+								<a href="${pageContext.request.contextPath}/roadmap/roadmapDetail.do?rboardNo=${roadMap.rboardNo}">
+								<img width="100%" alt="lectureImg" src="${pageContext.request.contextPath}/filepath/${roadMap.rboardCoverimg }"></a>
 							</div>
-							<p><a href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo=${myOrderDetail.lectureNo }">${myOrderDetail.lectureTitle }</a></p>
+							<p><a id="teacherName" style="color: #19c056" href="${pageContext.request.contextPath}/roadmap/roadmapDetail.do?rboardNo=${roadMap.rboardNo}">${roadMap.userName }</a></p>
+							<p><a href="${pageContext.request.contextPath}/roadmap/roadmapDetail.do?rboardNo=${roadMap.rboardNo}">${roadMap.rboardTitle }</a> <a style="font-size: 0.8em; color: #999999; float: right;">${roadMap.categoryName }</a></p>
 							
 							</div>
 							
@@ -260,6 +222,10 @@
 							</c:if>
 							
 						</c:forEach>
+				</div>
+				
+				
+						
 				</div>
 
 

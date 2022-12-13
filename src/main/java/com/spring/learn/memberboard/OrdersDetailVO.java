@@ -1,5 +1,7 @@
 package com.spring.learn.memberboard;
 
+import java.sql.Date;
+
 public class OrdersDetailVO {
 	
 	private String orderDetailNo, orderNo, userId, lectureNo, timetableNo, lectureRate, orderStatus // 디테일 테이블 내용
@@ -7,8 +9,8 @@ public class OrdersDetailVO {
 	, lectureCoverimg, lectureTitle, lectureSummary, lectureDue // 강의 테이블 내용
 	, searchKeyword // 검색 할 때 필요한 정보
 	, begin, end, cPage // 페이징 할때 필요한 정보
-	, endDate // 강의 마치는 날 계산 orderRegdate + lectureDue
 	, sorting;
+	private Date endDate, sysdate; // 남은날짜 계산 LECTURE_DUE + ORDER_REGDATE - SYSDATE LECTURE_DUE -로  시작하면 안되는 것
 
 	public String getOrderDetailNo() {
 		return orderDetailNo;
@@ -138,21 +140,28 @@ public class OrdersDetailVO {
 		this.cPage = cPage;
 	}
 
-	public String getEndDate() {
-		return endDate;
-	}
-
-	// endDate 계산 - 강의 끝나는 날
-	public void setEndDate(String endDate) {
-		this.endDate = orderRegdate + lectureDue;
-	}
-	
 	public String getSorting() {
 		return sorting;
 	}
 
 	public void setSorting(String sorting) {
 		this.sorting = sorting;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+	
+	public Date getSysdate() {
+		return sysdate;
+	}
+
+	public void setSysdate(Date sysdate) {
+		this.sysdate = sysdate;
 	}
 
 	@Override
@@ -162,9 +171,8 @@ public class OrdersDetailVO {
 				+ ", orderStatus=" + orderStatus + ", orderRegdate=" + orderRegdate + ", lectureCoverimg="
 				+ lectureCoverimg + ", lectureTitle=" + lectureTitle + ", lectureSummary=" + lectureSummary
 				+ ", lectureDue=" + lectureDue + ", searchKeyword=" + searchKeyword + ", begin=" + begin + ", end="
-				+ end + ", cPage=" + cPage + ", endDate=" + endDate + ", sorting=" + sorting + "]";
+				+ end + ", cPage=" + cPage + ", sorting=" + sorting + ", endDate=" + endDate + ", sysdate=" + sysdate
+				+ "]";
 	}
 
-	
-	
 }
