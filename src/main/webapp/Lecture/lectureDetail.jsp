@@ -532,26 +532,12 @@ window.onload=function(){
   
   </div>
   </div>
-<br><br><br>
-<br><br><br><br>
-<br><br><br>
-<br><br><br><br>
-<br><br><br><br><br><br><br>
-<br><br><br>
+
   </div>
-<br><br><br>
-<br><br><br><br>
-<br><br><br>
-<br><br><br><br>
-<br><br><br><br><br><br><br>
-<br><br><br>
+
   
   
 </div>
-
-<h3><a href="#" style="text-decoration: none; color: black;">${lecture.lectureWriter}님의 다른 강의<i class="fa fa-location-arrow"></i></a></h3>
-<span style="color: #ADB5BD">지식공유자님의 다른 강의를 만나보세요!</span>
-
 
 
 </div>
