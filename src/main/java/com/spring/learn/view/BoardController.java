@@ -62,13 +62,15 @@ public class BoardController {
 		 */
 		
 		System.out.println(">>파일 업로드 도착");
-		
+
+		// 외부 경로로 저장
 //		String url = "\\\\192.168.18.11\\temp\\" + savedFileName;
+		String fileRoot = "\\\\192.168.18.11\\temp\\";
 		
 		
 		// 내부경로로 저장
-		String contextRoot = new HttpServletRequestWrapper(request).getSession().getServletContext().getRealPath("/");
-		String fileRoot = contextRoot+"resources/fileupload/";
+//		String contextRoot = new HttpServletRequestWrapper(request).getSession().getServletContext().getRealPath("/");
+//		String fileRoot = contextRoot+"resources/fileupload/";
 		
 		String originalFileName = multipartFile.getOriginalFilename();	//오리지날 파일명
 		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
@@ -79,7 +81,11 @@ public class BoardController {
 		try {
 			InputStream fileStream = multipartFile.getInputStream();
 			FileUtils.copyInputStreamToFile(fileStream, targetFile);	//파일 저장
-			jsonObject.addProperty("url", "/learn/resources/fileupload/"+savedFileName); // contextroot + resources + 저장할 내부 폴더명
+//			jsonObject.addProperty("url", "/learn/resources/fileupload/"+savedFileName); // contextroot + resources + 저장할 내부 폴더명
+			
+			jsonObject.addProperty("url", "/learn/filepath/"+savedFileName); // contextroot + resources + 저장할 외부 폴더명
+			
+			
 			jsonObject.addProperty("responseCode", "success");
 				
 		} catch (IOException e) {

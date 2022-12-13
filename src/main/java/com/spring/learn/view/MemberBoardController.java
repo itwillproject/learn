@@ -244,20 +244,16 @@ public class MemberBoardController {
 	// 수정
 	@PostMapping("/qnaModifyForm.do")
 	public String QnaModify(MemberBoardVO mvo, HttpSession session) {
+				
+		// mvo 넘버로 가져오는 것 필요함
+		MemberBoardVO newMvo = memberBoardService.getBoard(mvo);
+		newMvo.setQnaTitle(mvo.getQnaTitle());
+		newMvo.setQnaContent(mvo.getQnaContent());
 		
-		UserVO uvo = (UserVO) session.getAttribute("user");
 		
-		if(uvo == null) {
-			return "/Member/login.do";
-		}
-		
-		mvo.setUserId(uvo.getUserId());
-		mvo.setGrade(uvo.getGrade());
-		
-		System.out.println(">> Qna수정 입력 도착, uvo : " + uvo);
 		System.out.println(">> Qna수정 입력 도착, mvo : " + mvo);		
 		
-		memberBoardService.updateBoard(mvo);
+		memberBoardService.updateBoard(newMvo);
 		
 		return "/memberBoard/getMyQBoardList.do"; // 이동
 	}
