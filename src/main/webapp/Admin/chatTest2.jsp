@@ -8,6 +8,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>웹소켓 채팅</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.js"></script>
 	<script type="text/javascript">
 		var webSocket = {
@@ -126,7 +127,14 @@
 	</style>
 </head>
 <body>
-	<%@ include file="../Common/header.jsp"%>
+	
+	<c:if test="${user.grade != '관리자' }">
+	<%@include file="/Common/header.jsp" %>
+	</c:if>
+	<c:if test="${user.grade == '관리자' }">
+	<%@include file="/Admin/common/adminHeader.jspf" %>
+	</c:if>	
+	
 	<div class="container-fluid" style="background-color: lightgreen;">
 		<h2>&nbsp; </h2>
 	</div>

@@ -1,13 +1,11 @@
 package com.spring.learn.view;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -335,6 +333,7 @@ public class MemberBoardController {
 		// qna넘버로 보드 가져오기 + 보드 어답트로 업데이트 하기
 		bvo = memberBoardService.getBoard(bvo);
 		bvo.setQnaAdopt("TRUE");
+		memberBoardService.updateBoard(bvo);
 		
 		List<CallcenterCommentVO> cvoList = memberBoardService.getCallcenterComment(bvo);
 		
@@ -357,11 +356,8 @@ public class MemberBoardController {
 		
 		// 커멘트 가져오기
 		bvo = (MemberBoardVO) session.getAttribute("callBvo");
-		
 		bvo.setQnaAdopt("FALSE");
-		
 		memberBoardService.updateBoard(bvo);
-		
 		
 		List<CallcenterCommentVO> cvoList = memberBoardService.getCallcenterComment(bvo);
 		

@@ -306,7 +306,8 @@ body {
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/inquiry.jsp">작성한 게시글</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/likeGo.do?userId=${user.userId }">좋아요</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Order/orderDetailGo.do?userId=${user.userId }">구매내역</a>
-            <a class="dropdown-item" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터<hr></a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터</a>
+            <a class="dropdown-item"><hr></a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatTest.jsp">실시간 접속자와 채팅</a>
 			<a class="dropdown-item" href="javascript:TimeChatGo();">실시간 상담2(09:00 ~ 18:00)</a>
 			<script type="text/javascript">
