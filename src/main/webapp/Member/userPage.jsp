@@ -279,7 +279,7 @@
 								<div class="col-4 card course course_card_item border-0 mb-5" style="height:350px;">
 									<div class="card h-100 border-0">
 									  	<div class="card-image h-50">
-											<img class="card-img-top" src="${get3rovo.rboardCoverimg }" width="100%" alt="${get3rovo.rboardTitle }">
+											<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/${get3rovo.rboardCoverimg }" width="100%" alt="${get3rovo.rboardTitle }">
 									  	</div>
 									  	<div class="card-body w-100 overflow-hidden">
 										    <p class="card-title font-weight-bold" style="height:50px;">${get3rovo.rboardTitle }</p>								
