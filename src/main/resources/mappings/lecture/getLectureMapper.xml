@@ -113,6 +113,23 @@
 				SELECT USER_NAME FROM USERS 
 				WHERE USER_ID = #{userId}
 		</select>
+		<insert id="insertOrder" parameterType="orderCartVO">
+				INSERT INTO ORDERS(ORDER_NO,
+				USER_ID, ORDER_PRICE,ORDER_REGDATE, ORDER_PAYMENT)
+				VALUES((SELECT NVL(MAX(ORDER_NO), 0) + 1 FROM ORDERS), #{userId}, 0, SYSDATE, 'free')
+		</insert>
+		<insert id="insertOrderDetail" parameterType="orderCartVO">
+				INSERT INTO ORDER_DETAIL
+				(ORDER_DETAIL_NO, ORDER_NO, USER_ID, LECTURE_NO, TIMETABLE_NO, ORDER_STATUS, LECTURE_RATE)
+				VALUES((SELECT NVL(MAX(ORDER_DETAIL_NO), 0) + 1 FROM ORDER_DETAIL), (SELECT MAX(ORDER_NO) FROM ORDERS), #{userId}, #{lectureNo}, 
+				<if test="timetableNo != null">
+				#{timetableNo}
+				</if>
+				<if test="timetableNo == null">
+				NULL
+				</if>
+				, 0, 0)
+		</insert>
 </mapper>
 
 

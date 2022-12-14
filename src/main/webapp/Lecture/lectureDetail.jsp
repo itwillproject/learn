@@ -120,6 +120,7 @@ ${count.totalComment}
 		<span class="col"><a href="#contents">강의소개</a></span>
 		<span class="col"><a href="#curriculum">커리큘럼</a></span>
 		<span class="col"><a href="#review">수강평</a></span>
+		<span class="col"><a href="#new">새소식</a></span>
 	
 <br><br>
 <div id="introTitle" >
@@ -428,12 +429,26 @@ window.onload=function(){
 	<!--  오프라인 -->
 	<c:if test="${lecturer ne 'visitor'}">
 	<c:if test="${lecture.lectureOnOff == 1}">
+	
+	<c:if test="${lecture.lecturePrice == 0}">
+	<button class="btn btn-success" style="width: 300px; height: 60px; margin-bottom: 10px;" onclick="freeofflineOrder()">수강신청 하기</button><br>
+	</c:if>
+	<c:if test="${lecture.lecturePrice != 0}">
 	<button class="btn btn-success" style="width: 300px; height: 60px; margin-bottom: 10px;" onclick="offlineInsertCart()">수강신청 하기</button><br>
+	</c:if>
+	
 	</c:if>
 	
 	<!--  온라인 -->
 	<c:if test="${lecture.lectureOnOff == 0}">
+	
+	<c:if test="${lecture.lecturePrice == 0}">
+	<button class="btn btn-success" style="width: 300px; height: 60px; margin-bottom: 10px;" onclick="location.href='insertOrders.do?lectureNo=${lecture.lectureNo}'">수강신청 하기</button><br>
+	</c:if>
+	<c:if test="${lecture.lecturePrice != 0}">
 	<button class="btn btn-success" style="width: 300px; height: 60px; margin-bottom: 10px;" onclick="location.href='insertCart.do?lectureNo=${lecture.lectureNo}'">수강신청 하기</button><br>
+	</c:if>
+	
 	</c:if>
 	
 	<!-- <button class="btn" style="width: 300px; height: 60px; border: solid 1px black">바구니에 담기</button> -->
@@ -442,12 +457,28 @@ window.onload=function(){
 	
 	
  	<script>
+	function freeofflineOrder(){
+		var check;
+		if ($('.timetableNo').is(':checked')){
+			var radioVal = $('input[class="timetableNo"]:checked').val();
+			location.href="insertOrders.do?timetableNo=" + radioVal + "&lectureNo=${lecture.lectureNo}";
+			
+		} else{
+			alert("시간을 선택해주세요!");
+		}
+		
+		
+		/* location.href="insertCart.do?lectureNo=${lecture.lectureNo}'"; */
+	}
+ 	
 	function offlineInsertCart(){
 		var check;
 		if ($('.timetableNo').is(':checked')){
 			var radioVal = $('input[class="timetableNo"]:checked').val();
 			location.href="insertCart.do?timetableNo=" + radioVal + "&lectureNo=${lecture.lectureNo}";
 			
+		} else{
+			alert("시간을 선택해주세요!");
 		}
 		
 		
@@ -1191,7 +1222,7 @@ window.onload=function(){
 			success: function(data){
 				alert("답글 삭제");
 				$("#replyfor" + boardNo).remove();
-									
+				$("#reply" + boardNo).show();					
 			},
 			error: function(){
 				

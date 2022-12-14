@@ -49,4 +49,7 @@ public interface LectureDetailDAO {
 	List<LectureCommentVO> getMyCommentList(UserVO user);
 	LectureVO getLectDetail(LectureCommentVO comment);
 	String getCommentName(LectureCommentVO comment);
+	
+	void insertOrder(OrderCartVO vo);
+	void insertOrderDetail(OrderCartVO vo);
 }
