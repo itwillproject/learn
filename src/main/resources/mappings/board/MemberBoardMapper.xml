@@ -201,7 +201,7 @@
 		(UPPER(RBOARD_TITLE) LIKE UPPER('%'||#{searchKeyword}||'%')
 		OR UPPER(RBOARD_CONTENT) LIKE UPPER('%'||#{searchKeyword}||'%')
 		OR UPPER(CATEGORY_NAME) LIKE UPPER('%'||#{searchKeyword}||'%')
-		OR UPPER(USER_NAME LIKE) UPPER('%'||#{searchKeyword}||'%'))
+		OR UPPER(USER_NAME) LIKE UPPER('%'||#{searchKeyword}||'%'))
 		</if>
 		ORDER BY
 		RBOARD_TITLE ASC
