@@ -131,8 +131,8 @@
                             </tr>
                             <tr>
                                 <td class="d-flex flex-row justify-content-end">
-                                    <input type="button" id="submitBoard" class="btn btn-success" value="수정"/>
-                                    <input type="button" class="btn btn-success" value="취소" onclick="cancel(this.form)"/>
+                                    <input type="button" id="submitBoard" class="btn btn-success mr-3" value="수정"/>
+                                    <input type="button" value="취소" class="btn btn-light mr-3" onclick="cancel(this.form)"/>
                                 </td>
                             </tr>
                         </tbody>
