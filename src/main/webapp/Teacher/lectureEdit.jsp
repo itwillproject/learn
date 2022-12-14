@@ -424,6 +424,8 @@
 
       if('${empty lecture.qsStart}' === 'true') {
         setQuestion(0);
+        $('#qsStartDiv').append('<input class="form-control" type="time" id="qsStart" />')
+        $('#qsEndDiv').append('<input class="form-control" type="time" id="qsEnd" />')
       } else {
         let qsStart = '${lecture.qsStart}'.substring(11, 16);
         let qsEnd = '${lecture.qsEnd}'.substring(11, 16);
