@@ -204,9 +204,9 @@
                                       dispHtml += '</div>';
                                       dispHtml += '<div class="col-12 pt-2 pb-1">';
                                       if(this.boardAdopt != null) { // 질문게시판
-                                        dispHtml += '<a class="h5" href="${pageContext.request.contextPath}/board/viewQnaPage.do?qboardNo=' + this.qboardNo + '">' + this.boardTitle + '</a>';
+                                        dispHtml += '<a class="h5" style="word-break: break-all" href="${pageContext.request.contextPath}/board/viewQnaPage.do?qboardNo=' + this.qboardNo + '">' + this.boardTitle + '</a>';
                                       } else { // 자유게시판
-                                        dispHtml += '<a class="h5" href="${pageContext.request.contextPath}/board/viewQnaPage.do?fboardNo=' + this.fboardNo + '">' + this.boardTitle + '</a>';
+                                        dispHtml += '<a class="h5" style="word-break: break-all" href="${pageContext.request.contextPath}/board/viewQnaPage.do?fboardNo=' + this.fboardNo + '">' + this.boardTitle + '</a>';
                                       }
                                       dispHtml += '</div>';
                                       dispHtml += '<div class="col-12">';
@@ -276,10 +276,10 @@
                                 </div>
                                 <div class="col-12 pt-2 pb-1">
                                     <c:if test="${not empty board.boardAdopt}">
-                                        <a class="h5" href="${pageContext.request.contextPath}/board/viewQnaPage.do?qboardNo=${board.qboardNo}">${board.boardTitle}</a>
+                                        <a class="h5" style="word-break: break-all" href="${pageContext.request.contextPath}/board/viewQnaPage.do?qboardNo=${board.qboardNo}">${board.boardTitle}</a>
                                     </c:if>
                                     <c:if test="${empty board.boardAdopt}">
-                                        <a class="h5" href="${pageContext.request.contextPath}/board/viewQnaPage.do?fboardNo=${board.fboardNo}">${board.boardTitle}</a>
+                                        <a class="h5" style="word-break: break-all" href="${pageContext.request.contextPath}/board/viewQnaPage.do?fboardNo=${board.fboardNo}">${board.boardTitle}</a>
                                     </c:if>
                                 </div>
                                 <div class="col-12">
