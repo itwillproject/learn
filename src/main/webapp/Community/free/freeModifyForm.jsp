@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>질문글 수정폼~~</title>
+<title>자유글 수정폼~~</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -68,7 +68,7 @@
 		
 		function cancel(frm){
 			if(confirm("정말 작성을 취소하시겠습니까??\n작성한 내용이 날아갑니다")){
-				location.href = "${pageContext.request.contextPath}/board/viewQnaPage.do?qboardNo="+${board.qboardNo};				
+				location.href = "${pageContext.request.contextPath}/board/viewQnaPage.do?fboardNo="+${board.fboardNo};				
 			}
 		}
 		
@@ -108,14 +108,14 @@
                     <nav class="navbar navbar-expand-sm navbar-light w-100">
                         <ul class="navbar-nav gray-botton w-100" style="border-bottom: 1px solid green;">
                             <li class="nav-item active green-line">
-                            <a class="nav-link" href="#">질문</a>
+                            <a class="nav-link" href="#">자유</a>
                             </li>
                         </ul>
                     </nav>                        
                 </div>
 
                 <div class="d-flex flex-row p-3 writeComments">
-                	<form method="post" id="submitForm" class="w-100" action="${pageContext.request.contextPath}/board/boardModify.do?qboardNo=${board.qboardNo}">
+                	<form method="post" id="submitForm" class="w-100" action="${pageContext.request.contextPath}/board/boardModify.do?fboardNo=${board.fboardNo}">
                     <table class="table table-borderless">
                         <thead>
                             <tr>

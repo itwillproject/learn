@@ -429,7 +429,7 @@ public class BoardController {
 	// 수정폼으로 이동
 	@GetMapping("/boardModify.do")
 	public String toModifyForm(BoardVO bvo, Model model) {
-		System.out.println(">>> 수정폼 이동");	
+		System.out.println(">>> 수정폼 이동 : " + bvo);	
 		
 		// vo 받아서 한개 가져오고 세션에 등록.
 		bvo = boardService.getBoard(bvo);
