@@ -120,7 +120,7 @@ ${count.totalComment}
 		<span class="col"><a href="#contents">강의소개</a></span>
 		<span class="col"><a href="#curriculum">커리큘럼</a></span>
 		<span class="col"><a href="#review">수강평</a></span>
-		<span class="col"><a href="${pageContext.request.contextPath}/getLectureNewsList.do?lectureNo=${lecture.lectureNo}">새소식</a></span>
+		<span class="col"><a href="#new">새소식</a></span>
 	
 <br><br>
 <div id="introTitle" >
@@ -266,9 +266,15 @@ window.onload=function(){
          			<!-- 강의자, 수강생, 관리자가 아닌 경우 미리보기만 가능 -->
          			<c:if test="${so.preview eq 0 && lecturer != 'student' && lecturer != 'lecturer' && user.grade != '관리자'}">
          			<span style="float: right"><button class='btn btn-outline-success'  onclick="location.href='previewD.do?classNo=${so.classNo}&min=${classNoMin}&max=${previewclassNoMax}'">미리보기</button></span>
+         			<a href="download.do?item=${so.filename }&&filename=${so.oriname}">
+       					파일 다운로드
+    				</a>
          			</c:if>
          			<c:if test="${lecturer == 'student' || lecturer == 'lecturer' || user.grade == '관리자'}">
          			<span style="float: right"><button class='btn btn-outline-success'  onclick="location.href='previewD.do?classNo=${so.classNo}&min=${classNoMin}&max=${classNoMax}'">영상보기</button></span>
+         			<a href="download.do?item=${so.filename }&&filename=${so.oriname}">
+       					파일 다운로드
+    				</a>
          			</c:if>
        		 </div>
 	</div>
