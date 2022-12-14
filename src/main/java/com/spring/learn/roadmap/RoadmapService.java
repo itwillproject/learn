@@ -41,5 +41,9 @@ public interface RoadmapService {
 
 	  int getRoadmapCount(String userId);
 
-  String getFileName(String rboardNo);
+	  String getFileName(String rboardNo);
+
+	  List<RoadmapVO> get3Roadmap(String userId);
+		
+	  List<RoadmapVO> getRoadmap(String userId);
 }

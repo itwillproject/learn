@@ -157,7 +157,6 @@
 		</script>
 		<script>
 		function resolvedCBoardList() {
-			alert("resolvedCBoardList() 실행");
 			$.ajax("${pageContext.request.contextPath}/memberBoard/resolvedCBoardList.do?userId=${user.userId}", {
 				type : "get",
 				dataType : "json", //서버로부터 응답받는 데이터 형식

@@ -29,6 +29,8 @@ import com.spring.learn.lecture.LectureCommentVO;
 import com.spring.learn.lecture.LectureDetailService;
 import com.spring.learn.lecture.LectureService;
 import com.spring.learn.lecture.LectureVO;
+import com.spring.learn.roadmap.RoadmapService;
+import com.spring.learn.roadmap.RoadmapVO;
 import com.spring.learn.user.LikeVO;
 import com.spring.learn.user.MailSendService;
 import com.spring.learn.user.UserService;
@@ -49,6 +51,9 @@ public class UserController {
     private BoardService boardService;
     @Autowired
 	private LectureDetailService lectureDetailService;
+    @Autowired
+	private RoadmapService roadmapService;
+    
     
 	@RequestMapping("/insertUser.do")
 	public String insertUser(@ModelAttribute UserVO vo) {
@@ -523,7 +528,10 @@ public String login(HttpServletRequest request, UserVO vo, Model model){
 		model.addAttribute("person", person);
 		
 		System.out.println(person.getGrade());
-
+		//로드맵 페이지를 위한
+		List<RoadmapVO> get3rovo = roadmapService.get3Roadmap(vo.getUserId());
+		
+		model.addAttribute("get3rovo",  get3rovo);
 		//사용자 수강후기 작성한 내역 가져오기
 		List<LectureCommentVO> list =  lectureDetailService.getMyCommentList(person);
 		model.addAttribute("commentList", list);
@@ -913,6 +921,23 @@ public String login(HttpServletRequest request, UserVO vo, Model model){
 
 		return "/Member/myQuestionAjax.jsp";
 
+	}
+	
+	@RequestMapping("/getGoToPersonalRoadPage.do")
+	public String getGoToPersonalRoadPage(UserVO vo, Model model) {
+		
+		//사용자 페이지를 위한
+		UserVO person = userService.findUserId(vo); //아이디로 유저 정보 가져오기
+		model.addAttribute("person", person);
+		
+		//로드맵 페이지를 위한
+		List<RoadmapVO> getrovo = roadmapService.getRoadmap(vo.getUserId());
+		
+		model.addAttribute("getrovo",  getrovo);
+		
+		System.out.println("getrovo : " + getrovo);
+
+		return "/Member/userPageRoad.jsp";
 	}
 
 }
