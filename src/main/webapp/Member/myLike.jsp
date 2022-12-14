@@ -120,9 +120,12 @@
 								<option value="reviewAverage">평점순</option>
 							</select>
 						</p>
-						<p>
-							전체 <span style="color: green"> 총갯수</span>
-						</p>
+						<c:if test="${not empty likeList }">
+							<p>
+								전체 <span style="color: green"> ${fn:length(likeList) } 개 </span>
+							</p>	
+						</c:if>
+						
 					</div>
 				</c:if>
 				</div>

@@ -128,13 +128,13 @@ input::placeholder {
 							<small>이름</small>
 						</div>
 						<div class="col-9" style="color: gray;">
-							<small>${cartList[0].userName }</small>
+							<small>${user.userName }</small>
 						</div>
 						<div class="col-3" style="color: gray; padding-right: 0px;">
 							<small>이메일</small>
 						</div>
 						<div id="userId" class="col-9" style="color: gray; word-break: break-all;">
-							<small>${cartList[0].userId }</small>
+							<small>${user.userId }</small>
 						</div>
 					</div>
 				</div>
@@ -142,7 +142,7 @@ input::placeholder {
 				<div
 					style="border-radius: 10px 10px 10px 10px; border: 1px solid lightgray; padding: 16px 20px;">
 					<p style="float: right">
-						사용가능: <span style="color: green"><fmt:formatNumber type="number" maxFractionDigits="3" value="${cartList[0].points }"/></span>
+						사용가능: <span style="color: green"><fmt:formatNumber type="number" maxFractionDigits="3" value="${user.points }"/></span>
 					</p>
 					<p>
 						<B>포인트</B>
