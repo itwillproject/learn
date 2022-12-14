@@ -203,6 +203,7 @@
 
 		commonAjax(gogo);
 		
+		$(".note-editable").html("");
 	}
 	
 	function commonAjax(gogo){
@@ -295,7 +296,7 @@
 						
 						intHtml += '<div class="row ml-3 mt-3 w-100 align-items-center">';
 						intHtml += '<span class="mx-auto">';
-						intHtml += '<button data-toggle="collapse" data-target="#co'+ cvoVr +'">답글쓰기</button>';
+						intHtml += '<button data-toggle="collapse" class="btn btn-secondary" data-target="#co'+ cvoVr +'">답글쓰기</button>';
 						intHtml += '</span>';
 						intHtml += '</div>';
 						intHtml += '<div class="row p-3 mx-auto rounded cocoment collapse" id="co'+ cvoVr +'">';
@@ -656,7 +657,7 @@
 				<c:if test="${user != null }">
 					<div class="row ml-3 mt-3 w-100 align-items-center">
 						<span class="mx-auto">
-							<button data-toggle="collapse" data-target="#co${cvoVr.index }">답글쓰기</button>
+							<button data-toggle="collapse" class="btn btn-secondary" data-target="#co${cvoVr.index }">답글쓰기</button>
 						</span>
 					</div>
 					
