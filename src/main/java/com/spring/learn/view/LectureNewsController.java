@@ -1,15 +1,18 @@
 package com.spring.learn.view;
 
+import com.spring.learn.common.Paging;
+import com.spring.learn.lecture.LectureNewsService;
+import com.spring.learn.lecture.LectureNewsVO;
+import com.spring.learn.lecture.LectureVO;
+import com.spring.learn.user.UserVO;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,13 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.spring.learn.common.Paging;
-import com.spring.learn.lecture.LectureNewsService;
-import com.spring.learn.lecture.LectureNewsVO;
-import com.spring.learn.lecture.LectureVO;
-import com.spring.learn.memberboard.MemberBoardVO;
-import com.spring.learn.user.UserVO;
 
 //@SessionAttributes : board라는 이름의 Model 있으면 session에 저장
 //  단, 현재위치(클래스)에서만 유효
@@ -147,6 +143,7 @@ public class LectureNewsController {
 		System.out.println("현재 로그인된 값 : " + user);
 		
 		vo.setLectureWriter(user.getUserName());
+		vo.setTeacherId(user.getUserId());
 		
 		System.out.println("insert vo : " + vo);
 		

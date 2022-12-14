@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-    <title>강의자  - 강의 관리 - 새소식 관리</title>
+    <title>새소식 조회</title>
 </head>
 <style>
   .active-menu {
@@ -102,7 +102,7 @@
 <div class="container-fluid bg-dark">
     <div class="container tape">
         <section class="tapeContent">
-            <h2>새소식 관리</h2>
+            <h2>새소식 조회</h2>
         </section>
     </div>
 </div>
@@ -110,7 +110,9 @@
     <div class="row w-100 pb-4 justify-content-center">
         <!-- 왼쪽 네비 -->
         <div class="col-2 d-flex justify-content-center">
-            <%@ include file="sidebar.jspf"%>
+			<c:if test="${user.userId == list[0].teacherId}">
+				<%@ include file="sidebar.jspf"%>
+			</c:if>
         </div>
         <script>
           var menu = $('#lectureManager');
@@ -121,9 +123,11 @@
 
         <!-- 중앙 위 내용 - 글내용 -->
         <div class="col-8 pl-3 gray-line">
-        	<h5>${lectureTitle }</h5>
-            <button class="active-btn mt-2" onclick="location.href='${pageContext.request.contextPath}/Teacher/lectureManager.do'">강의 관리로 돌아가기</button>
-        	<br><br>
+			<a href="${pageContext.request.contextPath}/Member/getLecture.do?lectureNo=${list[0].lectureNo}" class="h5">${lectureTitle }</a>
+			<c:if test="${user.userId == list[0].teacherId}">
+				<button class="active-btn mt-2" onclick="location.href='${pageContext.request.contextPath}/Teacher/lectureManager.do'">강의 관리로 돌아가기</button>
+			</c:if>
+            <br><br>
         	<!-- 검색창 -->
 			<form action="${pageContext.request.contextPath}/getLectureNewsList.do?lectureNo=${lectureNo}" method="post">
 				<div class="outer">
@@ -167,7 +171,9 @@
                 <tfoot>
                 <tr>
                 	<td colspan="3" style="padding: 25px; text-align: right;" >
-				 		<button type="submit" class="btn btn-success" onclick="location.href='lectureNewsWrite.do?lectureNo=${lectureNo }'">새소식 작성</button>
+				 		<c:if test="${user.userId == list[0].teacherId}">
+							<button type="submit" class="btn btn-success" onclick="location.href='lectureNewsWrite.do?lectureNo=${lectureNo }'">새소식 작성</button>
+						</c:if>
                 	</td>
                 </tr>
                 </tfoot>

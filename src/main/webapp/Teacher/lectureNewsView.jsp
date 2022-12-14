@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-	<title>강의자  - 강의 관리 - 새소식 상세보기</title>
+	<title>새소식 상세보기</title>
 </head>
 <style>
 	.active-menu {
@@ -39,7 +39,7 @@
 <div class="container-fluid bg-dark">
     <div class="container tape">
         <section class="tapeContent">
-            <h2>새소식 관리</h2>
+            <h2>새소식 조회</h2>
         </section>
     </div>
 </div>
@@ -47,7 +47,9 @@
     <div class="row w-100 pb-4 justify-content-center">
         <!-- 왼쪽 네비 -->
         <div class="col-2 d-flex justify-content-center">
-            <%@ include file="sidebar.jspf"%>
+            <c:if test="${user.userId == vo.teacherId}">
+                <%@ include file="sidebar.jspf"%>
+            </c:if>
             <script>
               var menu = $('#lectureManager');
               console.log(menu);
@@ -74,8 +76,10 @@
                 <tfoot>
                 	<tr>
                 		<td style="text-align: right;">
-       				 		<button type="submit" class="btn btn-success" onclick="location.href='${pageContext.request.contextPath }/getLectureNewsUpdateView.do?boardNo=${vo.boardNo }&lectureNo=${vo.lectureNo }'">수정</button>
-	 						<button type="submit" class="btn btn-dark" onclick="delete_go()">삭제</button>
+                            <c:if test="${user.userId == vo.teacherId}">
+                                <button type="submit" class="btn btn-success" onclick="location.href='${pageContext.request.contextPath }/getLectureNewsUpdateView.do?boardNo=${vo.boardNo }&lectureNo=${vo.lectureNo }'">수정</button>
+                                <button type="submit" class="btn btn-dark" onclick="delete_go()">삭제</button>
+                            </c:if>
                 		</td>
                 	</tr>
                 </tfoot>
