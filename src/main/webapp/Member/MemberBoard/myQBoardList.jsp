@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
             
 <!DOCTYPE html>
 <html>
@@ -198,6 +199,21 @@ function qnaWriteForm() {
 		font-weight: bold;
 		text-decoration: none;
  	}
+ 	
+ 	div.contentWrap p:not(:first-of-type){
+ 		display: none;
+ 	}
+ 	 
+ 	div.contentWrap p:first-of-type, h4.contentWrap, p.contentWrap {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+ 	} 
+ 	
+	div.contentWrap {
+ 		color: #444444;
+ 		margin-bottom: 5px;
+ 	} 	
 	
   </style>
 </head>
@@ -268,16 +284,17 @@ function qnaWriteForm() {
 					<p>검색한 내용이 없습니다.</p>
 				</c:if>
 					
-				<table class="table table-hover mt-5 contentWrap">
+				<table class="table table-hover mt-5" style="table-layout: fixed">
 					<tbody>
 						<c:forEach var="memberBoard" items="${memberBoardList }">							
 							<tr>
 								<td style="height: 100px">
 								<div class="row">
 									<div class="col-10">
-									<a href="${pageContext.request.contextPath}/memberBoard/viewPage.do?qnaNo=${memberBoard.qnaNo }"><h4>${memberBoard.qnaTitle }</h4>
-									<p>${memberBoard.qnaContent }</p>
-									<p>${memberBoard.userName } ·${memberBoard.qnaRegdate } </p></a>
+									<a href="${pageContext.request.contextPath}/memberBoard/viewPage.do?qnaNo=${memberBoard.qnaNo }">
+									<h4 class="boardTi contentWrap">${memberBoard.qnaTitle }</h4>
+									<div class="contentWrap">${memberBoard.qnaContent }</div>
+									<p>${memberBoard.userName } ·${fn:substring(memberBoard.qnaRegdate,0,10) } </p></a>
 									</div>
 									<div class="col-2">
 										<c:choose>
