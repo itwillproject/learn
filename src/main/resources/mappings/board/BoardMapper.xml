@@ -47,9 +47,9 @@
 		</if>
 			WHERE 1 = 1
 		<if test="searchKeyword != null">		
-			AND (USER_ID LIKE '%'|| #{searchKeyword} ||'%'
-			OR BOARD_TITLE LIKE '%'|| #{searchKeyword} ||'%'
-			OR BOARD_CONTENT LIKE '%'|| #{searchKeyword} ||'%')		
+			AND (UPPER(USER_ID) LIKE UPPER('%'|| #{searchKeyword} ||'%')
+			OR UPPER(BOARD_TITLE) LIKE UPPER('%'|| #{searchKeyword} ||'%')
+			OR UPPER(BOARD_CONTENT) LIKE UPPER('%'|| #{searchKeyword} ||'%'))		
 		</if>			
 		<if test="boardAdopt != 'all'">
 			AND BOARD_ADOPT = #{boardAdopt}
@@ -69,9 +69,9 @@
 					WHERE 1 = 1	
 					<if test="searchKeyword != null">
 					AND (
-					USER_ID LIKE '%'|| #{searchKeyword} ||'%'
-					OR BOARD_TITLE LIKE '%'|| #{searchKeyword} ||'%'
-					OR BOARD_CONTENT LIKE '%'|| #{searchKeyword} ||'%')
+					UPPER(USER_ID) LIKE UPPER('%'|| #{searchKeyword} ||'%')
+					OR UPPER(BOARD_TITLE) LIKE UPPER('%'|| #{searchKeyword} ||'%')
+					OR UPPER(BOARD_CONTENT) LIKE UPPER('%'|| #{searchKeyword} ||'%'))
 					</if>		
 					<if test="boardAdopt != 'all'">
 					AND BOARD_ADOPT = #{boardAdopt}
@@ -183,8 +183,8 @@
 		<if test="qboardNo == null">
 			SELECT * FROM FREE_BOARD
 		</if>
-		WHERE BOARD_TITLE LIKE '%'|| #{searchKeyword} ||'%'
-		OR BOARD_CONTENT LIKE '%'|| #{searchKeyword} ||'%'
+		WHERE UPPER(BOARD_TITLE) LIKE UPPER('%'|| #{searchKeyword} ||'%')
+		OR UPPER(BOARD_CONTENT) LIKE UPPER('%'|| #{searchKeyword} ||'%')
 		ORDER BY BOARD_REGDATE DESC
 	</select>
 	

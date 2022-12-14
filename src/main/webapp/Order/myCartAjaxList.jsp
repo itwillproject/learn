@@ -33,12 +33,12 @@
 							<div class="col-3" style="padding: 0px;">
 								<input class="blankCheckbox" type="checkbox" id="${cartList2.cartNo }" style="float: top;"
 									name="zzim" value="${cartList2.cartNo }" checked="checked"> <img
-									src="${cartList2.lectureCoverimg }"
+									src="${pageContext.request.contextPath}/filepath/${cartList2.lectureCoverimg }"
 									style="width: 70%; height: 50%">
 							</div>
 
 							<div class="col-7">
-								<p><a href="#">${cartList2.lectureTitle }</a></p>
+								<p><a href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo=${cartList2.lectureNo }">${cartList2.lectureTitle }</a></p>
 								<p>
 									<small style="color: gray;">${cartList2.lectureWriter }</small>
 									| <small style="color: green;">${fn:substring(cartList2.timetableStart,0,16) }

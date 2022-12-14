@@ -111,4 +111,17 @@ public class RoadmapServiceImpl implements RoadmapService {
 	public String getFileName(String rboardNo) {
 		return roadmapDAO.getFileName(rboardNo);
 	}
+
+
+	@Override
+	public List<RoadmapVO> get3Roadmap(String userId) {
+		return roadmapDAO.get3Roadmap(userId);
+	}
+	
+	@Override
+	public List<RoadmapVO> getRoadmap(String userId) {
+		return roadmapDAO.getRoadmap(userId);
+	}
+	
+	
 }

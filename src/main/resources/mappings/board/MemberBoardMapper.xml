@@ -40,8 +40,8 @@
 					AND QNA_ADOPT = #{qnaAdopt}
 					</if>		
 					<if test="searchKeyword != null">
-					AND ( QNA_TITLE LIKE '%'|| #{searchKeyword} ||'%'
-					OR QNA_CONTENT LIKE '%'|| #{searchKeyword} ||'%')		
+					AND ( UPPER(QNA_TITLE) LIKE UPPER('%'|| #{searchKeyword} ||'%')
+					OR UPPER(QNA_CONTENT) LIKE UPPER('%'|| #{searchKeyword} ||'%'))		
 					</if>		
 					ORDER BY QNA_REGDATE DESC) B)
 		WHERE R_NUM BETWEEN #{begin} AND #{end}
@@ -54,8 +54,8 @@
 		AND USER_ID = #{userId}
 		</if>
 		<if test="searchKeyword != null">
-		AND ( QNA_TITLE LIKE '%'|| #{searchKeyword} ||'%'
-		OR QNA_CONTENT LIKE '%'|| #{searchKeyword} ||'%')		
+		AND ( UPPER(QNA_TITLE) LIKE UPPER('%'|| #{searchKeyword} ||'%')
+		OR UPPER(QNA_CONTENT) LIKE UPPER('%'|| #{searchKeyword} ||'%'))		
 		</if>			
 		<if test="qnaAdopt != null">
 		AND QNA_ADOPT = #{qnaAdopt}
@@ -74,8 +74,8 @@
 		WHERE 1 = 1
 		AND USER_ID = #{userId}
 		<if test="searchKeyword != null">
-		OR QNA_TITLE LIKE '%'|| #{searchKeyword} ||'%'
-		OR QNA_CONTENT LIKE '%'|| #{searchKeyword} ||'%'		
+		OR UPPER(QNA_TITLE) LIKE UPPER('%'|| #{searchKeyword} ||'%')
+		OR UPPER(QNA_CONTENT) LIKE UPPER('%'|| #{searchKeyword} ||'%')		
 		</if>	
 		ORDER BY QNA_REGDATE DESC	
 	</select>
@@ -129,9 +129,9 @@
 		ON (J.LECTURE_NO = L.LECTURE_NO)
 		WHERE 1 = 1
 		<if test="searchKeyword != null">
-        AND (LECTURE_TITLE LIKE '%'|| #{searchKeyword} ||'%'
-        OR LECTURE_CONTENT LIKE '%'|| #{searchKeyword} ||'%'
-        OR LECTURE_WRITER LIKE '%'|| #{searchKeyword} ||'%')
+        AND (UPPER(LECTURE_TITLE) LIKE UPPER('%'|| #{searchKeyword} ||'%')
+        OR UPPER(LECTURE_CONTENT) LIKE UPPER('%'|| #{searchKeyword} ||'%')
+        OR UPPER(LECTURE_WRITER) LIKE UPPER('%'|| #{searchKeyword} ||'%'))
         </if>
         <if test="lectureRate != null">
        		<if test="lectureRate == 'perfect'">
@@ -198,10 +198,10 @@
 		WHERE RBOARD_NO = ${rboardNo}
 		<if test="searchKeyword != null">
 		AND
-		(RBOARD_TITLE LIKE '%'||#{searchKeyword}||'%'
-		OR RBOARD_CONTENT LIKE '%'||#{searchKeyword}||'%'
-		OR CATEGORY_NAME LIKE '%'||#{searchKeyword}||'%'
-		OR USER_NAME LIKE '%'||#{searchKeyword}||'%')
+		(UPPER(RBOARD_TITLE) LIKE UPPER('%'||#{searchKeyword}||'%')
+		OR UPPER(RBOARD_CONTENT) LIKE UPPER('%'||#{searchKeyword}||'%')
+		OR UPPER(CATEGORY_NAME) LIKE UPPER('%'||#{searchKeyword}||'%')
+		OR UPPER(USER_NAME) LIKE UPPER('%'||#{searchKeyword}||'%'))
 		</if>
 		ORDER BY
 		RBOARD_TITLE ASC

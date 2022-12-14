@@ -77,7 +77,7 @@
 				
 				// 입장
 				if(msgData.cmd == 'CMD_ENTER') {
-					$('#divChatData').append('<div>' + msgData.msg + '</div>');
+					//$('#divChatData').append('<div>' + msgData.msg + '</div>');
 				}
 				// 퇴장
 				else if(msgData.cmd == 'CMD_EXIT') {					

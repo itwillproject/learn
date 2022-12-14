@@ -105,17 +105,19 @@
 					      <a href="${pageContext.request.contextPath}/member/goToPersonalPage.do?userId=${person.userId}" class="text-dark">홈</a>
 					    </li>
 					    <li class="nav-item d-flex p-2 w-100">
-					      <a href="#" class="text-dark">강의</a>
+					      <a href="${pageContext.request.contextPath}/member/goToPersonalPage_Lecture.do?userId=${person.userId }" class="text-dark">강의</a>
 					    </li>
 					  	<li class="nav-item d-flex p-2 w-100">
 						  <a href="${pageContext.request.contextPath}/member/getGoToPersonalRoadPage.do?userId=${person.userId}" class="text-dark">로드맵</a>
 					  	</li>
 					    <li class="nav-item d-flex p-2 w-100">
-					      <a href="#" class="text-dark">수강후기</a>
+					      <a href="userBoardPage.do?userId=${person.userId}" class="text-dark">게시글</a>
 					    </li>
-					    <li class="nav-item d-flex p-2 w-100">
-					      <a href="#" class="text-dark">게시글</a>
+					    <c:if test="${user.userId != person.userId}">
+   					    <li class="nav-item d-flex p-2 w-100">
+					      <a href="${pageContext.request.contextPath}/memberChat/memberChatRoom.do?senderId=${user.userId }&receiverId=${person.userId }" class="text-dark">채팅하기</a>
 					    </li>
+					    </c:if>
 				  </ul>
 				</nav>
 			</div>
@@ -135,7 +137,7 @@
 								<div class="col-4 card course course_card_item border-0 mb-5" style="height:350px;">
 									<div class="card h-100 border-0">
 									  	<div class="card-image h-50">
-											<img class="card-img-top" src="${getrovo.rboardCoverimg }" width="100%" alt="${getrovo.rboardTitle }">
+											<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/${getrovo.rboardCoverimg }" width="100%" alt="${getrovo.rboardTitle }">
 									  	</div>
 									  	<div class="card-body w-100 overflow-hidden">
 										    <p class="card-title font-weight-bold" style="height:50px;">${getrovo.rboardTitle }</p>								
