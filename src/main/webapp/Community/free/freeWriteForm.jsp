@@ -79,7 +79,7 @@
 			var cancelWrite = confirm("작성을 취소하시겠습니까?\n작성한 내용이 삭제됩니다");
 			
 			if(cancelWrite){
-				location.href = "${pageContext.request.contextPath}/board/getQnaBoardList?section=fboard.do";
+				location.href = "${pageContext.request.contextPath}/board/getQnaBoardList.do?section=fboard";
 			}
 			
 		});
