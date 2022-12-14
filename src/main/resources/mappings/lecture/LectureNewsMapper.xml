@@ -43,8 +43,8 @@
 	</delete>
 	
 	<insert id="insertLectureNews" parameterType="lectureNewsVO">
-		INSERT INTO LECTURE_NEWS (BOARD_NO, LECTURE_NO, LECTURE_WRITER, NEWS_CONTENT, BOARD_REGDATE, NEWS_TITLE)
-	 	VALUES ((SELECT NVL(MAX(BOARD_NO),0) + 1 FROM LECTURE_NEWS), #{lectureNo}, #{lectureWriter}, #{newsContent}, SYSDATE, #{newsTitle})
+		INSERT INTO LECTURE_NEWS (BOARD_NO, LECTURE_NO, LECTURE_WRITER, NEWS_CONTENT, BOARD_REGDATE, NEWS_TITLE, TEACHER_ID)
+	 	VALUES ((SELECT NVL(MAX(BOARD_NO),0) + 1 FROM LECTURE_NEWS), #{lectureNo}, #{lectureWriter}, #{newsContent}, SYSDATE, #{newsTitle}, #{teacherId})
 	</insert>
 	
 	<select id="lastNo" resultType="int">

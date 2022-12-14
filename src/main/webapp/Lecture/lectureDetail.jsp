@@ -120,7 +120,7 @@ ${count.totalComment}
 		<span class="col"><a href="#contents">강의소개</a></span>
 		<span class="col"><a href="#curriculum">커리큘럼</a></span>
 		<span class="col"><a href="#review">수강평</a></span>
-		<span class="col"><a href="#new">새소식</a></span>
+		<span class="col"><a href="${pageContext.request.contextPath}/getLectureNewsList.do?lectureNo=${lecture.lectureNo}">새소식</a></span>
 	
 <br><br>
 <div id="introTitle" >

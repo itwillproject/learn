@@ -10,6 +10,7 @@ public class LectureNewsVO {
 	private String newsContent;
 	private String newsTitle;
 	private String boardRegdate;
+	private String teacherId;
 	
 	@JsonIgnore
 	private String searchKeyword = "";
@@ -56,7 +57,15 @@ public class LectureNewsVO {
 	public void setNewsTitle(String newsTitle) {
 		this.newsTitle = newsTitle;
 	}
-	
+
+	public String getTeacherId() {
+		return teacherId;
+	}
+
+	public void setTeacherId(String teacherId) {
+		this.teacherId = teacherId;
+	}
+
 	@Override
 	public String toString() {
 		return "LectureNewsVO [boardNo=" + boardNo + ", lectureNo=" + lectureNo + ", lectureWriter=" + lectureWriter
