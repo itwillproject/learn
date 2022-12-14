@@ -7,21 +7,57 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<script
+	src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <title>주문 내역</title>
 <style>
 th, td {
 	vertical-align: middle;
 }
+
+.active-menu {
+        color: #1dc078;
+        font-weight: bold;
+      }
+      .norm-menu {
+        color: black;
+      }
+      .tape {
+        height: 100px;
+        margin: 50px auto;
+        padding-top: 30px;
+        color: white;
+      }
 </style>
 </head>
 <body>
 <fmt:requestEncoding value="utf-8"/>
 	<%@include file="/Common/header.jsp"%>
-
-	<div class="column is-centered">
-		<div class="container">
-			<div class="row">
-				<div class="table table-striped table-hover">
+<div class="container-fluid bg-dark">
+    <div class="container tape">
+        <section class="tapeContent">
+            <h2>구매내역</h2>          
+        </section>
+    </div>
+</div>
+<div class="container-fluid mt-5 pb-3 d-flex justify-content-center">
+    <div class="row w-100 pb-4 justify-content-center">
+        <div class="col-2 d-flex justify-content-center">
+            <%@ include file="../Member/sidebar.jspf"%>
+            <script>
+              var menu = $('#buylistMenu');
+              console.log(menu);
+              menu.removeClass('norm-menu');
+              menu.addClass('active-menu');
+            </script>
+        </div>
+				<div class="col-8 table table-striped table-hover">
 					<br>
 					<h5>
 						<b>내 구매 내역</b>

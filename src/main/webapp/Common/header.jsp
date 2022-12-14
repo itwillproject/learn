@@ -640,4 +640,5 @@ function alramCount(){
 	    
 	    });
 }
+>>>>>>> branch 'main' of https://github.com/Creamfather/learn.git
 </script>
