@@ -157,7 +157,7 @@
 		console.log(user);
 		var str = user + "님이 입장하셨습니다.";
 
-		$("#msgArea").append(str);
+		//$("#msgArea").append(str);
 	}
 </script>
 	<footer>

@@ -547,33 +547,15 @@ $(document).on("keyup", "#usePoint", function () {
 			var money = document.getElementById('my_div').innerHTML;
 			console.log(money);
 			//
-			
-			//
-			IMP.request_pay({
-				pg : "kcp",
-				pay_method : "card",
-				merchant_uid : 'merchant_' + new Date().getTime(),
-
-				name : '인프런 강의', //결제창에서 보여질 이름
-				amount : money, //실제 결제되는 가격
-				buyer_email : "${user.userId}",
-				buyer_name : "${user.userName}",
-				buyer_tel : '010-1234-5678',
-				buyer_addr : '서울 강남구 도곡동',
-				buyer_postcode : '123-456'
-			}, function(rsp) {
-				console.log(rsp);
-				
-				if (rsp.success) {
-					var msg = '결제가 완료되었습니다.';
-					//msg += '고유ID : ' + rsp.imp_uid;
-					//msg += '상점 거래ID : ' + rsp.merchant_uid;
-					msg += '결제 금액 : ' + rsp.paid_amount;
-					//msg += '카드 승인번호 : ' + rsp.apply_num;
-					orderPrice = rsp.paid_amount;
-					
-					
-					// 디비 업데이트 용 
+			if(money == '0원'){
+				var cnt = 0;
+				$("input[name='zzim']:checked").each(function() {
+					  cnt++;
+				});
+				if(cnt == 0){
+					alert("체크된 강의가 없습니다.");
+					return false;
+				} else{
 					var checkBoxArr = []; 
 					var typeVl = null;
 					$("input[name='zzim']:checked").each(function() {
@@ -605,27 +587,98 @@ $(document).on("keyup", "#usePoint", function () {
 						success : function(data) {
 							console.log("data : " + data);
 							console.log("성공 : ");
-							//현재는 리로드 결재확인 페이지 만들어지면 결재 확인 페이지로 이동	
-							$("#reload").load(window.location.href + " #reload");
+							location.href="${pageContext.request.contextPath }/order/orderDetailGo.do?userId=${user.userId}";
+							
 						},
 						error : function() {
 							console.log("실패");
 						}
+						
 					});
-					
-				} else {
-					ch = "no";
-					var msg = '결제에 실패하였습니다.';
-					msg += '에러내용 : ' + rsp.error_msg;
-					
 				}
-				alert(msg);
-				if(ch == "no"){
-					location.href="${pageContext.request.contextPath }/order/myCartGo.do?userId=${user.userId}";
-				}else {					
-					location.href="${pageContext.request.contextPath }/order/orderDetailGo.do?userId=${user.userId}";
-				}
-			});
+			} else{
+				IMP.request_pay({
+					pg : "kcp",
+					pay_method : "card",
+					merchant_uid : 'merchant_' + new Date().getTime(),
+	
+					name : '인프런 강의', //결제창에서 보여질 이름
+					amount : money, //실제 결제되는 가격
+					buyer_email : "${user.userId}",
+					buyer_name : "${user.userName}",
+					buyer_tel : '010-1234-5678',
+					buyer_addr : '서울 강남구 도곡동',
+					buyer_postcode : '123-456'
+				}, function(rsp) {
+					console.log(rsp);
+					
+					if (rsp.success) {
+						var msg = '결제가 완료되었습니다.';
+						//msg += '고유ID : ' + rsp.imp_uid;
+						//msg += '상점 거래ID : ' + rsp.merchant_uid;
+						msg += '결제 금액 : ' + rsp.paid_amount;
+						//msg += '카드 승인번호 : ' + rsp.apply_num;
+						orderPrice = rsp.paid_amount;
+						
+						
+						// 디비 업데이트 용 
+						var checkBoxArr = []; 
+						var typeVl = null;
+						$("input[name='zzim']:checked").each(function() {
+							  checkBoxArr.push($(this).val());
+						});
+						var userId2 = "${user.userId}";
+						var userName = "${user.userName}";
+						var usePoint2 = $('#usePoint').val();
+						if(usePoint2 > 0){
+							console.log(usePoint2);
+						} else{
+							usePoint2 = 0;
+						}
+						var orderPayment2 = "카드";
+						typeVl = {
+								checkBoxArr : checkBoxArr,
+								userId : userId2,
+								points : usePoint2,
+								point : usePoint2,
+								orderPayment : orderPayment2
+							};
+						console.log(typeVl);
+						$.ajax({
+							url : "${pageContext.request.contextPath }/order/orderFinish.do",
+							data : typeVl,
+							type : "post",
+							async : true,
+							
+							success : function(data) {
+								console.log("data : " + data);
+								console.log("성공 : ");
+								//현재는 리로드 결재확인 페이지 만들어지면 결재 확인 페이지로 이동	
+								$("#reload").load(window.location.href + " #reload");
+							},
+							error : function() {
+								console.log("실패");
+							}
+						});
+						
+					} else {
+						ch = "no";
+						var msg = '결제에 실패하였습니다.';
+						msg += '에러내용 : ' + rsp.error_msg;
+						
+					}
+					alert(msg);
+					if(ch == "no"){
+						location.href="${pageContext.request.contextPath }/order/myCartGo.do?userId=${user.userId}";
+					}else {					
+						location.href="${pageContext.request.contextPath }/order/orderDetailGo.do?userId=${user.userId}";
+					}
+					
+				});
+				
+			}
+			
+			//
 			
 		});
 		//카카오로 결재하기
@@ -638,7 +691,57 @@ $(document).on("keyup", "#usePoint", function () {
 			//window.IMP.init('imp55622653');
 			var money = document.getElementById('my_div').innerHTML;
 			console.log(money);
-
+			
+			if(money == '0원'){
+				var cnt = 0;
+				$("input[name='zzim']:checked").each(function() {
+					  cnt++;
+				});
+				if(cnt == 0){
+					alert("체크된 강의가 없습니다.");
+					return false;
+				} else{
+					var checkBoxArr = []; 
+					var typeVl = null;
+					$("input[name='zzim']:checked").each(function() {
+						  checkBoxArr.push($(this).val());
+					});
+					var userId2 = "${user.userId}";
+					var userName = "${user.userName}";
+					var usePoint2 = $('#usePoint').val();
+					if(usePoint2 > 0){
+						console.log(usePoint2);
+					} else{
+						usePoint2 = 0;
+					}
+					var orderPayment2 = "카드";
+					typeVl = {
+							checkBoxArr : checkBoxArr,
+							userId : userId2,
+							points : usePoint2,
+							point : usePoint2,
+							orderPayment : orderPayment2
+						};
+					console.log(typeVl);
+					$.ajax({
+						url : "${pageContext.request.contextPath }/order/orderFinish.do",
+						data : typeVl,
+						type : "post",
+						async : true,
+						
+						success : function(data) {
+							console.log("data : " + data);
+							console.log("성공 : ");
+							location.href="${pageContext.request.contextPath }/order/orderDetailGo.do?userId=${user.userId}";
+							
+						},
+						error : function() {
+							console.log("실패");
+						}
+						
+					});
+				}
+			} else{
 			IMP.request_pay({
 				pg : "kakaopay.TC0ONETIME",
 				pay_method : "card",
@@ -711,6 +814,7 @@ $(document).on("keyup", "#usePoint", function () {
 					location.href="${pageContext.request.contextPath }/order/orderDetailGo.do?userId=${user.userId}";
 				}
 			});
+			}
 		});
 	</script>
 	<footer>

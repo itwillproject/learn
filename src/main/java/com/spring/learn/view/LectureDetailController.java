@@ -15,6 +15,7 @@ import com.spring.learn.lecture.LectureCommentVO;
 import com.spring.learn.lecture.LectureDetailService;
 import com.spring.learn.lecture.LectureVO;
 import com.spring.learn.lecture.OfftimetableVO;
+import com.spring.learn.order.OrderCartVO;
 import com.spring.learn.user.UserVO;
 
 
@@ -218,6 +219,47 @@ public class LectureDetailController {
 		model.addAttribute("myboardNo", arr);
 		
 		return arr;
+	}
+	
+	//가격이 0원인 경우 바로 구매
+	@RequestMapping("/insertOrders.do") 
+	public String inserOrders(String lectureNo, String timetableNo, HttpSession session) {
+		OrderCartVO order = new OrderCartVO();
+		UserVO user = (UserVO) session.getAttribute("user");
+		
+		String pathway="/common/main.do";
+		
+		//order, orderDetail 테이블에 데이터들을 넣어줘야한다~
+		order.setLectureNo(Integer.parseInt(lectureNo));
+		order.setUserId(user.getUserId());
+		if (timetableNo != null) {
+			order.setTimetableNo(Integer.parseInt(timetableNo));
+			
+		}
+		
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("userId", user.getUserId());
+		map.put("lectureNo", lectureNo);
+		map.put("timetableNo", timetableNo);
+		
+		int checkValue = lectureDetailService.checkpurchase(map);
+		System.out.println(lectureDetailService.checkpurchase(map));
+		System.out.println("checkValue : " + checkValue);
+		
+		if (checkValue != 0) {
+			//오류창으로 가져서 alert으로 "이미 구매한 상품입니다" 라는 창을 띄워주고 session에 저장된 lecture의 lectureNo로 다시 
+			//getLecture.do?lectureNo=lecture.lectureNo로 다시 요청처리한다
+			pathway = "/Lecture/invalidPurchase.jsp";
+			
+		} else {
+			lectureDetailService.insertOrder(order);
+			lectureDetailService.insertOrderDetail(order);
+		}
+		
+		
+		
+		return pathway;
 	}
 	
 }
