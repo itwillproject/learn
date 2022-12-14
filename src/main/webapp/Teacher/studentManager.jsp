@@ -104,7 +104,7 @@
                         <td>${stu.userId}</td>
                         <td>${stu.userRegdate}</td>
                         <td>
-                            <button class="active-btn">채팅</button>
+                            <button onclick="javascript:location.href='${pageContext.request.contextPath}/memberChat/memberChatRoom.do?senderId=${stu.userId }&receiverId=${user.userId }'" class="active-btn">채팅</button>
                         </td>
                     </tr>
                 </c:forEach>

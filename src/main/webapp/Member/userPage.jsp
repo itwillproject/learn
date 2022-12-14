@@ -154,6 +154,9 @@
 						  <a href="${pageContext.request.contextPath}/member/getGoToPersonalRoadPage.do?userId=${person.userId}" class="text-dark">로드맵</a>
 					  	</li>
 					    <li class="nav-item d-flex p-2 w-100">
+					      <a href="#" class="text-dark">수강후기</a>
+					    </li>
+					    <li class="nav-item d-flex p-2 w-100">
 					      <a href="userBoardPage.do?userId=${person.userId}" class="text-dark">게시글</a>
 					    </li>
 					    <c:if test="${user.userId != person.userId}">
@@ -279,7 +282,7 @@
 								<div class="col-4 card course course_card_item border-0 mb-5" style="height:350px;">
 									<div class="card h-100 border-0">
 									  	<div class="card-image h-50">
-											<img class="card-img-top" src="${pageContext.request.contextPath}/filepath/${get3rovo.rboardCoverimg }" width="100%" alt="${get3rovo.rboardTitle }">
+											<img class="card-img-top" src="${get3rovo.rboardCoverimg }" width="100%" alt="${get3rovo.rboardTitle }">
 									  	</div>
 									  	<div class="card-body w-100 overflow-hidden">
 										    <p class="card-title font-weight-bold" style="height:50px;">${get3rovo.rboardTitle }</p>								
@@ -467,11 +470,11 @@
 							<div class="col-12 pt-2 pb-1">
 								<!-- 질문게시판: 링크 연결해야 함!!! -->
 								<c:if test="${not empty board.boardAdopt}">
-									<a class="h5" href="${pageContext.request.contextPath}/board/viewQnaPage.do?qboardNo=${board.qboardNo }">${board.boardTitle}</a>
+									<a class="h5" href="#">${board.boardTitle}</a>
 								</c:if>
 								<!-- 자유게시판: 링크 연결해야 함!!! -->
 								<c:if test="${empty board.boardAdopt}">
-									<a class="h5" href="${pageContext.request.contextPath}/board/viewQnaPage.do?fboardNo=${board.fboardNo }">${board.boardTitle}</a>
+									<a class="h5" href="#">${board.boardTitle}</a>
 								</c:if>
 							</div>
 							<div class="col-12">
