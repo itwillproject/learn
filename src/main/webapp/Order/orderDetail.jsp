@@ -48,7 +48,7 @@ th, td {
 										<td style="vertical-align: middle; text-align: center;">${orderList.orderDetailNo }</td>
 										<td style="vertical-align: middle; text-align: center;">${fn:substring(orderList.orderRegdate,0,10) }</td>
 										<td class="order_name" style="vertical-align: middle; overflow : hidden; white-space : nowrap; text-overflow:ellipsis;">
-											<a class="link_to" href="#"<%-- ${orderList.lectureNo } --%>
+											<a class="link_to" href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo=${orderList.lectureNo }"<%-- ${orderList.lectureNo } --%>
 											style="color: black; text-decoration: underline;"><B>${orderList.lectureTitle }</B></a></td>
 										<td class="pay_price" style="vertical-align: middle; text-align: right;">
 										<c:if test="${orderList.lectureSalerate != 0}">

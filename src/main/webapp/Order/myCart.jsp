@@ -87,7 +87,7 @@ input::placeholder {
 							</div>
 
 							<div class="col-7">
-								<p><a href="#">${cartList.lectureTitle }</a></p>
+								<p><a href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo=${cartList.lectureNo }">${cartList.lectureTitle }</a></p>
 								<p>
 									<small style="color: gray;">${cartList.lectureWriter }</small>
 									| <small style="color: green;">${fn:substring(cartList.timetableStart,0,16) }
@@ -566,10 +566,10 @@ $(document).on("keyup", "#usePoint", function () {
 				
 				if (rsp.success) {
 					var msg = '결제가 완료되었습니다.';
-					msg += '고유ID : ' + rsp.imp_uid;
-					msg += '상점 거래ID : ' + rsp.merchant_uid;
+					//msg += '고유ID : ' + rsp.imp_uid;
+					//msg += '상점 거래ID : ' + rsp.merchant_uid;
 					msg += '결제 금액 : ' + rsp.paid_amount;
-					msg += '카드 승인번호 : ' + rsp.apply_num;
+					//msg += '카드 승인번호 : ' + rsp.apply_num;
 					orderPrice = rsp.paid_amount;
 					
 					
@@ -655,10 +655,10 @@ $(document).on("keyup", "#usePoint", function () {
 				console.log(rsp);
 				if (rsp.success) {
 					var msg = '결제가 완료되었습니다.';
-					msg += '고유ID : ' + rsp.imp_uid;
-					msg += '상점 거래ID : ' + rsp.merchant_uid;
+					//msg += '고유ID : ' + rsp.imp_uid;
+					//msg += '상점 거래ID : ' + rsp.merchant_uid;
 					msg += '결제 금액 : ' + rsp.paid_amount;
-					msg += '카드 승인번호 : ' + rsp.apply_num;
+					//msg += '카드 승인번호 : ' + rsp.apply_num;
 					
 					// 디비 업데이트 용 
 					var checkBoxArr = []; 
