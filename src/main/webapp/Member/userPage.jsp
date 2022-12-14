@@ -154,9 +154,6 @@
 						  <a href="${pageContext.request.contextPath}/member/getGoToPersonalRoadPage.do?userId=${person.userId}" class="text-dark">로드맵</a>
 					  	</li>
 					    <li class="nav-item d-flex p-2 w-100">
-					      <a href="#" class="text-dark">수강후기</a>
-					    </li>
-					    <li class="nav-item d-flex p-2 w-100">
 					      <a href="userBoardPage.do?userId=${person.userId}" class="text-dark">게시글</a>
 					    </li>
 					    <c:if test="${user.userId != person.userId}">
@@ -312,10 +309,127 @@
 				</div>
 				<hr>
 				<div id="review">	
-					<p class="h4 d-inline font-weight-bold">수강후기</p>
-					<div class="d-flex" style="min-height: 200px;">
-						<p class="align-self-center text-center mx-auto">후기가 없습니다.</p>
+					<div>
+					<span class="h4 d-inline font-weight-bold">수강후기</span>
+					
+					<c:forEach var="comment" items="${commentList}" varStatus="status">
+						<c:if test="${status.last}">
+							<c:set var="commentnum" value="${status.count}"></c:set>
+						</c:if>	
+					</c:forEach>
+					
+					
+					<c:if test="${commentnum > 4}">
+					<a class="float-right" onclick="showAllComment()">전체 보기 ></a>
+					<c:set var="count" value="4"></c:set>
+					</c:if>
+					
+					<c:if test="${commentnum <= 4}">
+					<c:set var="count" value="${commentnum }"></c:set>
+					</c:if>
+					
 					</div>
+			
+					
+						<c:if test="${empty commentList}">
+						<p class="align-self-center text-center mx-auto">후기가 없습니다.</p>
+						</c:if>
+						
+						<c:if test="${not empty commentList }">
+						
+					
+								<c:forEach var="comment" items="${commentList}" varStatus="status" begin="0" end="${count}">
+									
+									<div>
+									<c:forEach var="commentstar" items="${commentList}" begin="1" end="${comment.boardRate}" >
+										<i class='fas fa-star' style='font-size:18px;color:orange'></i>
+									</c:forEach>
+									<br>
+									<a class="font-weight-bold" style='color: black; font-size: 20px;' href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo=${comment.lectureNo }">${comment.boardContent }</a>
+									</div>
+									<br>
+									<span style="font-size: 12px;">글쓴이 : 
+									<c:forEach var="name" items="${nameList }" varStatus="status3">
+									<c:if test="${status.count == status3.count }">
+									${name}
+									</c:if>
+									
+									</c:forEach>
+									
+									작성일자 : ${comment.boardRegdate } 강의명 : 
+									<c:forEach var="lecture" items="${lectureList }" varStatus="status2">
+									<c:if test="${status.count == status2.count }">
+									${lecture.lectureTitle }
+									<img src="${pageContext.request.contextPath}/filepath/${lecture.lectureCoverimg }" class="float-right" style="position: relative; bottom: 80px;" alt="강의 이미지" width="100px" height="100px">
+									</c:if>
+									
+										
+									</c:forEach>
+									
+									</span>
+									
+									<hr>
+								</c:forEach>
+								
+								
+								
+								
+								
+								<span id="hiddenComment" style="display:none;">
+								<c:forEach var="comment" items="${commentList}" varStatus="status" begin="5">
+									
+									
+									<div>
+									<c:forEach var="commentstar" items="${commentList}" begin="1" end="${comment.boardRate}" >
+										<i class='fas fa-star' style='font-size:18px;color:orange'></i>
+									</c:forEach>
+									<br>
+									
+									<a class="font-weight-bold" style='color: black; font-size: 20px;' href="${pageContext.request.contextPath}/Common/getLecture.do?lectureNo=${comment.lectureNo }">${comment.boardContent }</a>
+									</div>
+									<br>
+									
+									<span style="font-size: 12px;">글쓴이 : 
+									<c:forEach var="name" items="${nameList }" varStatus="status3">
+									<c:if test="${status.count == status3.count }">
+									${name}
+									</c:if>
+									
+									</c:forEach>
+									 작성일자 : ${comment.boardRegdate } 강의명 : 
+									<c:forEach var="lecture" items="${lectureList }" varStatus="status2">
+									<c:if test="${status.count == status2.count }">
+									${lecture.lectureTitle }
+									<img src="${pageContext.request.contextPath}/filepath/${lecture.lectureCoverimg }" class="float-right" style="position: relative; bottom: 80px;" alt="강의 이미지" width="100px" height="100px">
+									</c:if>
+									
+										
+									</c:forEach>
+									
+									
+									
+									</span>
+								<c:if test="${not status.last}">
+									<hr>
+									</c:if>
+								
+									
+									</c:forEach>
+									
+									
+									</span>
+						</c:if>
+						
+					
+				
+				
+				<script>
+				function showAllComment(){
+				$("#hiddenComment").toggle(700);
+				}
+				</script>
+				
+				<hr>
 				</div>
 				<hr>
 				<div id="board">	
@@ -353,11 +467,11 @@
 							<div class="col-12 pt-2 pb-1">
 								<!-- 질문게시판: 링크 연결해야 함!!! -->
 								<c:if test="${not empty board.boardAdopt}">
-									<a class="h5" href="#">${board.boardTitle}</a>
+									<a class="h5" href="${pageContext.request.contextPath}/board/viewQnaPage.do?qboardNo=${board.qboardNo }">${board.boardTitle}</a>
 								</c:if>
 								<!-- 자유게시판: 링크 연결해야 함!!! -->
 								<c:if test="${empty board.boardAdopt}">
-									<a class="h5" href="#">${board.boardTitle}</a>
+									<a class="h5" href="${pageContext.request.contextPath}/board/viewQnaPage.do?fboardNo=${board.fboardNo }">${board.boardTitle}</a>
 								</c:if>
 							</div>
 							<div class="col-12">

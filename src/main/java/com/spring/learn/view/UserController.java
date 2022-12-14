@@ -25,7 +25,8 @@ import com.spring.learn.board.BoardService;
 import com.spring.learn.board.BoardVO;
 
 import com.spring.learn.common.Paging;
-
+import com.spring.learn.lecture.LectureCommentVO;
+import com.spring.learn.lecture.LectureDetailService;
 import com.spring.learn.lecture.LectureService;
 import com.spring.learn.lecture.LectureVO;
 import com.spring.learn.user.LikeVO;
@@ -46,7 +47,9 @@ public class UserController {
     private LectureService lectureService;
     @Autowired
     private BoardService boardService;
-
+    @Autowired
+	private LectureDetailService lectureDetailService;
+    
 	@RequestMapping("/insertUser.do")
 	public String insertUser(@ModelAttribute UserVO vo) {
 		System.out.println(">>> 회원가입");
@@ -215,8 +218,10 @@ public String login(HttpServletRequest request, UserVO vo, Model model){
 		UserVO user = (UserVO) session.getAttribute("user");
 		System.out.println("삭제 전 user: " + user);
 		userService.deleteUser(user);
+		session.removeAttribute("user"); //추가 코드
 		return "/Common/index.jsp";
 	}
+
 
 	@RequestMapping("/googleLogin.do")
 	@ResponseBody
@@ -237,7 +242,7 @@ public String login(HttpServletRequest request, UserVO vo, Model model){
 		session.setAttribute("user", user);
 		System.out.println(session.getAttribute("user"));
 
-		return "main.do";
+		return "/common/main.do";
 	}
 
 	@RequestMapping("/checkSignUp.do")
@@ -519,6 +524,32 @@ public String login(HttpServletRequest request, UserVO vo, Model model){
 		
 		System.out.println(person.getGrade());
 
+		//사용자 수강후기 작성한 내역 가져오기
+		List<LectureCommentVO> list =  lectureDetailService.getMyCommentList(person);
+		model.addAttribute("commentList", list);
+		System.out.println("사용자가의 강의에 작성된 댓글들은 : " + list);
+		
+		
+		//댓글이 작성된 강의의 이름과 커버이미지 주소가져오기
+		List<LectureVO> lectureList = new ArrayList<>();
+		for (int i=0; i<list.size(); i++) {
+			lectureList.add(lectureDetailService.getLectDetail(list.get(i)) );	
+		}
+		
+		System.out.println("lectureList : " + lectureList);
+		
+		model.addAttribute("lectureList", lectureList);
+		
+		//댓글을 작성한 사람 이름 가져오기 (작성자 유저아이디로)
+		List<String> commentNames = new ArrayList<>();
+		for (int i=0; i<list.size(); i++) {
+			commentNames.add(lectureDetailService.getCommentName(list.get(i)));	
+		}
+		
+		System.out.println("commentNames : " + commentNames);
+		
+		model.addAttribute("nameList", commentNames);
+		
 		// 게시글 가져오기(지수)
 		Map<String, String> map = new HashMap<>();
 		map.put("userId", vo.getUserId());

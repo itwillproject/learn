@@ -144,7 +144,7 @@
             <c:forEach var="free" items="${list }">
               <div class="pt-1 pl-4 pr-4">
                 <h5>
-                  <a href="#"><b> ${free.boardTitle }</b></a>
+                  <a href="${pageContext.request.contextPath}/board/viewQnaPage.do?fboardNo=${free.fboardNo}"><b> ${free.boardTitle }</b></a>
                 </h5>
                 <c:choose>
                   <c:when test="${fn:length(free.boardContent) gt 16}">

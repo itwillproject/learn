@@ -11,6 +11,7 @@ import com.spring.learn.lecture.LectureReviewCommentVO;
 import com.spring.learn.lecture.LectureVO;
 import com.spring.learn.lecture.OfftimetableVO;
 import com.spring.learn.order.OrderCartVO;
+import com.spring.learn.user.UserVO;
 
 @Repository
 public interface LectureDetailDAO {
@@ -44,4 +45,8 @@ public interface LectureDetailDAO {
 	int checkCart(HashMap<String, String> map);
 	
 	int[] getMyBoardNo(HashMap<String, String> map);
+	
+	List<LectureCommentVO> getMyCommentList(UserVO user);
+	LectureVO getLectDetail(LectureCommentVO comment);
+	String getCommentName(LectureCommentVO comment);
 }

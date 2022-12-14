@@ -101,29 +101,54 @@ body {
           contentType : false,
           processData : false,
           success: function(result) {
-            if(result === 0) {
+            console.log('result', result);
+            if(result === 0) { // 회원가입
               Swal.fire({
                 title: '생년월일 입력',
                 text: '아이디 찾기에 이용됩니다.',
                 input: 'number',
                 inputPlaceholder: '형식: 숫자 8자리'
-              }).then(function(r) {
-                if(r.isConfirmed) {
-                  data.append("userBirth", r.value);
-                  $.ajax({
-                    data : data,
-                    type : "POST",
-                    url : "${pageContext.request.contextPath}/Member/googleLogin.do",
-                    cache : false,
-                    contentType : false,
-                    processData : false,
-                    success: function (url) {
-                      location.href = url;
-                    },
-                    error: function () {
-                      alert("실패...");
-                    }
-                  })
+              }).then(function (r) {
+                if (r.isConfirmed) {
+                  let pattern = /^[0-9]{8}$/;
+                  if(pattern.test(r.value)) {
+                    data.append("userBirth", r.value);
+                    $.ajax({
+                      data : data,
+                      type : "POST",
+                      url : "${pageContext.request.contextPath}/Member/googleLogin.do",
+                      cache : false,
+                      contentType : false,
+                      processData : false,
+                      success: function (url) {
+                        location.href = '${pageContext.request.contextPath}' + url;
+                      },
+                      error: function () {
+                        alert("실패...");
+                      }
+                    })
+                  } else {
+                    Swal.fire({
+                      icon: 'error',  // 여기다가 아이콘 종류를 쓰면 됩니다.
+                      title: '회원가입 오류',
+                      text: '생년월일 형식이 틀립니다.',
+                    });
+                  }
+                }
+              })
+            } else if(result === 1) { // 로그인
+              $.ajax({
+                data : data,
+                type : "POST",
+                url : "${pageContext.request.contextPath}/Member/googleLogin.do",
+                cache : false,
+                contentType : false,
+                processData : false,
+                success: function (url) {
+                  location.href = '${pageContext.request.contextPath}' + url;
+                },
+                error: function () {
+                  alert("실패...");
                 }
               })
             }
@@ -281,13 +306,46 @@ body {
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/inquiry.jsp">작성한 게시글</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/likeGo.do?userId=${user.userId }">좋아요</a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Order/orderDetailGo.do?userId=${user.userId }">구매내역</a>
-            <a class="dropdown-item" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터<hr></a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do">고객센터</a>
+            <a class="dropdown-item"><hr></a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatTest.jsp">실시간 접속자와 채팅</a>
-			<a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatTest2.do?bang_id=${user.userId}&userId=${user.userId}">실시간 상담2(09:00 ~ 18:00)</a>
+			<a class="dropdown-item" href="javascript:TimeChatGo();">실시간 상담2(09:00 ~ 18:00)</a>
+			<script type="text/javascript">
+				function TimeChatGo() {
+	            	var Now = new Date(); // 현재 날짜 및 시간
+		            var nowMonth = Now.getMonth() + 1; // 월
+		            var nowDay = Now.getDate(); // 일
+		            var nowHour = Now.getHours(); // 시
+		            var nowMins = Now.getMinutes(); // 분
+		            function pluszero(time){
+		                var time = time.toString(); // 시간을 숫자에서 문자로 바꿈
+		                if(time.length < 2){ //2자리 보다 작다면
+		                    time = '0' + time; //숫자앞 0을 붙여줌
+		                    return time; //값을 내보냄
+			            }else{
+			                return time; //2자리라면 값을 내보냄
+			            }
+		            }
+		            nowMonth = pluszero(nowMonth); //만들었던 함수 적용
+		            nowDay = pluszero(nowDay);
+		            nowHour = pluszero(nowHour);
+		            nowMins = pluszero(nowMins);
+		            var nowtime = nowHour + nowMins; // 월+일+시+분
+		            var startdate = 0900 //시작 시간
+		            var enddate = 1800 // 종류 시간
+		            if(startdate > nowtime || enddate < nowtime ){ //지금이 시작시간보다 작거나, 종류시간보다 크면 
+		                alert("상담시간이 아닙니다.");
+		                location.href="${pageContext.request.contextPath}/memberBoard/getMyQBoardList.do";
+		            } else {
+		            	location.href="${pageContext.request.contextPath}/Admin/chatTest2.do?bang_id=${user.userId}&userId=${user.userId}";
+		            }      
+				}
+            </script>
 			<c:if test="${user.grade == '관리자' }">
 				<a class="dropdown-item" href="${pageContext.request.contextPath}/Admin/chatGoAdmin.do">관리자 상담 확인하기</a>
 			</c:if>
-            <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/logout.do"><hr>로그아웃</a>
+            <a class="dropdown-item"><hr></a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/Member/logout.do">로그아웃</a>
         </div>
     </div>
     </li>
