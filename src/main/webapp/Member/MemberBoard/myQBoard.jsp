@@ -25,6 +25,7 @@
 		var fontList = ['맑은 고딕','굴림','돋움','바탕','궁서','NotoSansKR','Arial','Courier New','Verdana','Tahoma','Times New Roamn'];
 		var setting = {
 				height: 150,                 // set editor height
+				width: 850,
 				minHeight: null,             // set minimum height of editor
 				maxHeight: null,             // set maximum height of editor
 				focus: true,                  // set focus to editable area after initializing summernote
@@ -78,7 +79,11 @@
 
 		
 	</script>
-
+<style type="text/css">
+		.titleDiv{
+			word-break: break-all;
+		}
+</style>
 
 </head>
 <body>
@@ -101,7 +106,7 @@
 
 			<!-- 중앙 위 내용 - 글내용 -->
 			<div class="col-6 pl-3 gray-line">
-				<div class="row align-items-center p-3">
+				<div class="row align-items-center p-3 titleDiv">
 					<img class="mr-2" style="height: 30px" src="${pageContext.request.contextPath}/Community/img/qqq.png">					
 					<h3><b>${callBvo.qnaTitle }</b></h3>
 				</div>
@@ -118,7 +123,7 @@
 					
 				</div>
 
-				<div class="d-flex flex-row p-3">
+				<div class="d-flex flex-row p-3 titleDiv">
 					<p>${callBvo.qnaContent }</p>
 				</div>
 			</div>
