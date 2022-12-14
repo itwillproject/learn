@@ -4,10 +4,16 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:requestEncoding value="utf-8"/>
-		<div class="col-1 d-flex justify-content-center">
-				<%@ include file="../Member/sideNav.jspf"%>
+		<div class="col-2 d-flex justify-content-center">
+				<%@ include file="../Member/sidebar.jspf"%>
+				<script>
+	              var menu = $('#cart');
+	              console.log(menu);
+	              menu.removeClass('norm-menu');
+	              menu.addClass('active-menu');
+	            </script>
 			</div>
-			<div class="col-8" style="padding: 0px;">
+			<div class="col-7" style="padding: 0px;">
 				<h3 class="" style="height: 50px;">수강장바구니</h3>
 				<div class=""
 					style="height: 40px; border-bottom: 2px solid black; padding: 0px;">

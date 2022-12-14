@@ -439,7 +439,6 @@ window.onload=function(){
 		var check;
 		if ($('.timetableNo').is(':checked')){
 			var radioVal = $('input[class="timetableNo"]:checked').val();
-			alert(radioVal);
 			location.href="insertCart.do?timetableNo=" + radioVal + "&lectureNo=${lecture.lectureNo}";
 			
 		}

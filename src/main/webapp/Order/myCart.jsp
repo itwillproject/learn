@@ -149,7 +149,7 @@ input::placeholder {
 					</p>
 					<div class="row">
 						<div class="col-7" style="color: gray; padding: 0px;">
-							<input type="text" id="usePoint" name="points" class="w-100"
+							<input type="text" id="usePoint" name="points" class="w-100" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
 								placeholder="포인트를 입력해 주세요.">
 						</div>
 						<div class="col-5"
@@ -348,19 +348,20 @@ $(document).on("keyup", "#usePoint", function () {
 				usePoint = myPoint;
 			} 				
 			if(usePoint >= totalPrice){ 		
-				$('#usePoint').val(totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+				$('#usePoint').val(totalPrice);
+				$('#realUsePoint2').text('포인트 사용 금액');
 				$('#realUsePoint').text('-'+totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원');
 				$('#my_div').text("0원");
 			} else{
-				$('#realUsePoint').text('-'+usePoint.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원');
+				$('#realUsePoint').text('-'+usePoint+'원');
 				$('#realUsePoint2').text('포인트 사용 금액');
-				$('#my_div').text((totalPrice-usePoint).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+"원");
+				$('#my_div').text(totalPrice-usePoint+"원");
 			}
 			if (usePoint.length == 0){
 				$('#checkPoint').text('');
 				$('#realUsePoint').text('');
 				$('#realUsePoint2').text('');
-				$('#my_div').text(totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원');
+				$('#my_div').text(totalPrice+'원');
 			}
 	};
 </script>
