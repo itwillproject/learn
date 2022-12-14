@@ -149,6 +149,16 @@ public class LectureDetailServiceimpl implements LectureDetailService {
 		return name;
 	}
 
+	public void insertOrder(OrderCartVO vo) {
+		lectureDetailDAO.insertOrder(vo);
+		
+	}
+
+	public void insertOrderDetail(OrderCartVO vo) {
+		lectureDetailDAO.insertOrderDetail(vo);
+		
+	}
+
 	
 
 	

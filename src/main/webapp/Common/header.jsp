@@ -579,14 +579,14 @@ function alramClick(bNo,categori,aNo,toId){
 				if(categori == 'lectureLike' || categori == 'lectureLikeCancle'){
 					location.href="${pageContext.request.contextPath }/Common/getLecture.do?lectureNo="+bNo;	
 				} else if(categori == 'Notice'){
-					alert(bNo);
+				
 					location.href="${pageContext.request.contextPath }/getNotice.do?boardNo="+bNo;
 				} else if(categori == 'reporttrue'){
 					alramListDelete(aNo,toId);//단순삭제처리 준비해요
 				} else if(categori == 'reportfalse'){
 					alramListDelete(aNo,toId);//단순삭제처리 준비해요
 				} else if(categori == 'lectureComment'){
-					alert(bNo);
+					
 					location.href="${pageContext.request.contextPath }/Common/getLecture.do?lectureNo="+bNo;
 				}
 	        }
