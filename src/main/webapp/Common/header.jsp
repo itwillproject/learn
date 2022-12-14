@@ -101,14 +101,15 @@ body {
           contentType : false,
           processData : false,
           success: function(result) {
-            if(result === 0) {
+            console.log('result', result);
+            if(result === 0) { // 회원가입
               Swal.fire({
                 title: '생년월일 입력',
                 text: '아이디 찾기에 이용됩니다.',
                 input: 'number',
                 inputPlaceholder: '형식: 숫자 8자리'
-              }).then(function(r) {
-                if(r.isConfirmed) {
+              }).then(function (r) {
+                if (r.isConfirmed) {
                   let pattern = /^[0-9]{8}$/;
                   if(pattern.test(r.value)) {
                     data.append("userBirth", r.value);
@@ -120,7 +121,7 @@ body {
                       contentType : false,
                       processData : false,
                       success: function (url) {
-                        location.href = url;
+                        location.href = '${pageContext.request.contextPath}' + url;
                       },
                       error: function () {
                         alert("실패...");
@@ -133,6 +134,21 @@ body {
                       text: '생년월일 형식이 틀립니다.',
                     });
                   }
+                }
+              })
+            } else if(result === 1) { // 로그인
+              $.ajax({
+                data : data,
+                type : "POST",
+                url : "${pageContext.request.contextPath}/Member/googleLogin.do",
+                cache : false,
+                contentType : false,
+                processData : false,
+                success: function (url) {
+                  location.href = '${pageContext.request.contextPath}' + url;
+                },
+                error: function () {
+                  alert("실패...");
                 }
               })
             }
@@ -390,7 +406,7 @@ var gnbSlide = false;
 
 function connectWs(){
 	console.log("tttttt")
-	var ws = new SockJS("http://192.168.18.10:8080/learn/alram");
+	var ws = new SockJS("http://localhost:8080/learn/alram");
 	socket = ws;
 	
 	ws.onopen = function() {

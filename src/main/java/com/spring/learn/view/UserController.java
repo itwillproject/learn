@@ -242,7 +242,7 @@ public String login(HttpServletRequest request, UserVO vo, Model model){
 		session.setAttribute("user", user);
 		System.out.println(session.getAttribute("user"));
 
-		return "main.do";
+		return "/common/main.do";
 	}
 
 	@RequestMapping("/checkSignUp.do")
