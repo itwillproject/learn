@@ -66,7 +66,7 @@ function connectWs(){
     var boardType = $("#boardType").val();
     var boardNo = $("#boardNo").val()
 	console.log("tttttt");
-	var ws = new SockJS("http://192.168.18.10:8080/learn/alram");
+	var ws = new SockJS("http://192.168.18.11:8080/learn/alram");
 	
 	socket = ws;
 	
