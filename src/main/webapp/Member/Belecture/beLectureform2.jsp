@@ -29,7 +29,7 @@
 	<br>
 	<form method="post">
     <div class="form-group">
-      <label for="email">인프런 계정</label>
+      <label for="email">아웃풋런 계정</label>
       <input type="text" class="form-control" id="userId"  name="userId" value="${user.userId}" readonly >
     </div>
     <div class="form-group">

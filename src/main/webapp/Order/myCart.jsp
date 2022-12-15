@@ -602,7 +602,7 @@ $(document).on("keyup", "#usePoint", function () {
 					pay_method : "card",
 					merchant_uid : 'merchant_' + new Date().getTime(),
 	
-					name : '인프런 강의', //결제창에서 보여질 이름
+					name : '아웃풋런 강의', //결제창에서 보여질 이름
 					amount : money, //실제 결제되는 가격
 					buyer_email : "${user.userId}",
 					buyer_name : "${user.userName}",

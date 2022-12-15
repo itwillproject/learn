@@ -68,7 +68,7 @@
 	<div class="slide_item item5">
 		<div class="inner" style="color: white;">
 			<br><h2>나만 몰랐었던 이 강의~♬</h2><br>
-			<p>매일 업데이트 되는<br> 인프런 신규강의를 만나보세요!</p>
+			<p>매일 업데이트 되는<br> 아웃풋런 신규강의를 만나보세요!</p>
 		</div>
 		<img src="${pageContext.request.contextPath}/picture/images/5.gif">
 	</div>
@@ -89,14 +89,14 @@
 	<div class="slide_item item8">
 		<div class="inner" style="color: white;">
 			<h2>나누는 지식만큼<br> 커지는 보람과 보상</h2><br>
-			<p>인프런 지식공유자로<br>높은 수익과 가치를 만들어보세요.</p>
+			<p>아웃풋런 지식공유자로<br>높은 수익과 가치를 만들어보세요.</p>
 		</div>
 		<img src="${pageContext.request.contextPath}/picture/images/8.gif">
 	</div>
 	<div class="slide_item item9">
 		<div class="inner" style="color: white;">
 			<h2>우리는 성장기회의<br>평등을 추구합니다.</h2><br>
-			<p>누구나 배움의 기회를 누리고 꿈을 이룰 수 있도록!<br>인프런과 함께 배우고, 나누고, 성장하세요.</p>
+			<p>누구나 배움의 기회를 누리고 꿈을 이룰 수 있도록!<br>아웃풋런과 함께 배우고, 나누고, 성장하세요.</p>
 		</div>
 		<img src="${pageContext.request.contextPath}/picture/images/9.png">
 	</div>

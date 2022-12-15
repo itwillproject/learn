@@ -140,7 +140,7 @@
 	</div>
 	<div class="container">
 			<div class="col-12 justify-content-center" style='text-align: center; flex-direction:column_reverse; color: green; '>
-				<h2>인프런에 문의하기</h2>
+				<h2>아웃풋런에 문의하기</h2>
 				<div style="color: gray;"></div>
 				<p>성장 기회의 평등</p>
 				<p>궁금한 점은 언제든지 문의해주세요.</p>
