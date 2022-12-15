@@ -123,8 +123,10 @@
 
         <!-- 중앙 위 내용 - 글내용 -->
         <div class="col-8 pl-3 gray-line">
-			<a href="${pageContext.request.contextPath}/Member/getLecture.do?lectureNo=${list[0].lectureNo}" class="h5">${lectureTitle }</a>
-			<c:if test="${user.userId == list[0].teacherId}">
+			<h5>강의명&nbsp;:&nbsp;
+			<a href="${pageContext.request.contextPath}/Member/getLecture.do?lectureNo=${list[0].lectureNo}">${lectureTitle }</a>
+			</h5>
+			<c:if test="${user.userId == teacherId}">
 				<button class="active-btn mt-2" onclick="location.href='${pageContext.request.contextPath}/Teacher/lectureManager.do'">강의 관리로 돌아가기</button>
 			</c:if>
             <br><br>
@@ -171,7 +173,7 @@
                 <tfoot>
                 <tr>
                 	<td colspan="3" style="padding: 25px; text-align: right;" >
-				 		<c:if test="${user.userId == list[0].teacherId}">
+				 		<c:if test="${user.userId == teacherId}">
 							<button type="submit" class="btn btn-success" onclick="location.href='lectureNewsWrite.do?lectureNo=${lectureNo }'">새소식 작성</button>
 						</c:if>
                 	</td>

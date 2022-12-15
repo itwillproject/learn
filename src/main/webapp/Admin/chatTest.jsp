@@ -87,7 +87,7 @@
 		$('#msg').val('')
 	}); */
 
-	var sock2 = new SockJS("http://192.168.18.10:8080/learn/echo?userId=${userId}");
+	var sock2 = new SockJS("http://192.168.18.11:8080/learn/echo?userId=${userId}");
 	/*var sock2 = new SockJS("http://192.168.18.10:8080/learn/echo?userId=${userId}");*/
 	sock2.onmessage = onMessage;
 	sock2.onclose = onClose;

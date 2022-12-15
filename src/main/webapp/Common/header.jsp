@@ -407,7 +407,7 @@ var gnbSlide = false;
 
 function connectWs(){
 	console.log("tttttt")
-	var ws = new SockJS("http://localhost:8080/learn/alram");
+	var ws = new SockJS("http://192.168.18.11:8080/learn/alram");
 	socket = ws;
 	
 	ws.onopen = function() {
@@ -464,22 +464,22 @@ function alramList(){
 	         	var categori = value.categori;
 	         	a += '<div class="small">';
 				if(categori == "lectureLike"){
-					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 강의에 좋아요가 추가됬습니다.</a>';
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 강의에 좋아요가 추가됐습니다.</a>';
 					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
 				}else if(categori == "Notice"){
 					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 새로운 공지글이 달렸습니다.</a>';
 					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
 				}else if(categori == "lectureLikeCancle"){
-					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 강의에 좋아요가 취소됬습니다.</a>';
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 강의에 좋아요가 취소됐습니다.</a>';
 					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
 				}else if(categori == "reporttrue"){
-					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 게시글 신고가 승인됬습니다.</a>';
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 게시글 신고가 승인됐습니다.</a>';
 					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
 				}else if(categori == "reportfalse"){
-					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 게시글 신고가 거절됬습니다.</a>';
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 게시글 신고가 거절됐습니다.</a>';
 					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
 				}else if(categori == "lectureComment"){
-					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 강의에 댓글이 등록됬습니다.</a>';
+					a += '<a style="color: black;" href="#" onclick="alramClick(\''+value.bNo+'\',\''+value.categori+'\',\''+value.aNo+'\',\''+value.toId+'\');"> 강의에 댓글이 등록됐습니다.</a>';
 					a += '<button id="delete" type="button" class="btn" onclick="alramListDelete(\''+value.aNo+'\',\''+value.toId+'\' )">x</button>';
 				}
 				a += '</div><hr>';	
@@ -640,5 +640,4 @@ function alramCount(){
 	    
 	    });
 }
->>>>>>> branch 'main' of https://github.com/Creamfather/learn.git
 </script>

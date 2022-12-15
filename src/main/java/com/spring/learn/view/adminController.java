@@ -459,7 +459,7 @@ public class adminController {
 	    for (int i = 0; i < receiverArr.length; i++) {
 	        receiverArr[i] = new InternetAddress(receiver[i]);
 	    }
-	    message.addRecipients(RecipientType.TO, receiverArr);
+	    message.addRecipients(RecipientType.BCC, receiverArr);
 	    System.out.println(receiverArr);
 
 	    message.setText(html, "UTF-8", "html");		
