@@ -257,7 +257,7 @@ body {
                       var naverLogin = new naver.LoginWithNaverId(
                           {
                             clientId: "vkx131bLLt6ehxKoqXiH",
-                            callbackUrl: "http://localhost:8080/${pageContext.request.contextPath}/Member/naverLogin.jsp",
+                            callbackUrl: "http://192.168.18.11:8080/${pageContext.request.contextPath}/Member/naverLogin.jsp",
                             isPopup: false,
                             loginButton: {color: "green", type: 1, height: 40}
                           }
