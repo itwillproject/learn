@@ -112,6 +112,15 @@
                         <button type="button" class="active-btn w-100" id="submitBtn">수정하기</button>
                         <script>
                           $('#submitBtn').on('click', function() {
+                            // 실시간 질문 시간 저장: yyyy-MM-dd HH:mm:ss
+                            let qsStart = $('#qsStart');
+                            if(qsStart.val() !== '') {
+                              let start = '2022-12-05 ' + qsStart.val() + ':00';
+                              let end = '2022-12-05 ' + $('#qsEnd').val() + ':00';
+                              $('#qsStartStr').val(start);
+                              $('#qsEndStr').val(end);
+                            }
+
                             let form = $('#testForm')[0];
                             let formData = new FormData(form);
 
