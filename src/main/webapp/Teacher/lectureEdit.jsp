@@ -259,10 +259,10 @@
                         <div class="row pt-3">
                             <div class="col-5 text-center">
                                 <c:if test="${not empty lecture.lectureCoverimg}">
-                                    <img width="400px" alt="lectureCoverimg" src="/learn/filepath/${lecture.lectureCoverimg}"/>
+                                    <img id="lectureCoverimg" width="400px" alt="lectureCoverimg" src="/learn/filepath/${lecture.lectureCoverimg}"/>
                                 </c:if>
                                 <c:if test="${empty lecture.lectureCoverimg}">
-                                    <img width="400px" alt="lectureCoverimg"
+                                    <img id="lectureCoverimg" width="400px" alt="lectureCoverimg"
                                          src="https://blog.kakaocdn.net/dn/PUn3J/btqCvx1gkCr/IiQ89PF6VfFqqDw3wFmpH1/img.png"/>
                                 </c:if>
                             </div>
@@ -289,11 +289,20 @@
                                 </span>
                             </div>
                             <script>
-                              $('#uploadFile').change(function() {
+                              $('#uploadFile').change(function(event) {
                                 let file = $(this).val().substring(12);
                                 let filePreview = $('.filePreview');
                                 filePreview.html(file);
                                 filePreview.removeAttr('href');
+                                var fff = event.target.files[0];
+
+                                var reader = new FileReader();
+                                reader.onload = function(e) {
+
+                                  $("#lectureCoverimg").attr("src", e.target.result);
+                                }
+
+                                reader.readAsDataURL(fff);
                               });
                             </script>
                         </div>
