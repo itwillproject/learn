@@ -3,6 +3,7 @@ package com.spring.learn.view;
 import com.spring.learn.common.Paging;
 import com.spring.learn.lecture.LectureNewsService;
 import com.spring.learn.lecture.LectureNewsVO;
+import com.spring.learn.lecture.LectureService;
 import com.spring.learn.lecture.LectureVO;
 import com.spring.learn.user.UserVO;
 import java.io.File;
@@ -32,6 +33,8 @@ public class LectureNewsController {
 	private LectureNewsService lectureNewsService;
 	@Autowired
 	private SqlSessionTemplate mybatis;
+	@Autowired
+	private LectureService lectureService;
 	
 	// 검색과 페이지 보기
 	@RequestMapping("/getLectureNewsList.do")
@@ -94,6 +97,9 @@ public class LectureNewsController {
 		}
 		
 		System.out.println("새소식 list : " + list);
+
+		// 강의자 id 찾기
+		model.addAttribute("teacherId", lectureService.getLecture(vo.getLectureNo()).getUserId());
 
 		return "/Teacher/noticeManager.jsp"; // 이동
 	}
