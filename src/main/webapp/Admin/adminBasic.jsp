@@ -46,7 +46,7 @@ var socket = null;
 
 function connectWs(){
 	console.log("tttttt")
-	var ws = new SockJS("http://192.168.18.10:8080/learn/alram");
+	var ws = new SockJS("http://192.168.18.11:8080/learn/alram");
 	socket = ws;
 	
 		ws.onopen = function() {
