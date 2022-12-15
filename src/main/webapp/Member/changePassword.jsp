@@ -91,7 +91,7 @@
 									<input type="button" class="btn-block btn btn-success my-2" value="비밀번호 변경" onclick="change_password(this.form)">
 									<small id="caption" class="invalid"></small>
 									<!-- location.href='이동할 페이지' return false; -->
-									<!-- location.href='이동할 페이지' 인프런에서는 로그인 페이지인 듯 -->
+									<!-- location.href='이동할 페이지' 아웃풋런에서는 로그인 페이지인 듯 -->
 								</td>
 							</tr>
 						</tbody>

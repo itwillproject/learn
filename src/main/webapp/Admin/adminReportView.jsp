@@ -61,7 +61,7 @@
 
 function connectWs(){
 	var ch = $("#select").val();
-    alert(ch);
+    // alert(ch);
     var toId = $("#reporter").val();
     var boardType = $("#boardType").val();
     var boardNo = $("#boardNo").val()

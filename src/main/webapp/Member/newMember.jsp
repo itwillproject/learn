@@ -46,7 +46,7 @@
 					<h2>회원가입</h2>
 
 					<div>
-						<p class="">나의 온라인 사수, 인프런</p>
+						<p class="">나의 온라인 사수, 아웃풋런</p>
 					</div>
 					<div class="mx-auto" style="width: 25%;">
 						<form action="${pageContext.request.contextPath}/Member/insertUser.do" method="get">

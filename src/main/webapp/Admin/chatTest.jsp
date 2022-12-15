@@ -32,7 +32,7 @@
 	<div>
 		<div class="container">
 			<div class="col-12 justify-content-center" style='text-align: center; flex-direction:column_reverse; color: green; '>
-				<h2>인프런에 끼리끼리 수다떨기</h2>
+				<h2>아웃풋런에 끼리끼리 수다떨기</h2>
 				<div style="color: gray;"></div>
 				<p>성장 기회의 평등</p>
 				<p>욕설, 음담패설 등 상대방을 기분나쁘게 하는 용어는 금지!!입니다.</p>

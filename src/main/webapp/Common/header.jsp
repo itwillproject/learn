@@ -165,7 +165,7 @@ body {
         <fmt:requestEncoding value="utf-8"/>
   <ul class="nav mr-auto justify-content-center bg-white" >
   	<li class="nav-item">
-  		<a href="${pageContext.request.contextPath}"><img src="${pageContext.request.contextPath}/picture/mainlogo.png" alt="mainlogo" width="120px" height="40px"></a>
+  		<a style="object-fit: cover;" href="${pageContext.request.contextPath}"><img src="${pageContext.request.contextPath}/picture/mainlogo.png" alt="mainlogo" width="120px" height="40px"></a>
   	</li>
     <li class="nav-item">
 		<div class="dropdown">

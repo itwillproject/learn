@@ -299,7 +299,7 @@
 					console.log("실패");
 				}
 			});
-			alert("좋아요 등록");
+			//alert("좋아요 등록");
 			$("#"+a+"").attr('data-original-title','좋아요 취소');
 			document.getElementById("like"+a).className = "fas fa-heart"
 		}else{
@@ -321,7 +321,7 @@
 					console.log("실패");
 				}
 			});
-			alert("좋아요 취소");
+			//alert("좋아요 취소");
 			$("#"+a+"").attr('data-original-title','좋아요 등록');
 			document.getElementById("like"+a).className = "far fa-heart";	
 		}
