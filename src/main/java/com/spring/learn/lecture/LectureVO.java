@@ -249,15 +249,37 @@ public class LectureVO {
 
 	@Override
 	public String toString() {
-		return "LectureVO [lectureNo=" + lectureNo + ", userId=" + userId + ", categoryName=" + categoryName
-				+ ", lectureTitle=" + lectureTitle + ", lectureWriter=" + lectureWriter + ", lectureUrl=" + lectureUrl
-				+ ", lectureDue=" + lectureDue + ", lectureLevel=" + lectureLevel + ", lectureContent=" + lectureContent
-				+ ", lectureSummary=" + lectureSummary + ", lectureSalerate=" + lectureSalerate + ", lectureSaledue="
-				+ lectureSaledue + ", lecturePrice=" + lecturePrice + ", lectureRegdate=" + lectureRegdate
-				+ ", lectureCoverimg=" + lectureCoverimg + ", lectureSection=" + lectureSection + ", lectureOnOff="
-				+ lectureOnOff + ", isBuy=" + isBuy + ", lecturePastAddress=" + lecturePastAddress + ", salePrice="
-				+ salePrice + ", studentCount=" + studentCount + ", lectureRate=" + lectureRate + ", reviewCount="
-				+ reviewCount + "]";
+		return "LectureVO{" +
+				"lectureNo='" + lectureNo + '\'' +
+				", userId='" + userId + '\'' +
+				", categoryName='" + categoryName + '\'' +
+				", lectureTitle='" + lectureTitle + '\'' +
+				", lectureWriter='" + lectureWriter + '\'' +
+				", lectureUrl='" + lectureUrl + '\'' +
+				", lectureDue='" + lectureDue + '\'' +
+				", lectureLevel='" + lectureLevel + '\'' +
+				", lectureContent='" + lectureContent + '\'' +
+				", lectureSummary='" + lectureSummary + '\'' +
+				", lectureSalerate='" + lectureSalerate + '\'' +
+				", lectureSaledue='" + lectureSaledue + '\'' +
+				", lecturePrice='" + lecturePrice + '\'' +
+				", lectureRegdate='" + lectureRegdate + '\'' +
+				", lectureCoverimg='" + lectureCoverimg + '\'' +
+				", lectureSection='" + lectureSection + '\'' +
+				", lectureOnOff='" + lectureOnOff + '\'' +
+				", isBuy=" + isBuy +
+				", lecturePastAddress='" + lecturePastAddress + '\'' +
+				", salePrice=" + salePrice +
+				", studentCount=" + studentCount +
+				", lectureRate=" + lectureRate +
+				", reviewCount=" + reviewCount +
+				", uploadFile=" + uploadFile +
+				", qsWeekdays=" + qsWeekdays +
+				", qsStartStr='" + qsStartStr + '\'' +
+				", qsEndStr='" + qsEndStr + '\'' +
+				", qsStart=" + qsStart +
+				", qsEnd=" + qsEnd +
+				'}';
 	}
 	
 	

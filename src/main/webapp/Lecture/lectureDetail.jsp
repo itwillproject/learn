@@ -1105,7 +1105,7 @@ window.onload=function(){
 
 		let rtDiv = $('#realtimeDiv');
 		let weekday = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
-		let dispHtml = '<span>&nbsp;|&nbsp;실시간 질문: ' + weekday[today.getDay()] + ' ' +
+		let dispHtml = '<span>&nbsp;|&nbsp;실시간 질문: ' + weekday[${lecture.qsWeekdays}] + ' ' +
 				'${lecture.qsStart}'.substring(11, 16)  + ' ~ ' + '${lecture.qsEnd}'.substring(11, 16) + '</span>';
 
 		if(('${not empty lecture.qsStart}' === 'true')) {
