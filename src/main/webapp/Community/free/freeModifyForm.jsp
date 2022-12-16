@@ -21,7 +21,7 @@
 			
 			$('#summernote').summernote({
 				height: 300,                 // set editor height
-				width: 900,
+				width: '100%',
 				minHeight: null,             // set minimum height of editor
 				maxHeight: null,             // set maximum height of editor
 				focus: true,                  // set focus to editable area after initializing summernote
@@ -131,8 +131,8 @@
                             </tr>
                             <tr>
                                 <td class="d-flex flex-row justify-content-end">
-                                    <input type="button" id="submitBoard" class="btn btn-success mr-3" value="수정"/>
-                                    <input type="button"  value="취소" class="btn btn-light mr-3" onclick="cancel(this.form)"/>
+                                    <input type="button" id="submitBoard" class="btn btn-success mr-3" value="수정">
+                                    <input type="button"  value="취소" class="btn btn-light mr-3" onclick="cancel(this.form)">
                                 </td>
                             </tr>
                         </tbody>
