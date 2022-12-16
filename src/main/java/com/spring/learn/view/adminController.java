@@ -465,7 +465,7 @@ public class adminController {
 	    message.setText(html, "UTF-8", "html");		
 	    sender.send(message);
 
-	    return "/Admin/adminIndex.jsp";
+	    return "/Admin/adminIndex.do";
 	}
 	
 	@ResponseBody
