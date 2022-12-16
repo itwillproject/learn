@@ -103,7 +103,7 @@
 						inHtml += '<div class="row">';
 						inHtml += '<div class="col-10">';
 						inHtml += '<a class="boardCon" href="${pageContext.request.contextPath}/board/viewQnaPage.do?qboardNo='+ this.qboardNo +'">';
-						inHtml += '<h4 class="boardTi">'+ this.boardTitle +'</h4>';
+						inHtml += '<h4 class="boardTi contentWrap">'+ this.boardTitle +'</h4>';
 						inHtml += '<div class="contentWrap">'+ this.boardContent +'</div>';
 						inHtml += '<p class="boardEtc">'+ this.userName +'·'+ this.boardRegdate.substring(0,10) +'</p></a>';
 						inHtml += '</div>';
